@@ -245,3 +245,64 @@ y HU-006, descartado porque esa persona espera a HU-004 sin nada que hacer y des
 una detrás de otra: el semestre pasa de 5 pasos a 6.
 
 **Estado:** `vigente`
+
+## 2026-10-24: docs/context guarda solo lo que usan las historias
+
+**Contexto:** La entrada 2026-10-22 "El material del backlog entra en docs/context" copió todo el
+material del backlog e hizo de las tandas la fuente de las historias. Esa entrada no se edita, y
+esta la reemplaza en esos dos puntos. El autor, el 2026-10-24:
+
+- "realmente no, de hecho el hecho que en docs/context hayas subido todo los archivos, me deja
+  mal, por que no se la capacidada de los modelos de los companeeros, entindo que el .xlsx ni es
+  necesario, por que ya cumplio su funcion, igual que preguntas docuente, quizas tenga sentido
+  loos backlogs, pero ya tenemos la carpeta de trello, que de hecho deberia solo listar las HU,
+  por que sus instrucciones es para el propio tablero de prelo, los mockups los podriamso dejar,,
+  hay mucho archivos que no se si realmente deberian estar en el repo, y si tiene informacion
+  relevante, para eso hay otra documentacion"
+- "los comentarios del docente realmente pasaron por pracitamente todo los cambios que hemos
+  hecho, podrias llevan en tu memoria ideas de si recueperamso eso o que tenemos, no?. por otro si
+  en requerimentes.md supongo que tiene sentido, pero no habia un md only append o algo asi mas
+  apto, no no tiene sentido?."
+
+**Decisión:** `docs/context/` guarda las tarjetas de las 30 historias con la de reglas comunes, sus
+láminas, el modelo E-R, que la guía pide en el repositorio [3.6], y la memoria contextual. Las
+tarjetas pasan a ser la fuente de las historias. Salen las seis tandas, el tablero, las preguntas al
+docente, el plan de desarrollo, el plan de la reescritura del backlog, las revisiones y las
+instrucciones del kit de Trello. Se recuperan del commit fa95eaf, y `docs/context/README.md` dice
+cómo.
+
+Lo que valía se mudó: los 16 atributos del paciente y las 27 decisiones del equipo pasan a
+`docs/REQUIREMENTS.md`, secciones 3 y 6. La matriz de permisos y las reglas RC-1 a RC-11 ya estaban
+en la tarjeta de reglas comunes. Qué comentario del docente atiende cada escenario queda solo en la
+historia de git, y la memoria anota cómo traerlo de vuelta.
+
+Las decisiones del equipo van en `docs/REQUIREMENTS.md` porque cambian de estado: casi todas son
+propuestas que el docente o el equipo todavía tienen que confirmar. Este archivo es append-only y
+guarda lo que ya se decidió, así que cuando una D-n se decida entra acá su entrada y su fila en
+`docs/REQUIREMENTS.md` cambia de estado. Con menos archivos en el corpus, las líneas base de prosa
+de `CLAUDE.md`, sección 9, se vuelven a medir con esta fecha.
+
+**Alternativas:** Dejar las tandas como fuente y sacar las tarjetas, descartado porque las tarjetas
+son lo que se pega en Trello y el autor quiere esa carpeta con las historias. Llevar las D-n a este
+archivo, descartado porque sus estados cambian y este archivo no se edita.
+
+**Estado:** `vigente`
+
+## 2026-10-24: El primer sprint arranca en terminal
+
+**Contexto:** La guía pide "desarrollar una aplicación web" [2], y D-10 quedó abierta hasta que el
+docente dijera qué debía mostrar el primer sprint. El autor, el 2026-10-24:
+
+- "el profesor no espera que hagamoos todo a la primera, es mas nos dijo que por poder puede ser
+  en terminal"
+- "y si en terminal, se que tenemos los mukpts, pero podemos al menos tener el esqueleuto en
+  terminal, pero ya entraremos en las deseciones de arquitectura"
+
+**Decisión:** El primer sprint tiene al menos el esqueleto en terminal, y las láminas siguen
+diciendo qué muestra cada pantalla. La base de datos, el paquete y el resto de la arquitectura se
+deciden después, y mientras tanto siguen en `docs/DESIGN.md`, sección 6. D-10 queda respondida.
+
+**Alternativas:** Hacer la aplicación web desde el primer sprint, como dice la guía, descartado
+porque el docente acepta terminal y el primer sprint busca un mínimo que funcione.
+
+**Estado:** `vigente`

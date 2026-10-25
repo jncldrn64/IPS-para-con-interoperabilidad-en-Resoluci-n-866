@@ -7,6 +7,24 @@
 
 ## v0.1 — 2026-10-24
 
+Solo documentación. `docs/context/` se queda con lo que usan las historias, y el primer sprint
+arranca en terminal.
+
+### Changed
+- Las tarjetas de `docs/context/trello/tarjetas/` pasan a ser la fuente de las historias.
+- `docs/REQUIREMENTS.md` trae los 16 atributos del paciente y las 27 decisiones del equipo, D-01 a
+  D-27, y dice que el primer sprint tiene al menos el esqueleto en terminal.
+- Las líneas base de prosa de `CLAUDE.md`, sección 9, se miden de nuevo con el corpus más chico.
+- La memoria contextual anota dónde quedó la relación entre los comentarios del docente y cada
+  escenario, y cómo recuperarla.
+
+### Removed
+- De `docs/context/`: las seis tandas del backlog v3, el tablero del equipo, las preguntas al
+  docente, el plan de desarrollo, el plan de la reescritura del backlog, las revisiones y las
+  instrucciones del kit de Trello. Se recuperan del commit fa95eaf.
+
+## v0.1 — 2026-10-24
+
 Solo documentación. Las 12 historias del semestre se reparten entre 3 integrantes, y el trabajo
 queda en el fork del autor.
 

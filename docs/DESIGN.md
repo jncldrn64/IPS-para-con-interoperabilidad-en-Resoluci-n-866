@@ -23,8 +23,7 @@ código, y el nombre para mostrar vive en la tabla del catálogo.
 2026-10-18 y quedó como propuesta D-18 en el tablero del equipo.
 
 **Dónde está escrito:** `docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-18 "El autor
-acepta que Alfanumérico se guarda como texto", y la tabla de decisiones de
-`docs/context/backlog-v3-tanda-4-catalogos-paciente.md`.
+acepta que Alfanumérico se guarda como texto", y D-18 en `docs/REQUIREMENTS.md`, sección 6.
 
 ## 2. Un catálogo no borra
 
@@ -51,8 +50,9 @@ escenario está en la sección 6 de este archivo.
 **Regla:** la pantalla de cada historia sigue su lámina en `docs/context/trello/mockups/`, donde una
 etiqueta "Esc. N" dice qué escenario muestra cada panel.
 
-La guía pide una aplicación web y el autor propuso empezar en terminal (D-10). Mientras eso siga
-abierto, qué imprime el programa, a qué stream y qué se registra está en la sección 6.
+La guía pide una aplicación web, y el docente aceptó terminal: el primer sprint tiene al menos el
+esqueleto en terminal (`docs/DECISIONS.md`, 2026-10-24 "El primer sprint arranca en terminal").
+Qué imprime el programa, a qué stream y qué se registra está en la sección 6, sin escribir todavía.
 
 ## 5. Los comentarios
 
@@ -76,11 +76,12 @@ comentarios que tiene encima, porque ninguna herramienta los revisa.
 
 Este archivo es una semilla mientras esta lista tenga algo.
 
-- Web o terminal (D-10), y con eso las reglas de presentación y registro.
+- Las reglas de presentación y registro del esqueleto en terminal, que salen de las decisiones de
+  arquitectura.
 - Qué base de datos se usa: `pom.xml` trae controladores de H2, SQL Server, MySQL y MariaDB.
 - El paquete y el nombre del artefacto: hoy son `com.example.demo` y `demo`, los de Spring
   Initializr.
 - El idioma de los identificadores del código.
 - Cómo se escribe y se nombra el test de cada escenario, para que se vea qué escenario prueba.
 - Cómo se comparte la pantalla de catálogo entre los 8 catálogos del paciente, que tienen los mismos
-  escenarios (`docs/context/backlog-v3-tanda-4-catalogos-paciente.md`, "Cómo están hechas").
+  escenarios en sus tarjetas (`docs/context/trello/tarjetas/`).

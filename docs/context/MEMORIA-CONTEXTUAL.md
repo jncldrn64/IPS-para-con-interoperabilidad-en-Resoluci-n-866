@@ -1225,6 +1225,116 @@ enunciados, esta memoria y el orden de las 30 historias. Después escribió, tex
   el `ls -Ral` de su carpeta `PRE`.
 **Estado:** `vigente`
 
+## 2026-10-24: La guía del docente y las transcripciones llegan a Claude Code
+
+**Contexto:** el autor fusionó el PR #3 del fork (fa95eaf, el reparto en 3 integrantes) y subió
+`Proyecto_de_Clase.pdf` y `transcripciones.zip`. Autor, textual:
+
+- "realmente comenzemos por el proyecto, con el pdf del profesor y todas las trascripiciones que he
+  decho de las normas"
+- Recibido: la guía (4 páginas; `pdftotext` da el mismo texto que la copia del zip, 1.482
+  palabras), las transcripciones del anexo de los elementos 1 a 23 y 24 a 49 con sus lecturas en
+  bruto y 13 recortes, y los textos de las resoluciones 866 de 2021 (PDF escaneado de 25 páginas
+  y su texto) y 1888 de 2025. El LEEME del zip nombra una carpeta `originales-subidos/`, con los
+  prompts 1 y 2 del docente, que no vino en el zip.
+- Cotejado con el texto de la 866: el artículo 7 ("no podrán ser modificados, reducidos o
+  adicionados"), el parágrafo 2 del artículo 10 (el dato nuevo con fecha, hora, nombre e
+  identificación de quien corrige) y el 13.2 (el contacto se asocia a tecnologías en salud) dicen
+  lo que citan el backlog y `docs/REQUIREMENTS.md`.
+- La guía trae cosas que ningún documento del repositorio recoge:
+  - [2.5]: "Cada integrante del grupo debe desarrollar mínimo 4 Historias de Usuario para cada
+    Sprint para generar el incremento correspondiente." El plan cuenta 12 historias en el
+    semestre, por la regla que el docente dio de palabra el 2026-10-21. Con sprints de tres
+    semanas [2.7] y unos dos meses de semestre, quedan dos o tres sprints. **Pregunta para el
+    docente:** si las 12 reemplazan al mínimo de 4 por integrante en cada sprint.
+  - [2.6]: los roles de Scrum, Product Owner, Scrum Master y Scrum Developers. Nadie los tiene
+    asignados en el material.
+  - [2.7]: el sprint dura tres semanas y arranca un martes con el Sprint Planning; el último jueves
+    van el Sprint Review y la Retrospective. Sin ceremonia en clase, queda un video con todos.
+    [3.4]: el Daily, el Review y la Retrospective se evalúan.
+  - [3.7]: cada estudiante sustenta en cada Sprint Review las historias que desarrolló, así que el
+    reparto decide qué defiende cada uno.
+  - [3.6]: se entrega la URL del repositorio, el diagrama E-R en un adjunto o en el repositorio, y
+    un correo con los nombres completos y la URL de las historias.
+  - [3.1]: un integrante que no aporta no tiene que aparecer en las entregas.
+**Estado:** `vigente`
+
+## 2026-10-24: Lo mínimo para el cliente, y docs/context sobra
+
+**Contexto:** el autor contestó las preguntas del modelo sobre la guía. Autor, textual:
+
+- "Obviamente, el proyecto se ha refinado, por que hemos hecho muchas preguntas al profesor."
+- "supongo que el documento del profesor puede ser en si mismo las fases del roadmap, sin
+  embargo ya entraremos en detalles, detnalles que ya deberias saber"
+- "realmente no, de hecho el hecho que en docs/context hayas subido todo los archivos, me deja
+  mal, por que no se la capacidada de los modelos de los companeeros, entindo que el .xlsx ni es
+  necesario, por que ya cumplio su funcion, igual que preguntas docuente, quizas tenga sentido
+  loos backlogs, pero ya tenemos la carpeta de trello, que de hecho deberia solo listar las HU,
+  por que sus instrucciones es para el propio tablero de prelo, los mockups los podriamso dejar,,
+  hay mucho archivos que no se si realmente deberian estar en el repo, y si tiene informacion
+  relevante, para eso hay otra documentacion"
+- "ahora mismo ni importa, tecnicamente yo soy todo ahora mismo"
+- "en realidad el tiempo de los promps tambien paso, la idea era generar las 30 historias de
+  usuario, que al final se generacion de otra forma."
+- "realmente la idea de este ejercico es cumplir con lo minimo, por que las metodologias agiles
+  estas para presentar entregas de valor a los clientes, no llegar al final unicamente con
+  documentacion, el profesor no espera que hagamoos todo a la primera, es mas nos dijo que por
+  poder puede ser en terminal, de hecho luego de las 30 nos dijo que solo seleccionaramos 3 por
+  integrante, y las eligieramos bien, por que la idea es en el primer spring presentar un minimo
+  al cliente, y que no tiene sentido hacer la entrega de los 16 campos del paciente, si estos
+  camppos dependian de otras entidades, que debiamos elegir bien, por que sin por ejemplo nos
+  faltaba paises y pacientes tiene el campo de pais, estamos jodidos, por que es algo mal hecho,
+  entonces pasamos por el proceso de saber cuales son esos 16 atributos directos de paciente y
+  dependen de catalogos, y no son simplemente una  relacion con otra entidad, de ahi que
+  llegaramos al plan de las 12 propuestas, que basicamente ese es nuestro plan 0 o fase 0 del
+  proyecto,"
+- Lo que queda decidido: la guía vale con lo que el docente fue respondiendo después, y esas
+  respuestas están en esta memoria (2026-10-21). Las transcripciones y los textos de las
+  resoluciones no entran al repositorio. Los roles de Scrum no se asignan todavía: el autor los
+  lleva todos. Los prompts 1 y 2 ya no hacen falta. El docente acepta que el producto sea de
+  terminal.
+- Lo que el autor pide revisar: qué sale de `docs/context/`. Para él no hacen falta el tablero ni
+  las preguntas al docente; `trello/` debería traer solo las historias, porque el resto son
+  instrucciones para el tablero de Trello; las láminas se quedan; lo que valga de lo demás va a
+  los documentos de `docs/`.
+- Pendiente de detalle: que la guía y el plan de las 12, que el autor llama "plan 0 o fase 0 del
+  proyecto", ordenen las fases del ROADMAP.
+**Estado:** `vigente`
+
+## 2026-10-24: docs/context se reduce, las D-n van a REQUIREMENTS y el esqueleto va en terminal
+
+**Contexto:** el modelo propuso qué sacar de `docs/context/`, y el autor contestó, textual:
+
+- "los comentarios del docente realmente pasaron por pracitamente todo los cambios que hemos
+  hecho, podrias llevan en tu memoria ideas de si recueperamso eso o que tenemos, no?. por otro si
+  en requerimentes.md supongo que tiene sentido, pero no habia un md only append o algo asi mas
+  apto, no no tiene sentido?. y si en terminal, se que tenemos los mukpts, pero podemos al menos
+  tener el esqueleuto en terminal, pero ya entraremos en las deseciones de arquitectura"
+- Sobre el archivo append-only: `docs/DECISIONS.md` lo es, pero guarda lo que ya se decidió. Las
+  D-n son propuestas que cambian de estado, así que van en `docs/REQUIREMENTS.md`, sección 6; cuando
+  una se decide, entra su entrada en `docs/DECISIONS.md` y su fila cambia de estado.
+- Hecho en el PR que sigue a fa95eaf: salen las seis tandas, el tablero, las preguntas al docente,
+  el plan de desarrollo, el plan de la reescritura, las revisiones y las instrucciones del kit de
+  Trello. Quedan las tarjetas, que pasan a ser la fuente, las láminas, el modelo E-R y esta memoria.
+  Los 16 atributos del paciente y las 27 decisiones del equipo pasan a `docs/REQUIREMENTS.md`.
+  Decisiones nuevas: 2026-10-24 "docs/context guarda solo lo que usan las historias" y 2026-10-24
+  "El primer sprint arranca en terminal".
+- **Comentarios del docente, qué hay y dónde.** Todo en el commit fa95eaf, con `git show
+  fa95eaf:docs/context/<archivo>`:
+  - Las tandas 1 a 5 traen, por historia, una sección de trazabilidad que liga escenarios y reglas
+    con los comentarios del docente (c1, c2...) y con las filas de Ajustes por historia.
+  - El tablero trae la hoja Retroalimentación (69 filas: el texto del docente como llegó y la
+    historia destino en el backlog v3) y la hoja Ajustes por historia (104 filas: qué ajustar, con
+    número de escenario y su fuente).
+  - La exportación con los 63 comentarios, `comentarios-profesor-por-HU.md` (2026-10-19), quedó en
+    el contenedor del chat y no está en el repositorio ni en el zip de transcripciones. Si el autor
+    la tiene en `PRE`, es la fuente primaria.
+- **Ideas para recuperarlo, sin hacer todavía; decide el autor:** una línea "Comentarios del
+  docente" en cada tarjeta, sacada de la trazabilidad de su tanda; una tabla por historia en esta
+  memoria; o dejarlo en la historia de git, si las tarjetas ya atienden todo y el docente evalúa lo
+  que se entrega.
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1310,6 +1420,10 @@ enunciados, esta memoria y el orden de las 30 historias. Después escribió, tex
   ese `main`. Corregido en el mensaje siguiente.
 - **Al autor (2026-10-24):** "en Atervolgo no tengo permisos": los merges de Atervolgo#3 y #4 son
   de su cuenta.
+- **Del modelo a sí mismo (2026-10-24, Claude Code):** propuso preguntarle al docente si las 12
+  historias reemplazan el "mínimo 4 Historias de Usuario para cada Sprint" de la guía [2.5]. Esta
+  memoria ya registraba, en la entrada del 2026-10-21, que el docente cambió esa regla de palabra.
+  Leyó la guía como si mandara sobre lo que el docente respondió después.
 
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
@@ -1336,7 +1450,22 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000. **Próximo (2026-10-24, con el PR #2 fusionado):** que el autor revise el reparto en 3
+0000000000. **Próximo (2026-10-24, con docs/context reducido):** que el autor revise y fusione el
+   PR que reduce `docs/context/`. Después, en detalle: las fases del ROADMAP a partir de la guía y
+   del plan 0, las decisiones de arquitectura del esqueleto en terminal, si se recupera la
+   trazabilidad de los comentarios del docente, y las reglas para los modelos de los compañeros.
+000000000. **Anterior (2026-10-24, docs/context):** que el autor apruebe qué sale de
+   `docs/context/` y a qué documento va lo que vale de cada archivo. Después, en detalle: las
+   fases del ROADMAP a partir de la guía y del plan 0, y las reglas para los modelos de los
+   compañeros.
+00000000. **Anterior (2026-10-24, con la guía leída):** que el autor decida si lo de la guía que el
+   repositorio no recoge (mínimo de 4 por sprint, roles, ceremonias, sustentación y entregables)
+   entra en `docs/REQUIREMENTS.md` y en el ROADMAP, y si las transcripciones y los textos de las
+   resoluciones entran en `docs/context/`. La guía es "COPIA CONTROLADA" y no trae licencia: no se
+   sube sin su visto bueno (`CLAUDE.md`, sección 10). Faltan los prompts 1 y 2 del docente, los
+   comentarios del docente por historia, qué persona es cada integrante y quién tiene cada rol de
+   Scrum. Después, las reglas para los modelos de los compañeros.
+0000000. **Anterior (2026-10-24, con el PR #2 fusionado):** que el autor revise el reparto en 3
    integrantes y diga qué persona es cada número; que mande las fuentes primarias (guía del
    docente, PDF del anexo, transcripciones, comentarios del docente y Prompt 2) y el `ls -Ral` de
    su carpeta `PRE`. Con eso, escribir las reglas para que los modelos de los compañeros trabajen

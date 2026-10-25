@@ -66,9 +66,9 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   cada historia de catálogo; la línea "Operaciones por escenario" de su tarjeta dice qué escenario
   es cada una, y la versión nueva hace las cuatro (2026-10-24 "Los títulos de los catálogos nombran
   sus cuatro operaciones").
-- **D-n**: una decisión de la hoja Decisiones del tablero del equipo
-  (`docs/context/tablero-validacion-ips-20oct.xlsx`). La mayoría son propuestas sin confirmar; no
-  son entradas de `docs/DECISIONS.md`.
+- **D-n**: una decisión de la hoja Decisiones del tablero del equipo. La copia del 2026-10-24 está
+  en `docs/REQUIREMENTS.md`, sección 6. La mayoría son propuestas sin confirmar; no son entradas de
+  `docs/DECISIONS.md`.
 - **escenario**: un criterio de aceptación en forma Dado, Cuando, Entonces, numerado dentro de su
   historia.
 - **historia de usuario** o **HU**: un pedido con formato Como, Quiero, Para y sus escenarios. El
@@ -84,12 +84,15 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   paciente, HU-004, HU-001, HU-005 y HU-006 (2026-10-22 "Se desarrollan las 12 historias del plan
   B"). Desde el 2026-10-24 se reparte entre 3 integrantes (2026-10-24 "Tres integrantes con cuatro
   historias cada uno").
-- **RC-n**: una regla común del backlog, de RC-1 a RC-11, en la tanda 0, sección 3.
+- **RC-n**: una regla común del backlog, de RC-1 a RC-11, en
+  `docs/context/trello/tarjetas/RC-reglas-comunes.md`.
 - **referencia oficial**: el documento de la fuente que respalda crear, cambiar o inactivar un valor
   de catálogo. Sin ella, la IPS no puede tocar el catálogo (artículo 7).
-- **tanda**: uno de los seis archivos `docs/context/backlog-v3-tanda-*.md`. Es la fuente de las
-  historias (2026-10-22 "El material del backlog entra en docs/context").
-- **tarjeta**: el texto de una historia para Trello, en `docs/context/trello/tarjetas/`. Sale de su
-  tanda, sin la trazabilidad.
+- **tanda**: uno de los seis archivos en que se escribió el backlog v3, con la trazabilidad de cada
+  escenario. Salieron del repositorio el 2026-10-24, y las historias se leen en sus tarjetas
+  (2026-10-24 "docs/context guarda solo lo que usan las historias").
+- **tarjeta**: el texto de una historia, en `docs/context/trello/tarjetas/`, el mismo que se pega
+  en Trello. Desde el 2026-10-24 es la fuente de la historia (2026-10-24 "docs/context guarda solo
+  lo que usan las historias").
 - **versión de un catálogo**: un archivo oficial cargado, con su fuente, su fecha de publicación y
   su fecha de descarga (RC-8).
