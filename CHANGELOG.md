@@ -7,6 +7,31 @@
 
 ## v0.1 — 2026-10-24
 
+Solo documentación. La fase 0 son las 12 historias, la base es H2 en un archivo que va en git, y el
+código se separa en modelo, vista y controlador, con una base común para los catálogos.
+
+### Added
+- `docs/DESIGN.md`, secciones 6 a 8: modelo, vista y controlador; la base común de los catálogos; y
+  la base H2 en archivo, con lo que cuesta subirlo a git.
+- `docs/GLOSSARY.md`: "fase 0", los tres sentidos de "modelo" y el grupo Código, con archivo de la
+  base, base común de catálogos, controlador, repositorio, servicio y vista.
+
+### Changed
+- `docs/ROADMAP.md`: la fase 0 pasa a ser las 12 historias, en tres tramos y 5 pasos, con la base
+  común antes del paso 1. La siembra queda como etapa previa cerrada, sin número.
+- La memoria contextual anota las decisiones del autor y lo que el modelo le corrigió sobre H2, el
+  MVC, las relaciones del paciente y la historia clínica.
+
+### Fixed
+- El encabezado de `docs/DECISIONS.md` remitía al tablero, que salió en el PR #4 del fork. Ahora
+  remite a `docs/REQUIREMENTS.md`, sección 6.
+
+### Removed
+- La línea de `docs/TEMPORARY-CONTEXT.md` sobre el paquete y las cuatro bases de datos: la base
+  quedó decidida, y el paquete sigue en `docs/DESIGN.md`, sección 9.
+
+## v0.1 — 2026-10-24
+
 Solo documentación. `docs/context/` se queda con lo que usan las historias, y el primer sprint
 arranca en terminal.
 

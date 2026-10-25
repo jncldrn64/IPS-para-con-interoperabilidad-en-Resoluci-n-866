@@ -10,7 +10,8 @@ Un cambio que rompe un principio de acá se rechaza, lo haya escrito una persona
 duda, se copia la forma del código que ya existe en vez de inventar un idioma nuevo.
 
 Todavía no hay código del producto. Los principios 1 y 2 salen de decisiones que el equipo ya
-propuso para el modelo de datos; el código que los cumpla no existe.
+propuso para el modelo de datos, y los principios 6 a 8, de lo que el autor decidió el 2026-10-24
+para la fase 0. El código que los cumpla no existe.
 
 ## 1. Los códigos del anexo
 
@@ -43,7 +44,7 @@ y "Reglas que el modelo tiene que cumplir".
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
 (`CLAUDE.md`, sección 8). Hoy el único test es `DemoApplicationTests.contextLoads`, que generó
 Spring Initializr, y no se corrió (`docs/ARCHITECTURE.md`, sección 6). Cómo se escribe el test de un
-escenario está en la sección 6 de este archivo.
+escenario está en la sección 9 de este archivo.
 
 ## 4. Presentación y registro
 
@@ -52,7 +53,7 @@ etiqueta "Esc. N" dice qué escenario muestra cada panel.
 
 La guía pide una aplicación web, y el docente aceptó terminal: el primer sprint tiene al menos el
 esqueleto en terminal (`docs/DECISIONS.md`, 2026-10-24 "El primer sprint arranca en terminal").
-Qué imprime el programa, a qué stream y qué se registra está en la sección 6, sin escribir todavía.
+Qué imprime el programa, a qué stream y qué se registra está en la sección 9, sin escribir todavía.
 
 ## 5. Los comentarios
 
@@ -72,16 +73,66 @@ de abajo.
 **Cómo se comprueba:** a mano, en cada PR que toca código. Quien cambia una línea lee los
 comentarios que tiene encima, porque ninguna herramienta los revisa.
 
-## 6. Sin escribir todavía
+## 6. Modelo, vista y controlador
+
+**Regla:** el código tiene tres partes. El modelo son las entidades, una interfaz de repositorio
+por entidad y un servicio por historia con sus reglas de negocio. La vista es lo que se imprime en
+la terminal, según la lámina de la historia, y el controlador es el menú, que lee la opción y llama
+al servicio.
+
+Un servicio no lee del teclado ni imprime: devuelve un valor o avisa el error con su mensaje, y el
+menú lo muestra. Ningún repositorio borra. El Delete de un catálogo es inactivar, y lo hace su
+servicio (`docs/REQUIREMENTS.md`, sección 2).
+
+**Por qué:** la guía pide una aplicación web [2] y la fase 0 corre en terminal. Si los servicios no
+tocan la terminal, la web reemplaza el menú y deja los servicios como están. Si un repositorio
+puede borrar, basta una llamada para romper "Nada se borra".
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "El código se separa en modelo, vista y
+controlador".
+
+**Cómo se comprueba:** a mano, en cada PR de código. Ningún servicio usa la entrada o la salida de
+la terminal, y ningún repositorio ofrece borrar.
+
+## 7. La base común de los catálogos
+
+**Regla:** las reglas que comparten los 8 catálogos de la fase 0, RC-1 a RC-11 y la búsqueda de
+D-23, viven en una base común que usan sus 8 servicios. Cada servicio agrega solo lo de su
+historia, como el padre leído del código en HU-022 (D-26). Una regla que usa una sola historia va
+en el servicio de esa historia.
+
+**Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
+corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común".
+
+## 8. La base de datos
+
+**Regla:** H2 en modo archivo, y el archivo de la base va en el repositorio.
+
+**Por qué:** los datos quedan entre una corrida y la siguiente, y todos trabajan sobre la misma
+copia. El autor aceptó lo que cuesta. Git no mezcla dos cambios del archivo: si dos PR lo cambian,
+el segundo rehace los suyos sobre el archivo del primero. Correr el programa también lo cambia, y
+un dato de prueba llega al commit si nadie mira el archivo antes.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "La base es H2 en un archivo que va en
+git".
+
+## 9. Sin escribir todavía
 
 Este archivo es una semilla mientras esta lista tenga algo.
 
-- Las reglas de presentación y registro del esqueleto en terminal, que salen de las decisiones de
-  arquitectura.
-- Qué base de datos se usa: `pom.xml` trae controladores de H2, SQL Server, MySQL y MariaDB.
+- Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
+- Cómo se turnan los integrantes para cambiar el archivo de la base, que git no mezcla.
+- Qué interfaz de Spring extiende cada repositorio, con la corrida que lo muestre, en el primer PR
+  de código.
+- Cómo se arma el menú: uno solo para las 12 historias, o uno principal que llama a un menú por
+  entidad. Con uno solo, los 3 integrantes cambian el mismo archivo.
+- Qué hace la parte web de `pom.xml`, con Spring Web MVC, Thymeleaf y Spring Security, mientras la
+  fase 0 corre en terminal, y cómo pide HU-001 el usuario y la clave en la terminal.
 - El paquete y el nombre del artefacto: hoy son `com.example.demo` y `demo`, los de Spring
   Initializr.
 - El idioma de los identificadores del código.
 - Cómo se escribe y se nombra el test de cada escenario, para que se vea qué escenario prueba.
-- Cómo se comparte la pantalla de catálogo entre los 8 catálogos del paciente, que tienen los mismos
-  escenarios en sus tarjetas (`docs/context/trello/tarjetas/`).
+- Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus
+  tarjetas (`docs/context/trello/tarjetas/`). Sus reglas ya tienen lugar en la sección 7.
