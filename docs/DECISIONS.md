@@ -589,3 +589,84 @@ sin tocar nada y anotar la subida en el PR dejaba una línea base que sube sin p
 documentos que el piso cuida.
 
 **Estado:** `vigente`
+
+## 2026-10-25: Un catálogo se carga desde un CSV, con la ruta en la terminal
+
+**Contexto:** La entrada 2026-10-24 "El archivo de la base trae los catálogos cargados" dejó sin
+respuesta del autor que cada catálogo entre al archivo con la carga de su historia. RC-8, en la
+tarjeta de reglas comunes, ya pide subir el archivo oficial en CSV. El autor, el 2026-10-25:
+
+- "¿Cada catálogo se carga al archivo desde su propia historia? Bueno esa es la idea en parte? se
+  que cada catalogo tiene su estandar, pero entiendo que si bien la idea es tener el crud donde
+  subirlo elemento por elemento, entiendo que primero tenemos que convertir los documentos
+  nuevmante antes de moverlo, y por lo que veo podriamos solicitar en terminal archivos, (aun que
+  seria mejor en vistas), pero supongo que via terminal, se puede especificar una ruta a una hoja
+  de calculo de extencion de codigo abierto..."
+- "Haber si CSV, pero no quiere decir que no tenga alternativas, como ir uno por uno"
+
+**Decisión:** Cada catálogo entra al archivo de la base con la carga de su propia historia, desde
+el CSV de RC-8. En la terminal, el menú pide la ruta del archivo. Los datos de la versión que pide
+RC-8 también se escriben ahí, y el servicio hace la carga con todo eso.
+
+Convertir el archivo oficial a CSV es un paso previo: RC-8 ya lo describe para el que viene en
+Excel. Cargar uno por uno sigue existiendo como la creación a mano de un valor, que RC-3 permite
+solo con la referencia de un cambio oficial.
+
+**Alternativas:** Una hoja de cálculo ODS, que el autor mencionó. Java necesita una biblioteca
+aparte para leerla, y RC-8 y las 8 tarjetas de catálogo pasarían de CSV a ODS; el autor se quedó
+con el CSV.
+
+**Estado:** `vigente`
+
+## 2026-10-25: El archivo de la base se cambia por turnos
+
+**Contexto:** Reemplaza a 2026-10-24 "El archivo de la base trae los catálogos cargados" en cómo se
+resuelve un choque. Esa entrada proponía que, cuando dos PR cambian el archivo, el segundo vuelva a
+correr su carga sobre el de `main`. El autor, el 2026-10-25:
+
+- "es un lio la verdad, por que por eso pense que de una vez el h2 en el repo, asi si necesutas
+  algo literalmente puedes saber si esta en la db o no, por que otro integrante esta desarrolando
+  su parte. decir que cada uno carga el csv a la vez en su entorto de desarrollo por separado no
+  me suena, diria por turnos, pero quizas hasta necesitemos saber quien en que momente esta
+  haciendo que."
+
+**Decisión:** El archivo de la base se cambia por turnos: un solo PR que lo cambia abierto a la
+vez, y el siguiente espera a que ese se mezcle. Trabajar en paralelo sigue siendo posible: lo único
+que espera turno es el commit del archivo. Cómo se sabe quién tiene el turno no está decidido.
+
+El modelo propuso que el turno lo tenga quien tiene abierto el PR que cambia el archivo, porque la
+lista de PR de GitHub ya muestra quién es y desde cuándo.
+
+**Alternativas:** Que el segundo PR rehaga su carga sobre el archivo de `main`, que era la
+recomendación del modelo. El autor la descartó porque cada integrante cargaría su CSV por separado,
+en su propio entorno.
+
+**Estado:** `vigente`
+
+## 2026-10-25: Las pruebas corren sobre otra base
+
+**Contexto:** La entrada 2026-10-24 "La base es H2 en un archivo que va en git" dejó escrito que
+correr el programa cambia el archivo, así que un paciente de prueba puede llegar a git. El autor,
+el 2026-10-25:
+
+- "haber en las apliciacion propietateus podemos ya definir cosas, como el autoudtare y el
+  ifdontexiste, si el usuario quiere probar, solo tiene que cambiar el nombre de la db en
+  aplicgation proietes y el modelo puede guiarlo o hacerlo automaticamente"
+
+**Decisión:** `application.properties` define que las tablas se actualicen solas según las
+entidades y que la base se cree si no existe. Para probar, se cambia el nombre de la base en ese
+archivo, y el modelo guía el cambio o lo hace. Qué propiedades exactas lo logran se escribe con su
+corrida en el primer PR de código, porque el build todavía no corre (`docs/ARCHITECTURE.md`,
+sección 6).
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- Una base de prueba nueva nace vacía, sin catálogos, y ahí no se puede probar HU-004. Tiene que
+  arrancar como copia del archivo de la base.
+- `application.properties` va en git. Si alguien sube el nombre de la base de prueba, todos quedan
+  apuntando a ella. Un perfil de Spring o una variable de entorno cambian el nombre sin tocar ese
+  archivo; no se probó en este repo.
+
+**Alternativas:** **Sin origen recuperable.**
+
+**Estado:** `vigente`

@@ -189,6 +189,8 @@ al paciente.
   - Integrante 2: HU-034 tipos de documento (23), HU-018 países (22) y HU-038 entidades del plan
     de beneficios (22).
   - Integrante 3: HU-036 etnias (23), HU-037 comunidades étnicas (22) y HU-035 discapacidad (23).
+  - Cada catálogo entra al archivo de la base con la carga de su historia, desde su CSV, y el
+    archivo se cambia por turnos (`docs/DESIGN.md`, sección 8).
 - Tramo 2, paso 4, el registro del paciente con sus 16 atributos: el integrante 2 con HU-004 (15
   escenarios, 8 dependencias directas).
 - Tramo 3, paso 5, consultar y corregir al paciente, con quien hizo cada cambio: el integrante 1

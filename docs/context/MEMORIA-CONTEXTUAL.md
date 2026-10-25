@@ -1462,6 +1462,58 @@ D-12 en la escala de 1 a 10; entradas 2026-10-24 "La complejidad se estima de 1 
 
 **Estado:** `vigente`
 
+## 2026-10-25: Carga desde CSV, el archivo de la base por turnos y la base de prueba
+
+**Contexto:** el autor fusionó el PR #7 del fork y, desde otra sesión, el PR #8 (a829a18): la
+plantilla 1.3, `AGENTS.md` como isla y `docs/context/` fuera del corpus del piso. Autor, textual:
+
+- "por cierto hicecomits, asi que si quieres los lees, pero no es acerca de la ips"
+
+Fecha de esta entrada: 2026-10-25, la misma que usó el PR #8, para no poner una entrada más vieja
+después de las suyas en `docs/DECISIONS.md`. En Colombia eran las 23 del 2026-10-24.
+
+El modelo explicó cómo entra un catálogo según RC-8 y qué quería decir con el choque de dos PR, con
+el ejemplo de HU-034 y HU-036 en el paso 1. Después preguntó tres cosas, y el autor contestó con
+sus palabras:
+
+- "¿Cada catálogo se carga al archivo desde su propia historia? Bueno esa es la idea en parte? se
+  que cada catalogo tiene su estandar, pero entiendo que si bien la idea es tener el crud donde
+  subirlo elemento por elemento, entiendo que primero tenemos que convertir los documentos
+  nuevmante antes de moverlo, y por lo que veo podriamos solicitar en terminal archivos, (aun que
+  seria mejor en vistas), pero supongo que via terminal, se puede especificar una ruta a una hoja
+  de calculo de extencion de codigo abierto... Cuando dos PR cambian el archivo, ¿el segundo vuelve
+  a correr su carga? a que te refieres, si una HU necesita de otra y se hacen en simultanea?"
+- "Haber si CSV, pero no quiere decir que no tenga alternativas, como ir uno por uno"
+- "es un lio la verdad, por que por eso pense que de una vez el h2 en el repo, asi si necesutas
+  algo literalmente puedes saber si esta en la db o no, por que otro integrante esta desarrolando
+  su parte. decir que cada uno carga el csv a la vez en su entorto de desarrollo por separado no
+  me suena, diria por turnos, pero quizas hasta necesitemos saber quien en que momente esta
+  haciendo que."
+- "haber en las apliciacion propietateus podemos ya definir cosas, como el autoudtare y el
+  ifdontexiste, si el usuario quiere probar, solo tiene que cambiar el nombre de la db en
+  aplicgation proietes y el modelo puede guiarlo o hacerlo automaticamente"
+
+Lo que respondió el modelo:
+
+- Uno por uno ya existe: es crear un valor a mano, que RC-3 permite solo con la referencia de un
+  cambio oficial. La primera carga es el archivo completo.
+- ODS pide una biblioteca aparte en Java; el CSV es texto y ya está en RC-8.
+- El choque de dos PR no es una dependencia entre historias: es que git no mezcla dos versiones del
+  binario. Con turnos se puede seguir programando en paralelo; lo que espera es el commit del
+  archivo. Propuesta para saber quién tiene el turno: quien tenga abierto el PR que lo cambia.
+- Una base de prueba nueva nace sin catálogos: tiene que arrancar como copia del archivo de la
+  base. Y si alguien sube `application.properties` con el nombre de prueba, todos apuntan a ella;
+  un perfil de Spring o una variable de entorno lo evitan. No se probó en este repo.
+- Si los CSV convertidos van en git quedó sin respuesta: con turnos ya no hacen falta para rehacer
+  cargas.
+
+Hecho en el PR que sigue a a829a18: entradas 2026-10-25 "Un catálogo se carga desde un CSV, con la
+ruta en la terminal", "El archivo de la base se cambia por turnos" y "Las pruebas corren sobre
+otra base"; `docs/DESIGN.md`, sección 8, y su lista "Sin escribir todavía"; el tramo 1 de la fase 0
+y "base de prueba" en el glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1591,7 +1643,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000. **Próximo (2026-10-24, estimación):** que el autor revise y fusione el PR de la
+00000000000000. **Próximo (2026-10-25, carga y turnos):** que el autor revise y fusione el PR de
+   la carga desde CSV, los turnos del archivo de la base y la base de prueba. Sin respuesta: cómo
+   se sabe quién tiene el turno, cómo arranca la base de prueba, si los CSV van en git y quién
+   revisa la licencia de los datos oficiales. Después: votar la estimación en clase.
+0000000000000. **Anterior (2026-10-24, estimación):** que el autor revise y fusione el PR de la
    estimación. Después: votar la complejidad en clase o con video, y pasarla a las tarjetas; lo que
    el modelo agregó sobre el archivo de la base sigue sin respuesta (carga desde la historia, cómo
    se rehace cuando dos PR chocan, licencia de los datos oficiales).
