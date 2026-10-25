@@ -5,6 +5,20 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.1 — 2026-10-24
+
+Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones.
+
+### Changed
+- Las 13 historias de catálogo se titulan "carga, consulta, actualización e inactivación", y su
+  Quiero nombra esas operaciones. La línea de operaciones por escenario usa los mismos nombres y
+  pone la versión nueva en las cuatro. Ningún escenario cambia.
+- La hoja Decisiones del tablero cita las historias del backlog v3 en D-02, D-04, D-17, D-20 y D-23.
+
+### Fixed
+- La lámina de HU-004 muestra el escenario 15, y su aviso de paciente repetido ya no ofrece abrir la
+  consulta, como dice el escenario 12.
+
 ## v0.1 — 2026-10-22
 
 Solo documentación. Siembra los documentos de la plantilla 1.2 con el contexto del backlog v3.

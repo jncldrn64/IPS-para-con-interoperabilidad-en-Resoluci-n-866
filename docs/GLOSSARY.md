@@ -53,9 +53,12 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   ([2.3]; 2026-10-22 "El umbral de catálogo es más de 5 valores").
 - **componente**: una parte de un numeral con su propio tipo, formato y longitud. El triage tiene
   dos.
-- **CRUD de catálogo**: crear (carga del archivo oficial o cambio oficial), leer (consulta,
-  búsqueda, comprobación e historial), actualizar (cambio oficial de código o de nombre) e inactivar
-  y reactivar, que es el Delete. Cada historia de catálogo dice qué escenario es cada operación.
+- **CRUD de catálogo**: carga (crear: el archivo oficial o un valor por cambio oficial), consulta
+  (leer: consulta, búsqueda, comprobación e historial), actualización (cambio oficial de código o de
+  nombre) e inactivación y reactivación, que es el Delete. Son las cuatro palabras del título de
+  cada historia de catálogo; la línea "Operaciones por escenario" de su tarjeta dice qué escenario
+  es cada una, y la versión nueva hace las cuatro (2026-10-24 "Los títulos de los catálogos nombran
+  sus cuatro operaciones").
 - **D-n**: una decisión de la hoja Decisiones del tablero del equipo
   (`docs/context/tablero-validacion-ips-20oct.xlsx`). La mayoría son propuestas sin confirmar; no
   son entradas de `docs/DECISIONS.md`.

@@ -1,6 +1,6 @@
 # Plan de desarrollo: 12 historias en lo que queda del semestre
 
-Versión 2, 2026-10-22. Propuesta del equipo para llevar a clase. Sale del backlog v3 (30
+Versión 3, 2026-10-24. Propuesta del equipo para llevar a clase. Sale del backlog v3 (30
 historias, 529 escenarios) y de las reglas que el docente dio para el desarrollo. Las historias y
 sus dependencias están en las tandas del backlog v3 y en el kit de Trello.
 
@@ -168,3 +168,27 @@ fuera del grupo, y que ninguna remita a otra que depende de ella.
 Conteo: 30 historias y 529 escenarios. Las dependencias que quedan son las de las tablas de las
 secciones 3 y 4, todas dentro de las 12. La lámina de HU-004 no tiene todavía el escenario 15, y la
 hoja Backlog v3 del tablero sigue con el conteo anterior.
+
+## 9. Enunciados de los catálogos, 2026-10-24
+
+El autor pidió que la descripción de las historias de catálogo dijera qué operaciones cubren:
+"mantenimiento" no lo decía. En la versión 2 el docente revisó una tarjeta por operación (carga,
+consulta, actualización y eliminación), y la tarjeta fusionada solo nombraba la carga. El cambio se
+aplicó a las 13 historias de catálogo, aunque este semestre se desarrollan 8.
+
+| Qué | Antes | Ahora |
+|---|---|---|
+| Título | Catálogo de países: carga y mantenimiento | Catálogo de países: carga, consulta, actualización e inactivación |
+| Quiero | cargar el catálogo de países desde su archivo oficial y mantenerlo igual a la norma ISO 3166-1 | cargar el catálogo de países desde su archivo oficial, consultarlo y agregar, actualizar, inactivar o reactivar un país, siempre igual a la norma ISO 3166-1 |
+| Línea de operaciones | "CRUD por escenario", con la versión nueva solo en crear | "Operaciones por escenario", con los nombres del título; la versión nueva cuenta en las cuatro |
+
+Ningún escenario cambió: siguen 30 historias y 529 escenarios. "Inactivación" ocupa el lugar de
+"eliminación" porque nada se borra (RC-10). El Quiero conserva el límite del artículo 7, que no deja
+a la IPS modificar, reducir ni adicionar un catálogo oficial: solo sigue los cambios de la fuente.
+
+Los dos pendientes de la sección 8 quedan así:
+
+- La lámina de HU-004 tiene el escenario 15, y las 13 láminas de catálogo tienen el título nuevo.
+- La hoja Backlog v3 del tablero no cuenta escenarios, así que no había un conteo que actualizar.
+  Cambiaron los 13 títulos, y la hoja Decisiones cita las historias del backlog v3 en D-02, D-04,
+  D-17, D-20 y D-23.

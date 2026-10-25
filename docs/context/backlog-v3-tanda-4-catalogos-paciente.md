@@ -1,6 +1,6 @@
 # Backlog IPS Salud y Vida, versión 3. Tanda 4: catálogos del paciente
 
-Versión 4, 2026-10-22. Borrador corregido con la revisión independiente
+Versión 5, 2026-10-24. Borrador corregido con la revisión independiente
 (`revisiones/revision-tanda-4.md`) y con la revisión final cruzada
 (`revisiones/revision-final-cruzada.md`). HU-018, HU-022, HU-026 y HU-034 a HU-038: los ocho catálogos de
 los datos del paciente. Las reglas comunes (RC), la matriz de permisos, el glosario y las
@@ -63,26 +63,26 @@ la CIUO-88 no aparece. La guía [2.1], el numeral 7 de la Resolución 866 (hoja 
 
 | Historia | Escenarios | Particulares |
 |---|---|---|
-| HU-018 Catálogo de países: carga y mantenimiento | 22 | Código numérico de país (D-03) |
-| HU-022 Catálogo de ocupaciones: carga y mantenimiento | 28 | Grupo leído del código, grupo y ocupación en el mismo archivo, ocupación sin su grupo, cantidades por nivel, jerarquía, grupo con ocupaciones activas, ocupación con su grupo inactivo |
-| HU-026 Catálogo de municipios: carga y mantenimiento | 25 | Cero inicial, departamento, municipios con el mismo nombre |
-| HU-034 Catálogo de tipos de documento: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra la hoja 13 |
-| HU-035 Catálogo de categorías de discapacidad: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra las hojas 14 y 15 |
-| HU-036 Catálogo de etnias: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra la hoja 15 |
-| HU-037 Catálogo de comunidades étnicas: carga y mantenimiento | 22 | Archivo oficial por verificar |
-| HU-038 Catálogo de entidades que responden por el plan de beneficios: carga y mantenimiento | 22 | Secretarías de salud para el paciente particular (regla de HU-004) |
+| HU-018 Catálogo de países: carga, consulta, actualización e inactivación | 22 | Código numérico de país (D-03) |
+| HU-022 Catálogo de ocupaciones: carga, consulta, actualización e inactivación | 28 | Grupo leído del código, grupo y ocupación en el mismo archivo, ocupación sin su grupo, cantidades por nivel, jerarquía, grupo con ocupaciones activas, ocupación con su grupo inactivo |
+| HU-026 Catálogo de municipios: carga, consulta, actualización e inactivación | 25 | Cero inicial, departamento, municipios con el mismo nombre |
+| HU-034 Catálogo de tipos de documento: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra la hoja 13 |
+| HU-035 Catálogo de categorías de discapacidad: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra las hojas 14 y 15 |
+| HU-036 Catálogo de etnias: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra la hoja 15 |
+| HU-037 Catálogo de comunidades étnicas: carga, consulta, actualización e inactivación | 22 | Archivo oficial por verificar |
+| HU-038 Catálogo de entidades que responden por el plan de beneficios: carga, consulta, actualización e inactivación | 22 | Secretarías de salud para el paciente particular (regla de HU-004) |
 | **Total** | **188** | |
 
 ---
 
-# HU-018 · Catálogo de países: carga y mantenimiento
+# HU-018 · Catálogo de países: carga, consulta, actualización e inactivación
 
 **ID:** HU-018
-**Título:** Catálogo de países: carga y mantenimiento
+**Título:** Catálogo de países: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de países desde su archivo oficial y mantenerlo igual a la norma ISO 3166-1
+> Quiero cargar el catálogo de países desde su archivo oficial, consultarlo y agregar, actualizar, inactivar o reactivar un país, siempre igual a la norma ISO 3166-1
 > Para que la nacionalidad y la residencia del paciente se registren con los códigos que pide la Resolución 866
 
 **Valor de negocio:** Sin este catálogo no se puede registrar la nacionalidad ni la residencia
@@ -110,8 +110,9 @@ otros prestadores.
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 6, 8 y 9; leer 12 a 17 y 22; actualizar 7, 9 y 10; inactivar y
-  reactivar 18 a 21 (RC-10, nada se borra); cancelar cualquiera de ellas 11.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 4, 8 y 9; consulta 12 a 17 y 22;
+  actualización 7, 9 y 10; inactivación y reactivación 18 a 21 (RC-10, nada se borra); la versión
+  nueva, 5 y 6, hace las cuatro; cancelar cualquiera de ellas, 11.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -296,17 +297,22 @@ otros prestadores.
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de países: carga y mantenimiento"
+  a "Catálogo de países: carga, consulta, actualización e inactivación", y el Quiero nombra las
+  cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y el docente revisó en
+  la versión 2 una tarjeta por operación (carga, consulta, actualización y eliminación). La línea de
+  operaciones usa los nombres del título y pone la versión nueva en las cuatro.
 
 ---
 
-# HU-022 · Catálogo de ocupaciones: carga y mantenimiento
+# HU-022 · Catálogo de ocupaciones: carga, consulta, actualización e inactivación
 
 **ID:** HU-022
-**Título:** Catálogo de ocupaciones: carga y mantenimiento
+**Título:** Catálogo de ocupaciones: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de ocupaciones desde el archivo oficial de la CIUO-88 A.C. y mantenerlo igual a esa clasificación, con sus niveles
+> Quiero cargar el catálogo de ocupaciones desde el archivo oficial de la CIUO-88 A.C., con sus niveles, consultarlo y agregar, actualizar, inactivar o reactivar una ocupación, siempre igual a esa clasificación
 > Para que el auxiliar de admisión registre la ocupación del paciente con una ocupación hija, como pide la guía
 
 **Valor de negocio:** La guía exige elegir la ocupación entre las ocupaciones hijas de la CIUO-88
@@ -352,8 +358,9 @@ A.C. [2.1]. Sin los niveles cargados no se sabe cuáles son hijas.
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 9, 11 y 12; leer 15 a 21 y 28; actualizar 10, 12 y 13; inactivar y
-  reactivar 22 a 27 (RC-10, nada se borra); cancelar cualquiera de ellas 14.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 7, 11 y 12; consulta 15 a 21 y 28;
+  actualización 10, 12 y 13; inactivación y reactivación 22 a 27 (RC-10, nada se borra); la versión
+  nueva, 8 y 9, hace las cuatro; cancelar cualquiera de ellas, 14.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -583,17 +590,23 @@ A.C. [2.1]. Sin los niveles cargados no se sabe cuáles son hijas.
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de ocupaciones: carga y
+  mantenimiento" a "Catálogo de ocupaciones: carga, consulta, actualización e inactivación", y el
+  Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y el
+  docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
-# HU-026 · Catálogo de municipios: carga y mantenimiento
+# HU-026 · Catálogo de municipios: carga, consulta, actualización e inactivación
 
 **ID:** HU-026
-**Título:** Catálogo de municipios: carga y mantenimiento
+**Título:** Catálogo de municipios: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de municipios desde el archivo oficial de la DIVIPOLA y mantenerlo igual a esa lista del DANE
+> Quiero cargar el catálogo de municipios desde el archivo oficial de la DIVIPOLA, consultarlo y agregar, actualizar, inactivar o reactivar un municipio, siempre igual a esa lista del DANE
 > Para que la ciudad de residencia del paciente se registre con su código oficial DANE, como pide la guía
 
 **Valor de negocio:** La guía pide registrar la ciudad de residencia junto con su código oficial
@@ -629,8 +642,9 @@ DANE [2.1]. Sin el departamento no se distinguen los municipios que tienen el mi
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 8, 10 y 11; leer 14 a 20 y 25; actualizar 9, 11 y 12; inactivar y
-  reactivar 21 a 24 (RC-10, nada se borra); cancelar cualquiera de ellas 13.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 6, 10 y 11; consulta 14 a 20 y 25;
+  actualización 9, 11 y 12; inactivación y reactivación 21 a 24 (RC-10, nada se borra); la versión
+  nueva, 7 y 8, hace las cuatro; cancelar cualquiera de ellas, 13.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -827,17 +841,23 @@ DANE [2.1]. Sin el departamento no se distinguen los municipios que tienen el mi
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de municipios: carga y
+  mantenimiento" a "Catálogo de municipios: carga, consulta, actualización e inactivación", y el
+  Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y el
+  docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
-# HU-034 · Catálogo de tipos de documento: carga y mantenimiento
+# HU-034 · Catálogo de tipos de documento: carga, consulta, actualización e inactivación
 
 **ID:** HU-034
-**Título:** Catálogo de tipos de documento: carga y mantenimiento
+**Título:** Catálogo de tipos de documento: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de tipos de documento con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de tipos de documento con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar un tipo de documento, siempre igual a la fuente oficial
 > Para que el documento del paciente se registre con uno de los tipos que admite la Resolución 866
 
 **Valor de negocio:** El tipo y el número de documento identifican al paciente y sirven para
@@ -868,8 +888,9 @@ el intercambio.
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 7, 9 y 10; leer 13 a 18 y 23; actualizar 8, 10 y 11; inactivar y
-  reactivar 19 a 22 (RC-10, nada se borra); cancelar cualquiera de ellas 12.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1024,17 +1045,23 @@ el intercambio.
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de tipos de documento: carga y
+  mantenimiento" a "Catálogo de tipos de documento: carga, consulta, actualización e inactivación",
+  y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran,
+  y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
-# HU-035 · Catálogo de categorías de discapacidad: carga y mantenimiento
+# HU-035 · Catálogo de categorías de discapacidad: carga, consulta, actualización e inactivación
 
 **ID:** HU-035
-**Título:** Catálogo de categorías de discapacidad: carga y mantenimiento
+**Título:** Catálogo de categorías de discapacidad: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de categorías de discapacidad con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de categorías de discapacidad con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar una categoría, siempre igual a la fuente oficial
 > Para que se registren una o varias categorías de discapacidad del paciente con los valores de la Resolución 866
 
 **Valor de negocio:** Sin este catálogo no se registran las discapacidades del paciente, y la guía
@@ -1064,8 +1091,9 @@ permite registrar más de una [2.1].
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 7, 9 y 10; leer 13 a 18 y 23; actualizar 8, 10 y 11; inactivar y
-  reactivar 19 a 22 (RC-10, nada se borra); cancelar cualquiera de ellas 12.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1220,17 +1248,23 @@ permite registrar más de una [2.1].
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de categorías de discapacidad:
+  carga y mantenimiento" a "Catálogo de categorías de discapacidad: carga, consulta, actualización e
+  inactivación", y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no
+  decía cuáles eran, y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta,
+  actualización y eliminación). La línea de operaciones usa los nombres del título y pone la versión
+  nueva en las cuatro.
 
 ---
 
-# HU-036 · Catálogo de etnias: carga y mantenimiento
+# HU-036 · Catálogo de etnias: carga, consulta, actualización e inactivación
 
 **ID:** HU-036
-**Título:** Catálogo de etnias: carga y mantenimiento
+**Título:** Catálogo de etnias: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de etnias con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de etnias con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar una etnia, siempre igual a la fuente oficial
 > Para que la pertenencia étnica del paciente se registre con los valores de la Resolución 866
 
 **Valor de negocio:** Sin este catálogo no se registra la pertenencia étnica del paciente, que
@@ -1261,8 +1295,9 @@ además decide si se pide su comunidad étnica (HU-004).
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 7, 9 y 10; leer 13 a 18 y 23; actualizar 8, 10 y 11; inactivar y
-  reactivar 19 a 22 (RC-10, nada se borra); cancelar cualquiera de ellas 12.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1417,17 +1452,22 @@ además decide si se pide su comunidad étnica (HU-004).
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de etnias: carga y mantenimiento"
+  a "Catálogo de etnias: carga, consulta, actualización e inactivación", y el Quiero nombra las
+  cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y el docente revisó en
+  la versión 2 una tarjeta por operación (carga, consulta, actualización y eliminación). La línea de
+  operaciones usa los nombres del título y pone la versión nueva en las cuatro.
 
 ---
 
-# HU-037 · Catálogo de comunidades étnicas: carga y mantenimiento
+# HU-037 · Catálogo de comunidades étnicas: carga, consulta, actualización e inactivación
 
 **ID:** HU-037
-**Título:** Catálogo de comunidades étnicas: carga y mantenimiento
+**Título:** Catálogo de comunidades étnicas: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de comunidades étnicas desde su archivo oficial y mantenerlo igual a la fuente
+> Quiero cargar el catálogo de comunidades étnicas desde su archivo oficial, consultarlo y agregar, actualizar, inactivar o reactivar una comunidad, siempre igual a la fuente
 > Para que la comunidad étnica del paciente se registre con el código del catálogo de referencia vigente
 
 **Valor de negocio:** Cuando la etnia del paciente es de la 01 a la 06, se registra su comunidad
@@ -1456,8 +1496,9 @@ registrar.
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 6, 8 y 9; leer 12 a 17 y 22; actualizar 7, 9 y 10; inactivar y
-  reactivar 18 a 21 (RC-10, nada se borra); cancelar cualquiera de ellas 11.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 4, 8 y 9; consulta 12 a 17 y 22;
+  actualización 7, 9 y 10; inactivación y reactivación 18 a 21 (RC-10, nada se borra); la versión
+  nueva, 5 y 6, hace las cuatro; cancelar cualquiera de ellas, 11.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1614,17 +1655,23 @@ registrar.
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de comunidades étnicas: carga y
+  mantenimiento" a "Catálogo de comunidades étnicas: carga, consulta, actualización e inactivación",
+  y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran,
+  y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
-# HU-038 · Catálogo de entidades que responden por el plan de beneficios: carga y mantenimiento
+# HU-038 · Catálogo de entidades que responden por el plan de beneficios: carga, consulta, actualización e inactivación
 
 **ID:** HU-038
-**Título:** Catálogo de entidades que responden por el plan de beneficios: carga y mantenimiento
+**Título:** Catálogo de entidades que responden por el plan de beneficios: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de entidades que responden por el plan de beneficios desde su archivo oficial y mantenerlo igual a la fuente
+> Quiero cargar el catálogo de entidades que responden por el plan de beneficios desde su archivo oficial, consultarlo y agregar, actualizar, inactivar o reactivar una entidad, siempre igual a la fuente
 > Para que se registre qué entidad responde por el plan de beneficios del paciente con el código que pide la Resolución 866
 
 **Valor de negocio:** La entidad que responde por el plan de beneficios se registra con el paciente
@@ -1654,8 +1701,9 @@ registrar.
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
-- CRUD por escenario: crear 1 a 6, 8 y 9; leer 12 a 17 y 22; actualizar 7, 9 y 10; inactivar y
-  reactivar 18 a 21 (RC-10, nada se borra); cancelar cualquiera de ellas 11.
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 4, 8 y 9; consulta 12 a 17 y 22;
+  actualización 7, 9 y 10; inactivación y reactivación 18 a 21 (RC-10, nada se borra); la versión
+  nueva, 5 y 6, hace las cuatro; cancelar cualquiera de ellas, 11.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1807,6 +1855,12 @@ registrar.
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 5 de la tanda (2026-10-24): el título pasa de "Catálogo de entidades que responden por el
+  plan de beneficios: carga y mantenimiento" a "Catálogo de entidades que responden por el plan de
+  beneficios: carga, consulta, actualización e inactivación", y el Quiero nombra las cuatro
+  operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y el docente revisó en la
+  versión 2 una tarjeta por operación (carga, consulta, actualización y eliminación). La línea de
+  operaciones usa los nombres del título y pone la versión nueva en las cuatro.
 
 ---
 
@@ -1820,3 +1874,4 @@ registrar.
 | 2026-10-20 | 2 (verificación) | Verificación de la aplicación (`revisiones/verificacion-aplicacion-final.md`): HU-022 cuenta las filas leídas por nivel y, si el archivo no trae los grupos, los carga antes como fuente aparte; reactivación sin respaldo con el caso de la referencia oficial; el código de una fila rechazada conserva su nombre y su estado; en las listas del anexo, el nombre distinto pasa a la primera carga |
 | 2026-10-21 | 3 | Límite de 12 historias: las historias de catálogo dejan de depender del inicio de sesión; el escenario "Cargo sin permiso" pasa a HU-001 (escenario 14) y el historial guarda motivo, referencia, fecha y hora (quién lo hizo lo agrega HU-001, escenario 9); HU-037 ya no depende de HU-036 |
 | 2026-10-22 | 4 | Correcciones mínimas para el plan de 12 historias: cada historia dice qué escenarios son cada operación del CRUD; los escenarios de primera carga, cambio oficial de nombre y catálogo vacío dejan de mirar el registro y la consulta del paciente (HU-004 y HU-005), que dependen de estas historias; HU-022 rechaza crear a mano una ocupación cuyo grupo no está activo; HU-026 toma el departamento de los dos primeros dígitos y rechaza crear un municipio de un departamento que no está en el catálogo |
+| 2026-10-24 | 5 | Enunciados de las historias de catálogo: el título nombra las cuatro operaciones (carga, consulta, actualización e inactivación) en lugar de "carga y mantenimiento", el Quiero las nombra con el límite de la fuente oficial, y la línea de operaciones por escenario usa esos nombres y pone la versión nueva en las cuatro |

@@ -23,7 +23,7 @@ porque los textos se citan entre sí por ruta.
 | `trello/mockups/` | Una lámina PNG por historia, con etiquetas "Esc. N" | Sale de las tandas |
 | `trello/LEEME-kit-trello.md` | Pasos para pasar el backlog a Trello y tabla de tarjetas | Guía |
 | `trello/respuestas-al-docente.md` | Borrador de comentario por tarjeta para el docente | Borrador |
-| `plan-desarrollo-12-historias.md` | Las 12 historias del semestre, sus dependencias y las correcciones del 2026-10-22 | Plan |
+| `plan-desarrollo-12-historias.md` | Las 12 historias del semestre, sus dependencias, las correcciones del 2026-10-22 y los enunciados de catálogo del 2026-10-24 | Plan |
 | `PLAN-BACKLOG-V3.md` | Plan de la reescritura del backlog y su avance | Historia |
 | `preguntas-docente.md` | Las 14 preguntas abiertas para el docente | Pendiente |
 | `modelo-datos/` | Modelo entidad-relación propuesto, 24 tablas en Mermaid, y dos PNG | Borrador |
@@ -38,8 +38,8 @@ está mal y se corrige en el mismo PR.
 
 - La guía del docente, el PDF del anexo técnico y la transcripción de sus hojas. La memoria los cita
   con rutas de otro contenedor.
-- Los scripts que generaron las láminas, las tarjetas y el tablero. Por eso la lámina de HU-004 no
-  tiene todavía el escenario 15.
+- Los scripts que generaron las láminas, las tarjetas y el tablero. Las láminas, las tarjetas y el
+  tablero que cambiaron el 2026-10-24 se regeneraron con ellos fuera del repo.
 - `auditoria-crud-catalogos.md`, del último chat.
 
 ## 3. Estado al 2026-10-22

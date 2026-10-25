@@ -1,6 +1,6 @@
 # Backlog IPS Salud y Vida, versión 3. Tanda 5: diagnósticos CIE-10 y catálogos de la atención
 
-Versión 3, 2026-10-21. Borrador corregido con la revisión independiente
+Versión 4, 2026-10-24. Borrador corregido con la revisión independiente
 (`revisiones/revision-tanda-5.md`) y con la revisión final cruzada
 (`revisiones/revision-final-cruzada.md`). HU-030 y HU-031 (diagnósticos CIE-10) y HU-039 a HU-042
 (modalidades, vías de ingreso, causas y enfermedades huérfanas). Las reglas comunes (RC), la matriz
@@ -37,24 +37,24 @@ modelo, como la marca el tablero.
 
 | Historia | Escenarios | Particulares |
 |---|---|---|
-| HU-030 Catálogo de diagnósticos CIE-10: carga y mantenimiento | 27 | Categoría leída del código, categoría y código en el mismo archivo, código sin su categoría, jerarquía, categoría con códigos activos, código con su categoría inactiva |
+| HU-030 Catálogo de diagnósticos CIE-10: carga, consulta, actualización e inactivación | 27 | Categoría leída del código, categoría y código en el mismo archivo, código sin su categoría, jerarquía, categoría con códigos activos, código con su categoría inactiva |
 | HU-031 Búsqueda y selección de un diagnóstico | 13 | Actor: médico tratante |
-| HU-039 Catálogo de modalidades de realización: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra la hoja 16 |
-| HU-040 Catálogo de vías de ingreso: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra las hojas 16 y 17 |
-| HU-041 Catálogo de causas que motivan la atención: carga y mantenimiento | 23 | Lista del anexo: primera carga y comprobación contra la hoja 17 |
-| HU-042 Catálogo de enfermedades huérfanas: carga y mantenimiento | 21 | Sin cambio de código: el número no se reasigna |
+| HU-039 Catálogo de modalidades de realización: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra la hoja 16 |
+| HU-040 Catálogo de vías de ingreso: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra las hojas 16 y 17 |
+| HU-041 Catálogo de causas que motivan la atención: carga, consulta, actualización e inactivación | 23 | Lista del anexo: primera carga y comprobación contra la hoja 17 |
+| HU-042 Catálogo de enfermedades huérfanas: carga, consulta, actualización e inactivación | 21 | Sin cambio de código: el número no se reasigna |
 | **Total** | **130** | |
 
 ---
 
-# HU-030 · Catálogo de diagnósticos CIE-10: carga y mantenimiento
+# HU-030 · Catálogo de diagnósticos CIE-10: carga, consulta, actualización e inactivación
 
 **ID:** HU-030
-**Título:** Catálogo de diagnósticos CIE-10: carga y mantenimiento
+**Título:** Catálogo de diagnósticos CIE-10: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Diagnósticos CIE-10
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar la última versión del CIE-10 desde su archivo oficial, con su jerarquía de categorías y códigos, y mantenerla igual a la fuente
+> Quiero cargar la última versión del CIE-10 desde su archivo oficial, con su jerarquía de categorías y códigos, consultarla y agregar, actualizar, inactivar o reactivar un diagnóstico, siempre igual a la fuente
 > Para que el médico tratante registre el diagnóstico de cada atención con un código vigente
 
 **Valor de negocio:** Sin el catálogo cargado ninguna atención puede quedar como "Registrada",
@@ -97,6 +97,9 @@ versión del CIE-10 con su jerarquía padre e hijo [2.2].
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 6, 10 y 11; consulta 14 a 20 y 27;
+  actualización 9, 11 y 12; inactivación y reactivación 21 a 26 (RC-10, nada se borra); la versión
+  nueva, 7 y 8, hace las cuatro; cancelar cualquiera de ellas, 13.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -321,6 +324,12 @@ versión del CIE-10 con su jerarquía padre e hijo [2.2].
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 4 de la tanda (2026-10-24): el título pasa de "Catálogo de diagnósticos CIE-10: carga y
+  mantenimiento" a "Catálogo de diagnósticos CIE-10: carga, consulta, actualización e inactivación",
+  y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran,
+  y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
@@ -465,14 +474,14 @@ Mostrar de 20 en 20 es regla del equipo.
 
 ---
 
-# HU-039 · Catálogo de modalidades de realización: carga y mantenimiento
+# HU-039 · Catálogo de modalidades de realización: carga, consulta, actualización e inactivación
 
 **ID:** HU-039
-**Título:** Catálogo de modalidades de realización: carga y mantenimiento
+**Título:** Catálogo de modalidades de realización: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de modalidades de realización con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de modalidades de realización con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar una modalidad, siempre igual a la fuente oficial
 > Para que el médico tratante registre la modalidad de cada atención con los valores de la Resolución 866
 
 **Valor de negocio:** La modalidad dice si la atención fue intramural, extramural o por
@@ -507,6 +516,9 @@ con su CRUD [2.3].
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -662,17 +674,23 @@ con su CRUD [2.3].
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 4 de la tanda (2026-10-24): el título pasa de "Catálogo de modalidades de realización:
+  carga y mantenimiento" a "Catálogo de modalidades de realización: carga, consulta, actualización e
+  inactivación", y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no
+  decía cuáles eran, y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta,
+  actualización y eliminación). La línea de operaciones usa los nombres del título y pone la versión
+  nueva en las cuatro.
 
 ---
 
-# HU-040 · Catálogo de vías de ingreso: carga y mantenimiento
+# HU-040 · Catálogo de vías de ingreso: carga, consulta, actualización e inactivación
 
 **ID:** HU-040
-**Título:** Catálogo de vías de ingreso: carga y mantenimiento
+**Título:** Catálogo de vías de ingreso: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de vías de ingreso con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de vías de ingreso con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar una vía de ingreso, siempre igual a la fuente oficial
 > Para que el médico tratante registre por dónde llegó el paciente en cada atención con los valores de la Resolución 866
 
 **Valor de negocio:** La vía de ingreso dice por dónde llegó el paciente al servicio y se registra
@@ -706,6 +724,9 @@ en cada atención (HU-007). La lista tiene 14 valores, así que es catálogo con
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -861,17 +882,23 @@ en cada atención (HU-007). La lista tiene 14 valores, así que es catálogo con
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 4 de la tanda (2026-10-24): el título pasa de "Catálogo de vías de ingreso: carga y
+  mantenimiento" a "Catálogo de vías de ingreso: carga, consulta, actualización e inactivación", y
+  el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no decía cuáles eran, y
+  el docente revisó en la versión 2 una tarjeta por operación (carga, consulta, actualización y
+  eliminación). La línea de operaciones usa los nombres del título y pone la versión nueva en las
+  cuatro.
 
 ---
 
-# HU-041 · Catálogo de causas que motivan la atención: carga y mantenimiento
+# HU-041 · Catálogo de causas que motivan la atención: carga, consulta, actualización e inactivación
 
 **ID:** HU-041
-**Título:** Catálogo de causas que motivan la atención: carga y mantenimiento
+**Título:** Catálogo de causas que motivan la atención: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de causas que motivan la atención con los valores del anexo y mantenerlo igual a la fuente oficial
+> Quiero cargar el catálogo de causas que motivan la atención con los valores del anexo, consultarlo y agregar, actualizar, inactivar o reactivar una causa, siempre igual a la fuente oficial
 > Para que el médico tratante registre la causa que motiva cada atención con los valores de la Resolución 866
 
 **Valor de negocio:** La causa que motiva la atención se registra en cada atención (HU-007). La
@@ -905,6 +932,9 @@ lista tiene 29 valores, así que es catálogo con su CRUD [2.3].
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 5, 9 y 10; consulta 13 a 18 y 23;
+  actualización 8, 10 y 11; inactivación y reactivación 19 a 22 (RC-10, nada se borra); la versión
+  nueva, 6 y 7, hace las cuatro; cancelar cualquiera de ellas, 12.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1060,17 +1090,23 @@ lista tiene 29 valores, así que es catálogo con su CRUD [2.3].
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 4 de la tanda (2026-10-24): el título pasa de "Catálogo de causas que motivan la atención:
+  carga y mantenimiento" a "Catálogo de causas que motivan la atención: carga, consulta,
+  actualización e inactivación", y el Quiero nombra las cuatro operaciones. Pedido del autor:
+  "mantenimiento" no decía cuáles eran, y el docente revisó en la versión 2 una tarjeta por
+  operación (carga, consulta, actualización y eliminación). La línea de operaciones usa los nombres
+  del título y pone la versión nueva en las cuatro.
 
 ---
 
-# HU-042 · Catálogo de enfermedades huérfanas: carga y mantenimiento
+# HU-042 · Catálogo de enfermedades huérfanas: carga, consulta, actualización e inactivación
 
 **ID:** HU-042
-**Título:** Catálogo de enfermedades huérfanas: carga y mantenimiento
+**Título:** Catálogo de enfermedades huérfanas: carga, consulta, actualización e inactivación
 **Funcionalidad relacionada:** Catálogos
 **Descripción:**
 > Como profesional de estadística
-> Quiero cargar el catálogo de enfermedades huérfanas desde el listado oficial y mantenerlo igual a la fuente
+> Quiero cargar el catálogo de enfermedades huérfanas desde el listado oficial, consultarlo y agregar, actualizar, inactivar o reactivar una enfermedad, siempre igual a la fuente
 > Para que el médico tratante registre la enfermedad huérfana del paciente con el código del listado vigente
 
 **Valor de negocio:** Cuando el paciente presenta una enfermedad huérfana, la atención la registra
@@ -1107,6 +1143,9 @@ con su código (HU-007). Sin el listado vigente cargado ese dato no se puede reg
   las coincidencias (D-23).
 - Reglas comunes que aplica, en la tarjeta "Reglas comunes": RC-1 a RC-5, RC-8 (carga), RC-9
   (versión nueva), RC-10 (inactivar y reactivar) y RC-11 (nombre del momento del registro).
+- Operaciones por escenario (el CRUD de la guía [2.3]): carga 1 a 4, 7 y 8; consulta 11 a 16 y 21;
+  actualización 8 y 9; inactivación y reactivación 17 a 20 (RC-10, nada se borra); la versión nueva,
+  5 y 6, hace las cuatro; cancelar cualquiera de ellas, 10.
 
 **Precondiciones:**
 - Para cargar, el profesional de estadística tiene el archivo oficial en CSV y los datos de su versión (RC-8).
@@ -1255,6 +1294,12 @@ con su código (HU-007). Sin el listado vigente cargado ese dato no se puede reg
   que el docente no pone en la primera entrega. El escenario "Cargo sin permiso" pasa a HU-001,
   escenario 14, y quién hizo cada cambio lo agrega HU-001, escenario 9; el historial de esta
   historia guarda el motivo, la referencia, la fecha y la hora.
+- Versión 4 de la tanda (2026-10-24): el título pasa de "Catálogo de enfermedades huérfanas: carga y
+  mantenimiento" a "Catálogo de enfermedades huérfanas: carga, consulta, actualización e
+  inactivación", y el Quiero nombra las cuatro operaciones. Pedido del autor: "mantenimiento" no
+  decía cuáles eran, y el docente revisó en la versión 2 una tarjeta por operación (carga, consulta,
+  actualización y eliminación). La línea de operaciones usa los nombres del título y pone la versión
+  nueva en las cuatro.
 
 ---
 
@@ -1267,3 +1312,4 @@ con su código (HU-007). Sin el listado vigente cargado ese dato no se puede reg
 | 2026-10-20 | 2 (continuación) | Revisión final cruzada (`revisiones/revision-final-cruzada.md`): categorías validadas con la regla de HU-030; categorías del plan B como fuente aparte; trazabilidad de HU-030 corregida (HU-032 sin retroalimentación del docente, bloqueo de uso, código que ya existe, historial de versiones); HU-031 con RC-1 |
 | 2026-10-20 | 2 (verificación) | Verificación de la aplicación (`revisiones/verificacion-aplicacion-final.md`): las categorías del plan B se cargan antes que la tabla y su versión vigente es la de su fuente; reactivación sin respaldo con el caso de la referencia oficial; el código de una fila rechazada conserva su nombre y su estado; en las listas del anexo, el nombre distinto pasa a la primera carga |
 | 2026-10-21 | 3 | Límite de 12 historias: las historias de catálogo dejan de depender del inicio de sesión; el escenario "Cargo sin permiso" pasa a HU-001 (escenario 14) y el historial guarda motivo, referencia, fecha y hora (quién lo hizo lo agrega HU-001, escenario 9) |
+| 2026-10-24 | 4 | Enunciados de las historias de catálogo: el título nombra las cuatro operaciones (carga, consulta, actualización e inactivación) en lugar de "carga y mantenimiento", el Quiero las nombra con el límite de la fuente oficial, y la línea de operaciones por escenario usa esos nombres y pone la versión nueva en las cuatro |

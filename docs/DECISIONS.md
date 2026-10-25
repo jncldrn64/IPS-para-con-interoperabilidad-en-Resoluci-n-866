@@ -124,3 +124,36 @@ Backlog de `docs/ROADMAP.md`. Regenerar las láminas, que no se pudo porque sus 
 vinieron con el material.
 
 **Estado:** `vigente`
+
+## 2026-10-24: Los títulos de los catálogos nombran sus cuatro operaciones
+
+**Contexto:** El autor, sobre el título "carga y mantenimiento" de las historias de catálogo:
+
+- "aun no estoy convencido que literalmente se llamen mantenimiento, por que el modelo debio hacer
+  arreglos para que con el encunciado de la descripcion quedara clado, por que creo que
+  manentimiento es muy general"
+
+El prompt 2 del docente pide un título "específico y orientado al resultado". En la versión 2 del
+backlog el docente revisó una tarjeta por operación de cada catálogo: carga, consulta, actualización
+y eliminación. La tarjeta fusionada solo nombraba la carga. La línea "CRUD por escenario" del
+2026-10-22 iba en las reglas de negocio, después de la descripción, y ponía la versión nueva solo en
+crear, aunque ese escenario crea, actualiza, reactiva e inactiva.
+
+**Decisión:** Las 13 historias de catálogo se titulan "<catálogo>: carga, consulta, actualización e
+inactivación". Su Quiero nombra las operaciones sin perder el límite de la fuente oficial, por
+ejemplo "cargar el catálogo de países desde su archivo oficial, consultarlo y agregar, actualizar,
+inactivar o reactivar un país, siempre igual a la norma ISO 3166-1". "Inactivación" ocupa el lugar
+de "eliminación" porque nada se borra (RC-10).
+
+La línea de cada tarjeta pasa a "Operaciones por escenario", con los nombres del título, y la
+versión nueva cuenta en las cuatro. Se aplica a las 13 aunque este semestre se desarrollan 8, para
+que Trello no muestre dos estilos de título. Ningún escenario cambia: 30 historias y 529 escenarios.
+
+La hoja Backlog v3 del tablero no cuenta escenarios: el pendiente de actualizarla a 529, escrito el
+2026-10-22, no tenía objeto.
+
+**Alternativas:** Cambiar solo el Quiero, descartado porque el título seguía diciendo
+"mantenimiento". Poner "CRUD" en el título, descartado porque es la palabra de la guía [2.3] pero un
+término técnico. Cambiar solo las 8 del plan, descartado por los dos estilos de título.
+
+**Estado:** `vigente`

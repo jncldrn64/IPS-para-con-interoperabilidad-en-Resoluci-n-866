@@ -101,14 +101,13 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
 - Llevar al docente las 14 preguntas de `docs/context/preguntas-docente.md` y las 4 del plan de
   desarrollo, entre ellas qué quiere decir "desarrollada".
   **Entró:** 2026-10-22, PR de siembra.
-- Rehacer la lámina de HU-004 con el escenario 15 y actualizar la hoja Backlog v3 del tablero a 529
-  escenarios.
-  **Entró:** 2026-10-22, PR de siembra.
-- Pasar a Trello los textos corregidos de las 12 tarjetas, con
+- Pasar a Trello los textos corregidos de las 12 tarjetas, los 13 títulos de catálogo y las 14
+  láminas nuevas, con la sección "Si el tablero ya tiene las tarjetas" de
   `docs/context/trello/LEEME-kit-trello.md`.
   **Entró:** 2026-10-22, PR de siembra.
-- Aplicar a HU-030 y HU-039 a HU-042 las mismas correcciones de los 8 catálogos: CRUD por escenario,
-  sin remisiones a la atención y, en HU-030, la creación a mano con su categoría activa.
+- Aplicar a HU-030 y HU-039 a HU-042 lo que les falta de las correcciones de los 8 catálogos: sacar
+  las remisiones a la atención y, en HU-030, validar la creación a mano con su categoría activa. La
+  línea "Operaciones por escenario" ya la tienen.
   **Entró:** 2026-10-22, PR de siembra.
 - Estimar las 12 historias de 1 a 10 en clase y poner D-12 en esa escala.
   **Entró:** 2026-10-22, PR de siembra.
