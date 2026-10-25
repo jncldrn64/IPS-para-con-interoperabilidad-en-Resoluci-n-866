@@ -5,6 +5,30 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.2 — 2026-10-25
+
+Solo documentación. El repo pasa a la plantilla 1.3, `AGENTS.md` queda como isla y `docs/context/`
+sale del corpus del piso. No hay código del producto que muestre una versión.
+
+### Added
+- `docs/DECISIONS.md`: cinco entradas del 2026-10-25, de "Se adopta la plantilla 1.3" a
+  "docs/context sale del corpus del piso", todas salvo la primera con sus alternativas.
+- `CLAUDE.md`, sección 7: el commit conserva su trailer, y uno hecho desde la web también lleva
+  tipo.
+
+### Changed
+- `AGENTS.md` queda en dos oraciones que mandan a `CLAUDE.md`, sin bloque de cita, y `README.md`
+  manda a `CLAUDE.md`. `CLAUDE.md` deja de nombrarlo en la tabla de tipos, la regla 6 y la raíz.
+- `CLAUDE.md`, sección 6: la sección de un PR doc-only lleva la versión siguiente, abre con
+  `Solo documentación.` y sus subsecciones van en orden.
+- `CLAUDE.md`, sección 5, y el encabezado de `docs/DECISIONS.md`: cómo se nombra una entrada
+  reemplazada, cuándo van las alternativas y cómo abre un hueco.
+- `CLAUDE.md`, sección 9: el corpus deja afuera `docs/context/`, y las líneas base del 2026-10-25
+  dan cero en las ocho reglas.
+- `docs/GLOSSARY.md`: el grupo "Método" dice su fuente, "PR doc-only" cambia con la sección 6, y
+  "prioridad" y "vista" citan su decisión.
+- `docs/ARCHITECTURE.md`, sección 1: las filas de la raíz.
+
 ## v0.1 — 2026-10-24
 
 Solo documentación. La complejidad se estima de 1 a 10, con una propuesta para votar en clase, y el
