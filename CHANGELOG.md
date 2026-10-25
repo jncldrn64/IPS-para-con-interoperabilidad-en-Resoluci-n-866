@@ -7,6 +7,21 @@
 
 ## v0.1 — 2026-10-24
 
+Solo documentación. Las 12 historias del semestre se reparten entre 3 integrantes, y el trabajo
+queda en el fork del autor.
+
+### Added
+- `docs/GLOSSARY.md`: la palabra fork, y en el Backlog del ROADMAP, llevar el trabajo del fork a
+  Atervolgo cuando su dueño lo habilite.
+
+### Changed
+- `docs/ROADMAP.md` reparte las 12 historias del plan B entre 3 integrantes, con 4 historias y 80,
+  82 y 81 escenarios cada uno. HU-005 y HU-006 se hacen a la vez en el último paso.
+- La fase 0 del ROADMAP, la siembra, queda cerrada con el PR #2 del fork.
+- La memoria contextual anota el fork, el equipo de 3 y las ramas borradas.
+
+## v0.1 — 2026-10-24
+
 Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones, la memoria
 contextual vuelve a ser la memoria del modelo y el ROADMAP ordena las 30 historias.
 

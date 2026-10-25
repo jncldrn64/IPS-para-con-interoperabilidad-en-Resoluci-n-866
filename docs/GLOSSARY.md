@@ -24,6 +24,10 @@ el producto trae sus propias palabras.
   abre un PR doc-only y la cierra el próximo PR de código.
 - **descriptivo**: el documento que dice qué es. Pierde contra el código.
 - **Entró**: la línea con que nace un ítem del Backlog, con fecha y PR sacados de `git log -S`.
+- **fork**: `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`, la copia del repositorio
+  original en la cuenta del autor. Ahí se trabaja y se abren los PR hasta que el original, en
+  Atervolgo, lo habilite (2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo
+  habilite").
 - **hueco conocido**: una entrada fechada de la sección "Huecos conocidos" de
   `docs/ARCHITECTURE.md`, con la corrida que la muestra. Se borra cuando se cierra.
 - **Hipótesis**: el marcador de una inferencia hecha al reconstruir contexto, con su base a la
@@ -76,8 +80,10 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   tablero también lo llama elemento.
 - **ocupación hija**: una ocupación de 4 dígitos, el nivel más específico de la CIUO-88 A.C. Es la
   única que se registra al paciente [2.1].
-- **plan B**: el plan de desarrollo de las 12 historias en que el cuarto integrante hace HU-001,
-  HU-005 y HU-006 (2026-10-22 "Se desarrollan las 12 historias del plan B").
+- **plan B**: el plan de desarrollo de las 12 historias del semestre: los 8 catálogos del
+  paciente, HU-004, HU-001, HU-005 y HU-006 (2026-10-22 "Se desarrollan las 12 historias del plan
+  B"). Desde el 2026-10-24 se reparte entre 3 integrantes (2026-10-24 "Tres integrantes con cuatro
+  historias cada uno").
 - **RC-n**: una regla común del backlog, de RC-1 a RC-11, en la tanda 0, sección 3.
 - **referencia oficial**: el documento de la fuente que respalda crear, cambiar o inactivar un valor
   de catálogo. Sin ella, la IPS no puede tocar el catálogo (artículo 7).

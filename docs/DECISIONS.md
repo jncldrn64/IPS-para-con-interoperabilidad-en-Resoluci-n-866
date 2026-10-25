@@ -186,3 +186,62 @@ por el autor. Sacarla del repositorio público por los nombres del equipo y la r
 descartado porque el autor permite subir su carpeta tal cual.
 
 **Estado:** `vigente`
+
+## 2026-10-24: Se trabaja en el fork del autor hasta que Atervolgo lo habilite
+
+**Contexto:** El repositorio original es
+`Atervolgo/IPS-para-con-interoperabilidad-en-Resoluci-n-866`. Ahí el autor no puede darles permisos
+a los colaboradores ni a sus modelos, así que hizo una copia en su cuenta. El autor, el 2026-10-24:
+
+- "mientras aparece Atervolgo para habilitar claude, trabajare en este repo, y buscare la manera de
+  que el claude code de los demas tambien tengan los mismo permisos.."
+- "cuando el dueno de Atervolgo aparezca ahi si hacemos un pull para llevar todo el trabajo mio y de
+  los colaboradores que no pueden estar en el repo, hacia el original"
+- "si las ramas no las necesitas borraras, por que puede haber confucion, pero recuerda dejar donde
+  deberia datos de esto, por que creo que sera muy importante."
+
+**Decisión:** El trabajo vive en `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`, el
+fork del autor, y cada PR va contra el `main` del fork. Quien abre un PR a mano elige el fork en
+"base repository", porque el botón "Compare & pull request" de GitHub propone el original. El
+primer PR real fue el #2 del fork, fusionado el 2026-10-24, con commits nuevos encima de d70a6f8.
+
+Antes de ese PR hubo dos ramas que se borraron para que nadie trabaje sobre ellas. Sus commits no se
+pierden: siguen en la historia de Atervolgo.
+
+| Rama borrada | Último commit | Qué tenía | Dónde siguen sus commits |
+|---|---|---|---|
+| `test` | f0ab79a | Siembra, corrección del README de `docs/context/` y enunciados de catálogo | Atervolgo: su PR #3 la fusionó en 2e2faa8 y su PR #4 lo revirtió en 69675e9 |
+| `claude/wizardly-newton-ztyb85` | c8b9d9c | Siembra y corrección del README; era el PR #1 del fork, cerrado sin fusionar | Atervolgo, porque c8b9d9c es padre de f0ab79a |
+
+Para llevar el trabajo a Atervolgo va un PR del `main` del fork al `main` de Atervolgo. La base
+común de los dos es d70a6f8, porque el fork no usa los commits revertidos, así que no hace falta
+revertir el revert. Mientras tanto no se aprieta "Sync fork" en el fork: traería al `main` del fork
+los commits revertidos de Atervolgo, que repiten el mismo contenido con otra historia.
+
+**Alternativas:** Trabajar directo en Atervolgo, descartado porque ahí el autor no puede dar
+permisos. Seguir en la rama `test`, descartado porque sus commits ya están revertidos en Atervolgo y
+llevarlos de nuevo pedía revertir el revert.
+
+**Estado:** `vigente`
+
+## 2026-10-24: Tres integrantes con cuatro historias cada uno
+
+**Contexto:** La entrada 2026-10-22 "Se desarrollan las 12 historias del plan B" partía de 4
+integrantes con 3 historias cada uno, repartidas en `docs/context/plan-desarrollo-12-historias.md`,
+secciones 3 y 4. Esa entrada no se edita; esta la reemplaza en el número de integrantes. El autor,
+el 2026-10-24:
+
+- "ahora mismo, realmente no tenemos decidido quien hace que, pasamos de 4 integrantes a 3,
+  entoces 4 historias de usuario sean hechas por cada integrante, asi que crea un plan estrategico
+  que quien deberia tener que carga"
+
+**Decisión:** Las 12 historias del plan B no cambian. Se reparten entre 3 integrantes, con 4
+historias cada uno. El reparto, sus criterios y el turno de cada historia están en
+`docs/ROADMAP.md`, sección "Orden de las 30 historias", como propuesta del modelo pedida por el
+autor. Qué persona es cada integrante no está decidido.
+
+**Alternativas:** Dejar a una sola persona HU-001 con las dos historias que dependen de ella, HU-005
+y HU-006, descartado porque esa persona espera a HU-004 sin nada que hacer y después hace las dos
+una detrás de otra: el semestre pasa de 5 pasos a 6.
+
+**Estado:** `vigente`

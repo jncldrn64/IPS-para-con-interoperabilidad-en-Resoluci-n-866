@@ -13,7 +13,9 @@ sprint. Por eso las fases siguen las dependencias de las 12 historias del plan B
 primero lo que no depende de nada, después lo que depende de eso. La complejidad se estima de 1 a 10
 y sube con las dependencias directas (`docs/context/plan-desarrollo-12-historias.md`, sección 1).
 
-Los números de integrante son los del plan; qué persona es cada uno no está escrito en el material.
+Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
+2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
+3; qué persona es cada número lo decide el equipo.
 
 ## Orden de las 30 historias
 
@@ -21,31 +23,51 @@ Cada historia tiene su turno, y ninguna empieza antes de que sus dependencias es
 Las dependencias salen de la línea **Dependencias:** de cada tarjeta, en
 `docs/context/trello/tarjetas/`.
 
-**Las 12 del semestre**, del plan B (`docs/context/plan-desarrollo-12-historias.md`, secciones 3 y
-4). La columna Paso es el turno: cada integrante hace sus historias en orden de paso.
+**Las 12 del semestre**, las del plan B, repartidas entre 3 integrantes. La columna Paso es el
+turno: cada integrante hace sus historias en orden de paso.
 
 | Paso | Historia | Integrante | Depende de | Escenarios | Fase |
 |---|---|---|---|---|---|
-| 1 | HU-022 Catálogo de ocupaciones | 1 | ninguna | 28 | 1 |
-| 1 | HU-018 Catálogo de países | 2 | ninguna | 22 | 1 |
-| 1 | HU-034 Catálogo de tipos de documento | 3 | ninguna | 23 | 1 |
-| 1 | HU-001 Inicio de sesión con permisos por cargo | 4 | ninguna | 14 | 1 |
-| 2 | HU-036 Catálogo de etnias | 1 | ninguna | 23 | 1 |
-| 2 | HU-026 Catálogo de municipios | 2 | ninguna | 25 | 1 |
-| 2 | HU-035 Catálogo de categorías de discapacidad | 3 | ninguna | 23 | 1 |
+| 1 | HU-001 Inicio de sesión con permisos por cargo | 1 | ninguna | 14 | 1 |
+| 1 | HU-034 Catálogo de tipos de documento | 2 | ninguna | 23 | 1 |
+| 1 | HU-036 Catálogo de etnias | 3 | ninguna | 23 | 1 |
+| 2 | HU-022 Catálogo de ocupaciones | 1 | ninguna | 28 | 1 |
+| 2 | HU-018 Catálogo de países | 2 | ninguna | 22 | 1 |
+| 2 | HU-037 Catálogo de comunidades étnicas | 3 | ninguna | 22 | 1 |
+| 3 | HU-026 Catálogo de municipios | 1 | ninguna | 25 | 1 |
 | 3 | HU-038 Catálogo de entidades que responden por el plan de beneficios | 2 | ninguna | 22 | 1 |
-| 3 | HU-037 Catálogo de comunidades étnicas | 3 | ninguna | 22 | 1 |
-| 4 | HU-004 Registro de un paciente | 1 | los 8 catálogos | 15 | 2 |
-| 5 | HU-005 Consulta de un paciente | 4 | HU-001 y HU-004 | 13 | 3 |
-| 6 | HU-006 Actualización y corrección de los datos de un paciente | 4 | HU-001 y HU-004 | 13 | 3 |
+| 3 | HU-035 Catálogo de categorías de discapacidad | 3 | ninguna | 23 | 1 |
+| 4 | HU-004 Registro de un paciente | 2 | los 8 catálogos | 15 | 2 |
+| 5 | HU-005 Consulta de un paciente | 1 | HU-001 y HU-004 | 13 | 3 |
+| 5 | HU-006 Actualización y corrección de los datos de un paciente | 3 | HU-001 y HU-004 | 13 | 3 |
 
-Los catálogos de cada integrante van en el orden de la tabla del plan, y cambiarlo no rompe nada,
-porque ningún catálogo depende de otro. HU-005 va antes que HU-006 por el mismo orden que se le dio
-a la oposición el 2026-10-21: registrar, consultar y después cambiar.
+La carga de cada uno:
 
-Entre su paso 2 y HU-004, el integrante 1 espera a que estén los 8 catálogos; entre HU-001 y
-HU-005, el integrante 4 espera a HU-004. Cuánto dura esa espera depende de qué quiere decir
-"desarrollada", la pregunta 1 del plan al docente.
+| Integrante | Historias | Escenarios | Dependencias directas |
+|---|---|---|---|
+| 1 | HU-001, HU-022, HU-026 y HU-005 | 80 | 2, las de HU-005 |
+| 2 | HU-034, HU-018, HU-038 y HU-004 | 82 | 8, las de HU-004 |
+| 3 | HU-036, HU-037, HU-035 y HU-006 | 81 | 2, las de HU-006 |
+
+El reparto es una propuesta del modelo del 2026-10-24, pedida por el autor, con estos criterios:
+
+- Las 9 historias que no dependen de nada caben en los pasos 1 a 3, tres por integrante. En esos
+  tres pasos cada uno carga 67 o 68 escenarios.
+- HU-001 va primero porque HU-005 y HU-006 dependen de ella.
+- HU-005 y HU-006 quedan en integrantes distintos para hacerse a la vez en el paso 5. Con la misma
+  persona harían falta 6 pasos.
+- HU-004 es la de más dependencias directas, 8, y la complejidad que pide el docente sube con
+  ellas. Por eso su integrante no lleva los dos catálogos con jerarquía, ocupaciones y municipios,
+  que son los de más escenarios (28 y 25).
+- Etnias y comunidades étnicas van con la misma persona, porque HU-004 pide la comunidad solo si la
+  etnia es de la 01 a la 06.
+- El orden de los catálogos dentro de cada integrante se puede cambiar sin romper nada, porque
+  ningún catálogo depende de otro.
+
+En el paso 4 solo trabaja el integrante 2, con HU-004, y en el paso 5 solo los integrantes 1 y 3.
+Quien espera puede revisar los PR de los demás, porque la memoria ya pide que quien aprueba no sea
+quien analizó (`docs/context/MEMORIA-CONTEXTUAL.md`, sección 12). Cuánto dura cada espera depende
+de qué quiere decir "desarrollada", la pregunta 1 del plan al docente.
 
 **Las 18 que no entran en el semestre**, sin fecha ni integrante. El orden es una propuesta del
 modelo del 2026-10-24, que pone primero lo que solo depende de historias ya desarrolladas. Los
@@ -93,7 +115,7 @@ bloquea y qué la bloquea, y su estado.
 
 ## Fase 0: Siembra del repositorio
 
-**Estado:** `en curso`
+**Estado:** `cerrada (2026-10-24)`
 
 **Objetivo:** que el repo tenga la plantilla llena y todo el contexto del backlog.
 
@@ -115,12 +137,11 @@ está mergeado.
 **Objetivo:** los 8 catálogos del paciente y el inicio de sesión, desarrollados en paralelo.
 
 **Alcance:**
-- Integrante 1: HU-022 ocupaciones (28 escenarios) y HU-036 etnias (23).
-- Integrante 2: HU-018 países (22), HU-026 municipios (25) y HU-038 entidades del plan de
+- Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
+  ocupaciones (28) y HU-026 municipios (25).
+- Integrante 2: HU-034 tipos de documento (23), HU-018 países (22) y HU-038 entidades del plan de
   beneficios (22).
-- Integrante 3: HU-034 tipos de documento (23), HU-035 discapacidad (23) y HU-037 comunidades
-  étnicas (22).
-- Integrante 4: HU-001 inicio de sesión con permisos por cargo (14).
+- Integrante 3: HU-036 etnias (23), HU-037 comunidades étnicas (22) y HU-035 discapacidad (23).
 
 **Criterio de aceptación:** cada escenario de las 9 historias tiene una corrida que lo muestra.
 
@@ -136,7 +157,7 @@ sección 6).
 **Objetivo:** registrar un paciente con sus 16 atributos.
 
 **Alcance:**
-- Integrante 1: HU-004 registro de un paciente (15 escenarios, 8 dependencias directas).
+- Integrante 2: HU-004 registro de un paciente (15 escenarios, 8 dependencias directas).
 
 **Criterio de aceptación:** cada escenario de HU-004 tiene una corrida que lo muestra.
 
@@ -151,7 +172,8 @@ sección 6).
 **Objetivo:** que la IPS consulte, actualice y corrija al paciente, con quien hizo cada cambio.
 
 **Alcance:**
-- Integrante 4: HU-005 consulta de un paciente (13) y HU-006 actualización y corrección (13).
+- Integrante 1: HU-005 consulta de un paciente (13).
+- Integrante 3: HU-006 actualización y corrección (13), a la vez que HU-005.
 
 **Criterio de aceptación:** cada escenario de HU-005 y HU-006 tiene una corrida que lo muestra.
 
@@ -184,3 +206,7 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   HU-042 y HU-031), la atención (HU-007, HU-009, HU-008 y HU-043) y la voluntad anticipada (HU-014
   a HU-017).
   **Entró:** 2026-10-22, PR de siembra.
+- Llevar el trabajo del fork al repositorio original de Atervolgo cuando su dueño habilite a Claude
+  Code y a los colaboradores: un PR del `main` del fork al `main` de Atervolgo (`docs/DECISIONS.md`,
+  2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo habilite").
+  **Entró:** 2026-10-24, PR #3 del fork.
