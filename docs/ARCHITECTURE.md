@@ -11,7 +11,7 @@ lista en la sección 5.
 
 ## 1. El repo, archivo por archivo
 
-Comprobado el 2026-10-22 contra `git ls-files`.
+Comprobado el 2026-10-24 contra `git ls-files`.
 
 | Archivo o carpeta | Qué es |
 |---|---|
@@ -26,7 +26,7 @@ Comprobado el 2026-10-22 contra `git ls-files`.
 | `src/test/java/com/example/demo/DemoApplicationTests.java` | Test `contextLoads`, vacío |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
-| `docs/context/` | Material del backlog v3, importado el 2026-10-22; lo explica su `README.md` |
+| `docs/context/` | Las tarjetas y las láminas de las 30 historias, el modelo E-R y la memoria contextual; lo explica su `README.md` |
 
 Dependencias que declara `pom.xml`: Spring Web MVC, Thymeleaf con su extra de Spring Security,
 Spring Security, Spring Data JPA, Validation, DevTools, la consola de H2, Lombok y los controladores
@@ -35,13 +35,13 @@ de H2, SQL Server, MySQL y MariaDB, más sus pares de test. Para listarlas:
 
 ## 2. Dónde vive cada cosa
 
-Comprobado el 2026-10-22.
+Comprobado el 2026-10-24.
 
 | Qué | Variable o símbolo | Ruta |
 |---|---|---|
 | Configuración | `spring.application.name` | `src/main/resources/application.properties` |
 | Punto de entrada | `DemoApplication.main` | `src/main/java/com/example/demo/` |
-| Historias de usuario | Tandas del backlog v3 | `docs/context/backlog-v3-tanda-*.md` |
+| Historias de usuario | Una tarjeta por historia, más la de reglas comunes | `docs/context/trello/tarjetas/` |
 | Modelo de datos propuesto | 24 tablas en Mermaid | `docs/context/modelo-datos/modelo-entidad-relacion.md` |
 
 No hay propiedad de base de datos. Qué base usa la aplicación al arrancar no se verificó.

@@ -255,19 +255,24 @@ print(f"regla 8: {pl} planas de {t} ternas = {100*pl/max(t,1):.1f}%")
 EOF
 ```
 
-**Líneas base, medidas el 2026-10-22** en el PR que siembra los documentos, sobre 187.428 palabras.
-Todo lo que suma está en `docs/context/`, el material importado; los documentos canónicos, los
-README y `HELP.md` dan cero en las reglas 1, 2, 4, 6 y 7.
+**Líneas base, medidas el 2026-10-24** sobre 82.763 palabras, después de que 19 archivos salieran de
+`docs/context/` (`docs/DECISIONS.md`, 2026-10-24 "docs/context guarda solo lo que usan las
+historias"). Todo lo que suma está en `docs/context/`; los documentos canónicos, los README y
+`HELP.md` dan cero en las reglas 1, 2, 4, 6 y 7.
 
 | Regla | Línea base |
 |---|---|
-| 1, intensificadores | 9 líneas: 8 en `MEMORIA-CONTEXTUAL.md`, citas del autor que no van en viñeta propia, y 1 en `revisiones/verificacion-aplicacion-final.md` |
-| 2, paralelismo contrastivo | 28 casos en 13 archivos: `MEMORIA-CONTEXTUAL.md` 3, `PLAN-BACKLOG-V3.md` 1, tanda 3 2, `modelo-entidad-relacion.md` 1, `aplicacion-revisiones-tandas-4-y-5.md` 2, `revision-final-cruzada.md` 4, `revision-tanda-4.md` 5, `revision-tanda-5.md` 2, `verificacion-aplicacion-final.md` 4, y 1 en cada tarjeta HU-014, HU-022, HU-030 y RC |
+| 1, intensificadores | 8 líneas, todas en `MEMORIA-CONTEXTUAL.md`: citas del autor que no van en viñeta propia |
+| 2, paralelismo contrastivo | 8 casos en 6 archivos: `MEMORIA-CONTEXTUAL.md` 3, `modelo-entidad-relacion.md` 1, y 1 en cada tarjeta HU-014, HU-022, HU-030 y RC |
 | 3, viñetas del CHANGELOG de más de 60 palabras | 0 |
-| 4, encabezados con paréntesis | 26: `MEMORIA-CONTEXTUAL.md` 9, `aplicacion-revisiones-tandas-4-y-5.md` 4, `revision-tanda-5.md` 4, `revision-tanda-3.md` 2, y 1 en `PLAN-BACKLOG-V3.md`, tanda 0, `modelo-entidad-relacion.md`, `preguntas-docente.md`, `revision-final-cruzada.md`, `revision-tanda-2.md` y `revision-tanda-4.md` |
+| 4, encabezados con paréntesis | 10: `MEMORIA-CONTEXTUAL.md` 9 y `modelo-entidad-relacion.md` 1 |
 | 6, anclas a número de línea | 0 |
-| 7, párrafos de más de cinco oraciones | 70 |
-| 8, ternas planas | 120 de 856 = 14,0 % |
+| 7, párrafos de más de cinco oraciones | 52: `MEMORIA-CONTEXTUAL.md` 32, y 1 en cada una de 20 tarjetas |
+| 8, ternas planas | 99 de 684 = 14,5 % |
+
+La regla 8 pasa de 14,0 % a 14,5 % porque el corpus se achicó. Los 19 archivos que salieron tenían
+21 planas de 225 ternas, un 9,3 %, y bajaban el promedio. En los archivos que quedan, el commit
+fa95eaf daba 99 planas de 674 ternas, y el 2026-10-24 quedan 99 de 684.
 
 El conteo de la regla 2 depende de su expresión regular. Si se ajusta, se recalculan todos los
 archivos de una vez y se reescribe la línea base con su fecha nueva.

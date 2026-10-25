@@ -11,7 +11,8 @@ El docente no acepta que se desarrolle una historia que dependa directamente de 
 desarrollada, aunque le dé valor al cliente, ni un dato provisional para crear su catálogo en otro
 sprint. Por eso las fases siguen las dependencias de las 12 historias del plan B y no su prioridad:
 primero lo que no depende de nada, después lo que depende de eso. La complejidad se estima de 1 a 10
-y sube con las dependencias directas (`docs/context/plan-desarrollo-12-historias.md`, sección 1).
+y sube con las dependencias directas (`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-21
+"Límite de 12 historias; dependencias y el paciente").
 
 Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
 2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
@@ -67,7 +68,8 @@ El reparto es una propuesta del modelo del 2026-10-24, pedida por el autor, con 
 En el paso 4 solo trabaja el integrante 2, con HU-004, y en el paso 5 solo los integrantes 1 y 3.
 Quien espera puede revisar los PR de los demás, porque la memoria ya pide que quien aprueba no sea
 quien analizó (`docs/context/MEMORIA-CONTEXTUAL.md`, sección 12). Cuánto dura cada espera depende
-de qué quiere decir "desarrollada", la pregunta 1 del plan al docente.
+de qué quiere decir "desarrollada" para el docente: terminada antes de empezar la siguiente, o antes
+de entregarla.
 
 **Las 18 que no entran en el semestre**, sin fecha ni integrante. El orden es una propuesta del
 modelo del 2026-10-24, que pone primero lo que solo depende de historias ya desarrolladas. Los
@@ -98,9 +100,12 @@ de una persona van en paralelo.
 HU-008 va después de HU-009 porque su escenario 7 mira las correcciones que hace HU-009. La
 voluntad anticipada va al final porque sus cuatro historias se miran entre sí: HU-014 depende de
 HU-015 por su escenario 12, y HU-015 de HU-016 y HU-017 por sus escenarios 4 a 7. Mientras eso siga,
-no hay un orden que respete la regla del docente. Se arregla como se arregló la oposición el
-2026-10-21 (`docs/context/plan-desarrollo-12-historias.md`, sección 6), y su código de prestador
-puede pedir un catálogo que no está en el backlog (D-05).
+no hay un orden que respete la regla del docente.
+
+Se arregla como se arregló la oposición el 2026-10-21, en orden registrar, consultar, actualizar y
+anular, y cada historia mirando solo a las anteriores (`docs/context/MEMORIA-CONTEXTUAL.md`,
+entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente"). Su código de
+prestador puede pedir un catálogo que no está en el backlog (D-05).
 
 ## Reglas de fase
 
@@ -185,12 +190,9 @@ sección 6).
 
 Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su línea de entrada.
 
-- Llevar al docente las 14 preguntas de `docs/context/preguntas-docente.md` y las 4 del plan de
-  desarrollo, entre ellas qué quiere decir "desarrollada".
-  **Entró:** 2026-10-22, PR de siembra.
 - Pasar a Trello los textos corregidos de las 12 tarjetas, los 13 títulos de catálogo y las 14
-  láminas nuevas, con la sección "Si el tablero ya tiene las tarjetas" de
-  `docs/context/trello/LEEME-kit-trello.md`.
+  láminas nuevas. Las instrucciones del kit de Trello no están en el repositorio: las tiene el
+  autor.
   **Entró:** 2026-10-22, PR de siembra.
 - Aplicar a HU-030 y HU-039 a HU-042 lo que les falta de las correcciones de los 8 catálogos: sacar
   las remisiones a la atención y, en HU-030, validar la creación a mano con su categoría activa. La
