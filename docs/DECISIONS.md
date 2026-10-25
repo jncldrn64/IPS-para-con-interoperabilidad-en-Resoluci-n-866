@@ -455,3 +455,39 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
 trabajo que tener la base ya cargada.
 
 **Estado:** `vigente`
+
+## 2026-10-24: La complejidad se estima de 1 a 10
+
+**Contexto:** El 2026-10-21 el docente dijo que la complejidad va de 1 a 10 y sube con las
+dependencias directas, independientemente de la prioridad (`docs/context/MEMORIA-CONTEXTUAL.md`,
+entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente"). D-12 seguía con la
+serie 1, 2, 3, 5, 8, 13. La guía pide historias "priorizadas y estimadas correctamente en clase", o
+un video con todos [2.5]. El autor, el 2026-10-24:
+
+- "aun faltan detalles como la estimacion, si bien tenemos la prioridad, por que la prioridad
+  entiedo que es aqueyo que le da segun el principio must valor a la entrega al cliente, la
+  estimacion de complejidad de 1 a 10 donde 10 es muy dificil realmente es lo que podemos definir"
+
+**Decisión:** La complejidad va de 1 a 10, donde 10 es la más difícil. El modelo propuso un
+criterio, trabajo propio de 1 a 3 más las dependencias directas con tope 10, y una tabla con las
+12 historias. El autor la aceptó como propuesta para votar en clase, y está en `docs/ROADMAP.md`,
+sección "Estimación de las 12 historias". El número que vale es el que vote el equipo, y hasta
+entonces las tarjetas dicen "Pendiente de estimación en clase". D-12 pasa a esta escala.
+
+**Alternativas:** Escribir solo el criterio, sin números, descartado por el autor. Mantener la
+serie 1, 2, 3, 5, 8, 13 de D-12, descartado porque el docente pidió de 1 a 10.
+
+**Estado:** `vigente`
+
+## 2026-10-24: El integrante 3 arma la base común
+
+**Contexto:** La entrada 2026-10-24 "Los catálogos comparten una base común" dejó sin decidir quién
+la arma. Con la propuesta de estimación, el integrante 3 suma 9, el 1 suma 13 y el 2 suma 15
+(`docs/ROADMAP.md`, sección "Estimación de las 12 historias").
+
+**Decisión:** El integrante 3 arma la base común antes del paso 1. Sus tres catálogos, HU-036,
+HU-037 y HU-035, son los primeros que la usan.
+
+**Alternativas:** Dejarlo para después, descartado por el autor.
+
+**Estado:** `vigente`

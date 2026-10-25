@@ -107,7 +107,7 @@ equipo al 2026-10-24, con el valor propuesto tal como está allí, salvo estos c
 
 - Las remisiones a archivos que ya no están en el repositorio, como las tandas o las preguntas al
   docente, apuntan a las tarjetas o salen.
-- D-10 trae la respuesta del docente.
+- D-10 trae la respuesta del docente, y D-12 la escala de 1 a 10 que dio el docente el 2026-10-21.
 - D-16 pierde la frase sobre un plan para los elementos 1 a 49, que salió con su archivo.
 - D-02 dice con otras palabras, y el mismo sentido, que el docente pidió un cargo real.
 
@@ -126,7 +126,7 @@ Lo que el docente respondió y todavía no está escrito acá sigue `pendiente`.
 | D-09 | Versión del CIE-10 que se usa en las pruebas | La tabla CIE10 de SISPRO, en la versión vigente el día de la carga (HU-030). La carga guarda la dirección y la fecha de descarga (RC-8). El anexo de la Resolución 1888 de 2025 remite a esa tabla y dice que la transición al CIE-11 se amplió; la Resolución 2625 de 2025 cita la 1895 de 2001 como la que adoptó la CIE-10 (por confirmar). | `pendiente` |
 | D-10 | Incremento del sprint 1 en consola o en web, confirmado por el docente | El docente acepta terminal. El primer sprint tiene al menos el esqueleto en terminal; las demás decisiones de arquitectura vienen después. | `respondida por el docente` (`docs/DECISIONS.md`, 2026-10-24 "El primer sprint arranca en terminal") |
 | D-11 | Qué acepta el docente como mockup | Una imagen PNG por historia, pegada en la tarjeta, con la pantalla y sus estados principales, ligada a los escenarios. Se dibujan como maquetas HTML y se exportan a imagen. Si el docente pide otra herramienta, se rehacen. | `pendiente` |
-| D-12 | Escala de estimación | Puntos de historia con la serie 1, 2, 3, 5, 8, 13, estimados en clase con planning poker; si no se hace en clase, con video de todo el equipo [2.5]. La estimación no la hace el modelo. | `pendiente` |
+| D-12 | Escala de estimación | Complejidad de 1 a 10, donde 10 es la más difícil. Sube con las dependencias directas, independientemente de la prioridad. Se estima en clase con todo el equipo; si no se hace en clase, con video de todos [2.5]. La propuesta del modelo para las 12 está en `docs/ROADMAP.md`, sección "Estimación de las 12 historias"; vale el número que vote el equipo. | `respondida por el docente` (`docs/DECISIONS.md`, 2026-10-24 "La complejidad se estima de 1 a 10") |
 | D-13 | Cuándo se exige el triage en una atención | Se pide cuando el grupo de servicios es 05 Atención inmediata: el anexo define el triage para un servicio de urgencias (hojas 17 y 18). Salvedad: ese grupo también incluye servicios que no son de urgencias, como la atención del parto, según el manual de habilitación del Ministerio (por confirmar). Pregunta al docente. | `pendiente` |
 | D-14 | Catálogo de enfermedades huérfanas: fuente y versión | El listado de enfermedades huérfanas de la Resolución 2625 de 2025 del Ministerio de Salud, versión 5.0, que derogó la 023 de 2023. El código es el número que el listado da a cada enfermedad, que no se reasigna (artículo 3); que ese número sea el código de 1 a 4 caracteres del numeral 23 es inferencia del equipo. | `pendiente` |
 | D-15 | Datos obligatorios de la atención | Columna "¿Obligatorio?" de la lista de datos de HU-007, en su tarjeta. | `pendiente` |

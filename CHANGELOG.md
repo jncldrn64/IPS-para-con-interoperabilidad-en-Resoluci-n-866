@@ -7,6 +7,23 @@
 
 ## v0.1 — 2026-10-24
 
+Solo documentación. La complejidad se estima de 1 a 10, con una propuesta para votar en clase, y el
+integrante 3 arma la base común de los catálogos.
+
+### Added
+- `docs/ROADMAP.md`, sección "Estimación de las 12 historias": el criterio, trabajo propio más
+  dependencias directas con tope 10, y la propuesta del modelo para cada historia.
+- `docs/GLOSSARY.md`: "estimación" y "prioridad".
+
+### Changed
+- D-12, en `docs/REQUIREMENTS.md`, sección 6, pasa a la escala de 1 a 10 que dio el docente.
+- La fase 0 del ROADMAP dice que el integrante 3 arma la base común, y el ítem del Backlog sobre la
+  estimación pide votarla en clase.
+- La memoria contextual anota la pregunta del autor sobre la prioridad y el paciente, y la
+  respuesta.
+
+## v0.1 — 2026-10-24
+
 Solo documentación. El archivo de la base va en git con los catálogos ya cargados.
 
 ### Added
