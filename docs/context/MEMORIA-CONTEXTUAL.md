@@ -1514,6 +1514,45 @@ y "base de prueba" en el glosario.
 
 **Estado:** `vigente`
 
+## 2026-10-25: El orden de la fase 0, el autor como integrante 3 y HU-036 de ejemplo
+
+**Contexto:** el autor fusionó el PR #9 del fork y preguntó, textual:
+
+- "entoces cual es el orden? quiero enviar por el chat los posible, yo me encargare del 3ro, por
+  que tiene pinta que puede rompper la compatibilida, bueno no realmente yo deberia encargarme de
+  hacer la base de jemplo de un catalogo, como minimo"
+
+**Hipótesis:** "el 3ro" es la tercera pregunta abierta, si los CSV convertidos van en git; "los
+posible" son las preguntas que se pueden contestar por el chat. La base es el orden de la lista que
+el modelo le había dado al cerrar el PR #9.
+
+Lo que respondió el modelo:
+
+- El orden: que el build corra, el esqueleto en terminal, la base común con un catálogo de
+  ejemplo, los otros 7 por turnos, HU-004 y por último HU-005 y HU-006. HU-001 puede avanzar desde
+  el esqueleto.
+- El ejemplo recomendado es HU-036: 7 valores de la hoja 15, el primer catálogo del integrante 3.
+  **Hipótesis:** el texto de una resolución se puede reproducir en Colombia (Ley 23 de 1982); no se
+  verificó.
+- La conversión es donde se rompe la compatibilidad, por los ceros y las tildes, y RC-8 ya lo
+  cubre.
+
+El modelo hizo tres preguntas, y el autor eligió:
+
+- Catálogo de ejemplo: "HU-036 etnias".
+- Quién arma la base común y el ejemplo: "Yo soy el integrante 3". Esto cambia lo que dice la
+  sección 1 de esta memoria: el equipo es de 3, y el autor es el integrante 3.
+- De las propuestas para las preguntas abiertas aceptó dos: el turno es de quien tenga el PR
+  abierto, y la base de prueba arranca como copia del archivo. No eligió la de la licencia, que
+  sigue abierta.
+
+Hecho en el PR que sigue a de34627: cuatro entradas del 2026-10-25 en `docs/DECISIONS.md` ("El
+autor es el integrante 3", "HU-036 es el catálogo de ejemplo", "El turno del archivo de la base es
+del PR abierto" y "La base de prueba arranca como copia del archivo"); el orden antes del paso 1 en
+`docs/ROADMAP.md`; `docs/DESIGN.md`, sección 8; "catálogo de ejemplo" y "turno" en el glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1643,7 +1682,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000. **Próximo (2026-10-25, carga y turnos):** que el autor revise y fusione el PR de
+000000000000000. **Próximo (2026-10-25, orden de la fase 0):** que el autor revise y fusione el
+   PR del orden, el integrante 3 y HU-036. Después, en orden: que el build corra; el esqueleto en
+   terminal; la base común con HU-036, donde el autor decide si los CSV van en git. Siguen
+   abiertos quién revisa la licencia de los datos oficiales y cómo se cambia el nombre de la base
+   para probar sin subirlo a git.
+00000000000000. **Anterior (2026-10-25, carga y turnos):** que el autor revise y fusione el PR de
    la carga desde CSV, los turnos del archivo de la base y la base de prueba. Sin respuesta: cómo
    se sabe quién tiene el turno, cómo arranca la base de prueba, si los CSV van en git y quién
    revisa la licencia de los datos oficiales. Después: votar la estimación en clase.

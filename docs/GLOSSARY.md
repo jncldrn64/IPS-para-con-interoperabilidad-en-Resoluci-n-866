@@ -127,12 +127,17 @@ producto.
   0, RC-1 a RC-11 y la búsqueda de D-23. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los
   catálogos comparten una base común"; 2026-10-24 "El integrante 3 arma la base común").
 - **base de prueba**: la base con otro nombre donde se prueba, para que un dato de prueba no llegue
-  al archivo de la base que va en git (2026-10-25 "Las pruebas corren sobre otra base").
+  al archivo de la base que va en git. Arranca como copia de ese archivo (2026-10-25 "Las pruebas
+  corren sobre otra base"; 2026-10-25 "La base de prueba arranca como copia del archivo").
+- **catálogo de ejemplo**: HU-036, etnias, con el primer CSV y la primera carga en el archivo de la
+  base, que copian los otros 7 catálogos (2026-10-25 "HU-036 es el catálogo de ejemplo").
 - **controlador**: en la fase 0, el menú en terminal que lee la opción y llama al servicio. No hay
   controladores web (2026-10-24 "El código se separa en modelo, vista y controlador").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su
   entidad, y no lee del teclado ni imprime (`docs/DESIGN.md`, sección 6).
+- **turno**: el permiso de cambiar el archivo de la base. Lo tiene quien tenga abierto el PR que lo
+  cambia (2026-10-25 "El turno del archivo de la base es del PR abierto").
 - **vista**: en la fase 0, lo que el programa imprime en la terminal, según la lámina de la
   historia (2026-10-24 "El código se separa en modelo, vista y controlador").

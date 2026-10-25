@@ -5,6 +5,24 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.4 — 2026-10-25
+
+Solo documentación. La fase 0 tiene su orden antes del paso 1, el autor es el integrante 3 y HU-036
+es el catálogo de ejemplo. No hay código del producto que muestre una versión.
+
+### Added
+- `docs/DECISIONS.md`: cuatro entradas del 2026-10-25, de "El autor es el integrante 3" a "La base
+  de prueba arranca como copia del archivo".
+- `docs/GLOSSARY.md`: "catálogo de ejemplo" y "turno".
+
+### Changed
+- `docs/ROADMAP.md`: antes del paso 1 van, en orden, el build, el esqueleto en terminal y la base
+  común; HU-036 abre el paso 1 como ejemplo, y el autor es el integrante 3.
+- `docs/DESIGN.md`, sección 8: quién tiene el turno y cómo arranca la base de prueba. Su lista "Sin
+  escribir todavía" pierde esos dos ítems y suma cómo probar sin subir el nombre de la base.
+- `docs/GLOSSARY.md`: "base de prueba" dice cómo arranca.
+- La memoria contextual anota el orden y las tres respuestas del autor.
+
 ## v0.3 — 2026-10-25
 
 Solo documentación. Un catálogo se carga desde un CSV con la ruta en la terminal, el archivo de la

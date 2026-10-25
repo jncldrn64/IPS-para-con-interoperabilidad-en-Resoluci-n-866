@@ -16,7 +16,8 @@ entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente").
 
 Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
 2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
-3; qué persona es cada número lo decide el equipo.
+3. El autor es el integrante 3, y quién es el 1 y quién el 2 lo decide el equipo
+(`docs/DECISIONS.md`, 2026-10-25 "El autor es el integrante 3").
 
 ## Orden de las 30 historias
 
@@ -181,8 +182,11 @@ está mergeado.
 al paciente.
 
 **Alcance:**
-- Antes del paso 1: la base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el
-  integrante 3. HU-001 no es un catálogo, así que no la espera.
+- Antes del paso 1, en este orden, que el modelo propuso el 2026-10-25:
+  1. Que el build corra (`docs/ARCHITECTURE.md`, sección 6).
+  2. El esqueleto en terminal: el paquete, `application.properties` con H2 en archivo y el menú
+     principal. HU-001 no es un catálogo, así que puede empezar desde aquí.
+  3. La base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el integrante 3.
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
     ocupaciones (28) y HU-026 municipios (25).
@@ -191,6 +195,8 @@ al paciente.
   - Integrante 3: HU-036 etnias (23), HU-037 comunidades étnicas (22) y HU-035 discapacidad (23).
   - Cada catálogo entra al archivo de la base con la carga de su historia, desde su CSV, y el
     archivo se cambia por turnos (`docs/DESIGN.md`, sección 8).
+  - HU-036 va primero: es el catálogo de ejemplo, con el primer CSV y la primera carga en el
+    archivo de la base (`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo").
 - Tramo 2, paso 4, el registro del paciente con sus 16 atributos: el integrante 2 con HU-004 (15
   escenarios, 8 dependencias directas).
 - Tramo 3, paso 5, consultar y corregir al paciente, con quien hizo cada cambio: el integrante 1
