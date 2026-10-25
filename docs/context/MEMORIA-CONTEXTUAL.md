@@ -1335,6 +1335,74 @@ enunciados, esta memoria y el orden de las 30 historias. Después escribió, tex
   que se entrega.
 **Estado:** `vigente`
 
+## 2026-10-24: Fase 0, H2 en archivo, MVC y la base común de catálogos
+
+**Contexto:** el autor fusionó el PR #4 del fork (84c6a28, `docs/context/` reducido) y escribió,
+textual:
+
+- "la fase 0 se define como completa cuando las 12 historias de hu tenga sus respectivos
+  desarrollos, como bien sabras manejaremos H2, pero no en memoria, en archivo, asi que
+  comenzarimaso primero nostros poblando estos detalles, por si los modelos no encuentran las
+  intruciicones, al menos se preguntes de por que estos cambios y llegen a los documentos.... por
+  que en H2? para que tengamos todo la misma copia...."
+- "quiero que usemos modelo vista controlador,, entiedo que eso no tiene sentido mas cuando
+  presinament no usaremos vistas para la fase 0, pero realmente el desarrollo de estas Hu deberia
+  ser simples,, la mayoria son un crud, por lo que necistamos una interface repositorf que se
+  extieda con crud, luego un cristo de reglas de negocio como interfaces, cada una con su logica,
+  aun que entiendo que seria mejor definir reglas de negocio de la HU en si a separarala, por que
+  relamente no se si se puede hacer implements de varias interfaces, y ahi si, que cada uno
+  instancie la interface repository de su entidad en su servicio y que haga implemtens en las
+  reglas de negocio.... controlles no necesitamos, por que relamente con los metodos resultantes
+  podriamos llamarlos desde un menu en terminal con swich,,, se critico con todo lo que he dicho y
+  si quieres corrigeme,"
+- "por que entiedo que como realmenet no tenemos entidades que tengan relacion,   todo deberia ser
+  atributos de cliente? bueno realmnte no, cada cadatolo en si en una entida, pero no por que tenga
+  que ser una entidad, es por que para poder complejar los 16 campos de  paciente es necesario
+  eso, pero igual es raro, por que entonces historia clinica deberia ser un requerimento."
+
+Lo que respondió el modelo, con el detalle en las cuatro entradas del 2026-10-24 de
+`docs/DECISIONS.md`:
+
+- Fase 0: de acuerdo. La siembra, que era la fase 0 del ROADMAP, queda como etapa previa cerrada;
+  las fases 1 a 3 pasan a ser tramos de la fase 0.
+- H2: en memoria la base se borra al cerrar el programa, y en archivo los datos quedan. El archivo
+  es binario y git no mezcla dos cambios suyos, así que el modelo recomendó dejarlo fuera y
+  compartir lo que lo crea. Si "la misma copia" quería decir no instalar un servidor, H2 ya lo da.
+- MVC: en terminal hay vista, lo que se imprime, y controlador, el menú con su switch. Un servicio
+  no lee del teclado ni imprime, para que la web de la guía cambie el menú y deje los servicios.
+  Un switch único para las 12 historias es un archivo que tocan los 3 a la vez.
+- Repositorio: Spring Data JPA, que está en `pom.xml`, genera la implementación de la interfaz;
+  una interfaz no tiene código y no se instancia. La interfaz de CRUD de Spring trae borrar, y
+  `docs/REQUIREMENTS.md`, sección 2, dice que nada se borra.
+- Reglas como interfaces: Java deja implementar varias. Una por regla, con un solo servicio que la
+  implementa, es un método con un archivo más; la repetición está en los 8 catálogos.
+- Relaciones: el paciente tiene 7 relaciones de muchos a uno con catálogos, 2 de muchos a muchos y
+  1 con el usuario que lo registra. La fase 0 usa 16 de las 24 tablas del modelo E-R. Un catálogo
+  es entidad por la regla [2.3], más de 5 opciones: sexo, identidad de género y zona están entre
+  los 16 campos y son columnas. Los 16 campos dicen por qué esos catálogos entran en la fase 0. La
+  entidad es el paciente; el cliente es la IPS.
+- Historia clínica: no es entidad (sección 1b). Es requisito del producto y queda fuera de la fase
+  0, porque la atención depende del paciente y de 6 historias más (HU-030, HU-031 y HU-039 a
+  HU-042).
+
+El modelo hizo tres preguntas, y el autor eligió:
+
+- Cómo tener la misma copia de la base: "Subir el archivo a git". El modelo había recomendado la
+  otra opción, compartir lo que crea la base con el archivo fuera de git.
+- Dónde van las reglas de negocio: "Base común de catálogos", la recomendada.
+- Cuándo se arma la base común: "Antes del paso 1", la recomendada.
+
+Hecho en el PR que sigue a 84c6a28:
+
+- Cuatro entradas en `docs/DECISIONS.md`, todas del 2026-10-24: "La fase 0 son las 12 historias",
+  "La base es H2 en un archivo que va en git", "El código se separa en modelo, vista y
+  controlador" y "Los catálogos comparten una base común".
+- `docs/DESIGN.md`, secciones 6 a 9, y `docs/ROADMAP.md` con la fase 0 en tres tramos.
+- `docs/GLOSSARY.md` con "fase 0", "modelo" y el grupo Código.
+- El encabezado de `docs/DECISIONS.md` ya no remite al tablero.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1425,6 +1493,20 @@ enunciados, esta memoria y el orden de las 30 historias. Después escribió, tex
   memoria ya registraba, en la entrada del 2026-10-21, que el docente cambió esa regla de palabra.
   Leyó la guía como si mandara sobre lo que el docente respondió después.
 
+- **Al autor (2026-10-24):** el MVC no pierde sentido sin web. Lo que se imprime es la vista y el
+  menú es el controlador.
+- **Al autor (2026-10-24):** un servicio no instancia la interfaz de su repositorio. Spring crea la
+  implementación al arrancar y se la pasa.
+- **Al autor (2026-10-24):** sí hay relaciones, y el motivo de que un catálogo sea entidad es la
+  regla [2.3]. Los 16 campos explican otra cosa: qué catálogos entran en la fase 0.
+- **Al autor (2026-10-24):** la historia clínica no es entidad ni entra en la fase 0. Es la misma
+  corrección del 2026-10-18, con el numeral 19.
+- **Del modelo a sí mismo (2026-10-24, Claude Code):** en la pregunta sobre las reglas puso "solo
+  ocupaciones hijas" como regla propia de HU-022. Es de HU-004, que registra la ocupación del
+  paciente [2.1]; la propia de HU-022 es el padre leído del código (D-26).
+- **Del modelo a sí mismo (2026-10-24, Claude Code):** el PR #4 sacó el tablero y dejó el
+  encabezado de `docs/DECISIONS.md` remitiendo a él.
+
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
 Prompt v2.1, en orden de gravedad:
@@ -1450,7 +1532,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000. **Próximo (2026-10-24, con docs/context reducido):** que el autor revise y fusione el
+00000000000. **Próximo (2026-10-24, arquitectura de la fase 0):** que el autor revise y fusione el
+   PR con la fase 0, H2 en archivo, el MVC y la base común. Después, en detalle: quién arma la base
+   común; cómo se turnan los integrantes para cambiar el archivo de la base; qué hace la parte web
+   de `pom.xml` en la fase 0; si el menú es uno o uno por entidad; el paquete y el idioma de los
+   identificadores; las fases después de la 0, a partir de la guía; si se recupera la trazabilidad
+   de los comentarios del docente; y las reglas para los modelos de los compañeros.
+0000000000. **Anterior (2026-10-24, con docs/context reducido):** que el autor revise y fusione el
    PR que reduce `docs/context/`. Después, en detalle: las fases del ROADMAP a partir de la guía y
    del plan 0, las decisiones de arquitectura del esqueleto en terminal, si se recupera la
    trazabilidad de los comentarios del docente, y las reglas para los modelos de los compañeros.

@@ -16,9 +16,9 @@ Cada entrada abre con `## AAAA-MM-DD: título` y lleva estos campos:
 Una entrada que introduce o refina un término escribe su línea en `docs/GLOSSARY.md` en el mismo
 PR.
 
-Las decisiones del equipo sobre el producto (D-01 a D-27) viven en la hoja Decisiones del tablero,
-`docs/context/tablero-validacion-ips-20oct.xlsx`, casi todas como propuestas para el docente. Acá
-entran solo las del repo y las que el autor ya tomó.
+Las decisiones del equipo sobre el producto (D-01 a D-27) viven en `docs/REQUIREMENTS.md`, sección
+6, casi todas como propuestas para el docente. Acá entran solo las del repo y las que el autor ya
+tomó.
 
 ## 2026-10-22: Se adopta la plantilla 1.2
 
@@ -304,5 +304,125 @@ deciden después, y mientras tanto siguen en `docs/DESIGN.md`, sección 6. D-10 
 
 **Alternativas:** Hacer la aplicación web desde el primer sprint, como dice la guía, descartado
 porque el docente acepta terminal y el primer sprint busca un mínimo que funcione.
+
+**Estado:** `vigente`
+
+## 2026-10-24: La fase 0 son las 12 historias
+
+**Contexto:** En `docs/ROADMAP.md`, la fase 0 era la siembra del repositorio, cerrada el
+2026-10-24, y las 12 historias del plan B iban en las fases 1 a 3. El autor ya llamaba a ese plan
+"plan 0 o fase 0 del proyecto" (`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-24 "Lo
+mínimo para el cliente, y docs/context sobra"). El 2026-10-24 escribió:
+
+- "la fase 0 se define como completa cuando las 12 historias de hu tenga sus respectivos
+  desarrollos"
+
+**Decisión:** La fase 0 son las 12 historias del plan B. Se cierra cuando cada escenario de las 12
+tiene una corrida que lo muestra, la prueba que ya pide `docs/DESIGN.md`, sección 3. Las fases 1 a
+3 pasan a ser tres tramos de la fase 0, con los mismos 5 pasos, y antes del paso 1 va la base común
+de los catálogos (2026-10-24 "Los catálogos comparten una base común").
+
+La siembra se queda en el ROADMAP como etapa previa cerrada, sin número, porque una fase cerrada no
+se borra. Qué entiende el docente por "desarrollada" sigue abierto.
+
+**Alternativas:** Dejar la siembra como fase 0 y las 12 historias en las fases 1 a 3, descartado
+porque el autor llama fase 0 al plan de las 12.
+
+**Estado:** `vigente`
+
+## 2026-10-24: La base es H2 en un archivo que va en git
+
+**Contexto:** `pom.xml` trae los controladores de H2, SQL Server, MySQL y MariaDB, y la entrada
+2026-10-24 "El primer sprint arranca en terminal" dejó la base para después. El 2026-10-18 el autor
+ya pedía "que sea terminal y una db en H2" (`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del
+2026-10-18 "El autor quiere rehacer todo desde el anexo y hacer el sprint 1 en terminal con H2").
+El 2026-10-24 escribió:
+
+- "como bien sabras manejaremos H2, pero no en memoria, en archivo, asi que comenzarimaso primero
+  nostros poblando estos detalles, por si los modelos no encuentran las intruciicones, al menos se
+  preguntes de por que estos cambios y llegen a los documentos.... por que en H2? para que
+  tengamos todo la misma copia...."
+
+El modelo le dio dos caminos para tener la misma copia: dejar el archivo de la base fuera de git y
+compartir lo que lo crea, o subir el archivo. Recomendó el primero, y el autor eligió el segundo.
+
+**Decisión:** La base de datos es H2 en modo archivo, así que los datos quedan entre una corrida y
+la siguiente. El archivo de la base va en el repositorio, para que todos trabajen sobre la misma
+copia. Los controladores de SQL Server, MySQL y MariaDB quedan sin uso.
+
+Lo que cuesta, dicho al autor antes de elegir:
+
+- El archivo es binario. Si dos PR lo cambian, git no puede mezclarlos, y el segundo tiene que
+  rehacer sus cambios sobre el archivo del primero.
+- Correr el programa lo cambia: un paciente de prueba queda guardado en él, y git lo cuenta como
+  un cambio más.
+- Cómo se turnan los integrantes para cambiarlo no está decidido (`docs/DESIGN.md`, sección "Sin
+  escribir todavía").
+
+**Alternativas:** H2 en memoria, descartado por el autor: la base se borra al cerrar el programa, y
+cada prueba de HU-005 o HU-006 pide registrar otra vez al paciente. Dejar el archivo fuera de git y
+subir lo que lo crea, que son las entidades, los CSV oficiales de los catálogos y los usuarios
+iniciales: era la recomendación del modelo, y el autor eligió subir el archivo.
+
+**Estado:** `vigente`
+
+## 2026-10-24: El código se separa en modelo, vista y controlador
+
+**Contexto:** El autor, el 2026-10-24:
+
+- "quiero que usemos modelo vista controlador,, entiedo que eso no tiene sentido mas cuando
+  presinament no usaremos vistas para la fase 0, pero realmente el desarrollo de estas Hu deberia
+  ser simples,, la mayoria son un crud, por lo que necistamos una interface repositorf que se
+  extieda con crud, luego un cristo de reglas de negocio como interfaces, cada una con su logica,
+  aun que entiendo que seria mejor definir reglas de negocio de la HU en si a separarala, por que
+  relamente no se si se puede hacer implements de varias interfaces, y ahi si, que cada uno
+  instancie la interface repository de su entidad en su servicio y que haga implemtens en las
+  reglas de negocio.... controlles no necesitamos, por que relamente con los metodos resultantes
+  podriamos llamarlos desde un menu en terminal con swich,,, se critico con todo lo que he dicho y
+  si quieres corrigeme"
+
+**Decisión:** El código tiene tres partes:
+
+- **Modelo:** las entidades, una interfaz de repositorio por entidad y un servicio por historia
+  con las reglas de negocio de esa historia.
+- **Vista:** lo que el programa imprime en la terminal, que sigue la lámina de cada historia.
+- **Controlador:** el menú en terminal, que lee la opción con un switch y llama al servicio. En la
+  fase 0 no hay controladores web.
+
+El modelo corrigió tres puntos, que el autor no discutió. Lo que se imprime es la vista y el menú
+es el controlador, así que el MVC sigue entero sin web, y cuando llegue la web que pide la guía [2]
+se cambia el menú y los servicios se quedan. Un servicio no instancia la interfaz de su
+repositorio, porque una interfaz no tiene código: Spring Data JPA, que está en `pom.xml`, genera la
+implementación y se la pasa al servicio. Esto no se probó, porque el build no corre
+(`docs/ARCHITECTURE.md`, sección 6).
+
+El tercero: Java deja que una clase implemente varias interfaces, pero una interfaz por regla con
+un solo servicio que la implementa es un método con un archivo más. Las reglas que se repiten van
+en la base común de los catálogos, y las de una sola historia, en su servicio.
+
+**Alternativas:** Controladores web desde la fase 0, descartado porque la fase 0 corre en terminal.
+
+**Estado:** `vigente`
+
+## 2026-10-24: Los catálogos comparten una base común
+
+**Contexto:** 8 de las 12 historias de la fase 0 son catálogos con las mismas reglas, RC-1 a RC-11
+de la tarjeta de reglas comunes y la búsqueda de D-23. El autor propuso escribir las reglas de
+negocio como interfaces (cita de la entrada anterior). El modelo le dio tres lugares donde ponerlas
+y dos momentos para armar lo común, y el autor eligió la base común de catálogos, armada antes del
+paso 1.
+
+**Decisión:** Las reglas que comparten los 8 catálogos se escriben una vez, en una base que usan
+sus 8 servicios. Cada servicio agrega solo las reglas de su historia, como el padre leído del
+código en HU-022 (D-26). La base no es una historia: es trabajo técnico de la fase 0, y la arma una
+persona antes del paso 1. Quién no está decidido.
+
+**Alternativas:**
+
+- Una interfaz por regla, con su lógica, que cada servicio implementa. Java lo permite, pero una
+  interfaz no guarda el repositorio, así que cada regla se lo tendría que pedir al servicio.
+- Cada servicio con todas sus reglas. Es lo más rápido de empezar, y las reglas comunes quedan
+  copiadas en 8 servicios.
+- Armar la base dentro de HU-034, en el paso 1. HU-036, también del paso 1, tendría que esperarla.
 
 **Estado:** `vigente`

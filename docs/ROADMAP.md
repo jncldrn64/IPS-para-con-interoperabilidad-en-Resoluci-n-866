@@ -9,10 +9,10 @@
 
 El docente no acepta que se desarrolle una historia que dependa directamente de otra que no esté
 desarrollada, aunque le dé valor al cliente, ni un dato provisional para crear su catálogo en otro
-sprint. Por eso las fases siguen las dependencias de las 12 historias del plan B y no su prioridad:
-primero lo que no depende de nada, después lo que depende de eso. La complejidad se estima de 1 a 10
-y sube con las dependencias directas (`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-21
-"Límite de 12 historias; dependencias y el paciente").
+sprint. Por eso los pasos de la fase 0 siguen las dependencias de las 12 historias del plan B y no
+su prioridad: primero lo que no depende de nada, después lo que depende de eso. La complejidad se
+estima de 1 a 10 y sube con las dependencias directas (`docs/context/MEMORIA-CONTEXTUAL.md`,
+entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente").
 
 Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
 2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
@@ -24,10 +24,11 @@ Cada historia tiene su turno, y ninguna empieza antes de que sus dependencias es
 Las dependencias salen de la línea **Dependencias:** de cada tarjeta, en
 `docs/context/trello/tarjetas/`.
 
-**Las 12 del semestre**, las del plan B, repartidas entre 3 integrantes. La columna Paso es el
-turno: cada integrante hace sus historias en orden de paso.
+**Las 12 del semestre**, las del plan B, repartidas entre 3 integrantes. Son la fase 0. La columna
+Paso es el turno, y cada integrante hace sus historias en orden de paso. La columna Tramo dice en
+qué tramo de la fase 0 cae cada historia.
 
-| Paso | Historia | Integrante | Depende de | Escenarios | Fase |
+| Paso | Historia | Integrante | Depende de | Escenarios | Tramo |
 |---|---|---|---|---|---|
 | 1 | HU-001 Inicio de sesión con permisos por cargo | 1 | ninguna | 14 | 1 |
 | 1 | HU-034 Catálogo de tipos de documento | 2 | ninguna | 23 | 1 |
@@ -118,9 +119,12 @@ demás espera a la fase siguiente.
 **Una fase trae** un objetivo de una línea, su alcance, un criterio de aceptación verificable, qué
 bloquea y qué la bloquea, y su estado.
 
-## Fase 0: Siembra del repositorio
+## Siembra del repositorio
 
 **Estado:** `cerrada (2026-10-24)`
+
+Hasta el 2026-10-24 se llamó fase 0. El nombre pasó a las 12 historias (`docs/DECISIONS.md`,
+2026-10-24 "La fase 0 son las 12 historias").
 
 **Objetivo:** que el repo tenga la plantilla llena y todo el contexto del backlog.
 
@@ -131,60 +135,36 @@ bloquea y qué la bloquea, y su estado.
 **Criterio de aceptación:** `grep -rn '{''{' --include='*.md' .` devuelve cero y el PR de siembra
 está mergeado.
 
-**Bloquea:** fase 1.
+**Bloquea:** fase 0.
 
 **Bloqueada por:** nada.
 
-## Fase 1: Lo que no depende de nada
+## Fase 0: Las 12 historias del plan B
 
 **Estado:** `pendiente`
 
-**Objetivo:** los 8 catálogos del paciente y el inicio de sesión, desarrollados en paralelo.
+**Objetivo:** los 8 catálogos del paciente, el inicio de sesión, y registrar, consultar y corregir
+al paciente.
 
 **Alcance:**
-- Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
-  ocupaciones (28) y HU-026 municipios (25).
-- Integrante 2: HU-034 tipos de documento (23), HU-018 países (22) y HU-038 entidades del plan de
-  beneficios (22).
-- Integrante 3: HU-036 etnias (23), HU-037 comunidades étnicas (22) y HU-035 discapacidad (23).
+- Antes del paso 1: la base común de los catálogos (`docs/DESIGN.md`, sección 7). La arma una
+  persona que todavía no tiene nombre. HU-001 no es un catálogo, así que no la espera.
+- Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
+  - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
+    ocupaciones (28) y HU-026 municipios (25).
+  - Integrante 2: HU-034 tipos de documento (23), HU-018 países (22) y HU-038 entidades del plan
+    de beneficios (22).
+  - Integrante 3: HU-036 etnias (23), HU-037 comunidades étnicas (22) y HU-035 discapacidad (23).
+- Tramo 2, paso 4, el registro del paciente con sus 16 atributos: el integrante 2 con HU-004 (15
+  escenarios, 8 dependencias directas).
+- Tramo 3, paso 5, consultar y corregir al paciente, con quien hizo cada cambio: el integrante 1
+  con HU-005 (13) y el 3 con HU-006 (13), a la vez. Las dos dependen de HU-001 y HU-004.
 
-**Criterio de aceptación:** cada escenario de las 9 historias tiene una corrida que lo muestra.
+**Criterio de aceptación:** cada escenario de las 12 historias tiene una corrida que lo muestra.
 
-**Bloquea:** fases 2 y 3.
+**Bloquea:** las 18 historias del Backlog.
 
-**Bloqueada por:** fase 0, y el envoltorio de Maven que no corre (`docs/ARCHITECTURE.md`,
-sección 6).
-
-## Fase 2: Registro del paciente
-
-**Estado:** `pendiente`
-
-**Objetivo:** registrar un paciente con sus 16 atributos.
-
-**Alcance:**
-- Integrante 2: HU-004 registro de un paciente (15 escenarios, 8 dependencias directas).
-
-**Criterio de aceptación:** cada escenario de HU-004 tiene una corrida que lo muestra.
-
-**Bloquea:** fase 3.
-
-**Bloqueada por:** los 8 catálogos de la fase 1.
-
-## Fase 3: Consultar y corregir al paciente
-
-**Estado:** `pendiente`
-
-**Objetivo:** que la IPS consulte, actualice y corrija al paciente, con quien hizo cada cambio.
-
-**Alcance:**
-- Integrante 1: HU-005 consulta de un paciente (13).
-- Integrante 3: HU-006 actualización y corrección (13), a la vez que HU-005.
-
-**Criterio de aceptación:** cada escenario de HU-005 y HU-006 tiene una corrida que lo muestra.
-
-**Bloquea:** nada.
-
-**Bloqueada por:** HU-001 (fase 1) y HU-004 (fase 2).
+**Bloqueada por:** el envoltorio de Maven que no corre (`docs/ARCHITECTURE.md`, sección 6).
 
 ## Backlog
 

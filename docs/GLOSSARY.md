@@ -24,6 +24,9 @@ el producto trae sus propias palabras.
   abre un PR doc-only y la cierra el próximo PR de código.
 - **descriptivo**: el documento que dice qué es. Pierde contra el código.
 - **Entró**: la línea con que nace un ítem del Backlog, con fecha y PR sacados de `git log -S`.
+- **fase 0**: las 12 historias del plan B, en tres tramos y 5 pasos. Se cierra cuando cada
+  escenario de las 12 tiene una corrida que lo muestra. Hasta el 2026-10-24 era el nombre de la
+  siembra del repositorio (2026-10-24 "La fase 0 son las 12 historias").
 - **fork**: `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`, la copia del repositorio
   original en la cuenta del autor. Ahí se trabaja y se abren los PR hasta que el original, en
   Atervolgo, lo habilite (2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo
@@ -36,6 +39,10 @@ el producto trae sus propias palabras.
 - **memoria contextual**: `docs/context/MEMORIA-CONTEXTUAL.md`, la memoria de trabajo del modelo.
   Se lee entera antes de trabajar, se actualiza con cada decisión del autor y no manda sobre ningún
   documento canónico (2026-10-24 "La memoria contextual vuelve a ser la memoria del modelo").
+- **modelo**: tres cosas distintas. El modelo de lenguaje que trabaja en el repositorio, como en
+  "propuesta del modelo"; el modelo E-R de `docs/context/modelo-datos/`; y la parte del código con
+  las entidades, los repositorios y los servicios (2026-10-24 "El código se separa en modelo, vista
+  y controlador").
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
 - **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG y no sube
@@ -96,3 +103,22 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   lo que usan las historias").
 - **versión de un catálogo**: un archivo oficial cargado, con su fuente, su fecha de publicación y
   su fecha de descarga (RC-8).
+
+## 3. Código
+
+Ninguna de estas palabras nombra código que ya exista: el repositorio todavía no tiene código del
+producto.
+
+- **archivo de la base**: el archivo de H2 donde quedan los datos entre una corrida y otra. Va en
+  git, y git no mezcla dos cambios suyos (2026-10-24 "La base es H2 en un archivo que va en git").
+- **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
+  0, RC-1 a RC-11 y la búsqueda de D-23. Se arma antes del paso 1 (2026-10-24 "Los catálogos
+  comparten una base común").
+- **controlador**: en la fase 0, el menú en terminal que lee la opción y llama al servicio. No hay
+  controladores web (2026-10-24 "El código se separa en modelo, vista y controlador").
+- **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
+  interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
+- **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su
+  entidad, y no lee del teclado ni imprime (`docs/DESIGN.md`, sección 6).
+- **vista**: en la fase 0, lo que el programa imprime en la terminal, según la lámina de la
+  historia.
