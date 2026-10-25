@@ -7,8 +7,13 @@
 
 ## v0.1 — 2026-10-24
 
-Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones, y la memoria
-contextual vuelve a ser la memoria del modelo.
+Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones, la memoria
+contextual vuelve a ser la memoria del modelo y el ROADMAP ordena las 30 historias.
+
+### Added
+- `docs/ROADMAP.md`, sección "Orden de las 30 historias": el paso de cada una de las 12 del
+  semestre por integrante, y un orden propuesto para las otras 18, con lo que falta antes de empezar
+  cada grupo.
 
 ### Changed
 - `docs/context/MEMORIA-CONTEXTUAL.md` vuelve a ser la memoria de trabajo del modelo. Entra en el
