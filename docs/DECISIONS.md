@@ -733,3 +733,43 @@ catálogos cargados. Cómo se hace la copia se escribe con su corrida en el prim
 probar HU-004, que necesita los 8 catálogos.
 
 **Estado:** `vigente`
+
+## 2026-10-25: La base común es una clase con código, nombre, estado y versión
+
+**Contexto:** La entrada 2026-10-24 "Los catálogos comparten una base común" dijo dónde van las
+reglas de los catálogos, y no cómo se guarda un valor. El autor empezó por ahí el 2026-10-25:
+
+- "yo comenzaria por la entidad que tengdra todo, algo sumple, realmente el catalogo son enums,
+  pero no creo que pueda almacenar enums de forma dinamica, por lo que entiedo que necesitamos
+  almacenera una especie de array multidimmencional."
+
+Un enum de Java fija sus valores al compilar, así que agregar o inactivar un valor obligaría a
+cambiar el código. Los valores de un catálogo llegan de un archivo oficial mientras el programa
+corre (RC-8), y el arreglo que describe el autor es una tabla: una fila por valor y una columna
+por dato. El modelo le hizo cuatro preguntas, y el autor eligió en las cuatro la opción
+recomendada.
+
+**Decisión:** Cada catálogo tiene su propia entidad y su tabla, como pide [2.3]. Las 8 heredan de
+una clase base con cuatro campos:
+
+- **código:** la llave, guardada como texto con sus ceros (D-18).
+- **nombre:** el que trae la fuente.
+- **estado:** activo o inactivo, porque un valor no se borra (RC-4).
+- **versión:** la del archivo oficial que trajo el código (RC-8).
+
+Cada catálogo agrega lo suyo, como el padre de una ocupación (D-26) o el departamento de un
+municipio. El historial de cada valor va en una tabla de cambios común a los catálogos, de la que
+sale el nombre que un valor tenía en una fecha (RC-11). Qué anotación de JPA hace la herencia se
+escribe con su corrida en el primer PR de código.
+
+**Alternativas:**
+
+- Una sola tabla para todos los catálogos. Ahorra la clase base, pero ningún catálogo tendría la
+  entidad propia que pide [2.3].
+- Solo código y nombre en la base. Los escenarios de HU-036 piden inactivar y cargar con versión,
+  así que los otros dos campos llegarían antes de cerrarla.
+- Un número interno como llave. El paciente guardaría ese número, y para intercambiar el dato
+  habría que buscar su código.
+- El último motivo dentro de cada valor, sin tabla de cambios. No alcanza para RC-11.
+
+**Estado:** `vigente`

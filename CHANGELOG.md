@@ -5,6 +5,22 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.5 — 2026-10-25
+
+Solo documentación. La base común de los catálogos es una clase con código, nombre, estado y
+versión, de la que hereda la entidad de cada catálogo. No hay código del producto que muestre una
+versión.
+
+### Added
+- `docs/DECISIONS.md`: la entrada 2026-10-25 "La base común es una clase con código, nombre, estado
+  y versión", con sus cuatro alternativas.
+
+### Changed
+- `docs/DESIGN.md`, sección 7: la clase base, la llave como texto, la tabla de cambios común y por
+  qué un catálogo no es un enum.
+- `docs/GLOSSARY.md`: "base común de catálogos" nombra la clase y sus cuatro campos.
+- La memoria contextual anota la pregunta del autor sobre los enums y sus cuatro respuestas.
+
 ## v0.4 — 2026-10-25
 
 Solo documentación. La fase 0 tiene su orden antes del paso 1, el autor es el integrante 3 y HU-036

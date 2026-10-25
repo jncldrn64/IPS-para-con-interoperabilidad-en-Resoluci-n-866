@@ -1553,6 +1553,42 @@ del PR abierto" y "La base de prueba arranca como copia del archivo"); el orden 
 
 **Estado:** `vigente`
 
+## 2026-10-25: La base común como clase, y no como enum
+
+**Contexto:** el autor fusionó el PR #10 del fork (7723d28). Pegó por error la salida de una
+terminal de otro chat, que no es del proyecto, y escribió, textual:
+
+- "hice el merge, si te mostre comandos, es por que me confudi de chat,  como ha pasado horas,
+  seguramente ni yo sepa donde estamos, por lo que, entiendo que ahora defino cosas y me haces
+  preguntas, yo comenzaria por la entidad que tengdra todo, algo sumple, realmente el catalogo son
+  enums, pero no creo que pueda almacenar enums de forma dinamica, por lo que entiedo que
+  necesitamos almacenera una especie de array multidimmencional."
+
+Lo que respondió el modelo:
+
+- Un enum de Java fija sus valores al compilar. Los valores de un catálogo llegan de un archivo
+  oficial con el programa corriendo (RC-8), así que un catálogo no puede ser un enum.
+- El arreglo que describe el autor es una tabla: una fila por valor, una columna por dato. En Java
+  cada fila es un objeto de la entidad.
+- Una sola tabla para todos los catálogos deja a cada uno sin la entidad propia que pide [2.3].
+
+El modelo hizo cuatro preguntas, y el autor eligió en las cuatro la opción recomendada:
+
+- "Una por catálogo, con base": cada catálogo con su entidad, todas heredando de una clase base.
+- "Los cuatro del E-R": código, nombre, estado y versión.
+- "El código, como texto": la llave es el código (D-18).
+- "Una tabla de cambios común": el historial de cada valor, para RC-11.
+
+**Sin respuesta todavía (propuesta del modelo, no preguntada):** las listas cerradas de 5 o menos
+valores, como el sexo, la identidad de género o el estado de un valor, sí pueden ser un enum,
+porque no cambian con el programa corriendo.
+
+Hecho en el PR que sigue a 7723d28: la entrada 2026-10-25 "La base común es una clase con código,
+nombre, estado y versión", `docs/DESIGN.md`, sección 7, y la línea "base común de catálogos" del
+glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1657,6 +1693,10 @@ del PR abierto" y "La base de prueba arranca como copia del archivo"); el orden 
 - **Del modelo a sí mismo (2026-10-24, Claude Code):** el PR #4 sacó el tablero y dejó el
   encabezado de `docs/DECISIONS.md` remitiendo a él.
 
+- **Al autor (2026-10-25):** un catálogo no puede ser un enum de Java, porque el enum fija sus
+  valores al compilar y el catálogo los recibe de un archivo con el programa corriendo. El autor
+  ya lo sospechaba ("no creo que pueda almacenar enums de forma dinamica").
+
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
 Prompt v2.1, en orden de gravedad:
@@ -1682,7 +1722,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000. **Próximo (2026-10-25, orden de la fase 0):** que el autor revise y fusione el
+0000000000000000. **Próximo (2026-10-25, la base común):** que el autor revise y fusione el PR de
+   la clase base de los catálogos. Después, en orden: que el build corra; el esqueleto en
+   terminal; la base común con HU-036. Sin respuesta: si las listas cerradas de 5 o menos van como
+   enum, quién revisa la licencia de los datos oficiales y cómo probar sin subir el nombre de la
+   base de prueba.
+000000000000000. **Anterior (2026-10-25, orden de la fase 0):** que el autor revise y fusione el
    PR del orden, el integrante 3 y HU-036. Después, en orden: que el build corra; el esqueleto en
    terminal; la base común con HU-036, donde el autor decide si los CSV van en git. Siguen
    abiertos quién revisa la licencia de los datos oficiales y cómo se cambia el nombre de la base

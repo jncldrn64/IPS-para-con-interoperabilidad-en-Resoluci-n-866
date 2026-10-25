@@ -101,10 +101,18 @@ D-23, viven en una base común que usan sus 8 servicios. Cada servicio agrega so
 historia, como el padre leído del código en HU-022 (D-26). Una regla que usa una sola historia va
 en el servicio de esa historia.
 
-**Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
-corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella.
+Cada catálogo tiene su entidad y su tabla, y las 8 heredan de una clase base con el código, el
+nombre, el estado y la versión. El código es la llave y se guarda como texto (sección 1). Cada
+catálogo agrega lo suyo, como el padre de una ocupación, y el historial de los valores va en una
+tabla de cambios común.
 
-**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común".
+**Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
+corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
+enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
+archivo oficial con el programa corriendo.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común" y
+2026-10-25 "La base común es una clase con código, nombre, estado y versión".
 
 ## 8. La base de datos
 
