@@ -4,8 +4,8 @@
 > repo. No dice qué hace el producto ni cómo se escribe su código: eso es `docs/REQUIREMENTS.md` y
 > `docs/DESIGN.md`. **Régimen:** se corrige. Un cambio de regla lleva su entrada en
 > `docs/DECISIONS.md` en el mismo PR. **Origen:** plantilla 1.2, sacada de tres repos que ya usan
-> este método, y sembrada el {{fecha}} (`docs/DECISIONS.md`, {{fecha}} "Se adopta la plantilla
-> 1.1").
+> este método, y sembrada el 2026-10-22 (`docs/DECISIONS.md`, 2026-10-22 "Se adopta la
+> plantilla 1.2").
 
 ## 1. Orden de lectura
 
@@ -90,9 +90,10 @@ entero:
 7. **Ancho de línea:** hasta 100 columnas.
 8. **Una referencia a otro documento** cita ruta y sección por título, o fecha y título si es una
    decisión. Nunca un número de línea.
-9. **Un hueco de la plantilla se escribe `{{así}}`, y un repo sembrado no conserva ninguno.** Lo
-   que todavía no se sabe se escribe como texto, en la sección "Sin escribir todavía" del archivo.
-   `grep -rn '{{' --include='*.md' .` devuelve cero.
+9. **Un hueco de la plantilla se escribe entre dos llaves dobles, y un repo sembrado no conserva
+   ninguno.** Lo que todavía no se sabe se escribe como texto, en la sección "Sin escribir todavía"
+   del archivo. `grep -rn '{''{' --include='*.md' .` devuelve cero; las comillas partidas evitan
+   que el comando se encuentre a sí mismo.
 
 ## 5. Decisiones, huecos y contexto temporal
 
@@ -250,7 +251,19 @@ print(f"regla 8: {pl} planas de {t} ternas = {100*pl/max(t,1):.1f}%")
 EOF
 ```
 
-**Líneas base:** sin medir. Se escriben acá, con su fecha, en el PR que siembra los documentos.
+**Líneas base, medidas el 2026-10-22** en el PR que siembra los documentos, sobre 187.428 palabras.
+Todo lo que suma está en `docs/context/`, el material importado; los documentos canónicos, los
+README y `HELP.md` dan cero en las reglas 1, 2, 4, 6 y 7.
+
+| Regla | Línea base |
+|---|---|
+| 1, intensificadores | 9 líneas: 8 en `MEMORIA-CONTEXTUAL.md`, citas del autor que no van en viñeta propia, y 1 en `revisiones/verificacion-aplicacion-final.md` |
+| 2, paralelismo contrastivo | 28 casos en 13 archivos: `MEMORIA-CONTEXTUAL.md` 3, `PLAN-BACKLOG-V3.md` 1, tanda 3 2, `modelo-entidad-relacion.md` 1, `aplicacion-revisiones-tandas-4-y-5.md` 2, `revision-final-cruzada.md` 4, `revision-tanda-4.md` 5, `revision-tanda-5.md` 2, `verificacion-aplicacion-final.md` 4, y 1 en cada tarjeta HU-014, HU-022, HU-030 y RC |
+| 3, viñetas del CHANGELOG de más de 60 palabras | 0 |
+| 4, encabezados con paréntesis | 26: `MEMORIA-CONTEXTUAL.md` 9, `aplicacion-revisiones-tandas-4-y-5.md` 4, `revision-tanda-5.md` 4, `revision-tanda-3.md` 2, y 1 en `PLAN-BACKLOG-V3.md`, tanda 0, `modelo-entidad-relacion.md`, `preguntas-docente.md`, `revision-final-cruzada.md`, `revision-tanda-2.md` y `revision-tanda-4.md` |
+| 6, anclas a número de línea | 0 |
+| 7, párrafos de más de cinco oraciones | 70 |
+| 8, ternas planas | 120 de 856 = 14,0 % |
 
 El conteo de la regla 2 depende de su expresión regular. Si se ajusta, se recalculan todos los
 archivos de una vez y se reescribe la línea base con su fecha nueva.

@@ -2,8 +2,8 @@
 
 > **Rol:** tránsito. Acá va lo que se observó y se perdería si nadie lo escribe, antes de saber si
 > se quiere. No manda nunca. **Régimen:** tiende a cero; su medida es la velocidad con que se vacía,
-> no lo que contiene. **Origen:** plantilla 1.2, sembrada el {{fecha}} (`docs/DECISIONS.md`,
-> {{fecha}} "Se adopta la plantilla 1.2").
+> no lo que contiene. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
+> 2026-10-22 "Se adopta la plantilla 1.2").
 >
 > **El criterio de entrada no es si está maduro: es si se pierde.**
 
@@ -74,4 +74,16 @@ y uno grande sí.
 
 ## Anotaciones
 
-{{vacío}}
+- 2026-10-22, modelo de la sesión de siembra: `auditoria-crud-catalogos.md`, la tabla de escenarios
+  por operación del chat anterior, no vino en el zip. Se rehízo como la viñeta "CRUD por escenario"
+  de cada catálogo. Si aparece, compararla.
+- 2026-10-22, modelo: HU-022 mide 15.688 caracteres contados con Python; el chat anterior decía
+  15.295. No se sabe con qué se contó. El límite de 16.384 de Trello no está en la documentación
+  oficial (memoria, 2026-10-20 "Revisión final cruzada aplicada").
+- 2026-10-22, modelo: hilo abierto desde el 2026-10-18, el "pero discrepo" del autor sobre el nombre
+  del diagnóstico del numeral 23. No toca las 12; importa cuando entre HU-030.
+- 2026-10-22, modelo: el docente pidió el escenario de rol sin permisos en HU-025, HU-026, HU-028 y
+  HU-030, y después dijo que el inicio de sesión no aporta valor en la primera entrega. Hoy ese
+  escenario es HU-001 esc. 14. Pregunta 2 del plan de desarrollo.
+- 2026-10-22, modelo: el repo usa `com.example.demo` y trae controladores de cuatro bases de datos;
+  nadie decidió nada de eso todavía (DESIGN.md, Sin escribir todavía).
