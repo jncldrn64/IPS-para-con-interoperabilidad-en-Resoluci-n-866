@@ -110,20 +110,24 @@ corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo em
 
 **Regla:** H2 en modo archivo, y el archivo de la base va en el repositorio.
 
-**Por qué:** los datos quedan entre una corrida y la siguiente, y todos trabajan sobre la misma
-copia. El autor aceptó lo que cuesta. Git no mezcla dos cambios del archivo: si dos PR lo cambian,
-el segundo rehace los suyos sobre el archivo del primero. Correr el programa también lo cambia, y
-un dato de prueba llega al commit si nadie mira el archivo antes.
+**Por qué:** los datos quedan entre una corrida y la siguiente, y quien necesita un catálogo lo
+encuentra ya cargado en el archivo.
+
+El autor aceptó lo que cuesta. Git no mezcla dos cambios del archivo: si dos PR lo cambian, el
+segundo rehace los suyos sobre el archivo del primero. Correr el programa también lo cambia, y un
+dato de prueba llega al commit si nadie mira el archivo antes.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "La base es H2 en un archivo que va en
-git".
+git" y 2026-10-24 "El archivo de la base trae los catálogos cargados".
 
 ## 9. Sin escribir todavía
 
 Este archivo es una semilla mientras esta lista tenga algo.
 
 - Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
-- Cómo se turnan los integrantes para cambiar el archivo de la base, que git no mezcla.
+- Cómo se turnan los integrantes para cambiar el archivo de la base, que git no mezcla. El modelo
+  propuso que el segundo PR tome el archivo de `main` y vuelva a correr su carga.
+- Cómo se evita que un paciente de prueba llegue al archivo de la base que va en git.
 - Qué interfaz de Spring extiende cada repositorio, con la corrida que lo muestre, en el primer PR
   de código.
 - Cómo se arma el menú: uno solo para las 12 historias, o uno principal que llama a un menú por

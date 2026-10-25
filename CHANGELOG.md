@@ -7,6 +7,21 @@
 
 ## v0.1 — 2026-10-24
 
+Solo documentación. El archivo de la base va en git con los catálogos ya cargados.
+
+### Added
+- `docs/DECISIONS.md`, entrada 2026-10-24 "El archivo de la base trae los catálogos cargados", con
+  la razón del autor y lo que el modelo agregó sin respuesta todavía.
+
+### Changed
+- `docs/DESIGN.md`, sección 8, dice para qué va en git el archivo de la base, y su lista "Sin
+  escribir todavía" suma el paciente de prueba que puede llegar a ese archivo.
+- El ítem del Backlog que descarga los catálogos oficiales pide revisar su licencia antes de
+  subirlos (`CLAUDE.md`, sección 10).
+- La memoria contextual y la línea "archivo de la base" del glosario anotan la aclaración.
+
+## v0.1 — 2026-10-24
+
 Solo documentación. La fase 0 son las 12 historias, la base es H2 en un archivo que va en git, y el
 código se separa en modelo, vista y controlador, con una base común para los catálogos.
 

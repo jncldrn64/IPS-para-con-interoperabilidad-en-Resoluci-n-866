@@ -426,3 +426,32 @@ persona antes del paso 1. Quién no está decidido.
 - Armar la base dentro de HU-034, en el paso 1. HU-036, también del paso 1, tendría que esperarla.
 
 **Estado:** `vigente`
+
+## 2026-10-24: El archivo de la base trae los catálogos cargados
+
+**Contexto:** La entrada 2026-10-24 "La base es H2 en un archivo que va en git" dio como razón que
+todos tengan la misma copia. El autor aclaró para qué, el 2026-10-24:
+
+- "haber realmente es para que si uno tiene que ingresar un catalogo, la db este ya ahi, mas facil
+  que poner como lista de ejemplo todo un documento"
+
+**Decisión:** El archivo de la base que va en git trae los catálogos ya cargados. Quien necesita
+uno, como HU-004 los 8, lo encuentra en el archivo, y nadie copia un documento oficial entero como
+lista de ejemplo.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- Cada catálogo entra al archivo con la carga de su propia historia, desde el archivo oficial
+  (RC-8). Así no es un dato provisional, que el docente no acepta (`docs/ROADMAP.md`, sección
+  "Principio de orden").
+- En los pasos 1 a 3 dos o tres integrantes cargan catálogos a la vez, y cada PR cambia el
+  archivo. Git no los mezcla, así que el segundo PR toma el archivo de `main` y vuelve a correr su
+  carga.
+- El archivo copia datos de terceros, como la DIVIPOLA, la CIUO-88 A.C. y las tablas de SISPRO.
+  Antes del primer commit con un catálogo se revisa con qué licencia se publica cada uno
+  (`CLAUDE.md`, sección 10).
+
+**Alternativas:** Poner el documento oficial como lista de ejemplo, descartado por el autor: es más
+trabajo que tener la base ya cargada.
+
+**Estado:** `vigente`

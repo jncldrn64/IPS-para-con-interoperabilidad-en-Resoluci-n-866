@@ -181,7 +181,8 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
 - Estimar las 12 historias de 1 a 10 en clase y poner D-12 en esa escala.
   **Entró:** 2026-10-22, PR de siembra.
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
-  `docs/ARCHITECTURE.md`, sección 6.
+  `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno, o el archivo de la base que lo trae, se
+  revisa su licencia y su atribución (`CLAUDE.md`, sección 10).
   **Entró:** 2026-10-22, PR de siembra.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a

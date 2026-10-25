@@ -1403,6 +1403,31 @@ Hecho en el PR que sigue a 84c6a28:
 
 **Estado:** `vigente`
 
+## 2026-10-24: Para qué va en git el archivo de la base
+
+**Contexto:** el autor fusionó el PR #5 del fork (f1f19cf) y aclaró, textual:
+
+- "haber realmente es para que si uno tiene que ingresar un catalogo, la db este ya ahi, mas facil
+  que poner como lista de ejemplo todo un documento"
+
+Lo que entendió el modelo: el archivo de la base lleva los catálogos ya cargados, y quien los
+necesita, como HU-004, no copia el documento oficial como lista de ejemplo. **Hipótesis:** "la
+misma copia" del mensaje anterior quería decir eso. Lo que el modelo agregó, sin respuesta del
+autor todavía:
+
+- Cada catálogo entra al archivo con la carga de su historia, desde el archivo oficial, para que no
+  sea un dato provisional.
+- En los pasos 1 a 3 varios integrantes cargan catálogos a la vez, y git no mezcla el archivo: el
+  segundo PR toma el de `main` y vuelve a correr su carga.
+- El archivo copia datos de terceros (DIVIPOLA, CIUO-88 A.C., SISPRO). Antes del primer commit con
+  un catálogo se revisa su licencia (`CLAUDE.md`, sección 10).
+
+Hecho en el PR que sigue a f1f19cf: la entrada 2026-10-24 "El archivo de la base trae los catálogos
+cargados" en `docs/DECISIONS.md`, `docs/DESIGN.md`, sección 8, y el ítem del Backlog que descarga
+los catálogos oficiales.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1532,7 +1557,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000. **Próximo (2026-10-24, arquitectura de la fase 0):** que el autor revise y fusione el
+000000000000. **Próximo (2026-10-24, el archivo de la base):** que el autor revise y fusione el PR
+   que dice para qué va en git el archivo de la base, y que conteste lo que el modelo agregó: la
+   carga de cada catálogo desde su historia, cómo se rehace la carga cuando dos PR chocan, y la
+   licencia de los datos oficiales. Lo demás de la entrada anterior sigue igual.
+00000000000. **Anterior (2026-10-24, arquitectura de la fase 0):** que el autor revise y fusione el
    PR con la fase 0, H2 en archivo, el MVC y la base común. Después, en detalle: quién arma la base
    común; cómo se turnan los integrantes para cambiar el archivo de la base; qué hace la parte web
    de `pom.xml` en la fase 0; si el menú es uno o uno por entidad; el paquete y el idioma de los
