@@ -120,11 +120,14 @@ Ninguna de estas palabras nombra código que ya exista: el repositorio todavía 
 producto.
 
 - **archivo de la base**: el archivo de H2 donde quedan los datos entre una corrida y otra. Va en
-  git con los catálogos ya cargados, y git no mezcla dos cambios suyos (2026-10-24 "La base es H2
-  en un archivo que va en git"; 2026-10-24 "El archivo de la base trae los catálogos cargados").
+  git con los catálogos ya cargados, y como git no mezcla dos cambios suyos, se cambia por turnos
+  (2026-10-24 "La base es H2 en un archivo que va en git"; 2026-10-24 "El archivo de la base trae
+  los catálogos cargados"; 2026-10-25 "El archivo de la base se cambia por turnos").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
   0, RC-1 a RC-11 y la búsqueda de D-23. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los
   catálogos comparten una base común"; 2026-10-24 "El integrante 3 arma la base común").
+- **base de prueba**: la base con otro nombre donde se prueba, para que un dato de prueba no llegue
+  al archivo de la base que va en git (2026-10-25 "Las pruebas corren sobre otra base").
 - **controlador**: en la fase 0, el menú en terminal que lee la opción y llama al servicio. No hay
   controladores web (2026-10-24 "El código se separa en modelo, vista y controlador").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la

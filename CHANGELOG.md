@@ -5,6 +5,25 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.3 — 2026-10-25
+
+Solo documentación. Un catálogo se carga desde un CSV con la ruta en la terminal, el archivo de la
+base se cambia por turnos y las pruebas corren sobre otra base. No hay código del producto que
+muestre una versión.
+
+### Added
+- `docs/DECISIONS.md`: tres entradas del 2026-10-25, "Un catálogo se carga desde un CSV, con la
+  ruta en la terminal", "El archivo de la base se cambia por turnos" y "Las pruebas corren sobre
+  otra base".
+- `docs/GLOSSARY.md`: "base de prueba".
+
+### Changed
+- `docs/DESIGN.md`, sección 8: el archivo de la base se cambia por turnos y las pruebas usan otra
+  base. Su lista "Sin escribir todavía" cambia dos ítems por tres más precisos.
+- `docs/ROADMAP.md`: el tramo 1 de la fase 0 dice cómo entra cada catálogo al archivo de la base.
+- `docs/GLOSSARY.md`: "archivo de la base" suma los turnos.
+- La memoria contextual anota las respuestas del autor y lo que el modelo agregó sin respuesta.
+
 ## v0.2 — 2026-10-25
 
 Solo documentación. El repo pasa a la plantilla 1.3, `AGENTS.md` queda como isla y `docs/context/`
