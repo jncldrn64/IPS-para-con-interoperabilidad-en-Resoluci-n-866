@@ -45,11 +45,11 @@ qué tramo de la fase 0 cae cada historia.
 
 La carga de cada uno:
 
-| Integrante | Historias | Escenarios | Dependencias directas |
-|---|---|---|---|
-| 1 | HU-001, HU-022, HU-026 y HU-005 | 80 | 2, las de HU-005 |
-| 2 | HU-034, HU-018, HU-038 y HU-004 | 82 | 8, las de HU-004 |
-| 3 | HU-036, HU-037, HU-035 y HU-006 | 81 | 2, las de HU-006 |
+| Integrante | Historias | Escenarios | Dependencias directas | Complejidad propuesta |
+|---|---|---|---|---|
+| 1 | HU-001, HU-022, HU-026 y HU-005 | 80 | 2, las de HU-005 | 13 |
+| 2 | HU-034, HU-018, HU-038 y HU-004 | 82 | 8, las de HU-004 | 15 |
+| 3 | HU-036, HU-037, HU-035 y HU-006, más la base común de los catálogos | 81 | 2, las de HU-006 | 9, sin la base común |
 
 El reparto es una propuesta del modelo del 2026-10-24, pedida por el autor, con estos criterios:
 
@@ -108,6 +108,40 @@ anular, y cada historia mirando solo a las anteriores (`docs/context/MEMORIA-CON
 entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente"). Su código de
 prestador puede pedir un catálogo que no está en el backlog (D-05).
 
+## Estimación de las 12 historias
+
+La complejidad va de 1 a 10, donde 10 es la más difícil, y sube con las dependencias directas,
+independientemente de la prioridad. La vota el equipo en clase, o con un video de todos [2.5]. La
+tabla de abajo es la propuesta del modelo del 2026-10-24 para esa votación, aceptada por el autor
+como punto de partida (`docs/DECISIONS.md`, 2026-10-24 "La complejidad se estima de 1 a 10"). Las
+tarjetas dicen "Pendiente de estimación en clase" hasta que el equipo vote.
+
+El criterio: complejidad = trabajo propio + dependencias directas, con tope 10. El trabajo propio
+va de 1 a 3:
+
+- **1:** catálogo cuya lista está en la hoja del anexo, sobre la base común.
+- **2:** catálogo que se carga desde un archivo oficial externo.
+- **3:** archivo externo con niveles, o una historia con reglas propias pesadas.
+
+| Historia | Trabajo propio | Dependencias directas | Propuesta |
+|---|---|---|---|
+| HU-034 Catálogo de tipos de documento | 1 | 0 | 1 |
+| HU-036 Catálogo de etnias | 1 | 0 | 1 |
+| HU-035 Catálogo de categorías de discapacidad | 1 | 0 | 1 |
+| HU-018 Catálogo de países | 2 | 0 | 2 |
+| HU-037 Catálogo de comunidades étnicas | 2 | 0 | 2 |
+| HU-038 Catálogo de entidades que responden por el plan de beneficios | 2 | 0 | 2 |
+| HU-022 Catálogo de ocupaciones, con 4 niveles (D-26) | 3 | 0 | 3 |
+| HU-026 Catálogo de municipios, con sus departamentos | 3 | 0 | 3 |
+| HU-001 Inicio de sesión, con la matriz de permisos entera | 3 | 0 | 3 |
+| HU-005 Consulta de un paciente, con el nombre del día (RC-11) | 2 | 2 | 4 |
+| HU-006 Actualización y corrección, con su historial (artículo 10) | 3 | 2 | 5 |
+| HU-004 Registro de un paciente, con 16 atributos y 3 condicionados | 3 | 8 | 10, por el tope (11) |
+
+La prioridad no ordena estas 12: las tarjetas dicen "Alta" en todas. La base común de los
+catálogos no es una historia y no se estima; la arma el integrante 3, que con 9 es el de menos
+complejidad (`docs/DECISIONS.md`, 2026-10-24 "El integrante 3 arma la base común").
+
 ## Reglas de fase
 
 **Estados:** `pendiente`, `en curso`, `cerrada (AAAA-MM-DD)`.
@@ -147,8 +181,8 @@ está mergeado.
 al paciente.
 
 **Alcance:**
-- Antes del paso 1: la base común de los catálogos (`docs/DESIGN.md`, sección 7). La arma una
-  persona que todavía no tiene nombre. HU-001 no es un catálogo, así que no la espera.
+- Antes del paso 1: la base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el
+  integrante 3. HU-001 no es un catálogo, así que no la espera.
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
     ocupaciones (28) y HU-026 municipios (25).
@@ -178,7 +212,9 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   las remisiones a la atención y, en HU-030, validar la creación a mano con su categoría activa. La
   línea "Operaciones por escenario" ya la tienen.
   **Entró:** 2026-10-22, PR de siembra.
-- Estimar las 12 historias de 1 a 10 en clase y poner D-12 en esa escala.
+- Votar en clase la complejidad de las 12 historias, a partir de la propuesta de la sección
+  "Estimación de las 12 historias", y pasar el número votado al campo "Estimación relativa" de cada
+  tarjeta. D-12 ya está en la escala de 1 a 10.
   **Entró:** 2026-10-22, PR de siembra.
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
   `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno, o el archivo de la base que lo trae, se

@@ -78,6 +78,9 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   `docs/DECISIONS.md`.
 - **escenario**: un criterio de aceptación en forma Dado, Cuando, Entonces, numerado dentro de su
   historia.
+- **estimación**: la complejidad de una historia, de 1 a 10, donde 10 es la más difícil. Sube con
+  las dependencias directas y no depende de la prioridad. La vota el equipo en clase [2.5]; la del
+  modelo es una propuesta (2026-10-24 "La complejidad se estima de 1 a 10").
 - **historia de usuario** o **HU**: un pedido con formato Como, Quiero, Para y sus escenarios. El
   backlog tiene 30, con ID de HU-001 a HU-043; los números que faltan son tarjetas archivadas.
 - **inactivar**: dejar de ofrecer un valor de catálogo en registros nuevos sin borrarlo; los
@@ -91,6 +94,8 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   paciente, HU-004, HU-001, HU-005 y HU-006 (2026-10-22 "Se desarrollan las 12 historias del plan
   B"). Desde el 2026-10-24 se reparte entre 3 integrantes (2026-10-24 "Tres integrantes con cuatro
   historias cada uno").
+- **prioridad**: el valor de una historia para el cliente, en el campo Prioridad de su tarjeta. Las
+  12 de la fase 0 dicen "Alta", así que no las ordena: las ordenan sus dependencias.
 - **RC-n**: una regla común del backlog, de RC-1 a RC-11, en
   `docs/context/trello/tarjetas/RC-reglas-comunes.md`.
 - **referencia oficial**: el documento de la fuente que respalda crear, cambiar o inactivar un valor
@@ -113,8 +118,8 @@ producto.
   git con los catálogos ya cargados, y git no mezcla dos cambios suyos (2026-10-24 "La base es H2
   en un archivo que va en git"; 2026-10-24 "El archivo de la base trae los catálogos cargados").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
-  0, RC-1 a RC-11 y la búsqueda de D-23. Se arma antes del paso 1 (2026-10-24 "Los catálogos
-  comparten una base común").
+  0, RC-1 a RC-11 y la búsqueda de D-23. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los
+  catálogos comparten una base común"; 2026-10-24 "El integrante 3 arma la base común").
 - **controlador**: en la fase 0, el menú en terminal que lee la opción y llama al servicio. No hay
   controladores web (2026-10-24 "El código se separa en modelo, vista y controlador").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la

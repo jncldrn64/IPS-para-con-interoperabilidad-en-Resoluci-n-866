@@ -1428,6 +1428,40 @@ los catálogos oficiales.
 
 **Estado:** `vigente`
 
+## 2026-10-24: La estimación de 1 a 10 y quién arma la base común
+
+**Contexto:** el autor fusionó el PR #6 del fork (61b9ee8) y escribió, textual:
+
+- "aun faltan detalles como la estimacion, si bien tenemos la prioridad, por que la prioridad
+  entiedo que es aqueyo que le da segun el principio must valor a la entrega al cliente, la
+  estimacion de complejidad de 1 a 10 donde 10 es muy dificil realmente es lo que podemos definir,
+  por que realmente segun esto que estoy proponiendo, el crud del propio pasiente no puede
+  existir, de hecho si nos tomamos literalmente que el integrante 1 hace lo primero, no tiene
+  sentido que tome elemntos del paciente ,cuando aun no se puede crear el paciente con todos sus
+  16 atributos por que aun no exbisten los catalogos."
+
+Lo que respondió el modelo:
+
+- La guía pide historias "estimadas correctamente en clase", o un video con todos [2.5]. El modelo
+  prepara una propuesta, y el número que vale es el que vote el equipo.
+- Las 12 tarjetas dicen "Prioridad: Alta", no "Must". Es la misma idea, el valor para el cliente,
+  pero con las 12 iguales no ordena nada; ordenan las dependencias.
+- El paciente no se toca hasta que existan los 8 catálogos, y por eso el plan ya lo hace así. El
+  integrante 1 hace HU-001, HU-022 y HU-026 en los pasos 1 a 3, y su HU-005 queda en el paso 5,
+  después de HU-004.
+- Propuesta: complejidad = trabajo propio de 1 a 3 + dependencias directas, tope 10. Da 1 a los
+  catálogos con lista del anexo, 2 a los externos, 3 a HU-022, HU-026 y HU-001, 4 a HU-005, 5 a
+  HU-006 y 10 a HU-004. Por integrante: 13, 15 y 9.
+
+El modelo hizo dos preguntas, y el autor eligió las dos recomendadas: "Escribirla como propuesta" y
+"El integrante 3" para armar la base común.
+
+Hecho en el PR que sigue a 61b9ee8: `docs/ROADMAP.md`, sección "Estimación de las 12 historias";
+D-12 en la escala de 1 a 10; entradas 2026-10-24 "La complejidad se estima de 1 a 10" y 2026-10-24
+"El integrante 3 arma la base común"; "estimación" y "prioridad" en el glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1557,7 +1591,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000. **Próximo (2026-10-24, el archivo de la base):** que el autor revise y fusione el PR
+0000000000000. **Próximo (2026-10-24, estimación):** que el autor revise y fusione el PR de la
+   estimación. Después: votar la complejidad en clase o con video, y pasarla a las tarjetas; lo que
+   el modelo agregó sobre el archivo de la base sigue sin respuesta (carga desde la historia, cómo
+   se rehace cuando dos PR chocan, licencia de los datos oficiales).
+000000000000. **Anterior (2026-10-24, el archivo de la base):** que el autor revise y fusione el PR
    que dice para qué va en git el archivo de la base, y que conteste lo que el modelo agregó: la
    carga de cada catálogo desde su historia, cómo se rehace la carga cuando dos PR chocan, y la
    licencia de los datos oficiales. Lo demás de la entrada anterior sigue igual.
