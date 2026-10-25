@@ -1190,6 +1190,41 @@ hora de Colombia, aunque los commits muestran UTC. Autor, textual:
   en `trello/tandas/` no entran: su contenido ya está en el plan, el CHANGELOG y las tandas.
 **Estado:** `vigente`
 
+## 2026-10-24: El primer PR real se fusiona; el equipo pasa a 3
+
+**Contexto:** el autor fusionó el PR #2 del fork, que dejó su `main` en d7f6284 con la siembra, los
+enunciados, esta memoria y el orden de las 30 historias. Después escribió, textual:
+
+- "ahora mismo, realmente no tenemos decidido quien hace que, pasamos de 4 integrantes a 3,
+  entoces 4 historias de usuario sean hechas por cada integrante, asi que crea un plan estrategico
+  que quien deberia tener que carga; si las ramas no las necesitas borraras, por que puede haber
+  confucion, pero recuerda dejar donde deberia datos de esto, por que creo que sera muy
+  importante. dicho esto, entiedo que tienes contexto del proyecto? por que quiero establecer
+  reglas para que los modelos de los companeros sepan trabajar en lo mismo... quieres te que pase
+  el pdf de el proyecto y tambien las transcripciones? o ya crees que tienes todo el contexto?....
+  he hecho mis archivos son aun mas: te mostrare mi estructura al completo, realmente en POST es
+  todo aquello que ya te he subido y explicado, por que supone el salto que aquello qque haremos,
+  pero la carpeta PRE tiene ahi estan los previos a esa intervencios dicha en POST, sin envargo
+  entiendo que las transcripcones junto al proyecto que clase que ensta en base te deberian dar
+  una idea con lo que estamos lidianto..."
+- Reparto propuesto por el modelo, en `docs/ROADMAP.md`, sección "Orden de las 30 historias":
+  integrante 1 con HU-001, HU-022, HU-026 y HU-005 (80 escenarios); integrante 2 con HU-034,
+  HU-018, HU-038 y HU-004 (82); integrante 3 con HU-036, HU-037, HU-035 y HU-006 (81). Son 5
+  pasos, con HU-005 y HU-006 a la vez en el último. Qué persona es cada número no está decidido.
+- Decisiones nuevas en `docs/DECISIONS.md`: 2026-10-24 "Se trabaja en el fork del autor hasta que
+  Atervolgo lo habilite", con la tabla de las ramas borradas, y 2026-10-24 "Tres integrantes con
+  cuatro historias cada uno". La fase 0 del ROADMAP queda cerrada.
+- Ramas borradas del fork: `test` (f0ab79a) y `claude/wizardly-newton-ztyb85` (c8b9d9c). Sus
+  commits siguen en la historia de Atervolgo, por su PR #3 y el revert de su PR #4. La rama de la
+  sesión, `claude/wonderful-galileo-12jxag`, se queda para los PR de Claude Code.
+- Sobre el contexto: el modelo tiene el backlog, las tandas, las tarjetas, los documentos de
+  `docs/` y esta memoria. No tiene las fuentes que esta memoria pone arriba en su jerarquía (sección
+  1): el PDF del anexo, la guía del docente "Proyecto de Clase", las transcripciones de los
+  elementos 1 a 23 y 24 a 49, los comentarios del docente por historia y el Prompt 2 del docente.
+  Se le pidieron al autor antes de escribir reglas para los modelos de los compañeros, junto con
+  el `ls -Ral` de su carpeta `PRE`.
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1301,7 +1336,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000. **Próximo (2026-10-24, después del revert):** que el autor revise y fusione el primer PR
+0000000. **Próximo (2026-10-24, con el PR #2 fusionado):** que el autor revise el reparto en 3
+   integrantes y diga qué persona es cada número; que mande las fuentes primarias (guía del
+   docente, PDF del anexo, transcripciones, comentarios del docente y Prompt 2) y el `ls -Ral` de
+   su carpeta `PRE`. Con eso, escribir las reglas para que los modelos de los compañeros trabajen
+   en el mismo repositorio. En Trello sigue lo del 2026-10-24.
+000000. **Anterior (2026-10-24, después del revert):** que el autor revise y fusione el primer PR
    real del fork, contra su `main`. Después, cada cambio en una rama con su PR en borrador. Por
    decidir: qué persona es cada integrante del plan (el ROADMAP los numera), y qué se hace con las
    ramas viejas `test` y `claude/wizardly-newton-ztyb85`, que ya no hacen falta. En Trello sigue lo

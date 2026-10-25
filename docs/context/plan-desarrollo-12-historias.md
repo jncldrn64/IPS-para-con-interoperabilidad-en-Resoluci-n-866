@@ -4,6 +4,11 @@ Versión 3, 2026-10-24. Propuesta del equipo para llevar a clase. Sale del backl
 historias, 529 escenarios) y de las reglas que el docente dio para el desarrollo. Las historias y
 sus dependencias están en las tandas del backlog v3 y en el kit de Trello.
 
+**Nota del 2026-10-24:** el equipo pasó a 3 integrantes con 4 historias cada uno. El reparto de
+las secciones 3 y 4, pensado para 4 integrantes, quedó viejo; el vigente está en
+`docs/ROADMAP.md`, sección "Orden de las 30 historias" (`docs/DECISIONS.md`, 2026-10-24 "Tres
+integrantes con cuatro historias cada uno").
+
 ## 1. Reglas del desarrollo
 
 Las reglas son del docente, según lo que contó el autor:
