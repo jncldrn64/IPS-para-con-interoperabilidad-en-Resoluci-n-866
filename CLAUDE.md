@@ -18,7 +18,11 @@ Antes de tocar nada se lee, en este orden:
 5. `docs/DECISIONS.md`, por sus títulos: `grep '^## ' docs/DECISIONS.md` y se leen las entradas
    que toca el trabajo. Antes de proponer un cambio de estructura o de método se lee además la
    entrada "Ideas descartadas", que existe para que nadie las vuelva a proponer.
-6. `docs/TEMPORARY-CONTEXT.md`, último: lo más volátil. Su estado normal es vacío, y se lee igual,
+6. `docs/context/MEMORIA-CONTEXTUAL.md`, entera: la memoria de trabajo del modelo, con sus
+   instrucciones en la sección 0 y lo pendiente en la sección 12. No manda sobre ningún documento
+   canónico (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a ser la memoria del
+   modelo").
+7. `docs/TEMPORARY-CONTEXT.md`, último: lo más volátil. Su estado normal es vacío, y se lee igual,
    porque una línea de ahí puede contradecir lo que uno estaba por proponer.
 
 ## 2. Jerarquía: qué manda cuando dos dicen cosas distintas

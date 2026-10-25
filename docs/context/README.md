@@ -29,10 +29,12 @@ porque los textos se citan entre sí por ruta.
 | `modelo-datos/` | Modelo entidad-relación propuesto, 24 tablas en Mermaid, y dos PNG | Borrador |
 | `revisiones/` | Las revisiones independientes de cada tanda y su aplicación | Historia |
 | `tablero-validacion-ips-20oct.xlsx` | Tablero del equipo: validación del anexo, decisiones D-01 a D-27, ajustes por historia | Historia |
-| `MEMORIA-CONTEXTUAL.md` | Registro de trabajo del modelo en el chat donde se escribió todo, del 2026-10-18 al 2026-10-22 | Historia |
+| `MEMORIA-CONTEXTUAL.md` | Memoria de trabajo del modelo desde el 2026-10-18: decisiones del autor con sus palabras, bitácora y pendientes | Memoria del modelo |
 
 "Fuente" quiere decir que una historia se corrige ahí primero. Una tarjeta que choca con su tanda
-está mal y se corrige en el mismo PR.
+está mal y se corrige en el mismo PR. "Memoria del modelo" quiere decir que se actualiza con cada
+decisión del autor y no manda sobre los documentos de `docs/` (`docs/DECISIONS.md`, 2026-10-24 "La
+memoria contextual vuelve a ser la memoria del modelo").
 
 ## 2. Lo que no está
 

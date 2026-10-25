@@ -1002,6 +1002,13 @@ valor... entonces por lo que dice las depencias cambian en cada spring".
   HU-004), repartidas en 3 integrantes con 65, 69 y 68 escenarios. Cuarto integrante: plan A
   (HU-001, HU-010, HU-011: inicio de sesión y oposición) o plan B (HU-001, HU-005, HU-006: paciente
   completo). Pendiente que el autor elija.
+- 2026-10-22, criterio del autor, textual: "si se puede almacenar uno, se deberia poder cambiar,, 4
+  va con 5 y 6, el resto de catalogos dice mantenimiento, por lo que son su crud auto completo, el
+  unico que esta separado es el de paciente". Con eso suma 11 (los 8 catálogos, HU-004, HU-005 y
+  HU-006) y deja 1 cupo. El modelo señaló que ese cupo no es libre: HU-005 y HU-006 dependen de
+  HU-001, y HU-006 con razón propia (el docente pidió en HU-006 c2 el nombre y la identificación
+  de quien corrige; artículo 10, parágrafo 2). Resultado: es el plan B; la oposición y la voluntad
+  anticipada no se desarrollan este semestre.
 **Estado:** `vigente`
 
 ## 2026-10-22: Correcciones mínimas a las 12 del plan B y siembra del repositorio
@@ -1030,6 +1037,158 @@ HU-004. **Corrección al autor, repetida:** "más de 5" valores, no "5 o más" n
 1.2 se siembra con él. Desde ahí, los documentos de `docs/` del repositorio son la referencia y este
 archivo queda como historia. **Sin regenerar:** la lámina de HU-004 (le falta el escenario 15) y la
 hoja Backlog v3 del tablero; los generadores no vinieron en el zip. **Estado:** `vigente`
+
+## 2026-10-22: Revisión de la siembra hecha en otra sesión
+
+**Contexto:** el autor subió `pr-siembra.md`, `INSTRUCCIONES-subir-con-gitbash.md`,
+`cambios-historias.zip` y `siembra-archivos.zip`, hechos en otra sesión a partir de lo entregado
+aquí. Autor, textual: "inicialmente pense que por la compresion los encunciados de las HU no dejaban
+claram ente implicicto que los catalogos son crud o 4 HU juntan en agregar, editar, desactviar,
+leer, pero ya veras".
+- Comprobado: el material de partida es igual al de este espacio salvo los 18 archivos que cambió
+  la otra sesión. En un clon del repositorio (público; `main` sigue en d70a6f8), los pasos de las
+  instrucciones dan 100 cambios (85 A, 12 M, 3 D), 0 llaves dobles y la tabla del PR archivo por
+  archivo.
+- Las 12 historias: ningún escenario remite fuera del grupo ni a una historia que depende de la
+  suya; HU-005 escenario 13 prueba lo que los catálogos dejaron de mirar; 529 escenarios.
+  Observación del modelo: la línea "CRUD por escenario" pone la versión nueva solo en crear, y ese
+  escenario crea, actualiza, reactiva e inactiva.
+- Señalado al autor: el repositorio es público y `MEMORIA-CONTEXTUAL.md` sube completa (nombres del
+  equipo, citas textuales sobre el docente y los modelos de los compañeros, ruta local). Con el zip
+  todo queda en un commit, y `pr-siembra.md` y `docs/context/README.md` describen tres.
+- Tarjeta HU-022: 15.623 caracteres el 2026-10-21 (sin "Cargo sin permiso") y 15.688 con la línea
+  CRUD. El 15.295 que cita la otra sesión no está en esta memoria.
+- Los generadores de este espacio no tienen las correcciones del 2026-10-22: regenerar la tanda 4
+  desde ellos las borraría. Desde la subida, la fuente es el repositorio. La copia del repositorio
+  no trae la última línea de la entrada anterior (el cupo 12 es HU-001): el zip se armó antes.
+**Estado:** `vigente`
+
+## 2026-10-24: Copia local del autor y el título de los catálogos
+
+**Contexto:** el autor aclaró que a la otra sesión le pidió recuperar lo perdido en la compresión y
+poblar el repositorio, y que esa sesión decidió el cómo; para la subida solo usará los 4 elementos
+de `Subir/`. Mandó el `ls -Ral` de su carpeta `POST`. Autor, textual:
+- "aun no estoy convencido que literalmente se llamen mantenimiento, por que el modelo debio hacer
+  arreglos para que con el encunciado de la descripcion quedara clado, por que creo que
+  manentimiento es muy general"
+- Comparación por tamaño: 89 de 93 archivos iguales a la versión del zip. Distintos:
+  `MEMORIA-CONTEXTUAL.md`, `PLAN-BACKLOG-V3.md`, `LEEME-kit-trello.md` y
+  `respuestas-al-docente.md`; los suyos tienen el tamaño de los de este espacio, y el zip trae los
+  de la otra sesión.
+- Corrección del modelo a sí mismo: el título "carga y mantenimiento" y el Quiero "cargar... y
+  mantenerlo igual a la fuente" son suyos, del 2026-10-20, al fundir las cuatro tarjetas de cada
+  catálogo; no los perdió la compresión. El prompt 2 pide un título "específico y orientado al
+  resultado" (línea 211), y el docente revisó en la v2 cuatro tarjetas por catálogo (Carga,
+  Consulta, Actualización, Eliminación).
+- Propuesto: título y Quiero con las cuatro operaciones, la línea de operaciones con las mismas
+  palabras y la versión nueva en las cuatro; en un segundo PR después de la siembra.
+- Autor, textual: "a todas, asi solo vayamos a utilizar ciertas para el primire spring, y cuando
+  termines, dame todo en forma estructurada asi como tengo yo, para sobreescribir los archivos que
+  necesitan cambios y lo que le enviare a claude code". El modelo tomó la opción 1 (título y
+  Quiero), la que había recomendado; el autor no eligió entre las tres.
+- Aplicado a las 13 historias de catálogo: tanda 4 en versión 5 y tanda 5 en versión 4. Ningún
+  escenario cambió: 30 historias y 529 escenarios. Las tarjetas salen del kit, que antes reproducía
+  las 31 de la siembra byte a byte; cambian 13. Láminas: 13 de catálogo con el título nuevo y la de
+  HU-004 con el escenario 15, el aviso del escenario 12 sin enlace a la consulta y la confirmación
+  con el documento. Tablero regenerado con la cadena: frente al de la siembra cambian 18 celdas (13
+  títulos en Backlog v3; D-02, D-04, D-17, D-20 y D-23 en Decisiones); 376 fórmulas, 0 errores,
+  verificador sin problemas.
+- Corrección a la otra sesión: la hoja Backlog v3 del tablero no cuenta escenarios, así que el
+  pendiente de "actualizarla a 529" no tenía objeto.
+- Prosa medida con los comandos de `CLAUDE.md`: las líneas base de la siembra se reproducen; con
+  estos cambios quedan 190.068 palabras y la regla 8 en 120 de 862 (13,9 %); las demás, iguales.
+- Entregado: un zip con la estructura de la carpeta `POST` del autor y, adentro, `Subir-2/` con el
+  zip de rutas del repositorio y el handoff para Claude Code. Las entradas de `docs/` las escribe
+  Claude Code. Esta memoria y `PLAN-BACKLOG-V3.md` no van en ese PR: el repositorio los trata como
+  historia.
+- Generadores: las versiones de láminas y tablero con estos cambios están en `/home/claude/scripts`.
+  `generar_catalogos.py` y `armar_tandas_catalogos.py` no producen las correcciones del 2026-10-22
+  ni el Quiero nuevo: la fuente de las tandas son los `.md` del repositorio.
+**Estado:** `vigente`
+
+## 2026-10-24: Claude Code siembra el fork; el PR #3 entra en Atervolgo y se revierte
+
+**Contexto:** en una sesión de Claude Code en la nube, el autor entregó el handoff y
+`enunciados-archivos.zip` de `Subir_Actual`, y después los 4 de `Subir_Old`. Las fechas van en
+hora de Colombia, aunque los commits muestran UTC. Autor, textual:
+
+- "hice un fork exacto del repo de Atervolgo,, por que claude code no tiene acceso ahi por algun
+  motivo, en teoria lo que esta en Atervolgo ahora lo tengo yo, en teoria solo deberia tener una
+  plantilla, no la siembra real de los documentos, mientras aparece Atervolgo para habilitar
+  claude, trabajare en este repo, y buscare la manera de que el claude code de los demas tambien
+  tengan los mismo permisos.."
+- Fork: `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`, con `main` en d70a6f8, igual
+  al de Atervolgo. La siembra no estaba en ninguno de los dos.
+- Siembra en la rama `claude/wizardly-newton-ztyb85`: d6169b8 con el zip y los 3 borrados (100
+  cambios: 85 A, 12 M, 3 D; 0 llaves dobles; numstat igual a `pr-siembra.md`; líneas base
+  reproducidas) y c8b9d9c, que corrige `docs/context/README.md` porque describía tres commits. Va
+  en el PR #1 del fork, en borrador, contra el `main` del fork.
+- Enunciados en f0ab79a, encima de la siembra: los 32 archivos y las secciones 3.1 a 3.5 del
+  handoff. Comprobado: 529 escenarios sin cambio de texto, bloque por bloque en las 30 tarjetas;
+  13 títulos nuevos y 0 "carga y mantenimiento"; 18 celdas y 376 fórmulas en el tablero, sin
+  recalcular; lámina de HU-004 con "Esc. 15"; HU-022 con 15.894 caracteres. Prosa: ninguna línea
+  base sube, y la regla 8 queda en 120 de 871 (13,8 %) sobre 190.552 palabras. Del borrador del
+  handoff cambió solo la forma: la Decisión en dos párrafos (tenía 8 oraciones) y tres líneas
+  llevadas a 100 columnas.
+- Al preguntarle cómo publicar los enunciados, el autor respondió, textual:
+- "Recuerda que los primeros dos archivos son las instrucciones reales, los 4 ultimos solo son de
+  referencia, asi que si las nuevas instrucciones son son claras referentie a las viejas crea una
+  rama test con tu commit, que entiendo que el PR me hace ami tambien hacerla."
+- Se subió la rama `test` en f0ab79a, sin PR. La rama de la sesión,
+  `claude/wonderful-galileo-12jxag`, quedó en el mismo commit.
+- El autor abrió un PR desde `test` con el botón "Compare & pull request", que en un fork propone
+  como destino el repositorio original. Quedó como Atervolgo#3 y se fusionó (2e2faa8). Autor,
+  textual:
+- "test hice merge, pero no no estoy seguro de el por que, como te he dicho, no estamos trabajando
+  en el Atervolgo, no se por que la pull reques es para el repo padre, voy y vamos a trabajar en
+  mi fork, por que ahi tengo los permisos para darle autorizacion al resto de colaboradores, en
+  Atervolgo no tengo permisos de absolutamente nada, si quiera puedo hacer merge a sus
+  pullrequest, me explico?"
+- Comprobado: los merges de Atervolgo#3 y #4 son de la cuenta jncldrn64, y la lista de
+  repositorios de la sesión daba permiso de escritura en Atervolgo. A Claude Code se le negó
+  agregar Atervolgo con escritura en esta sesión. Autor, textual:
+- "primero quiero revertir lo que quiera que hayamos hecho en Atervolgo, y quiero saber que hago
+  con lo de la captura; trabajaremos en el test en mi fork, y cuando el dueno de Atervolgo
+  aparezca ahi si hacemos un pull para llevar todo el trabajo mio y de los colaboradores que no
+  pueden estar en el repo, hacia el original"
+- El autor revirtió con el botón Revert: Atervolgo#4, con `main` en 69675e9 y el mismo árbol que
+  d70a6f8 (comprobado con `git diff`). La captura mostraba el aviso "Compare & pull request" de la
+  rama de la sesión: no se aprieta, y se va solo.
+- d6169b8, c8b9d9c y f0ab79a quedaron en la historia de Atervolgo, con el revert encima. Un PR
+  armado con esos mismos commits traería a Atervolgo solo lo nuevo, y antes habría que revertir
+  el revert. Mientras tanto, no se usa "Sync fork" en el fork.
+- `POST.zip` (92 archivos) frente a `test`: 86 iguales; distinta solo esta memoria, porque la del
+  repositorio es la de la siembra, sin la entrada del 2026-10-22 "Revisión de la siembra hecha en
+  otra sesión" ni la del 2026-10-24; fuera del repositorio, los 5 de trabajo (los dos antes y
+  después, los dos LEEME de cambios y el patch); `trello/tandas/` repite tres tandas de la raíz.
+  Autor, textual:
+- "No se utilizar, forks, este en un nuevo mundo para mi, quiero saber que  el pull reques que
+  esta en draft en mi repo es lo que realmente quiero, y ya hice el revert en el repo de
+  Atervolgo.... por otro lado desde ahora usaras MEMORIA-CONTEXTUAL.md como tu propia memoria, e
+  instrucciones."
+- **Choca con el repositorio:** `docs/DECISIONS.md`, 2026-10-22 "El material del backlog entra en
+  docs/context", deja esta memoria como historia y el estado del proyecto en `docs/`. Usarla otra
+  vez como memoria cambia esa decisión, así que el PR que la suba lleva una entrada nueva.
+- El autor aclaró qué es cada carpeta y pidió el primer PR completo. Autor, textual:
+- "Si bien dichos archivos en parte son de post, habia creado dos carpetas, para la siembra, donde
+  el Subir_old tiene instrucciones desfadas, y el Subir_actual tenia correciones, y explicaciones
+  de nuevos archivos, y cambios que habia hecho, sobre todo a los encunciados de las 12 historias
+  de usario que utilizaremos... cierra todo los PR, por que ahora mismo si bien tienes cambios,
+  quiero asegurarme que el primer PR real que aceptare en mi fork, tendra todos los archivos en
+  siembra necesarios con los cambios propiestos por los promts; y si bien siento que subir tal
+  cual archivos de mi estructura post, me parece raro, lo permitire, puesto que pensaba que en la
+  siembra todo estaria listado tal cual los archivos se listarian, no pense que tal cual subirian
+  HU de forma contextual; yo hubiese como minimo en el roadmap especificar cada HU que debe ser
+  atacado y en que orden... es mas tu memoria contextual actual en cierta forma ayuda a poblar el
+  resto de aspectos de las demas documentaciones propuestas por las plantillas."
+- Hecho: se cerró el PR #1 del fork, el único abierto. El primer PR real va contra el `main` del
+  fork, con commits nuevos desde d70a6f8: siembra, enunciados, esta memoria como memoria del
+  modelo y el orden de las 30 historias en `docs/ROADMAP.md`. Con commits nuevos, llevarlo a
+  Atervolgo no pide revertir el revert, porque la base común sigue siendo d70a6f8.
+- Respondido con eso: la memoria puede estar en el repositorio público, porque el autor permite
+  subir su carpeta `POST` tal cual. Los 5 archivos de trabajo de `trello/` y la copia de las tandas
+  en `trello/tandas/` no entran: su contenido ya está en el plan, el CHANGELOG y las tandas.
+**Estado:** `vigente`
 
 ## 10. Correcciones registradas
 
@@ -1105,6 +1264,17 @@ hoja Backlog v3 del tablero; los generadores no vinieron en el zip. **Estado:** 
 - **Del modelo a sí mismo (2026-10-20, al regenerar los mockups):** una variable nueva tapó otra con
   el mismo nombre y el panel de versión nueva salió repetido en las 13 láminas de catálogo. Se vio
   al mirar la imagen de HU-034 y se corrigió antes de entregar.
+- **Del modelo a sí mismo (2026-10-22, al revisar la siembra):** la columna de dónde se cita cada
+  decisión, en la hoja Decisiones del tablero, nombra historias archivadas en D-02, D-04, D-17, D-20
+  y D-23, y D-23 no nombra las 14 historias que la citan. Viene del llenado del 2026-10-20.
+- **Del modelo a sí mismo (2026-10-24, Claude Code):** subió esta memoria a ramas públicas del
+  fork, y por el PR #3 a Atervolgo, sin haber leído la advertencia del 2026-10-22 sobre el
+  repositorio público. La leyó al recibir `POST.zip`.
+- **Del modelo a sí mismo (2026-10-24, Claude Code):** recomendó "Sync fork" para poner al día el
+  fork. Con el revert en Atervolgo, sincronizar trae el revert, y después `test` ya no entra en
+  ese `main`. Corregido en el mensaje siguiente.
+- **Al autor (2026-10-24):** "en Atervolgo no tengo permisos": los merges de Atervolgo#3 y #4 son
+  de su cuenta.
 
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
@@ -1131,7 +1301,16 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000. **Próximo (2026-10-22):** el plan B está en To do y sus 12 historias, corregidas. Falta
+000000. **Próximo (2026-10-24, después del revert):** que el autor revise y fusione el primer PR
+   real del fork, contra su `main`. Después, cada cambio en una rama con su PR en borrador. Por
+   decidir: qué persona es cada integrante del plan (el ROADMAP los numera), y qué se hace con las
+   ramas viejas `test` y `claude/wizardly-newton-ztyb85`, que ya no hacen falta. En Trello sigue lo
+   del 2026-10-24.
+00000. **Anterior (2026-10-24):** subir la siembra (los 4 elementos de `Subir/`) y después darle a
+   Claude Code `Subir-2/`. En Trello: renombrar las 13 tarjetas de catálogo, pegar sus descripciones
+   y cambiar 14 láminas (`LEEME-kit-trello.md`, sección "Si el tablero ya tiene las tarjetas").
+   Sigue abierto si `MEMORIA-CONTEXTUAL.md` debe quedar en un repositorio público.
+0000. **Anterior (2026-10-22):** el plan B está en To do y sus 12 historias, corregidas. Falta
    rehacer la lámina de HU-004 y la hoja Backlog v3 del tablero, y decidir si HU-030 y HU-039 a
    HU-042 reciben las mismas correcciones. El seguimiento sigue en `docs/ROADMAP.md` del repositorio.
 000. **Anterior (2026-10-21, límite de 12 historias):**

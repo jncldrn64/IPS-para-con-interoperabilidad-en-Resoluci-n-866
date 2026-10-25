@@ -157,3 +157,32 @@ La hoja Backlog v3 del tablero no cuenta escenarios: el pendiente de actualizarl
 término técnico. Cambiar solo las 8 del plan, descartado por los dos estilos de título.
 
 **Estado:** `vigente`
+
+## 2026-10-24: La memoria contextual vuelve a ser la memoria del modelo
+
+**Contexto:** La entrada 2026-10-22 "El material del backlog entra en docs/context" dejó
+`docs/context/MEMORIA-CONTEXTUAL.md` como historia y el estado del proyecto en `docs/`. Esa
+entrada no se edita y sigue diciendo `vigente`; esta la reemplaza en ese punto. El autor, el
+2026-10-24:
+
+- "por otro lado desde ahora usaras MEMORIA-CONTEXTUAL.md como tu propia memoria, e instrucciones."
+
+Sobre subir su carpeta tal cual a un repositorio público, que la memoria había dejado abierto:
+
+- "si bien siento que subir tal cual archivos de mi estructura post, me parece raro, lo permitire"
+
+**Decisión:** La memoria es la memoria de trabajo del modelo. Se lee entera antes de trabajar en el
+proyecto, como pide su sección 0, y se actualiza en el mismo PR que trae una decisión del autor,
+con sus palabras textuales. No manda sobre ningún documento canónico: si choca con uno, manda el
+canónico y el choque se anota en la bitácora de la memoria. Entra en el orden de lectura de
+`CLAUDE.md`, sección 1, antes de `docs/TEMPORARY-CONTEXT.md`.
+
+La copia del repositorio pasa a la del autor del 2026-10-24, con la entrada de la sesión de Claude
+Code que la sube. No retoma la idea descartada de confiar en la memoria del modelo entre sesiones
+(2026-10-22 "Ideas descartadas"): esta memoria es un archivo del repo.
+
+**Alternativas:** Dejarla como historia y llevar todo en `docs/`, lo del 2026-10-22, descartado
+por el autor. Sacarla del repositorio público por los nombres del equipo y la ruta local,
+descartado porque el autor permite subir su carpeta tal cual.
+
+**Estado:** `vigente`

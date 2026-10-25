@@ -29,6 +29,9 @@ el producto trae sus propias palabras.
 - **Hipótesis**: el marcador de una inferencia hecha al reconstruir contexto, con su base a la
   vista. Su contraparte es **Sin origen recuperable**.
 - **línea base**: un conteo de prosa medido en una fecha con un comando escrito. No puede subir.
+- **memoria contextual**: `docs/context/MEMORIA-CONTEXTUAL.md`, la memoria de trabajo del modelo.
+  Se lee entera antes de trabajar, se actualiza con cada decisión del autor y no manda sobre ningún
+  documento canónico (2026-10-24 "La memoria contextual vuelve a ser la memoria del modelo").
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
 - **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG y no sube

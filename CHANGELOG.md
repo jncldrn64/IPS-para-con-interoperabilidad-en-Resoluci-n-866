@@ -7,9 +7,13 @@
 
 ## v0.1 — 2026-10-24
 
-Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones.
+Solo documentación. Los títulos de los catálogos nombran sus cuatro operaciones, y la memoria
+contextual vuelve a ser la memoria del modelo.
 
 ### Changed
+- `docs/context/MEMORIA-CONTEXTUAL.md` vuelve a ser la memoria de trabajo del modelo. Entra en el
+  orden de lectura de `CLAUDE.md`, sección 1, y se actualiza con cada decisión del autor. La copia
+  pasa a la del autor del 2026-10-24.
 - Las 13 historias de catálogo se titulan "carga, consulta, actualización e inactivación", y su
   Quiero nombra esas operaciones. La línea de operaciones por escenario usa los mismos nombres y
   pone la versión nueva en las cuatro. Ningún escenario cambia.
