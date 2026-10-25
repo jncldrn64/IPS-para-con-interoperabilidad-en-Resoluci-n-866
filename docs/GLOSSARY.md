@@ -110,7 +110,8 @@ Ninguna de estas palabras nombra código que ya exista: el repositorio todavía 
 producto.
 
 - **archivo de la base**: el archivo de H2 donde quedan los datos entre una corrida y otra. Va en
-  git, y git no mezcla dos cambios suyos (2026-10-24 "La base es H2 en un archivo que va en git").
+  git con los catálogos ya cargados, y git no mezcla dos cambios suyos (2026-10-24 "La base es H2
+  en un archivo que va en git"; 2026-10-24 "El archivo de la base trae los catálogos cargados").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
   0, RC-1 a RC-11 y la búsqueda de D-23. Se arma antes del paso 1 (2026-10-24 "Los catálogos
   comparten una base común").
