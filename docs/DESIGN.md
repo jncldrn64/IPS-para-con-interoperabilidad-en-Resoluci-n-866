@@ -109,7 +109,8 @@ corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo em
 ## 8. La base de datos
 
 **Regla:** H2 en modo archivo, y el archivo de la base va en el repositorio. Se cambia por turnos,
-y las pruebas corren sobre otra base, con otro nombre.
+y las pruebas corren sobre otra base, con otro nombre. El turno lo tiene quien tenga abierto el PR
+que cambia el archivo, y la base de prueba arranca como copia del archivo.
 
 **Por qué:** los datos quedan entre una corrida y la siguiente, y quien necesita un catálogo lo
 encuentra ya cargado en el archivo.
@@ -119,19 +120,19 @@ por turnos. Correr el programa también lo cambia: las pruebas usan otra base pa
 prueba no llegue a git.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "La base es H2 en un archivo que va en
-git", 2026-10-24 "El archivo de la base trae los catálogos cargados", 2026-10-25 "El archivo de la
-base se cambia por turnos" y 2026-10-25 "Las pruebas corren sobre otra base".
+git", 2026-10-24 "El archivo de la base trae los catálogos cargados", y del 2026-10-25 "El archivo
+de la base se cambia por turnos", "Las pruebas corren sobre otra base", "El turno del archivo de la
+base es del PR abierto" y "La base de prueba arranca como copia del archivo".
 
 ## 9. Sin escribir todavía
 
 Este archivo es una semilla mientras esta lista tenga algo.
 
 - Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
-- Cómo se sabe quién tiene el turno del archivo de la base. El modelo propuso que lo tenga quien
-  tiene abierto el PR que lo cambia.
 - Qué propiedades de `application.properties` actualizan las tablas, crean la base y cambian su
   nombre para probar, con la corrida que lo muestre.
-- Cómo arranca la base de prueba, que nueva nace sin catálogos.
+- Cómo se cambia el nombre de la base para probar sin subir ese cambio a git, porque
+  `application.properties` va en el repositorio.
 - Qué interfaz de Spring extiende cada repositorio, con la corrida que lo muestre, en el primer PR
   de código.
 - Cómo se arma el menú: uno solo para las 12 historias, o uno principal que llama a un menú por

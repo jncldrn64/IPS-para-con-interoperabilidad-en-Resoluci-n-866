@@ -670,3 +670,66 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
 **Alternativas:** **Sin origen recuperable.**
 
 **Estado:** `vigente`
+
+## 2026-10-25: El autor es el integrante 3
+
+**Contexto:** `docs/ROADMAP.md` numera a los integrantes del 1 al 3 y dejaba al equipo decidir qué
+persona es cada número. La base común es del integrante 3 (2026-10-24 "El integrante 3 arma la base
+común"), y el autor quería armar él el catálogo de ejemplo. El modelo le preguntó cómo quedaba eso,
+y el autor eligió la opción "Yo soy el integrante 3".
+
+**Decisión:** El autor es el integrante 3: arma la base común y sus cuatro historias, HU-036,
+HU-037, HU-035 y HU-006. Quién es el 1 y quién el 2 lo decide el equipo.
+
+**Alternativas:** Que el autor armara la base común y el ejemplo aparte del reparto, o solo el CSV
+del ejemplo. El autor eligió ser el integrante 3, y así ninguna decisión anterior cambia.
+
+**Estado:** `vigente`
+
+## 2026-10-25: HU-036 es el catálogo de ejemplo
+
+**Contexto:** El autor, el 2026-10-25, sobre quién convierte los archivos oficiales a CSV:
+
+- "yo me encargare del 3ro, por que tiene pinta que puede rompper la compatibilida, bueno no
+  realmente yo deberia encargarme de hacer la base de jemplo de un catalogo, como minimo"
+
+Esa conversión es donde se rompe la compatibilidad: Excel cambia "01" por "1" y puede dañar las
+tildes. Por eso RC-8, en la tarjeta de reglas comunes, pide guardar en CSV UTF-8 con las columnas
+de código en formato texto.
+
+**Decisión:** HU-036, etnias, es el catálogo de ejemplo: el primer CSV y la primera carga en el
+archivo de la base, que los otros 7 copian. Va primero en el paso 1, con la base común. Tiene 7
+valores, y su lista sale de la hoja 15 del anexo, que es parte de la resolución. Si los CSV
+convertidos van en git lo decide el autor con este ejemplo.
+
+**Alternativas:** HU-034, tipos de documento, con 14 valores de la hoja 13, y HU-035, discapacidad,
+con 8. El autor eligió HU-036, que además es el primer catálogo del integrante 3.
+
+**Estado:** `vigente`
+
+## 2026-10-25: El turno del archivo de la base es del PR abierto
+
+**Contexto:** La entrada 2026-10-25 "El archivo de la base se cambia por turnos" dejó sin decidir
+cómo se sabe quién tiene el turno, con una propuesta del modelo. El autor la aceptó el 2026-10-25.
+
+**Decisión:** El turno lo tiene quien tenga abierto el PR que cambia el archivo de la base. La lista
+de PR de GitHub muestra quién es y desde cuándo, y el siguiente abre el suyo cuando ese se mezcla o
+se cierra.
+
+**Alternativas:** **Sin origen recuperable.**
+
+**Estado:** `vigente`
+
+## 2026-10-25: La base de prueba arranca como copia del archivo
+
+**Contexto:** La entrada 2026-10-25 "Las pruebas corren sobre otra base" dejó sin respuesta que una
+base de prueba nueva nace vacía, sin catálogos, y que con ella no se puede probar HU-004. El autor
+aceptó el 2026-10-25 la propuesta del modelo.
+
+**Decisión:** La base de prueba arranca como copia del archivo de la base, así que ya trae los
+catálogos cargados. Cómo se hace la copia se escribe con su corrida en el primer PR de código.
+
+**Alternativas:** Una base de prueba vacía, como la que se crea sola cuando no existe. No sirve para
+probar HU-004, que necesita los 8 catálogos.
+
+**Estado:** `vigente`
