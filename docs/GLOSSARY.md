@@ -12,6 +12,8 @@ el producto trae sus propias palabras.
 
 ## 1. Método
 
+Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la plantilla 1.2".
+
 - **borrador**: el estado en que se abre un PR. El autor lo marca listo y lo mergea.
 - **cita textual**: palabras del autor copiadas tal cual, en una viñeta propia que abre con
   comillas o con su etiqueta, como `**A13.**`. No se reescribe ni se resume, y no cuenta para las
@@ -45,15 +47,17 @@ el producto trae sus propias palabras.
   y controlador").
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
-- **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG y no sube
-  la versión.
+- **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG, con la
+  versión siguiente, y no toca la versión que muestra el programa (2026-10-25 "La sección de un PR
+  doc-only lleva la versión siguiente").
 - **terna plana**: tres oraciones seguidas cuyos largos caen dentro de 3 palabras. La unidad de la
   regla 8 de prosa.
 - **tipo**: la palabra que abre un commit o el título de un PR: `add`, `chg`, `fix`, `rmv` o `doc`.
 
 ## 2. Producto
 
-Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan su decisión.
+Todas las líneas salen de la primera sección del CHANGELOG, la v0.1 del 2026-10-22, salvo las
+que citan su fuente.
 
 - **anexo técnico**: el anexo de la Resolución 866 de 2021, con 49 datos en cuatro grupos. Este
   backlog cubre los numerales 1 a 23 (D-16, pregunta abierta al docente).
@@ -95,7 +99,8 @@ Todas las líneas salen de la sección v0.1 del CHANGELOG, salvo las que citan s
   B"). Desde el 2026-10-24 se reparte entre 3 integrantes (2026-10-24 "Tres integrantes con cuatro
   historias cada uno").
 - **prioridad**: el valor de una historia para el cliente, en el campo Prioridad de su tarjeta. Las
-  12 de la fase 0 dicen "Alta", así que no las ordena: las ordenan sus dependencias.
+  12 de la fase 0 dicen "Alta", así que no las ordena: las ordenan sus dependencias (2026-10-24
+  "La complejidad se estima de 1 a 10").
 - **RC-n**: una regla común del backlog, de RC-1 a RC-11, en
   `docs/context/trello/tarjetas/RC-reglas-comunes.md`.
 - **referencia oficial**: el documento de la fuente que respalda crear, cambiar o inactivar un valor
@@ -127,4 +132,4 @@ producto.
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su
   entidad, y no lee del teclado ni imprime (`docs/DESIGN.md`, sección 6).
 - **vista**: en la fase 0, lo que el programa imprime en la terminal, según la lámina de la
-  historia.
+  historia (2026-10-24 "El código se separa en modelo, vista y controlador").

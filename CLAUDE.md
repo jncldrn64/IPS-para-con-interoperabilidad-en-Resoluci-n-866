@@ -37,7 +37,6 @@ documento. El tipo va en la primera línea del bloque de cita de cada archivo, d
 | Historia | `DECISIONS.md`, `CHANGELOG.md` | No compite: registra. Una decisión vigente sí gana sobre un normativo viejo |
 | Plan | `ROADMAP.md` | No compite: ordena el trabajo |
 | Tránsito | `TEMPORARY-CONTEXT.md` | Nunca manda |
-| Puerta | `AGENTS.md` | Nunca manda: apunta |
 
 Las reglas:
 
@@ -53,7 +52,7 @@ Las reglas:
    se corrige en el PR que lo encuentra. Una entrada reemplazada no gana nada, y entre dos
    decisiones manda la más nueva, que nombra a la que reemplaza.
 5. **`ROADMAP.md` no cambia una norma.** Una fase que necesita otra norma la cambia por la regla 2.
-6. **`TEMPORARY-CONTEXT.md` y `AGENTS.md` no mandan nunca.**
+6. **`TEMPORARY-CONTEXT.md` no manda nunca.**
 
 **Las convenciones del código del producto viven en `docs/DESIGN.md` y en ningún otro lado**, ni
 siquiera acá. Este archivo dice cómo se trabaja; `DESIGN.md` dice cómo se escribe el código. Mezclar
@@ -62,7 +61,7 @@ los dos fue la discrepancia que esta plantilla corrige.
 ## 3. Documentación
 
 Los documentos canónicos son los de la tabla de la sección 2, más `CHANGELOG.md`. En la raíz:
-`AGENTS.md`, `CLAUDE.md` y `CHANGELOG.md`. El resto en `docs/`, y un módulo con documentación propia
+`CLAUDE.md` y `CHANGELOG.md`. El resto en `docs/`, y un módulo con documentación propia
 en `docs/<módulo>/`, con un par: un estándar normativo y una superficie descriptiva. La carpeta
 existe solo cuando hay un módulo; mientras no lo haya, no se crea.
 
@@ -102,10 +101,11 @@ entero:
 ## 5. Decisiones, huecos y contexto temporal
 
 - **Una decisión va en `docs/DECISIONS.md`**, append-only, una entrada por decisión. Una nueva
-  reemplaza a una vieja nombrándola por fecha y título.
+  reemplaza a una vieja nombrándola por fecha y título al abrir su **Contexto:**. Los campos de una
+  entrada están al principio de ese archivo.
 - **Un hueco abierto va en la sección "Huecos conocidos" de `docs/ARCHITECTURE.md`**, fechado y con
-  el comando o la corrida que lo muestra. Se borra en el PR que lo cierra; el CHANGELOG guarda el
-  rastro.
+  el comando o la corrida que lo muestra, en una viñeta que abre con su fecha y un título en
+  negrita. Se borra en el PR que lo cierra; el CHANGELOG guarda el rastro.
 - **Un puntero a una decisión** se agrega donde una línea se leería arbitraria o contradictoria sin
   él, y cita fecha y título.
 - **Una decisión que introduce o refina un término** escribe su línea en `docs/GLOSSARY.md` en el
@@ -117,9 +117,10 @@ entero:
 
 - [Keep a Changelog](https://keepachangelog.com). Un solo archivo que crece por secciones, lo más
   nuevo arriba. Cada sección abre con `## vX.Y — AAAA-MM-DD` y lleva `### Added`, `### Changed`,
-  `### Fixed` o `### Removed`.
-- **Un PR solo de documentación abre su propia sección fechada** y no sube la versión. Una sección
-  publicada es historia y no se reescribe.
+  `### Fixed` o `### Removed`, en ese orden.
+- **Un PR solo de documentación abre su propia sección fechada, con la versión siguiente del
+  CHANGELOG,** y no toca la versión que muestra el programa. La sección abre con
+  `Solo documentación.`. Una sección publicada es historia y no se reescribe.
 - **La versión que muestra el programa es la última del CHANGELOG.** Se sube en el PR de código que
   la amerita. Un PR doc-only puede dejar el CHANGELOG adelante; ese desfase lo cierra el próximo PR
   de código. Un test que lo compruebe pide que la versión mostrada tenga su sección en el CHANGELOG.
@@ -130,7 +131,10 @@ entero:
 - **Commit:** `<tipo>: <resumen imperativo corto>`, con tipo en `{add, chg, fix, rmv, doc}`. `add`
   es capacidad nueva, `chg` cambio de comportamiento, `fix` corrección, `rmv` algo que se saca,
   `doc` solo documentación. El cuerpo no vuelve a narrar el cambio: una o dos líneas y la sección
-  del CHANGELOG.
+  del CHANGELOG. Un commit hecho desde la web de GitHub también lleva su tipo: el título que
+  propone la web se cambia antes de guardar.
+- **El commit conserva su trailer:** las líneas `Co-Authored-By` y `Claude-Session` que agrega la
+  herramienta van al final del mensaje.
 - **Título del PR:** el mismo formato y el mismo tipo que el commit.
 - **Cuerpo del PR:** la tabla de archivos se copia de `git diff --numstat origin/main...HEAD`,
   corrido como último paso antes de escribirla.
@@ -197,11 +201,14 @@ blanco junto con sus líneas de continuación.
 **El piso mide los `.md`.** Los comentarios del código siguen las mismas reglas y se revisan a mano,
 porque medirlos sería una línea base más que mantener.
 
-El corpus son todos los `.md` versionados menos este archivo, que movería sus propios números, y
-`docs/TEMPORARY-CONTEXT.md`, exento por diseño. Los comandos, desde la raíz:
+El corpus son todos los `.md` versionados menos tres cosas: este archivo, que movería sus propios
+números; `docs/TEMPORARY-CONTEXT.md`, exento por diseño; y `docs/context/`, que guarda las tarjetas
+del curso y la memoria del modelo con las palabras del autor, y no se corrige contra este piso
+(`docs/DECISIONS.md`, 2026-10-25 "docs/context sale del corpus del piso"). Los comandos, desde la
+raíz:
 
 ```sh
-C=$(git ls-files '*.md' ':!:CLAUDE.md' ':!:*TEMPORARY-CONTEXT.md')
+C=$(git ls-files '*.md' ':!:CLAUDE.md' ':!:*TEMPORARY-CONTEXT.md' ':!:docs/context/*')
 
 # Para las reglas 1 y 2: el archivo con las citas textuales del autor en blanco, sin mover las
 # líneas. Una cita es una viñeta que abre con comillas, o con **An.** y comillas, y lo que sigue.
@@ -255,24 +262,22 @@ print(f"regla 8: {pl} planas de {t} ternas = {100*pl/max(t,1):.1f}%")
 EOF
 ```
 
-**Líneas base, medidas el 2026-10-24** sobre 82.763 palabras, después de que 19 archivos salieran de
-`docs/context/` (`docs/DECISIONS.md`, 2026-10-24 "docs/context guarda solo lo que usan las
-historias"). Todo lo que suma está en `docs/context/`; los documentos canónicos, los README y
-`HELP.md` dan cero en las reglas 1, 2, 4, 6 y 7.
+**Líneas base, medidas el 2026-10-25** sobre 11 archivos y 16.425 palabras, con `docs/context/`
+fuera del corpus. Las reglas 1 y 2, con el comando que deja afuera las citas.
 
 | Regla | Línea base |
 |---|---|
-| 1, intensificadores | 8 líneas, todas en `MEMORIA-CONTEXTUAL.md`: citas del autor que no van en viñeta propia |
-| 2, paralelismo contrastivo | 8 casos en 6 archivos: `MEMORIA-CONTEXTUAL.md` 3, `modelo-entidad-relacion.md` 1, y 1 en cada tarjeta HU-014, HU-022, HU-030 y RC |
+| 1, intensificadores | 0 apariciones |
+| 2, paralelismo contrastivo | 0 casos en cada uno de los 11 archivos |
 | 3, viñetas del CHANGELOG de más de 60 palabras | 0 |
-| 4, encabezados con paréntesis | 10: `MEMORIA-CONTEXTUAL.md` 9 y `modelo-entidad-relacion.md` 1 |
+| 4, encabezados con paréntesis | 0 en cada uno de los 11 archivos |
 | 6, anclas a número de línea | 0 |
-| 7, párrafos de más de cinco oraciones | 52: `MEMORIA-CONTEXTUAL.md` 32, y 1 en cada una de 20 tarjetas |
-| 8, ternas planas | 99 de 684 = 14,5 % |
+| 7, párrafos de más de cinco oraciones | 0 |
+| 8, ternas planas | 0 de 119 ternas, 0,0 % |
 
-La regla 8 pasa de 14,0 % a 14,5 % porque el corpus se achicó. Los 19 archivos que salieron tenían
-21 planas de 225 ternas, un 9,3 %, y bajaban el promedio. En los archivos que quedan, el commit
-fa95eaf daba 99 planas de 674 ternas, y el 2026-10-24 quedan 99 de 684.
+La línea base anterior, del 2026-10-24, medía también `docs/context/`, y todo lo que sumaba caía
+ahí. Con ese comando, el 2026-10-25 la regla 1 daba 9 líneas y la regla 8, 100 planas de 723
+ternas. Las dos habían subido en `MEMORIA-CONTEXTUAL.md` desde la medición del día anterior.
 
 El conteo de la regla 2 depende de su expresión regular. Si se ajusta, se recalculan todos los
 archivos de una vez y se reescribe la línea base con su fecha nueva.

@@ -11,12 +11,13 @@ lista en la sección 5.
 
 ## 1. El repo, archivo por archivo
 
-Comprobado el 2026-10-24 contra `git ls-files`.
+Comprobado el 2026-10-25 contra `git ls-files`.
 
 | Archivo o carpeta | Qué es |
 |---|---|
-| `AGENTS.md`, `CLAUDE.md`, `CHANGELOG.md` | Documentos canónicos de la raíz: puerta, método e historia |
-| `README.md` | Portada para GitHub; remite a `AGENTS.md` |
+| `CLAUDE.md`, `CHANGELOG.md` | Documentos canónicos de la raíz: método e historia |
+| `AGENTS.md` | Dos oraciones que mandan a `CLAUDE.md` a quien abre ese archivo primero |
+| `README.md` | Portada para GitHub; remite a `CLAUDE.md` |
 | `HELP.md` | Enlaces de ayuda que genera Spring Initializr |
 | `LICENSE` | GNU Affero General Public License, versión 3 |
 | `pom.xml` | Proyecto Maven `com.example:demo`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |

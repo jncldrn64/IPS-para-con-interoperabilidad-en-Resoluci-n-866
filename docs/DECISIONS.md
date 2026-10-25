@@ -10,8 +10,11 @@ Cada entrada abre con `## AAAA-MM-DD: título` y lleva estos campos:
 
 - **Contexto:** qué problema o pregunta la motivó.
 - **Decisión:** qué se decidió.
-- **Alternativas:** qué se descartó y por qué, si hubo.
-- **Estado:** `vigente`, o `reemplazada por AAAA-MM-DD "título"`.
+- **Alternativas:** qué más se pesó y por qué quedó afuera. Si no se sabe, `**Sin origen
+  recuperable.**`. La entrada que adopta la plantilla y las que solo registran, como las ideas
+  descartadas, no las llevan.
+- **Estado:** `vigente`. Una entrada no se edita y sigue diciendo `vigente` aunque otra la
+  reemplace; la nueva la nombra al abrir su **Contexto:**, con `Reemplaza a AAAA-MM-DD "título"`.
 
 Una entrada que introduce o refina un término escribe su línea en `docs/GLOSSARY.md` en el mismo
 PR.
@@ -489,5 +492,100 @@ la arma. Con la propuesta de estimación, el integrante 3 suma 9, el 1 suma 13 y
 HU-037 y HU-035, son los primeros que la usan.
 
 **Alternativas:** Dejarlo para después, descartado por el autor.
+
+**Estado:** `vigente`
+
+## 2026-10-25: Se adopta la plantilla 1.3
+
+**Contexto:** Reemplaza a 2026-10-22 "Se adopta la plantilla 1.2" en lo que la plantilla 1.3
+cambia. La 1.3 salió de comparar este repo con otros tres que usan el mismo método, y corrige
+frases que la 1.2 dejaba sin escribir o escribía de dos maneras.
+
+**Decisión:** `CLAUDE.md` toma de la 1.3 cinco cosas que no tienen entrada propia:
+
+- Una decisión nueva nombra a la que reemplaza al abrir su **Contexto:**, y los campos de una
+  entrada están al principio de este archivo, con la regla de **Alternativas:**.
+- Un hueco abre con su fecha y un título en negrita, que es la forma que ya tenía el único hueco
+  de `docs/ARCHITECTURE.md`.
+- Las subsecciones de una sección del CHANGELOG van en el orden de Keep a Changelog.
+- La sección de un PR doc-only abre con `Solo documentación.`, como ya abrían las siete del
+  CHANGELOG.
+- Un commit hecho desde la web de GitHub también lleva su tipo.
+
+Lo que la 1.3 cambia y tiene entrada propia: `AGENTS.md`, la versión de un PR doc-only y el
+trailer del commit, en las tres entradas siguientes.
+
+**Estado:** `vigente`
+
+## 2026-10-25: AGENTS.md es una isla que CLAUDE.md no nombra
+
+**Contexto:** Reemplaza a 2026-10-22 "Se adopta la plantilla 1.2" en lo que dice de `AGENTS.md`.
+La plantilla lo trajo como documento canónico de tipo puerta, con su bloque de cita, y `CLAUDE.md`
+lo nombraba en tres lugares. El autor dijo el 2026-10-25 para qué sirve, con sus palabras sin
+corregir:
+
+- "agents.mi deberia ser una entrada barata y bastardizada, una isla para cuando el agente que
+  este leyendo comienze por ese archivo y no sepa por donde ir, pero si el modelo lee claude.md
+  realmente no es necesario que ni sepa ra existencia de agents.md"
+
+**Decisión:** `AGENTS.md` queda en dos oraciones que mandan a `CLAUDE.md`, sin bloque de cita. Sale
+de la tabla de tipos, de la regla 6 de la jerarquía y de la lista de documentos de la raíz.
+`README.md` manda a `CLAUDE.md`. El piso lo sigue midiendo, porque su corpus son todos los `.md`
+versionados y no hace falta nombrarlo.
+
+**Alternativas:** Dejarlo como puerta con su bloque, que es lo que el autor señaló como error de la
+plantilla. Sacarlo también del corpus del piso obligaría a nombrarlo en el comando, justo lo que
+esta decisión evita.
+
+**Estado:** `vigente`
+
+## 2026-10-25: La sección de un PR doc-only lleva la versión siguiente
+
+**Contexto:** `CLAUDE.md`, sección 6, decía que un PR solo de documentación "no sube la versión", y
+una línea más abajo, que puede dejar el CHANGELOG adelante de la versión que muestra el programa.
+Las dos frases chocaban, y se leyó la primera: el CHANGELOG tiene siete secciones `v0.1`, del
+2026-10-22 y del 2026-10-24.
+
+**Decisión:** La sección de un PR doc-only lleva la versión siguiente del CHANGELOG, y lo que no se
+toca es la versión que muestra el programa. Las siete secciones `v0.1` quedan como están, porque
+una sección publicada no se reescribe. La próxima es `v0.2`.
+
+**Alternativas:** Numerar las secciones de documentación con un tercer segmento, como `v0.1.1`.
+Resolvía el choque igual, pero suma una forma de versión que el método no usa en ningún lado.
+
+**Estado:** `vigente`
+
+## 2026-10-25: El commit conserva su trailer
+
+**Contexto:** La herramienta cierra cada commit con dos líneas, `Co-Authored-By` y
+`Claude-Session`, que nombran al coautor y la sesión. Los 9 commits hechos desde una sesión desde
+la siembra las llevan, y nada en `CLAUDE.md` decía si se quedan. El 2026-10-25 el autor eligió
+escribirlo.
+
+**Decisión:** El commit conserva esas dos líneas al final del mensaje, después de la referencia al
+CHANGELOG. `CLAUDE.md`, sección 7, lo dice.
+
+**Alternativas:** Dejarlo sin escribir, como estaba. La práctica no cambiaba, pero una sesión que
+reescribiera mensajes podía borrarlas sin romper ninguna regla.
+
+**Estado:** `vigente`
+
+## 2026-10-25: docs/context sale del corpus del piso
+
+**Contexto:** El piso de prosa medía todos los `.md` versionados, y 34 de ellos viven en
+`docs/context/`: las tarjetas de Trello, el modelo E-R y `MEMORIA-CONTEXTUAL.md`. La línea base
+del 2026-10-24 decía que todo lo que sumaba estaba ahí, y que los documentos canónicos daban cero.
+Un día después la regla 1 había pasado de 8 a 9 líneas y la regla 8 de 99 a 100 planas, las dos en
+`MEMORIA-CONTEXTUAL.md`. Esa memoria guarda las palabras del autor sin corregir, y las tarjetas son
+el texto que se pega en Trello.
+
+**Decisión:** `docs/context/` sale del corpus, como `docs/TEMPORARY-CONTEXT.md`. El comando de
+`CLAUDE.md`, sección 9, la deja afuera con `':!:docs/context/*'`, y las líneas base se miden de
+nuevo sobre los 11 archivos que quedan. Dan cero en las ocho reglas.
+
+**Alternativas:** El autor pesó dos más. Dejarla adentro y reescribir la oración que sumó la terna
+100 arreglaba el número de hoy, pero la memoria vuelve a crecer con cada decisión. Dejarla adentro
+sin tocar nada y anotar la subida en el PR dejaba una línea base que sube sin prosa nueva en los
+documentos que el piso cuida.
 
 **Estado:** `vigente`
