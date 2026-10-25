@@ -124,8 +124,10 @@ producto.
   (2026-10-24 "La base es H2 en un archivo que va en git"; 2026-10-24 "El archivo de la base trae
   los catálogos cargados"; 2026-10-25 "El archivo de la base se cambia por turnos").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
-  0, RC-1 a RC-11 y la búsqueda de D-23. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los
-  catálogos comparten una base común"; 2026-10-24 "El integrante 3 arma la base común").
+  0, RC-1 a RC-11 y la búsqueda de D-23, y la clase de la que heredan sus 8 entidades, con código,
+  nombre, estado y versión. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los catálogos
+  comparten una base común"; 2026-10-24 "El integrante 3 arma la base común"; 2026-10-25 "La base
+  común es una clase con código, nombre, estado y versión").
 - **base de prueba**: la base con otro nombre donde se prueba, para que un dato de prueba no llegue
   al archivo de la base que va en git. Arranca como copia de ese archivo (2026-10-25 "Las pruebas
   corren sobre otra base"; 2026-10-25 "La base de prueba arranca como copia del archivo").
