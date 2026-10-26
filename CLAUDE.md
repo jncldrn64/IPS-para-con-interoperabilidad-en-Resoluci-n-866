@@ -140,6 +140,39 @@ entero:
   corrido como último paso antes de escribirla.
 - **Se trabaja vía PR, abierto como borrador.** Si `push`, crear una rama o abrir el PR devuelve
   `403`, se para y se avisa que falta permiso de escritura.
+- **El PR va contra `main` del fork, `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`,**
+  nunca contra el repositorio original de Atervolgo. En un fork, la web de GitHub propone como
+  destino el original, y así llegó allá el PR #3 del 2026-10-24 (`docs/DECISIONS.md`, 2026-10-26
+  "El PR va contra main del fork"). Con `gh pr create`, el destino se fija con `--repo` y
+  `--base`, como muestra `gh pr create --help` en gh 2.89.0.
+- **Un integrante nuevo abre un PR de prueba antes de su primera historia** (`docs/DECISIONS.md`,
+  2026-10-26 "Un integrante nuevo abre un PR de prueba"). Las condiciones:
+  - es colaborador del fork con rol Write: el autor lo invita en Settings, Collaborators, y él
+    acepta la invitación que le llega por correo;
+  - si trabaja con Claude Code en la nube, conecta su cuenta en https://claude.ai/connect-github;
+  - si trabaja en su equipo, tiene git con su credencial, y bash y python3 para los comandos de la
+    sección 9; en Windows, Git Bash o WSL;
+  - si `main` exige commits firmados, tiene su llave.
+
+  Su modelo recibe este pedido:
+
+  ```
+  Lee CLAUDE.md y sigue su orden de lectura. Agrega a docs/TEMPORARY-CONTEXT.md una
+  anotación con la fecha de hoy y tu nombre que diga "probé el flujo de PR". Haz el cambio
+  en una rama nueva y abre un PR en borrador contra la rama main de
+  jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866, siguiendo CLAUDE.md,
+  secciones 6 y 7, con el piso de prosa medido.
+  ```
+
+  El autor revisa ese PR contra esta lista y lo cierra sin mezclar:
+  - el destino es `main` del fork, y el PR está en borrador;
+  - el título y el commit llevan tipo, y el cuerpo del commit tiene una o dos líneas y su sección
+    del CHANGELOG;
+  - el CHANGELOG abre arriba una sección con la versión siguiente, que empieza con
+    `Solo documentación.`;
+  - el cuerpo del PR trae la tabla de `git diff --numstat origin/main...HEAD` y las cifras del
+    piso;
+  - ninguna línea pasa de 100 columnas, y no hay guion largo.
 - **Fechas:** siempre ISO 8601. Un ítem del Backlog nace con una línea `**Entró:**`, con la fecha
   y el PR que lo trajo, sacados de `git log -S` sobre el archivo.
 

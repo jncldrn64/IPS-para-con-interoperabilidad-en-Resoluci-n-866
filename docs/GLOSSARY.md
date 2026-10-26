@@ -47,6 +47,9 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
   y controlador").
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
+- **PR de prueba**: el PR con que un integrante nuevo comprueba que su modelo sigue el método. El
+  autor lo revisa contra la lista de `CLAUDE.md`, sección 7, y lo cierra sin mezclar (2026-10-26
+  "Un integrante nuevo abre un PR de prueba").
 - **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG, con la
   versión siguiente, y no toca la versión que muestra el programa (2026-10-25 "La sección de un PR
   doc-only lleva la versión siguiente").

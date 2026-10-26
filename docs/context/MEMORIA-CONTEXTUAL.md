@@ -1589,6 +1589,41 @@ glosario.
 
 **Estado:** `vigente`
 
+## 2026-10-26: Que los modelos de los compañeros sepan abrir un PR
+
+**Contexto:** el autor fusionó el PR #11 del fork (5cb3d49) y preguntó, textual:
+
+- "anhes de continuar discutiendo, como me aseguro que el modelo de mis contribuidores, son
+  capaces de hacer los PR?"
+
+Lo que comprobó el modelo el 2026-10-25: la lista de colaboradores del fork tiene un solo nombre,
+jncldrn64, con rol admin. No hay `.github/` ni `.claude/` en el repositorio.
+
+Lo que respondió el modelo:
+
+- Hace falta invitar a cada compañero como colaborador con rol Write, y que acepte.
+- Con Claude Code en la nube, cada uno conecta su cuenta de GitHub. Desde aquí no se puede
+  comprobar que la sesión de cada uno vea el fork.
+- La web de GitHub, en un fork, propone como destino el repositorio original: así llegó a
+  Atervolgo el PR #3 del 2026-10-24.
+- En su equipo, los comandos del piso piden bash y python3; en Windows, Git Bash o WSL.
+- No se sabe si `main` exige commits firmados.
+- Riesgo que decide el autor: `CLAUDE.md` pide leer esta memoria entera, y tiene 23.787 palabras
+  (`wc -w docs/context/MEMORIA-CONTEXTUAL.md`, el 2026-10-25). Un modelo con ventana chica no la
+  lee completa.
+- Propuesta: un PR de prueba por integrante, con un pedido fijo y una lista para revisarlo.
+
+El autor contestó, textual:
+
+- "procede con el Pr con dicha informacion"
+
+Hecho en el PR que sigue a 5cb3d49: `CLAUDE.md`, sección 7, con el destino del PR y el PR de
+prueba; las entradas 2026-10-26 "El PR va contra main del fork" y "Un integrante nuevo abre un PR
+de prueba"; la fase 0 del ROADMAP pide el PR de prueba antes de la primera historia de cada uno;
+"PR de prueba" en el glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1722,7 +1757,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000. **Próximo (2026-10-25, la base común):** que el autor revise y fusione el PR de
+00000000000000000. **Próximo (2026-10-26, PR de los compañeros):** que el autor revise y fusione
+   el PR del destino del PR y el PR de prueba; que invite a los integrantes 1 y 2 como
+   colaboradores, y que cada uno pase su PR de prueba. Sin respuesta: si la memoria entera sigue en
+   el orden de lectura para modelos con ventana chica, si `main` exige commits firmados, si las
+   listas cerradas de 5 o menos van como enum, la licencia de los datos oficiales y cómo probar sin
+   subir el nombre de la base de prueba. Después, en orden: que el build corra.
+0000000000000000. **Anterior (2026-10-25, la base común):** que el autor revise y fusione el PR de
    la clase base de los catálogos. Después, en orden: que el build corra; el esqueleto en
    terminal; la base común con HU-036. Sin respuesta: si las listas cerradas de 5 o menos van como
    enum, quién revisa la licencia de los datos oficiales y cómo probar sin subir el nombre de la

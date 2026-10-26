@@ -187,6 +187,7 @@ al paciente.
   2. El esqueleto en terminal: el paquete, `application.properties` con H2 en archivo y el menú
      principal. HU-001 no es un catálogo, así que puede empezar desde aquí.
   3. La base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el integrante 3.
+- Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
     ocupaciones (28) y HU-026 municipios (25).

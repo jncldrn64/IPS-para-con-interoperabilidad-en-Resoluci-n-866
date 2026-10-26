@@ -5,6 +5,23 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.6 — 2026-10-26
+
+Solo documentación. El PR va contra `main` del fork, y un integrante nuevo abre un PR de prueba
+antes de su primera historia. No hay código del producto que muestre una versión.
+
+### Added
+- `CLAUDE.md`, sección 7: el destino del PR, y el PR de prueba con sus condiciones, el pedido para
+  el modelo y la lista con que el autor lo revisa.
+- `docs/DECISIONS.md`: las entradas 2026-10-26 "El PR va contra main del fork" y "Un integrante
+  nuevo abre un PR de prueba".
+- `docs/GLOSSARY.md`: "PR de prueba".
+
+### Changed
+- `docs/ROADMAP.md`: la fase 0 pide el PR de prueba antes de la primera historia de cada
+  integrante.
+- La memoria contextual anota la pregunta del autor, lo que se comprobó y lo que sigue abierto.
+
 ## v0.5 — 2026-10-25
 
 Solo documentación. La base común de los catálogos es una clase con código, nombre, estado y
