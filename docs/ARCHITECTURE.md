@@ -52,12 +52,13 @@ Comprobado el 2026-10-26.
 
 | Carpeta, bajo `src/main/java/com/example/demo/` | Qué guarda |
 |---|---|
-| `comun/interfaces/` | `CrudCatalogo`, el contrato común de los 8 catálogos |
+| `comun/interfaces/` | `CrudCatalogo`, el contrato de los 8 catálogos, y `Controlador` |
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
 | `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
 | `comun/servicios/` | La base `ServicioCatalogo`, la carga y sus resultados, como `Consulta` |
-| `comun/menu/` | `MenuPrincipal`: un `switch` principal y un submenú por catálogo |
-| `hu036/` | Etnias: `ContratoEtnias`, con la hoja 15, `Etnia`, su repositorio y su servicio |
+| `comun/menu/` | `MenuPrincipal`, que elige la historia, y `Terminal`, la entrada |
+| `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
+| `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
 `application.properties` abre la base de prueba, `jdbc:h2:file:./data/prueba`, relativa a la
@@ -67,8 +68,9 @@ si no existe. `spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan 
 entidades, y `spring.main.web-application-type=none` deja sin arrancar Tomcat y Spring Security.
 Con el perfil `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
-El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo: 1 abre etnias, 2
-comunidades étnicas y 0 sale. Cada catálogo tiene 11 opciones:
+El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo. Lista las historias por
+su número, con "Etnias (HU-036)" en la opción 1 y "Comunidades étnicas (HU-037)" en la 2, y la 0
+sale. El controlador de cada catálogo tiene 11 opciones:
 
 - consultar, con el filtro de activos, inactivos o todos, cuántos hay activos y la versión vigente;
 - crear por cambio oficial, cambiar el nombre o el código, inactivar y reactivar, y cada una pide
@@ -83,7 +85,7 @@ La carga dice primero qué archivo espera y pide la ruta y los datos de la versi
 `ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
 deja su fila en `CatalogoCambio`, la tabla de cambios común, y cada carga, la suya en
 `CatalogoVersion`. `ServicioCatalogo.contarUsos` devuelve 0 hasta que exista el registro del
-paciente (HU-004). El menú pide cada catálogo por su contrato, `ContratoEtnias` o
+paciente (HU-004). Cada controlador pide su catálogo por el contrato, `ContratoEtnias` o
 `ContratoComunidadesEtnicas`.
 
 ## 3. Recursos y cómo se reinicia cada uno
@@ -107,7 +109,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 3169 líneas en 34 archivos. De
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 3361 líneas en 39 archivos. De
 Spring Initializr queda la mayor parte de `DemoApplicationTests.java`.
 
 ## 5. Sin describir todavía

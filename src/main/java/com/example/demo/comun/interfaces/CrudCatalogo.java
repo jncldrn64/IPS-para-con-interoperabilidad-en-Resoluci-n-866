@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Las operaciones de un catálogo. El menú depende de esta interfaz y no del servicio. Una operación
- * que no cumple su regla no guarda nada y lanza una excepción con el motivo: ConstraintViolation si
- * un dato no cumple su numeral, IllegalArgument si falta un dato o el código no existe, e
- * IllegalState si el valor no está en el estado que la operación pide.
+ * Las operaciones de un catálogo. El controlador depende de esta interfaz y no del servicio. Una
+ * operación que no cumple su regla no guarda nada y lanza una excepción con el motivo:
+ * ConstraintViolation si un dato no cumple su numeral, IllegalArgument si falta un dato o el
+ * código no existe, e IllegalState si el valor no está en el estado que la operación pide.
  */
 public interface CrudCatalogo<T> {
 

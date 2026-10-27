@@ -5,6 +5,32 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.13 — 2026-10-26
+
+Cada historia tiene su controlador, que el menú común abre, y HU-037 recibe los 4 casos que le
+faltaban. El programa no muestra una versión.
+
+### Added
+- `hu036/controladores/EtniaControlador` y `hu037/controladores/ComunidadEtnicaControlador`, sobre
+  `comun/controladores/ControladorCatalogo`, que guarda las 11 opciones de un catálogo.
+- `comun/interfaces/Controlador`, lo que el menú pide de cada historia, y `comun/menu/Terminal`, la
+  entrada que comparten el menú y los controladores.
+- Tests de HU-037: la fecha futura del escenario 3, y cancelar una versión nueva, un cambio y una
+  reactivación en el 11. `BaseComunTest` prueba el menú principal: 100 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-10-26 "Cada historia tiene su controlador, y el menú común
+  lo abre".
+- `docs/GLOSSARY.md`: "menú principal".
+
+### Changed
+- `MenuPrincipal` solo lista las historias por su número y abre el controlador de la elegida.
+- Los tests de cancelar abren el controlador de su historia, y no el menú principal.
+- `docs/DESIGN.md`, secciones 3, 6, 7 y 9, `docs/ARCHITECTURE.md`, `docs/GLOSSARY.md`,
+  `docs/ROADMAP.md` y `tests/README.md` describen los controladores.
+- La memoria contextual anota la pregunta del autor, sus respuestas y lo hecho.
+
+### Fixed
+- La v0.12 dio por probado cada escenario de HU-037, y a 4 casos de su "Dado" les faltaba el test.
+
 ## v0.12 — 2026-10-26
 
 La consulta, la búsqueda y la comparación con la lista oficial entran en la base común, y cada

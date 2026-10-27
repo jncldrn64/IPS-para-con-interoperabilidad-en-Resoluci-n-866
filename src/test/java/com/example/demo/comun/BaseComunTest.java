@@ -7,23 +7,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.demo.DemoApplication;
 import com.example.demo.comun.interfaces.CrudCatalogo;
+import com.example.demo.comun.menu.MenuPrincipal;
+import com.example.demo.comun.menu.Terminal;
 import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoVersion;
 import com.example.demo.comun.modelos.Motivo;
 import com.example.demo.comun.repositorios.CatalogoCambioRepositorio;
 import com.example.demo.comun.repositorios.CatalogoVersionRepositorio;
 import com.example.demo.comun.servicios.RegistroCatalogos;
+import com.example.demo.hu036.controladores.EtniaControlador;
+import com.example.demo.hu036.interfaces.ContratoEtnias;
 import com.example.demo.hu036.modelos.Etnia;
 import com.example.demo.hu036.repositorios.EtniaRepositorio;
+import com.example.demo.hu037.controladores.ComunidadEtnicaControlador;
+import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.example.demo.hu037.modelos.ComunidadEtnica;
 import com.example.demo.hu037.repositorios.ComunidadEtnicaRepositorio;
 import jakarta.persistence.EntityManager;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +53,8 @@ class BaseComunTest {
 
     @Autowired CrudCatalogo<Etnia> etnias;
     @Autowired CrudCatalogo<ComunidadEtnica> comunidades;
+    @Autowired ContratoEtnias contratoEtnias;
+    @Autowired ContratoComunidadesEtnicas contratoComunidades;
     @Autowired EtniaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
     @Autowired EntityManager em;
@@ -137,6 +148,18 @@ class BaseComunTest {
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");
         }
+    }
+
+    @Test
+    void elMenuPrincipalOrdenaLasHistoriasYAbreLaElegida() {
+        Terminal terminal = new Terminal(new ByteArrayInputStream(
+                ("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\ns\n0\n0\n")
+                        .getBytes(StandardCharsets.UTF_8)));
+        // Llegan con HU-037 primero, y la opción 1 abre HU-036.
+        new MenuPrincipal(List.of(new ComunidadEtnicaControlador(contratoComunidades, terminal),
+                new EtniaControlador(contratoEtnias, terminal)), terminal).run();
+        assertTrue(etnias.buscarPorCodigo("07").isPresent());
+        assertTrue(comunidades.listar().isEmpty());
     }
 
     @Test

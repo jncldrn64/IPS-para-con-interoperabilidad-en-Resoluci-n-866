@@ -1958,6 +1958,67 @@ Hecho en el PR que sigue a ab709d3: esa entrada.
 
 **Estado:** `vigente`
 
+## 2026-10-26: Lo que les falta a HU-036 y HU-037, y un controlador por historia
+
+El autor fusionó el PR #17 y escribió:
+
+- "Primero confirmemos que aun tengo uddas. vale, estabamos trabajando en 2 HU, no en 1, penese
+  que el tema de las etnias como terminara siendo un campo de usuario usuario podria tener una u
+  otra... que falta para que ambas historias de usuario  esten listas? y que parte de el codigo de
+  estas que esten en comun se puede mover a sus HU respectivas? por que entiendo la logica que que
+  lo comun puede ser un punto de partida, que ahora que veo cada service de cada HU tiene tan poco
+  declarado, que me parecio raro, pero tu sabras, supongo que en sierto sentido tambien ayuda que
+  cualquier cambio con los ecenarios de las proximas HU contemplens nuevos edgcase para esto....
+  si al final que lo hayamos hecho en terminal sera hasta peor,, pero bueno si lo hubiese hecho
+  yo, hubiese sido muy directo con lo que pueda o no plantear, como mis 9 puntos originals, que
+  eran simples en si mismo, unicamente para exponer el repositorio, y loo hubiese hecho de forma
+  individual"
+
+Lo que respondió el modelo:
+
+- Etnia y comunidad se juntan en el paciente: con la etnia de la 01 a la 06 se registra también la
+  comunidad. La hoja 15 no dice a qué etnia pertenece cada comunidad, así que esa regla es de
+  HU-004.
+- Corrigió lo que había dicho del PR #17: a HU-037 le faltaban 4 casos del "Dado". HU-036 los tiene
+  todos.
+- Lo que falta: lo que espera a HU-004 (cuántos pacientes usan un valor y RC-11), el archivo
+  oficial de comunidades, la estimación en clase, D-02, D-18, D-21, D-23 y D-25 como propuestas, y
+  los dos huecos de Windows.
+- Las tarjetas de los 8 catálogos comparten 21 o 22 títulos de escenario con HU-037. Por eso cada
+  servicio declara poco. De `comun/`, solo el menú se podía partir sin copiar reglas.
+- Hacerlo de forma individual fue la tercera alternativa de la entrada 2026-10-24 "Los catálogos
+  comparten una base común": cada catálogo copiaría casi las 1.204 líneas de `comun/` sin el menú.
+- Lo único que depende de la terminal es el menú; servicios, contratos y tests no la usan.
+
+El modelo hizo tres preguntas, y el autor eligió:
+
+- "Dejarlo como está (Recomendado)"
+- "Ahora, uno por historia"
+- "Los 4 casos de HU-037"
+
+Mientras el modelo partía el menú, el autor escribió:
+
+- "de hecho ahora que lo pienso podemos recuperar el concepto de controller, que el menu comun
+  llame a menu especifico de cada implementacion de la HU,, en este caso cada menu de cada HU seria
+  nuestro controller, literalmente de ahi seria trivial cambiarlo a un controller real, por que
+  sabriamos como es el uso de cada implementacion."
+
+Lo que hizo el modelo:
+
+- Cada historia tiene su controlador en `hu0NN/controladores/`, sobre
+  `comun/controladores/ControladorCatalogo`, y `MenuPrincipal` solo elige la historia.
+- `comun/interfaces/Controlador` y `comun/menu/Terminal`.
+- Los 4 tests de HU-037 y uno del menú principal en `BaseComunTest`.
+- Comprobado el 2026-10-26: 100 tests pasan. Con el menú sin ordenar falla el test del menú
+  principal; con la confirmación rota fallan los de cancelar de las dos historias; sin el rechazo
+  de la fecha futura fallan los dos de la fecha. Una corrida real abrió las dos historias, y git no
+  vio cambios en `data/`.
+
+Hecho en el PR que sigue a 383564b: la entrada 2026-10-26 "Cada historia tiene su controlador, y
+el menú común lo abre" de `docs/DECISIONS.md`.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2073,6 +2134,10 @@ Hecho en el PR que sigue a ab709d3: esa entrada.
   reactivaba un código inactivo al cambiarle el nombre, y le borraba la versión. Lo encontró antes
   del commit; `CatalogosTest.cambiarElNombreNoReactivaNiBorraLaVersion` falló primero y pasa con
   el arreglo.
+- **Del modelo a sí mismo (2026-10-26, Claude Code):** dijo al autor que en el PR #17 cada
+  escenario de HU-037 tenía su test. Lo había contado con el comando de `tests/README.md`, que
+  muestra el número apenas hay un método. Comparando cada "Dado" con sus métodos, faltaban 4 casos.
+  Se lo dijo al autor en el mensaje siguiente, y los trae la v0.13.
 
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
@@ -2099,7 +2164,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000. **Próximo (2026-10-26, escenarios 13 a 18):** que el autor revise y
+000000000000000000000000. **Próximo (2026-10-26, controlador por historia):** que el autor revise y
+   fusione el PR de los controladores y de los 4 casos de HU-037. Después, lo que elija: buscar el
+   archivo de comunidades en SISPRO o empezar HU-035. Sin respuesta: lo que el modelo agregó en las
+   entradas del 2026-10-26 de `docs/DECISIONS.md`; si el docente acepta Postman; el idioma de los
+   identificadores; la zona horaria de la tabla de cambios; y los PR de prueba de los integrantes
+   1 y 2.
+00000000000000000000000. **Anterior (2026-10-26, escenarios 13 a 18):** que el autor revise y
    fusione el PR de la consulta, la búsqueda y la comparación. Con eso, cada escenario de HU-036 y
    de HU-037 tiene su test; dos partes esperan a HU-004, cuántos pacientes usan un valor y lo que
    RC-11 pide de un registro ya guardado. Sin respuesta: lo que el modelo agregó en las entradas

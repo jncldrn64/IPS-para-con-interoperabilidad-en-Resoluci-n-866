@@ -1256,3 +1256,69 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
 y la entrada 2026-10-24 "Los catálogos comparten una base común" pidió lo contrario.
 
 **Estado:** `vigente`
+
+## 2026-10-26: Cada historia tiene su controlador, y el menú común lo abre
+
+**Contexto:** Con el PR #17 fusionado, el autor preguntó qué les faltaba a HU-036 y a HU-037, y qué
+parte del código común podía pasar a cada historia:
+
+- "Primero confirmemos que aun tengo uddas. vale, estabamos trabajando en 2 HU, no en 1, penese
+  que el tema de las etnias como terminara siendo un campo de usuario usuario podria tener una u
+  otra... que falta para que ambas historias de usuario  esten listas? y que parte de el codigo de
+  estas que esten en comun se puede mover a sus HU respectivas? por que entiendo la logica que que
+  lo comun puede ser un punto de partida, que ahora que veo cada service de cada HU tiene tan poco
+  declarado, que me parecio raro, pero tu sabras, supongo que en sierto sentido tambien ayuda que
+  cualquier cambio con los ecenarios de las proximas HU contemplens nuevos edgcase para esto....
+  si al final que lo hayamos hecho en terminal sera hasta peor,, pero bueno si lo hubiese hecho
+  yo, hubiese sido muy directo con lo que pueda o no plantear, como mis 9 puntos originals, que
+  eran simples en si mismo, unicamente para exponer el repositorio, y loo hubiese hecho de forma
+  individual"
+
+El modelo contestó que las tarjetas de los 8 catálogos comparten 21 o 22 títulos de escenario con
+HU-037, y que lo único de `comun/` que se podía partir por historia sin copiar reglas era el menú.
+Le hizo tres preguntas, y el autor eligió:
+
+- "Dejarlo como está (Recomendado)"
+- "Ahora, uno por historia"
+- "Los 4 casos de HU-037"
+
+Mientras el modelo partía el menú, el autor escribió:
+
+- "de hecho ahora que lo pienso podemos recuperar el concepto de controller, que el menu comun
+  llame a menu especifico de cada implementacion de la HU,, en este caso cada menu de cada HU seria
+  nuestro controller, literalmente de ahi seria trivial cambiarlo a un controller real, por que
+  sabriamos como es el uso de cada implementacion."
+
+**Decisión:**
+
+- La base común se queda en `comun/`, y sigue en vigor la entrada 2026-10-24 "Los catálogos
+  comparten una base común".
+- Cada historia tiene su controlador en `hu0NN/controladores/`, como `EtniaControlador`: pide en
+  la terminal los datos de cada opción, llama al contrato e imprime. Las 11 opciones que comparten
+  los catálogos están en `comun/controladores/ControladorCatalogo`, y el controlador de cada
+  historia pone su número, su título, cómo se arma un valor y contra qué se compara.
+- El menú común, `MenuPrincipal`, lista las historias por su número y abre el controlador de la
+  elegida.
+- HU-037 recibe los 4 casos del "Dado" que le faltaban: la fecha futura del escenario 3, y cancelar
+  una versión nueva, un cambio y una reactivación en el 11.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- La interfaz `Controlador`, en `comun/interfaces/`, es lo que el menú pide de cada historia: su
+  número, su título y cómo se abre. Una historia que no es un catálogo, como HU-001 o HU-004, entra
+  al menú con su controlador sin cambiar `MenuPrincipal`.
+- Spring le entrega al menú todos los controladores, y el menú los ordena por el número de la
+  historia. Un controlador nuevo aparece en el menú sin que nadie lo edite.
+- `Terminal`, en `comun/menu/`, lee la entrada que comparten el menú y los controladores, y pide la
+  confirmación de cada operación.
+- El test de un escenario abre el controlador de su historia, y no el menú principal. Que el menú
+  ordene las historias y abra la elegida lo prueba `BaseComunTest`.
+
+**Alternativas:**
+
+- Un controlador por historia con sus 11 opciones copiadas. `wc -l` da 316 líneas para
+  `ControladorCatalogo.java`, y estarían en 8 lugares.
+- Seguir con un solo menú y su `switch` hasta decidirlo con el equipo. Los 3 integrantes cambiaban
+  el mismo archivo (`docs/DESIGN.md`, sección 9, antes de esta entrada).
+
+**Estado:** `vigente`

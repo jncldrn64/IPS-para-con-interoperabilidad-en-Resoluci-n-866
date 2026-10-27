@@ -58,8 +58,9 @@ y lo deja esperando el teclado, y el test abre el archivo de la base en vez de l
 cambio de `main`, con `.github/workflows/tests.yml`; cómo se corren a mano está en
 `tests/README.md`.
 
-Un escenario que pasa por el menú, como cancelar antes de confirmar, se prueba creando
-`MenuPrincipal` con las respuestas en un `ByteArrayInputStream`. El test usa el constructor que
+Un escenario que pasa por la terminal, como cancelar antes de confirmar, se prueba abriendo el
+controlador de su historia, como `new EtniaControlador(etnias, terminal)`, con una `Terminal` que
+lee las respuestas de un `ByteArrayInputStream`. El test usa el constructor de `Terminal` que
 recibe la entrada, y Spring, el que usa el teclado.
 
 **Por qué:** con el número del escenario en el nombre, la salida de `./mvnw test` dice qué
@@ -101,12 +102,13 @@ comentarios que tiene encima, porque ninguna herramienta los revisa.
 
 **Regla:** el código tiene tres partes. El modelo son las entidades, una interfaz de repositorio
 por entidad y un servicio por historia con sus reglas de negocio. La vista es lo que se imprime en
-la terminal, según la lámina de la historia, y el controlador es el menú, que lee la opción y llama
-al servicio.
+la terminal, según la lámina de la historia, y el controlador, uno por historia, pide los datos de
+cada opción, llama al contrato e imprime. El menú principal solo elige la historia y abre su
+controlador.
 
 Un servicio no lee del teclado ni imprime: devuelve un valor o avisa el error con su mensaje, y el
-menú lo muestra. Ningún repositorio borra. El Delete de un catálogo es inactivar, y lo hace su
-servicio (`docs/REQUIREMENTS.md`, sección 2).
+controlador lo muestra. Ningún repositorio borra. El Delete de un catálogo es inactivar, y lo hace
+su servicio (`docs/REQUIREMENTS.md`, sección 2).
 
 Un repositorio de catálogo extiende `CatalogoRepositorio`, que extiende `Repository` de Spring Data
 y declara solo `findAllByOrderByCodigoAsc`, `findById` y `save`. `CrudRepository`, y con él
@@ -119,28 +121,42 @@ clases, y tienen las mismas subcarpetas:
 - `interfaces/`: el contrato;
 - `modelos/`: las entidades;
 - `repositorios/`: el acceso a la base;
-- `servicios/`: los métodos de la historia y sus validaciones.
+- `servicios/`: los métodos de la historia y sus validaciones;
+- `controladores/`: el controlador, que lee la terminal y llama al contrato.
 
-El menú vive en `comun/menu/`. El contrato de una historia es una interfaz que extiende
-`CrudCatalogo` y agrega lo propio de la historia, como la lista de la hoja 15 en `ContratoEtnias`.
-Su comentario dice qué escenario cumple cada operación. El servicio implementa el contrato, y el
-menú lo pide por la interfaz, nunca por el servicio.
+El contrato de una historia es una interfaz que extiende `CrudCatalogo` y agrega lo propio de la
+historia, como la lista de la hoja 15 en `ContratoEtnias`. Su comentario dice qué escenario cumple
+cada operación. El servicio implementa el contrato, y el controlador lo pide por la interfaz, nunca
+por el servicio.
+
+El menú principal vive en `comun/menu/`, con `Terminal`, la entrada que comparte con los
+controladores. Lista las historias por su número y abre el controlador de la elegida, que cumple la
+interfaz `Controlador`. Las 11 opciones que comparten los catálogos están en
+`comun/controladores/ControladorCatalogo`, y el controlador de cada historia pone lo suyo, como la
+comparación con la hoja 15 en `EtniaControlador`.
 
 **Por qué:** la guía pide una aplicación web [2] y la fase 0 corre en terminal. Si los servicios no
-tocan la terminal, la web reemplaza el menú y deja los servicios como están. Si un repositorio
-puede borrar, basta una llamada para romper "Nada se borra".
+tocan la terminal, la web reemplaza los controladores y deja los servicios como están. Cada
+opción de un controlador de terminal ya dice qué datos pide y a qué operación del contrato llama, y
+eso es lo que repite su versión web. Si un repositorio puede borrar, basta una llamada para romper
+"Nada se borra".
 
 Con una carpeta por historia, cada integrante trabaja en la suya, y lo que tiene una historia se
-lee sin abrir las demás. El contrato dice qué hace la historia sin leer cómo lo hace.
+lee sin abrir las demás. El contrato dice qué hace la historia sin leer cómo lo hace. Con un solo
+menú para todas, los 3 integrantes cambiaban el mismo archivo, y ahora el menú principal encuentra
+el controlador de cada historia sin que nadie lo edite.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "El código se separa en modelo, vista y
 controlador", y del 2026-10-26 "El primer código arma la base común con etnias y comunidades
-étnicas", "El código se ordena por historia, con lo común aparte" y "Cada historia tiene su
-contrato, y lo implementa su servicio".
+étnicas", "El código se ordena por historia, con lo común aparte", "Cada historia tiene su
+contrato, y lo implementa su servicio" y "Cada historia tiene su controlador, y el menú común lo
+abre".
 
 **Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
 de la terminal. Que ningún repositorio ofrezca borrar lo comprueba
-`BaseComunTest.ningunRepositorioPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
+`BaseComunTest.ningunRepositorioPuedeBorrar`, y un repositorio nuevo se agrega a su lista. Que el
+menú principal ordene las historias y abra la elegida lo comprueba
+`BaseComunTest.elMenuPrincipalOrdenaLasHistoriasYAbreLaElegida`.
 
 ## 7. La base común de los catálogos
 
@@ -154,15 +170,17 @@ nombre, el estado y la versión. El código es la llave y se guarda como texto (
 catálogo agrega lo suyo, como el padre de una ocupación, y el historial de los valores va en una
 tabla de cambios común.
 
-Un catálogo nuevo trae su carpeta con cuatro clases y su entrada en el menú, con `hu036/` de
-ejemplo (`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo"):
+Un catálogo nuevo trae su carpeta con cinco clases, con `hu036/` de ejemplo (`docs/DECISIONS.md`,
+2026-10-25 "HU-036 es el catálogo de ejemplo"):
 
 - el contrato extiende `CrudCatalogo` de su entidad, como `ContratoEtnias`;
 - la entidad extiende `Catalogo`, fija el largo del código con `@AttributeOverride` y su formato con
   `@Pattern` sobre `getCodigo`;
 - el repositorio extiende `CatalogoRepositorio`;
 - el servicio extiende `ServicioCatalogo`, implementa el contrato y le pasa a la base la clase de su
-  entidad, como `super(Etnia.class, datos, validador, registro)`.
+  entidad, como `super(Etnia.class, datos, validador, registro)`;
+- el controlador extiende `ControladorCatalogo` y le pasa el número de la historia, el título y
+  cómo se arma un valor, como `EtniaControlador`. El menú principal lo encuentra sin que se edite.
 
 La base valida cada dato con su numeral, pide la referencia oficial para crear o cambiar un valor
 (RC-3) y aplica RC-10 al inactivar y al reactivar. Cada operación deja su fila en la tabla de
@@ -235,8 +253,6 @@ programa trabaja sobre una copia del archivo de la base".
 Este archivo es una semilla mientras esta lista tenga algo.
 
 - Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
-- Cómo se arma el menú: uno solo para las 12 historias, o uno principal que llama a un menú por
-  entidad. Con uno solo, los 3 integrantes cambian el mismo archivo.
 - Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
   que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
   `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
