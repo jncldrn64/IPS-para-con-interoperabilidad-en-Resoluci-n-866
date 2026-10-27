@@ -12,13 +12,21 @@ import com.example.demo.modelo.Etnia;
 import com.example.demo.modelo.Motivo;
 import com.example.demo.repositorio.EtniaRepositorio;
 import com.example.demo.servicio.CrudCatalogo;
+import com.example.demo.servicio.DatosVersion;
 import com.example.demo.servicio.RegistroCatalogos;
+import com.example.demo.servicio.ResultadoCarga;
 import jakarta.validation.ConstraintViolationException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,6 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
 class HU036EtniasTest {
 
     static final String REFERENCIA = "Resolución de prueba";
+    static final Path HOJA_15 = Path.of("src/test/resources/cargas/etnias-hoja-15.csv");
+    static final DatosVersion RESOLUCION_866 = new DatosVersion(
+            "Resolución 866 de 2021, anexo técnico, numeral 13, hoja 15", "https://www.minsalud.gov.co",
+            LocalDate.of(2026, 10, 18), "Resolución 866 de 2021", LocalDate.of(2021, 6, 25));
+    static final DatosVersion VERSION_2022 = new DatosVersion("Resolución de prueba", null,
+            LocalDate.of(2026, 10, 18), "Versión de prueba 2022", LocalDate.of(2022, 1, 1));
+
+    @TempDir Path carpeta;
 
     @Autowired CrudCatalogo<Etnia> etnias;
     @Autowired EtniaRepositorio repositorio;
@@ -198,6 +214,154 @@ class HU036EtniasTest {
                 CatalogoCambio.Tipo.INACTIVADO), historial.stream().map(CatalogoCambio::getTipo).toList());
         assertFalse(historial.stream().anyMatch(c -> c.getFechaHora() == null));
         assertTrue(historial.stream().allMatch(c -> REFERENCIA.equals(c.getReferenciaOficial())));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 1: la primera carga crea las 7 etnias activas, con su versión")
+    void esc1_primeraCarga() {
+        ResultadoCarga carga = etnias.leerCarga(HOJA_15, RESOLUCION_866);
+        assertEquals(ResultadoCarga.Tipo.PRIMERA, carga.getTipo());
+        assertTrue(carga.sePuedeGuardar());
+        CatalogoVersion version = etnias.confirmarCarga(carga, Map.of());
+        assertEquals(List.of("01", "02", "03", "04", "05", "06", "99"), activos());
+        assertEquals(version.getId(), etnias.buscarPorCodigo("99").orElseThrow().getVersionId());
+        assertEquals(version.getId(), etnias.versionVigente().orElseThrow().getId());
+        assertEquals(LocalDate.of(2021, 6, 25), version.getFechaPublicacion());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 1: un nombre distinto del de la hoja se guarda como en la hoja, con aviso")
+    void esc1_nombreDistintoDelDeLaHoja() throws IOException {
+        Path archivo = csv(Files.readString(HOJA_15).replace("05;Negro(a)", "05;Negro"));
+        ResultadoCarga carga = etnias.leerCarga(archivo, RESOLUCION_866);
+        assertEquals(1, carga.getAvisos().size());
+        etnias.confirmarCarga(carga, Map.of());
+        assertEquals("Negro(a)", etnias.buscarPorCodigo("05").orElseThrow().getNombre());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 2: si falta un código de la hoja 15, la carga no se puede guardar")
+    void esc2_faltaUnCodigoDeLaHoja() throws IOException {
+        Path archivo = csv(Files.readString(HOJA_15).replace("03;Raizal (San Andrés y Providencia)\n", ""));
+        ResultadoCarga carga = etnias.leerCarga(archivo, RESOLUCION_866);
+        assertEquals(List.of("falta el código 03 de la hoja 15"), carga.getBloqueos());
+        assertThrows(IllegalStateException.class, () -> etnias.confirmarCarga(carga, Map.of()));
+        assertTrue(etnias.listar().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 2: si sobra un código que la hoja 15 no tiene, la carga no se puede guardar")
+    void esc2_sobraUnCodigo() throws IOException {
+        Path archivo = csv(Files.readString(HOJA_15) + "07;Etnia que la hoja no tiene\n");
+        ResultadoCarga carga = etnias.leerCarga(archivo, RESOLUCION_866);
+        assertEquals(List.of("sobra el código 07, que la hoja 15 no tiene"), carga.getBloqueos());
+        assertTrue(etnias.listar().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 3: una fila con un código de 3 caracteres se rechaza y las demás se guardan")
+    void esc3_filasConErrores() throws IOException {
+        Path archivo = csv(Files.readString(HOJA_15) + "100;Valor de 3 caracteres\n");
+        ResultadoCarga carga = etnias.leerCarga(archivo, RESOLUCION_866);
+        assertEquals(8, carga.getFilasLeidas());
+        assertEquals(7, carga.getAceptadas().size());
+        ResultadoCarga.Rechazo rechazo = carga.getRechazadas().get(0);
+        assertEquals(8, rechazo.numero());
+        assertTrue(rechazo.motivo().contains("2 dígitos"), rechazo.motivo());
+        Path lista = etnias.escribirRechazadas(carga, carpeta.resolve("rechazadas.csv"));
+        assertTrue(Files.exists(lista));
+        etnias.confirmarCarga(carga, Map.of());
+        assertEquals(7, activos().size());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 4: un archivo sin la columna del nombre se rechaza completo")
+    void esc4_faltaLaColumnaDelNombre() {
+        Path archivo = csv("código;descripción\n01;Indígena\n");
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> etnias.leerCarga(archivo, RESOLUCION_866));
+        assertTrue(error.getMessage().contains("columna nombre"), error.getMessage());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 4: una fecha de publicación futura rechaza el archivo completo")
+    void esc4_fechaFutura() {
+        DatosVersion futura = new DatosVersion("Fuente", null, LocalDate.of(2026, 10, 18),
+                "Versión futura", LocalDate.now().plusDays(1));
+        assertThrows(IllegalArgumentException.class, () -> etnias.leerCarga(HOJA_15, futura));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 4: una fecha anterior a la vigente se rechaza y dice cuál es la vigente")
+    void esc4_fechaAnteriorALaVigente() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        DatosVersion anterior = new DatosVersion("Fuente", null, LocalDate.of(2026, 10, 18),
+                "Versión vieja", LocalDate.of(2020, 1, 1));
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> etnias.leerCarga(HOJA_15, anterior));
+        assertTrue(error.getMessage().contains("Resolución 866 de 2021"), error.getMessage());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 5: dos filas con el mismo código se rechazan las dos")
+    void esc5_codigoRepetido() throws IOException {
+        Path archivo = csv(Files.readString(HOJA_15) + "01;Indígena otra vez\n");
+        ResultadoCarga carga = etnias.leerCarga(archivo, RESOLUCION_866);
+        assertEquals(2, carga.getRechazadas().size());
+        assertTrue(carga.getRechazadas().stream().allMatch(r -> r.motivo().equals("código repetido")));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 6: una versión nueva crea, reactiva e inactiva, y avisa lo que deshace")
+    void esc6_versionNueva() throws IOException {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        etnias.inactivar("03", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        Path archivo = csv(Files.readString(HOJA_15).replace("02;ROM (Gitanos)\n", "")
+                + "07;Etnia nueva\n");
+        ResultadoCarga carga = etnias.leerCarga(archivo, VERSION_2022);
+        assertEquals(ResultadoCarga.Tipo.VERSION_NUEVA, carga.getTipo());
+        assertEquals(List.of("07"), carga.getNuevos());
+        assertEquals(List.of("03"), carga.getVuelven());
+        assertEquals(List.of("02"), carga.getYaNoEstan());
+        assertEquals(1, carga.getAvisos().size(), "la versión deshace la inactivación de 03");
+        CatalogoVersion version = etnias.confirmarCarga(carga, Map.of("02", "07"));
+        assertEquals(version.getId(), etnias.versionVigente().orElseThrow().getId());
+        assertEquals(Catalogo.Estado.ACTIVO, estado("07"));
+        assertEquals(Motivo.VUELVE_EN_LA_VERSION, ultimoCambio("03").getMotivo());
+        assertEquals(Motivo.REEMPLAZADO_POR, ultimoCambio("02").getMotivo());
+        assertEquals("07", ultimoCambio("02").getCodigoReemplazo());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 7: una fila rechazada de un código existente lo deja como estaba")
+    void esc7_versionNuevaConFilasRechazadas() throws IOException {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        Path archivo = csv(Files.readString(HOJA_15).replace("02;ROM (Gitanos)", "02;"));
+        ResultadoCarga carga = etnias.leerCarga(archivo, VERSION_2022);
+        assertEquals("02", carga.getRechazadas().get(0).codigo());
+        assertTrue(carga.getYaNoEstan().isEmpty());
+        CatalogoVersion version = etnias.confirmarCarga(carga, Map.of());
+        Etnia rom = etnias.buscarPorCodigo("02").orElseThrow();
+        assertEquals("ROM (Gitanos)", rom.getNombre());
+        assertEquals(Catalogo.Estado.ACTIVO, rom.getEstado());
+        assertEquals(version.getId(), rom.getVersionId());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: leer una carga y no confirmarla deja el catálogo igual")
+    void esc12_cancelarLaCarga() {
+        etnias.leerCarga(HOJA_15, RESOLUCION_866);
+        assertTrue(etnias.listar().isEmpty());
+        assertTrue(etnias.versionVigente().isEmpty());
+    }
+
+    private Path csv(String contenido) {
+        try {
+            return Files.writeString(Files.createTempFile(carpeta, "carga", ".csv"), contenido,
+                    StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private Catalogo.Estado estado(String codigo) {

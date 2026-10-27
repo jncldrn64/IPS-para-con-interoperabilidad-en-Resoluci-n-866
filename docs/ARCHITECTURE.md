@@ -28,6 +28,8 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
 | `src/test/java/com/example/demo/` | `BaseComunTest` y una clase por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
+| `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias cargadas (sección 3) |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas de las 30 historias, el modelo E-R y la memoria contextual; lo explica su `README.md` |
@@ -55,6 +57,7 @@ Comprobado el 2026-10-26.
 | `repositorio/` | `CatalogoRepositorio`, uno por catálogo, versiones y cambios; ninguno borra |
 | `servicio/` | `CrudCatalogo`, que usa el menú, la base `ServicioCatalogo` y uno por catálogo |
 | `servicio/` | `RegistroCatalogos`: las versiones y la tabla de cambios de todos los catálogos |
+| `servicio/` | `ArchivoCsv`, `DatosVersion` y `ResultadoCarga`: la carga desde el CSV de RC-8 |
 | `menu/` | `MenuPrincipal`, el menú en terminal: un `switch` principal y un submenú por catálogo |
 
 `application.properties` abre la base `jdbc:h2:file:./data/ips`, relativa a la carpeta donde se
@@ -65,25 +68,27 @@ corre el programa, y el registro de arranque la muestra en la línea `Database J
 
 El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo: 1 abre etnias, 2
 comunidades étnicas y 0 sale. Cada catálogo lista, crea por cambio oficial, cambia el nombre o el
-código, inactiva, reactiva y muestra el historial de un código, y pide confirmar antes de guardar.
-Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la sesión, que corre
-Linux sin `LANG`.
+código, inactiva, reactiva, muestra el historial de un código y carga un CSV, y pide confirmar antes
+de guardar. Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la
+sesión, que corre Linux sin `LANG`.
 
-Cada operación deja su fila en `CatalogoCambio`, la tabla de cambios común, y `CatalogoVersion`
-guarda cada carga de un archivo oficial. La carga desde el CSV todavía no existe, así que hoy
-ninguna versión se crea fuera de los tests. `ServicioCatalogo.contarUsos` devuelve 0 hasta que
-exista el registro del paciente (HU-004).
+La carga dice primero qué archivo espera y pide la ruta y los datos de la versión.
+`ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
+deja su fila en `CatalogoCambio`, la tabla de cambios común, y cada carga, la suya en
+`CatalogoVersion`. `ServicioCatalogo.contarUsos` devuelve 0 hasta que exista el registro del
+paciente (HU-004).
 
 ## 3. Recursos y cómo se reinicia cada uno
 
 Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el contenedor de la sesión.
 
-- `data/ips.mv.db`: el archivo de la base. H2 lo crea la primera vez que arranca el programa, con
-  las tablas `ETNIA`, `COMUNIDAD_ETNICA`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO` y dos secuencias
-  para los números de las dos últimas. Todavía no va en git, porque no trae un catálogo cargado
-  (`docs/DESIGN.md`, sección 8). Hoy se reinicia borrándolo, y la corrida siguiente lo crea vacío.
-  La consola de H2 lo abre con el usuario vacío y sin clave; con el usuario `sa` falla y deja
-  `data/ips.trace.db`, que `.gitignore` deja fuera.
+- `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
+  `COMUNIDAD_ETNICA`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO` y dos secuencias para los números de
+  las dos últimas. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de
+  2021"; ninguna comunidad étnica; y 7 filas de cambios, una por etnia creada. Se cargó con la
+  opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se reinicia con
+  `git checkout data/ips.mv.db`. La consola de H2 lo abre con el usuario vacío y sin clave; con el
+  usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
 - `data/prueba.mv.db`: la base de prueba, una copia del archivo que se abre con otro URL
   (`docs/DESIGN.md`, sección 8). `.gitignore` la deja fuera de git, y se reinicia copiando otra vez
   el archivo de la base.
@@ -93,7 +98,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 1481 líneas en 24 archivos. De
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 2531 líneas en 29 archivos. De
 Spring Initializr quedan `DemoApplication.java` entero y la mayor parte de
 `DemoApplicationTests.java`.
 
@@ -112,7 +117,13 @@ si eso cierra un hueco de esta lista.
 - **2026-10-22: ningún catálogo oficial se descargó.** No se comprobó que la tabla Pais de SISPRO
   use el código numérico (D-03), que el archivo de la CIUO-88 A.C. traiga los cuatro niveles
   (HU-022), ni que exista el catálogo de comunidades étnicas (HU-037). Comando:
-  `git ls-files '*.csv'` devuelve cero.
+  `git ls-files '*.csv'` devuelve solo `src/test/resources/cargas/etnias-hoja-15.csv`, que se
+  transcribió de la hoja 15 del anexo y no se descargó.
+- **2026-10-26: cada corrida cambia `data/ips.mv.db`.** H2 reescribe el archivo al abrirlo y al
+  cerrarlo, aunque no se guarde ningún dato, y git lo ve modificado. Comando, desde la raíz:
+  `printf '0\n' | sh ./mvnw -q spring-boot:run; git status --short data`, que muestra
+  `M data/ips.mv.db`. Quien no tiene el turno lo deja como estaba con `git checkout data/ips.mv.db`
+  antes de su commit (`docs/DESIGN.md`, sección 8).
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,

@@ -1,8 +1,11 @@
 package com.example.demo.servicio;
 
 import com.example.demo.modelo.CatalogoCambio;
+import com.example.demo.modelo.CatalogoVersion;
 import com.example.demo.modelo.Motivo;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -43,4 +46,22 @@ public interface CrudCatalogo<T> {
 
     /** Cada cambio del código, del primero al último. */
     List<CatalogoCambio> historial(String codigo);
+
+    Optional<CatalogoVersion> versionVigente();
+
+    /**
+     * Lee el CSV de RC-8 y dice qué trae y qué cambiaría, sin guardar nada. Rechaza el archivo
+     * completo si le falta una columna o si una fecha no sirve (escenario 4 de HU-036).
+     */
+    ResultadoCarga leerCarga(Path archivo, DatosVersion datos);
+
+    /**
+     * Guarda una carga leída. En una versión nueva, reemplazos dice qué código nuevo reemplaza a
+     * uno que ya no está (RC-9); los demás que ya no están se inactivan con "No está en la
+     * versión".
+     */
+    CatalogoVersion confirmarCarga(ResultadoCarga carga, Map<String, String> reemplazos);
+
+    /** Escribe la lista de filas rechazadas en un CSV, para descargarla (RC-8). */
+    Path escribirRechazadas(ResultadoCarga carga, Path destino);
 }
