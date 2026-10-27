@@ -48,7 +48,8 @@ prueba. `@DisplayName` repite la historia y el escenario, como "HU-036 Esc. 10".
 
 Un escenario se cumple cuando cada caso de su "Dado" tiene su método y pasa, y una historia, cuando
 se cumplen todos sus escenarios. Las reglas de este archivo que no son el escenario de una historia
-van en `BaseComunTest`.
+van en `BaseComunTest`, y los casos límite que pidió el autor, como cargar las 7 etnias en las dos
+entidades, en `CasosLimiteTest`.
 
 Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
 y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
@@ -144,6 +145,10 @@ cambios común, `CatalogoCambio`, por medio de `RegistroCatalogos`: el tipo de c
 anterior y el nuevo, el motivo, la referencia y la hora. Ninguna operación cambia un valor sin
 dejar su fila.
 
+La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guardar, y
+`confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
+de la base, `nombreOficial` y `revisarPrimeraCarga`.
+
 **Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
 corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
 enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
@@ -153,7 +158,8 @@ fija la regla común y no llegan de un archivo.
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común",
 2026-10-25 "La base común es una clase con código, nombre, estado y versión", y del 2026-10-26 "El
 primer código arma la base común con etnias y comunidades étnicas", "Los motivos de RC-10 son un
-enum" y "La tabla de cambios y RC-10 entran en la base común".
+enum", "La tabla de cambios y RC-10 entran en la base común" y "La carga lee primero y guarda al
+confirmar".
 
 ## 8. La base de datos
 
@@ -177,6 +183,10 @@ sh ./mvnw spring-boot:run \
 Se comprobó el 2026-10-26 en una copia del repo: la lista de etnias salió de `prueba`, y la de
 `ips` siguió sin el valor que se agregó en la prueba. `.gitignore` deja `data/prueba.*` fuera de
 git.
+
+Cada corrida cambia los bytes de `data/ips.mv.db`, aunque no guarde ningún dato
+(`docs/ARCHITECTURE.md`, sección 6). Quien no tiene el turno lo deja como estaba con
+`git checkout data/ips.mv.db` antes de su commit.
 
 **Por qué:** los datos quedan entre una corrida y la siguiente, y quien necesita un catálogo lo
 encuentra ya cargado en el archivo.

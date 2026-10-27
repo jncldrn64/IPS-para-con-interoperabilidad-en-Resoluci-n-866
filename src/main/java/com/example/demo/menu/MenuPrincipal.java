@@ -2,12 +2,20 @@ package com.example.demo.menu;
 
 import com.example.demo.modelo.Catalogo;
 import com.example.demo.modelo.CatalogoCambio;
+import com.example.demo.modelo.CatalogoVersion;
 import com.example.demo.modelo.ComunidadEtnica;
 import com.example.demo.modelo.Etnia;
 import com.example.demo.modelo.Motivo;
 import com.example.demo.servicio.CrudCatalogo;
+import com.example.demo.servicio.DatosVersion;
+import com.example.demo.servicio.ResultadoCarga;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 import org.springframework.boot.CommandLineRunner;
@@ -62,6 +70,7 @@ public class MenuPrincipal implements CommandLineRunner {
             System.out.println("5. Inactivar");
             System.out.println("6. Reactivar");
             System.out.println("7. Historial de un código");
+            System.out.println("8. Cargar desde un CSV");
             System.out.println("0. Volver");
             try {
                 switch (leer("Opción: ")) {
@@ -73,6 +82,7 @@ public class MenuPrincipal implements CommandLineRunner {
                     case "5" -> inactivar(crud);
                     case "6" -> reactivar(crud);
                     case "7" -> crud.historial(leer("Código: ")).forEach(this::imprimir);
+                    case "8" -> cargar(crud);
                     case "0", "" -> {
                         return;
                     }
@@ -83,8 +93,83 @@ public class MenuPrincipal implements CommandLineRunner {
                         .forEach(m -> System.out.println("No se guardó: " + m));
             } catch (IllegalArgumentException | IllegalStateException e) {
                 System.out.println("No se pudo: " + e.getMessage());
+            } catch (DateTimeParseException e) {
+                System.out.println("No se pudo: la fecha \"" + e.getParsedString()
+                        + "\" no sirve; escríbala como AAAA-MM-DD");
             }
         }
+    }
+
+    // La terminal dice qué archivo espera antes de pedir la ruta (docs/DECISIONS.md, 2026-10-26
+    // "La terminal dice qué archivo espera antes de pedir la ruta").
+    private <T extends Catalogo> void cargar(CrudCatalogo<T> crud) {
+        System.out.println("El archivo tiene que ser CSV en UTF-8, separado por punto y coma (;).");
+        System.out.println("La primera fila trae los nombres de las columnas: código;nombre. Las"
+                + " demás columnas se ignoran.");
+        System.out.println("Desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la columna"
+                + " del código en formato de texto para que no pierda los ceros.");
+        Path archivo = Path.of(leer("Ruta del archivo: "));
+        String fuente = leer("Fuente: ");
+        String direccion = leer("Dirección de descarga: ");
+        LocalDate descarga = LocalDate.parse(leer("Fecha de descarga (AAAA-MM-DD): "));
+        String version = leer("Versión: ");
+        String publicacion = leer("Fecha de publicación (AAAA-MM-DD), o Enter si no la trae: ");
+        ResultadoCarga carga = crud.leerCarga(archivo, new DatosVersion(fuente, direccion, descarga,
+                version, publicacion.isEmpty() ? null : LocalDate.parse(publicacion)));
+        imprimir(carga);
+        if (!carga.sePuedeGuardar()) {
+            carga.getBloqueos().forEach(b -> System.out.println("No se puede guardar: " + b));
+            return;
+        }
+        if (!carga.getRechazadas().isEmpty()
+                && leer("¿Descargar la lista de rechazadas? (s/n): ").equalsIgnoreCase("s")) {
+            String nombre = archivo.getFileName().toString().replaceFirst("\\.csv$", "");
+            Path destino = crud.escribirRechazadas(carga,
+                    archivo.resolveSibling(nombre + "-rechazadas.csv"));
+            System.out.println("Escrita en " + destino);
+        }
+        Map<String, String> reemplazos = new HashMap<>();
+        for (String codigo : carga.getYaNoEstan()) {
+            String nuevo = leer(
+                    "¿Qué código nuevo reemplaza a " + codigo + "? (Enter si ninguno): ");
+            if (!nuevo.isEmpty()) {
+                reemplazos.put(codigo, nuevo);
+            }
+        }
+        if (!confirmar()) {
+            return;
+        }
+        // RC-9: la lista de los que ya no están se confirma aparte.
+        if (!carga.getYaNoEstan().isEmpty()) {
+            System.out.println("Se inactivan: " + String.join(", ", carga.getYaNoEstan()));
+            if (!confirmar()) {
+                return;
+            }
+        }
+        CatalogoVersion guardada = crud.confirmarCarga(carga, reemplazos);
+        System.out.println("Guardada la versión " + guardada.getVersion() + ", publicada el "
+                + guardada.getFechaPublicacion() + ".");
+    }
+
+    private void imprimir(ResultadoCarga carga) {
+        System.out.println("Carga: " + switch (carga.getTipo()) {
+            case PRIMERA -> "primera carga";
+            case VERSION_NUEVA -> "versión nueva";
+            case RECARGA -> "recarga de la versión vigente";
+        });
+        System.out.println("Filas leídas: " + carga.getFilasLeidas() + ". Aceptadas: "
+                + carga.getAceptadas().size() + ". Rechazadas: " + carga.getRechazadas().size()
+                + ".");
+        carga.getRechazadas().forEach(r -> System.out.println(
+                "  Fila " + r.numero() + ", código \"" + r.codigo() + "\": " + r.motivo()));
+        if (carga.getTipo() == ResultadoCarga.Tipo.VERSION_NUEVA) {
+            System.out.println("Nuevos: " + carga.getNuevos());
+            carga.getCambianDeNombre().forEach(c -> System.out.println("Cambia de nombre: "
+                    + c.codigo() + ", de \"" + c.antes() + "\" a \"" + c.ahora() + "\""));
+            System.out.println("Vuelven: " + carga.getVuelven());
+            System.out.println("Ya no están: " + carga.getYaNoEstan());
+        }
+        carga.getAvisos().forEach(a -> System.out.println("Aviso: " + a));
     }
 
     private <T extends Catalogo> void crear(CrudCatalogo<T> crud,

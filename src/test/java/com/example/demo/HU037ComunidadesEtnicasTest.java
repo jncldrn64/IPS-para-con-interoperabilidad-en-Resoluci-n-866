@@ -12,13 +12,21 @@ import com.example.demo.modelo.ComunidadEtnica;
 import com.example.demo.modelo.Motivo;
 import com.example.demo.repositorio.ComunidadEtnicaRepositorio;
 import com.example.demo.servicio.CrudCatalogo;
+import com.example.demo.servicio.DatosVersion;
 import com.example.demo.servicio.RegistroCatalogos;
+import com.example.demo.servicio.ResultadoCarga;
 import jakarta.validation.ConstraintViolationException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,6 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
 class HU037ComunidadesEtnicasTest {
 
     static final String REFERENCIA = "Resolución de prueba";
+    // Valores inventados: el catálogo oficial de comunidades étnicas no se ha encontrado (D-19).
+    static final String TRES = "código;nombre\n101;Comunidad uno\n102;Comunidad dos\n103;Comunidad tres\n";
+    static final DatosVersion PRIMERA = new DatosVersion("Fuente de prueba", null,
+            LocalDate.of(2026, 10, 18), "Versión de prueba 1", LocalDate.of(2025, 1, 1));
+    static final DatosVersion SEGUNDA = new DatosVersion("Fuente de prueba", null,
+            LocalDate.of(2026, 10, 18), "Versión de prueba 2", LocalDate.of(2026, 1, 1));
+
+    @TempDir Path carpeta;
 
     @Autowired CrudCatalogo<ComunidadEtnica> comunidades;
     @Autowired ComunidadEtnicaRepositorio repositorio;
@@ -198,6 +214,99 @@ class HU037ComunidadesEtnicasTest {
                 CatalogoCambio.Tipo.INACTIVADO), historial.stream().map(CatalogoCambio::getTipo).toList());
         assertFalse(historial.stream().anyMatch(c -> c.getFechaHora() == null));
         assertTrue(historial.stream().allMatch(c -> REFERENCIA.equals(c.getReferenciaOficial())));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 1: la primera carga crea una comunidad activa por fila aceptada")
+    void esc1_primeraCarga() {
+        CatalogoVersion version = comunidades.confirmarCarga(
+                comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        assertEquals(List.of("101", "102", "103"), activos());
+        assertEquals(version.getId(), comunidades.buscarPorCodigo("101").orElseThrow().getVersionId());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 2: las filas con errores se rechazan, y una recarga completa sin inactivar")
+    void esc2_filasConErroresYRecarga() {
+        ResultadoCarga carga = comunidades.leerCarga(
+                csv("código;nombre\n101;Comunidad uno\n12;Dos caracteres\n103;\n"), PRIMERA);
+        assertEquals(3, carga.getFilasLeidas());
+        assertEquals(List.of(2, 3), carga.getRechazadas().stream().map(ResultadoCarga.Rechazo::numero).toList());
+        comunidades.confirmarCarga(carga, Map.of());
+        ResultadoCarga recarga = comunidades.leerCarga(csv(TRES), PRIMERA);
+        assertEquals(ResultadoCarga.Tipo.RECARGA, recarga.getTipo());
+        assertEquals(List.of("102", "103"), recarga.getNuevos());
+        comunidades.confirmarCarga(recarga, Map.of());
+        assertEquals(List.of("101", "102", "103"), activos());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 3: un archivo sin la columna del nombre se rechaza completo")
+    void esc3_faltaLaColumnaDelNombre() {
+        assertThrows(IllegalArgumentException.class,
+                () -> comunidades.leerCarga(csv("código\n101\n"), PRIMERA));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 3: una fecha anterior a la de la versión vigente rechaza el archivo")
+    void esc3_fechaAnteriorALaVigente() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), SEGUNDA), Map.of());
+        assertThrows(IllegalArgumentException.class, () -> comunidades.leerCarga(csv(TRES), PRIMERA));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 4: dos filas con el mismo código se rechazan las dos")
+    void esc4_codigoRepetido() {
+        ResultadoCarga carga = comunidades.leerCarga(csv(TRES + "101;Otra vez\n"), PRIMERA);
+        assertEquals(2, carga.getRechazadas().size());
+        assertEquals(List.of("102", "103"),
+                carga.getAceptadas().stream().map(ResultadoCarga.Fila::codigo).toList());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 5: una versión nueva crea, cambia nombres, reactiva e inactiva")
+    void esc5_versionNueva() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        comunidades.inactivar("103", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        ResultadoCarga carga = comunidades.leerCarga(
+                csv("código;nombre\n102;Comunidad dos renombrada\n103;Comunidad tres\n104;Nueva\n"),
+                SEGUNDA);
+        assertEquals(List.of("104"), carga.getNuevos());
+        assertEquals("Comunidad dos renombrada", carga.getCambianDeNombre().get(0).ahora());
+        assertEquals(List.of("103"), carga.getVuelven());
+        assertEquals(List.of("101"), carga.getYaNoEstan());
+        comunidades.confirmarCarga(carga, Map.of());
+        assertEquals(List.of("102", "103", "104"), activos());
+        assertEquals(Motivo.NO_ESTA_EN_LA_VERSION, ultimoCambio("101").getMotivo());
+        assertEquals("Comunidad dos", ultimoCambio("102").getValorAnterior());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 6: una fila rechazada de un código existente lo deja como estaba")
+    void esc6_versionNuevaConFilasRechazadas() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        ResultadoCarga carga = comunidades.leerCarga(csv(TRES.replace("101;Comunidad uno", "101;")),
+                SEGUNDA);
+        assertTrue(carga.getYaNoEstan().isEmpty());
+        comunidades.confirmarCarga(carga, Map.of());
+        assertEquals("Comunidad uno", comunidades.buscarPorCodigo("101").orElseThrow().getNombre());
+        assertEquals(Catalogo.Estado.ACTIVO, estado("101"));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: leer una carga y no confirmarla deja el catálogo igual")
+    void esc11_cancelarLaCarga() {
+        comunidades.leerCarga(csv(TRES), PRIMERA);
+        assertTrue(comunidades.listar().isEmpty());
+    }
+
+    private Path csv(String contenido) {
+        try {
+            return Files.writeString(Files.createTempFile(carpeta, "carga", ".csv"), contenido,
+                    StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private Catalogo.Estado estado(String codigo) {

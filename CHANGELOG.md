@@ -5,6 +5,28 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.10 — 2026-10-26
+
+La carga de un catálogo desde el CSV de RC-8, con versión nueva y recarga (RC-9), y el archivo de
+la base en git con las 7 etnias de la hoja 15. El programa no muestra una versión.
+
+### Added
+- `ServicioCatalogo.leerCarga` y `confirmarCarga`, con `ArchivoCsv`, `DatosVersion` y
+  `ResultadoCarga`. La opción 8 del menú dice qué archivo espera y pide la ruta.
+- `EtniaServicio.HOJA_15`: las 7 etnias del anexo. Una primera carga tiene que traerlas todas, y
+  guarda los nombres de la hoja.
+- `data/ips.mv.db`, con las 7 etnias activas y la versión "Resolución 866 de 2021", y
+  `src/test/resources/cargas/etnias-hoja-15.csv`, el archivo con que se cargaron.
+- Tests de los escenarios 1 a 7 y 12 de HU-036 y de sus pares en HU-037, y `CasosLimiteTest`,
+  con 13 casos límite: 72 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-10-26 "La carga lee primero y guarda al confirmar".
+- `docs/ARCHITECTURE.md`, sección 6: el hueco "cada corrida cambia `data/ips.mv.db`".
+
+### Changed
+- `docs/DESIGN.md`, secciones 3, 7 y 8, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` y
+  `tests/README.md` describen la carga y el archivo de la base.
+- La memoria contextual anota el resultado de los casos límite.
+
 ## v0.9 — 2026-10-26
 
 La tabla de cambios de los catálogos: crear, cambiar y reactivar piden la referencia oficial, e

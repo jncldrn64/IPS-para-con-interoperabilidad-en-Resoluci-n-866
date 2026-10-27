@@ -1826,6 +1826,45 @@ glosario.
 
 **Estado:** `vigente`
 
+## 2026-10-26: La carga desde CSV y lo que hicieron los casos límite
+
+**Contexto:** el autor fusionó el PR #14 del fork (d103780), con los tests por escenario, el CI y
+la tabla de cambios. El modelo siguió con la carga desde CSV, como el autor pidió en la entrada
+anterior. No hubo mensaje nuevo del autor.
+
+Lo que hicieron los casos límite que pidió el autor, comprobados en `CasosLimiteTest`:
+
+- Las 7 etnias por el menú en etnias: se crean las 7, activas y sin versión.
+- Las 7 etnias por el menú en comunidades: las 7 se rechazan, porque el código de una comunidad
+  tiene 3 dígitos.
+- Las 7 etnias por CSV en comunidades: las 7 filas se rechazan con "tiene 3 dígitos" y "revise que
+  el archivo no haya perdido los ceros iniciales", y la carga no se puede guardar.
+- El CSV después de crear las 7 por el menú: entra como versión nueva sin cambios; ningún código se
+  crea dos veces y las 7 quedan en la versión.
+- El mismo CSV dos veces: la segunda es una recarga que no cambia nada.
+- El mismo CSV con una fecha de publicación posterior: versión nueva sin cambios.
+- Crear por el menú un código que ya trajo el CSV: se rechaza, porque ya existe.
+- Archivos de hoja de cálculo: el que trae la marca del "CSV UTF-8" se lee bien; el separado por
+  comas se rechaza y lo dice; el que no está en UTF-8 se rechaza y lo dice; los encabezados en
+  mayúsculas, sin tildes y con una columna de más se leen bien; un código que perdió su cero se
+  rechaza con el aviso; un nombre entre comillas con punto y coma se guarda entero.
+
+Lo que comprobó el modelo además:
+
+- 72 tests pasan con `./mvnw test`, y cuatro mutaciones de las reglas de carga hacen fallar sus
+  tests: la marca del CSV, el código repetido, los 7 códigos de la hoja y los códigos rechazados
+  que quedan en la versión.
+- El archivo de la base, cargado por el menú, trae las 7 etnias activas con la versión 1 y ninguna
+  comunidad.
+- Cada corrida del programa cambia los bytes de `data/ips.mv.db`, aunque no guarde nada. Quedó
+  como hueco en `docs/ARCHITECTURE.md`, sección 6, con `git checkout data/ips.mv.db` para
+  deshacerlo.
+
+Hecho en el PR que sigue a d103780: la entrada 2026-10-26 "La carga lee primero y guarda al
+confirmar"; `data/ips.mv.db`; `docs/DESIGN.md`, secciones 3, 7 y 8.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1967,7 +2006,15 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000. **Próximo (2026-10-26, tabla de cambios):** que el autor fusione el PR de los
+000000000000000000000. **Próximo (2026-10-26, carga desde CSV):** que el autor revise y fusione el
+   PR de la carga y del archivo de la base con las 7 etnias, y decida qué hacer con el hueco "cada
+   corrida cambia `data/ips.mv.db`". Después, en HU-036, los escenarios 13 a 18: la consulta
+   completa, la búsqueda y la comparación con la hoja 15. Sin respuesta: lo que el modelo agregó
+   en las entradas 2026-10-26 "El primer código arma la base común con etnias y comunidades
+   étnicas", "La tabla de cambios y RC-10 entran en la base común" y "La carga lee primero y guarda
+   al confirmar"; si el docente acepta Postman; el menú y el `switch`; el paquete y el idioma de
+   los identificadores; y los PR de prueba de los integrantes 1 y 2.
+00000000000000000000. **Anterior (2026-10-26, tabla de cambios):** que el autor fusione el PR de los
    tests por escenario y el de la tabla de cambios. Después, la carga desde el CSV: la terminal dice
    qué archivo espera, se prueba con los 7 valores en las dos entidades, por el menú y por el CSV,
    con y sin valores previos, y el archivo de la base sube con las 7 etnias y sin comunidades. Sin

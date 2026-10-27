@@ -1080,3 +1080,36 @@ Si alguno no coincide con la hoja 15, manda la hoja.
 git, que es lo que evita la entrada 2026-10-25 "Las pruebas corren sobre otra base".
 
 **Estado:** `vigente`
+
+## 2026-10-26: La carga lee primero y guarda al confirmar
+
+**Contexto:** Las entradas 2026-10-26 "La terminal dice qué archivo espera antes de pedir la ruta"
+y "El archivo de la base trae las 7 etnias y ninguna comunidad" pidieron la carga desde el CSV, con
+casos límite en las dos entidades. RC-8 y RC-9, en la tarjeta de reglas comunes, ya dicen qué
+acepta la carga y qué hace una versión nueva o una recarga.
+
+**Decisión:**
+
+- La carga tiene dos pasos. `leerCarga` lee el archivo, valida cada fila y compara con el catálogo
+  sin guardar nada; `confirmarCarga` guarda. Cancelar es no confirmar (escenario 12 de HU-036).
+- La carga es primera si el catálogo está vacío. Con valores, es una versión nueva si su fecha de
+  publicación es posterior a la vigente, una recarga si es la misma, y se rechaza si es anterior o
+  futura.
+- HU-036 cambia dos métodos de la base: `nombreOficial`, que guarda el nombre de la hoja 15, y
+  `revisarPrimeraCarga`, que exige sus 7 códigos. Las 7 etnias viven en `EtniaServicio.HOJA_15`.
+- El archivo de la base sube con las 7 etnias, cargadas por el menú. La fecha de descarga es el
+  2026-10-18, la de la transcripción de donde salen los nombres.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- Un catálogo con valores y sin versión, porque se crearon a mano, recibe su primer archivo como
+  versión nueva: así compara contra lo que ya está y no crea dos veces el mismo código.
+- La carga quita la marca invisible que la hoja de cálculo pone al comienzo de un "CSV UTF-8".
+  Rechaza el archivo que no está en UTF-8 y avisa si parece separado por comas.
+- Una primera carga sin ninguna fila aceptada no se puede guardar.
+
+**Alternativas:** Leer y guardar en un solo paso. El escenario 3 pide mostrar las filas
+rechazadas y dejar elegir entre guardar las aceptadas o cancelar, y el escenario 6 pide mostrar
+los cambios antes de guardar.
+
+**Estado:** `vigente`
