@@ -1624,6 +1624,109 @@ de prueba"; la fase 0 del ROADMAP pide el PR de prueba antes de la primera histo
 
 **Estado:** `vigente`
 
+## 2026-10-26: El primer código: la base común, etnias y comunidades étnicas
+
+**Contexto:** el autor fusionó el PR #12 del fork (73d2367) y propuso el código de su primera parte
+en 9 puntos, con fragmentos de Java. Textual, lo que no es código, con "[...]" donde va código:
+
+- "Comenzemo ahora si con mi primera parte, que ya tenemos asignada, por que realmente servira de
+  ejemplo."
+- "Entia que almacenara un int y sera un id primario el que limitemos a 2 digitos para almacenar,
+  se que desde el modelo se puede decir el maximo sin especificarlo en en la db"
+- "Entido que sin @GeneratedValue por que es algo que determinaneroms nosotros, y no puede sel
+  Null, pero no se la anotacion de eso,"
+- "y se que no esta liscato correctademen de dionde sacar su informacion. [...] @Column(length =
+  999) es realmente todo lo que podemos ponerle a esta segunda entidad y sin haber encontrado la
+  tabla oficial, hacerle el mismo tratamiento a la primera, tengamos claro o no si existe dicho
+  anexo."
+- "una src/interface (Aun que creo que este nombre esta pohibido por java, mejor interfaces o
+  crud_logic? no se cual es el estandar para java para estas interfaces"
+- "#no se que metodo tenga crud para desactivar si es que existe."
+- "por que instanciar la interface y no el servicio?, por que segun entiendo el principo solid o
+  hollywood, realmente no se, dice que esa interfgace es como nuestra logica de negocios al menos
+  para el crud, y no me debe importar como service lo resuelwe, solo que la interface lo tiene, y
+  como java realmente llama es al servicio asi ponga la inteface, no importa, pero para mi es mas
+  logico asi, no se haran mis companeros, recordemos dejar0es un poco de liberdad."
+- "en cuanto a la logia en si de los ecenarios posibel de la historia de usario ,podemos tener su
+  interface que diga bussens logic o algo asi, y hacer un impletes en el controller, para que si o
+  si debamos como minimo guiarnos de los limites establedicos por el hu, no quiero pensar que
+  ponemos un codigo de 6 digitos sin querer, pero como interface solo define entrada y saida, no se
+  si en los parametros se pueda ya directamente establecer twros erros o algo asi."
+- "realmente no se como haremos con el controller, por que realmente si bien podemos establecer la
+  logica ahi de get y post, no quiero meterme aun con el tema de las vistas, entiendo que desde el
+  main puedo instanciar las clases que quiero usar, en este caso las de controller y poner ahi mi
+  swich, o la terminal de spring realmente no esta pensada para usar logica en el main?"
+- "es decir mejor como minimo dejar ahi la entidad."
+- "entonces que te pregunto, de lo que he expuesto que entra en contradicon con la logica que hemos
+  plasmado en los documentos? que tiene sentidho y que no, es posible hacer la simplificacion que
+  he hecho?"
+
+El código que propuso: la entidad `enita` con `@Id @Column(length = 99) private Integer id` y un
+`nombre`; un `<EntidadNombre>Repository extends ListCrudRepository<EntidadNombre, Integer>`; la
+interfaz `CrudEntidad` con `listar`, `listarId(int)`, `save` y `disable(int)`; y `ServicioEntidad`,
+con `@Autowired` en el campo. El punto 8 pegó el análisis de otro modelo sobre la comunidad étnica:
+la fuente oficial existe en SISPRO y no está en el anexo, y hay cuatro salidas (buscar el catálogo,
+preguntar al docente, una tabla provisional o texto libre).
+
+Lo que respondió el modelo, después de compilar y correr la propuesta en una copia aparte:
+
+- La estructura sirve: entidad por catálogo, repositorio por entidad, un servicio que implementa
+  una interfaz de CRUD, inyectar la interfaz y un menú con `switch`.
+- El 99 y el 999 son la columna Formato de la hoja 15: dos y tres posiciones. `@Column(length =
+  99)` sobre un `Integer` deja la columna `INTEGER`, y `Integer.valueOf("01")` da 1.
+- `ListCrudRepository` hereda de `CrudRepository`, que trae `deleteById`, `delete`, `deleteAll` y
+  `deleteAllById` (spring-data-commons 4.0.7).
+- `interface` es palabra reservada: el compilador falla con "identifier expected". Maven compila lo
+  que está en `src/main/java/<paquete>/`.
+- Una `CrudEntidad` por entidad serían 8 copias; con genéricos sale una, `CrudCatalogo<T>`.
+- Inactivar es buscar, cambiar el estado y guardar; RC-10 pide además el motivo.
+- Las reglas van en el servicio y no en el controlador (`docs/DESIGN.md`, sección 6).
+- En Spring, `main` solo arranca Spring; el menú va en un `CommandLineRunner`.
+
+El autor contestó, textual:
+
+- "y no crees que choca mucho con tu catalogo "funndamental" de donde hacemos super?  entiedo el
+  concepto, y la verdad es hasta interesante, puedes usarlo, pero realmente no se hasta que puento
+  ese catalodo maestro o mas bien la entidad padre pueda cambiar o alterar los datos de los varoles
+  que obitene, por que  si el padre dice @Column(length = 2), el hijo lo .puede cambiar?... y tienes
+  razon, no es int la primaria , es strnig para almacenar codigos, que no sean 000, pero no estoy
+  seguro, supongo que la logica podria evitar eso, , asi que supongo que debe haber anotaciones
+  adicinales que impidan valores en el int, si no las encuentra,s procede con el string, y codigfica
+  tu, que la logica ya te la he puesto, realmente entraremos a  discutir de lleno el swict, por que
+  realmente una vez la base de todas la HU estes hecha, lo mas importarte a codificar grupalmente es
+  el como se presentaria la info, aun que supongco que eso no da valor a la entrega final, pero no
+  se si si literalmenet el profesor me permita hacer todo via postman, de ahi que quiera la version
+  bastardizada en terminal, y por lo que veo tienes que importar otras librerias para poder que
+  usemos la terminal...."
+
+Lo que el modelo contesta y hace:
+
+- La hija cambia el largo del padre con `@AttributeOverride`: la columna del código sale de 2
+  caracteres en `Etnia` y de 3 en `ComunidadEtnica`, y lo comprueba un test.
+- Ninguna anotación de un `Integer` guarda "01", porque 01 y 1 son el mismo entero. La llave queda
+  como `String`, con `@Pattern` para los dígitos.
+- La terminal no pide librerías nuevas: `CommandLineRunner` viene con Spring Boot y `Scanner` con
+  Java. Solo hizo falta una propiedad y `@Profile`.
+- Con la parte web encendida, un controlador REST se prueba con Postman. El menú en terminal queda
+  por si el docente no lo acepta, y el `switch` se discute después entre los tres.
+- Al revisar antes del commit, el modelo encontró un fallo propio: cambiar el nombre de un código
+  inactivo lo reactivaba y le borraba la versión. Un test lo mostró fallando, y `guardar` ahora
+  conserva el estado y la versión.
+- Comprobado el 2026-10-26 en el contenedor: `./mvnw test` pasa 10 tests; el menú corre con `sh
+  ./mvnw spring-boot:run`; la base de prueba se copia con `cp` y se abre con su URL al arrancar, y
+  el archivo de la base no recibe lo que se agregó en la prueba.
+
+**Sin respuesta todavía:** lo que la entrada 2026-10-26 "El primer código arma la base común con
+etnias y comunidades étnicas" lista como agregado por el modelo; si el docente acepta Postman; el
+paquete y el idioma de los identificadores.
+
+Hecho en el PR que sigue a 73d2367: el código de la base común, de etnias y de comunidades
+étnicas, el menú y 9 tests; el envoltorio de Maven que corre; esa entrada de `docs/DECISIONS.md`;
+`docs/ARCHITECTURE.md`, `docs/DESIGN.md`, `docs/ROADMAP.md`, `docs/GLOSSARY.md` y
+`tests/README.md` al día con el código.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1731,6 +1834,14 @@ de prueba"; la fase 0 del ROADMAP pide el PR de prueba antes de la primera histo
 - **Al autor (2026-10-25):** un catálogo no puede ser un enum de Java, porque el enum fija sus
   valores al compilar y el catálogo los recibe de un archivo con el programa corriendo. El autor
   ya lo sospechaba ("no creo que pueda almacenar enums de forma dinamica").
+- **Al autor (2026-10-26):** el 99 de la hoja 15 es la columna Formato, y el largo de una etnia es
+  2; `@Column(length = 99)` sobre un `Integer` no limita nada, y el `Integer` pierde el cero de
+  "01". `interface` es palabra reservada de Java. `ListCrudRepository` trae cuatro métodos para
+  borrar.
+- **Del modelo a sí mismo (2026-10-26, Claude Code):** el primer `guardar` de `ServicioCatalogo`
+  reactivaba un código inactivo al cambiarle el nombre, y le borraba la versión. Lo encontró antes
+  del commit; `CatalogosTest.cambiarElNombreNoReactivaNiBorraLaVersion` falló primero y pasa con
+  el arreglo.
 
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
@@ -1757,7 +1868,15 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000. **Próximo (2026-10-26, PR de los compañeros):** que el autor revise y fusione
+000000000000000000. **Próximo (2026-10-26, primer código):** que el autor revise y fusione el PR
+   del primer código, y conteste lo que el modelo agregó en la entrada 2026-10-26 "El primer código
+   arma la base común con etnias y comunidades étnicas". Después, en HU-036: la carga desde el CSV,
+   con el primer archivo de la base en git, el motivo de inactivar (RC-10), la búsqueda (D-23) y
+   reactivar. Sin respuesta: si el docente acepta Postman; el menú y el `switch`, que se discuten
+   entre los tres; el paquete y el idioma de los identificadores; si `main` exige commits firmados;
+   la licencia de los datos oficiales; si las listas cerradas de 5 o menos van como enum; y los PR
+   de prueba de los integrantes 1 y 2.
+00000000000000000. **Anterior (2026-10-26, PR de los compañeros):** que el autor revise y fusione
    el PR del destino del PR y el PR de prueba; que invite a los integrantes 1 y 2 como
    colaboradores, y que cada uno pase su PR de prueba. Sin respuesta: si la memoria entera sigue en
    el orden de lectura para modelos con ventana chica, si `main` exige commits firmados, si las

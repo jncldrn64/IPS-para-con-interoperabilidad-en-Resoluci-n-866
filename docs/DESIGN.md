@@ -9,9 +9,9 @@
 Un cambio que rompe un principio de acá se rechaza, lo haya escrito una persona o un modelo. Ante la
 duda, se copia la forma del código que ya existe en vez de inventar un idioma nuevo.
 
-Todavía no hay código del producto. Los principios 1 y 2 salen de decisiones que el equipo ya
-propuso para el modelo de datos, y los principios 6 a 8, de lo que el autor decidió el 2026-10-24
-para la fase 0. El código que los cumpla no existe.
+Los principios 1 y 2 salen de decisiones que el equipo ya propuso para el modelo de datos, y los
+principios 6 a 8, de lo que el autor decidió para la fase 0. Qué código los cumple hoy está en
+`docs/ARCHITECTURE.md`, sección 2.
 
 ## 1. Los códigos del anexo
 
@@ -42,9 +42,12 @@ y "Reglas que el modelo tiene que cumplir".
 ## 3. Los tests
 
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
-(`CLAUDE.md`, sección 8). Hoy el único test es `DemoApplicationTests.contextLoads`, que generó
-Spring Initializr, y no se corrió (`docs/ARCHITECTURE.md`, sección 6). Cómo se escribe el test de un
-escenario está en la sección 9 de este archivo.
+(`CLAUDE.md`, sección 8). Cómo se escribe y se nombra el test de un escenario está en la sección 9
+de este archivo, sin escribir todavía.
+
+Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
+y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
+`src/test/resources/application-test.properties`. Cómo se corren está en `tests/README.md`.
 
 ## 4. Presentación y registro
 
@@ -84,15 +87,20 @@ Un servicio no lee del teclado ni imprime: devuelve un valor o avisa el error co
 menú lo muestra. Ningún repositorio borra. El Delete de un catálogo es inactivar, y lo hace su
 servicio (`docs/REQUIREMENTS.md`, sección 2).
 
+Un repositorio de catálogo extiende `CatalogoRepositorio`, que extiende `Repository` de Spring Data
+y declara solo `findAllByOrderByCodigoAsc`, `findById` y `save`. `CrudRepository`, y con él
+`ListCrudRepository`, trae `deleteById`, `delete`, `deleteAll` y `deleteAllById`.
+
 **Por qué:** la guía pide una aplicación web [2] y la fase 0 corre en terminal. Si los servicios no
 tocan la terminal, la web reemplaza el menú y deja los servicios como están. Si un repositorio
 puede borrar, basta una llamada para romper "Nada se borra".
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "El código se separa en modelo, vista y
-controlador".
+controlador" y 2026-10-26 "El primer código arma la base común con etnias y comunidades étnicas".
 
-**Cómo se comprueba:** a mano, en cada PR de código. Ningún servicio usa la entrada o la salida de
-la terminal, y ningún repositorio ofrece borrar.
+**Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
+de la terminal. Que ningún repositorio de catálogo ofrezca borrar lo comprueba
+`CatalogosTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
 
 ## 7. La base común de los catálogos
 
@@ -106,19 +114,46 @@ nombre, el estado y la versión. El código es la llave y se guarda como texto (
 catálogo agrega lo suyo, como el padre de una ocupación, y el historial de los valores va en una
 tabla de cambios común.
 
+Un catálogo nuevo trae tres clases y su entrada en el menú, con `Etnia` de ejemplo
+(`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo"):
+
+- la entidad extiende `Catalogo`, fija el largo del código con `@AttributeOverride` y su formato con
+  `@Pattern` sobre `getCodigo`;
+- el repositorio extiende `CatalogoRepositorio`;
+- el servicio extiende `ServicioCatalogo`, que valida el valor antes de guardarlo y no le cambia el
+  estado ni la versión a un código que ya existe.
+
 **Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
 corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
 enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
 archivo oficial con el programa corriendo.
 
-**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común" y
-2026-10-25 "La base común es una clase con código, nombre, estado y versión".
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común",
+2026-10-25 "La base común es una clase con código, nombre, estado y versión" y 2026-10-26 "El primer
+código arma la base común con etnias y comunidades étnicas".
 
 ## 8. La base de datos
 
 **Regla:** H2 en modo archivo, y el archivo de la base va en el repositorio. Se cambia por turnos,
 y las pruebas corren sobre otra base, con otro nombre. El turno lo tiene quien tenga abierto el PR
 que cambia el archivo, y la base de prueba arranca como copia del archivo.
+
+`application.properties` abre `jdbc:h2:file:./data/ips`. H2 crea el archivo si no existe, y
+`spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las entidades. La ruta es
+relativa a la carpeta donde se corre, así que el programa se corre desde la raíz del repo.
+
+La base de prueba se copia del archivo y se abre pasando su URL al arrancar, sin tocar
+`application.properties`:
+
+```sh
+cp data/ips.mv.db data/prueba.mv.db
+sh ./mvnw spring-boot:run \
+  -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:file:./data/prueba
+```
+
+Se comprobó el 2026-10-26 en una copia del repo: la lista de etnias salió de `prueba`, y la de
+`ips` siguió sin el valor que se agregó en la prueba. `.gitignore` deja `data/prueba.*` fuera de
+git.
 
 **Por qué:** los datos quedan entre una corrida y la siguiente, y quien necesita un catálogo lo
 encuentra ya cargado en el archivo.
@@ -137,19 +172,17 @@ base es del PR abierto" y "La base de prueba arranca como copia del archivo".
 Este archivo es una semilla mientras esta lista tenga algo.
 
 - Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
-- Qué propiedades de `application.properties` actualizan las tablas, crean la base y cambian su
-  nombre para probar, con la corrida que lo muestre.
-- Cómo se cambia el nombre de la base para probar sin subir ese cambio a git, porque
-  `application.properties` va en el repositorio.
-- Qué interfaz de Spring extiende cada repositorio, con la corrida que lo muestre, en el primer PR
-  de código.
 - Cómo se arma el menú: uno solo para las 12 historias, o uno principal que llama a un menú por
   entidad. Con uno solo, los 3 integrantes cambian el mismo archivo.
-- Qué hace la parte web de `pom.xml`, con Spring Web MVC, Thymeleaf y Spring Security, mientras la
-  fase 0 corre en terminal, y cómo pide HU-001 el usuario y la clave en la terminal.
+- Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
+  que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
+  `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
 - El paquete y el nombre del artefacto: hoy son `com.example.demo` y `demo`, los de Spring
   Initializr.
-- El idioma de los identificadores del código.
+- El idioma de los identificadores del código. El primer código usa español, salvo los nombres
+  que pide Spring Data, como `findById` y `save`, y el autor no lo ha decidido.
+- De dónde sacan los catálogos los tests de HU-004. La base en memoria de los tests arranca vacía,
+  y cada test crea los valores que usa.
 - Cómo se escribe y se nombra el test de cada escenario, para que se vea qué escenario prueba.
 - Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus
   tarjetas (`docs/context/trello/tarjetas/`). Sus reglas ya tienen lugar en la sección 7.

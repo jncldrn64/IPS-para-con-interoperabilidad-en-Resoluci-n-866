@@ -5,6 +5,41 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.7 — 2026-10-26
+
+El primer código del producto: el build corre, y la base común de los catálogos arranca con etnias
+(HU-036) y comunidades étnicas (HU-037) en un menú de terminal. El menú no muestra una versión, y
+`pom.xml` sigue en `0.0.1-SNAPSHOT`.
+
+### Added
+- `.mvn/wrapper/maven-wrapper.properties`: `./mvnw` baja Maven 3.9.11 y corre el build.
+- La base común: la clase `Catalogo`, el repositorio `CatalogoRepositorio`, la interfaz
+  `CrudCatalogo` y el servicio `ServicioCatalogo`.
+- Etnias y comunidades étnicas, con entidad, repositorio y servicio, y el código de 2 y de 3
+  dígitos del numeral 13. Les faltan la carga desde el CSV, el motivo de inactivar, la búsqueda y
+  reactivar.
+- `MenuPrincipal`, el menú en terminal, provisional: lista, agrega o cambia el nombre, e inactiva.
+- `CatalogosTest`, con 9 tests, y `application-test.properties`, que les da a los tests una base en
+  memoria.
+- `.gitignore`, con `target/` y la base de prueba.
+- `docs/DECISIONS.md`: la entrada 2026-10-26 "El primer código arma la base común con etnias y
+  comunidades étnicas".
+
+### Changed
+- `application.properties`: H2 en `./data/ips`, las tablas según las entidades y sin servidor web.
+- `DemoApplicationTests` corre con el perfil `test`, y `mvnw` es ejecutable.
+- `docs/ARCHITECTURE.md`: las secciones 1 a 5 describen el código nuevo, y la 6 suma las tildes
+  en una terminal sin UTF-8 y `mvnw.cmd`, que no se corrió.
+- `docs/DESIGN.md`: el perfil de los tests, el repositorio sin borrado, cómo se agrega un catálogo
+  y cómo se copia la base de prueba. Su lista "Sin escribir todavía" pierde tres ítems y suma uno.
+- `docs/ROADMAP.md`: la fase 0 está en curso, y ya no la bloquea el envoltorio de Maven.
+- `docs/GLOSSARY.md` y `tests/README.md` nombran el código nuevo.
+- La memoria contextual anota la propuesta del autor, sus dos respuestas y lo que se comprobó.
+
+### Fixed
+- El envoltorio de Maven corre, y su hueco sale de `docs/ARCHITECTURE.md`, sección 6. Faltaba
+  `.mvn/wrapper/maven-wrapper.properties`.
+
 ## v0.6 — 2026-10-26
 
 Solo documentación. El PR va contra `main` del fork, y un integrante nuevo abre un PR de prueba

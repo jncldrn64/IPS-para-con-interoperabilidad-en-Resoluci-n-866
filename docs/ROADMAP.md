@@ -176,7 +176,7 @@ está mergeado.
 
 ## Fase 0: Las 12 historias del plan B
 
-**Estado:** `pendiente`
+**Estado:** `en curso`
 
 **Objetivo:** los 8 catálogos del paciente, el inicio de sesión, y registrar, consultar y corregir
 al paciente.
@@ -187,6 +187,10 @@ al paciente.
   2. El esqueleto en terminal: el paquete, `application.properties` con H2 en archivo y el menú
      principal. HU-001 no es un catálogo, así que puede empezar desde aquí.
   3. La base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el integrante 3.
+
+  El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7), con
+  HU-036 y HU-037 empezadas. Del esqueleto quedan por decidir el paquete y el menú, que hoy es
+  provisional (`docs/DESIGN.md`, sección 9).
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
@@ -207,7 +211,7 @@ al paciente.
 
 **Bloquea:** las 18 historias del Backlog.
 
-**Bloqueada por:** el envoltorio de Maven que no corre (`docs/ARCHITECTURE.md`, sección 6).
+**Bloqueada por:** nada.
 
 ## Backlog
 
