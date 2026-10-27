@@ -5,6 +5,14 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.18 — 2026-10-27
+
+Solo documentación. PR de prueba del integrante 1, que se cierra sin fusionar.
+
+### Added
+- `docs/TEMPORARY-CONTEXT.md`: la anotación de Jorge que dice que probó el flujo de PR.
+- `docs/context/MEMORIA-Jorge-a-Restrepo.md`: la memoria del integrante 1.
+
 ## v0.17 — 2026-10-27
 
 Solo documentación. Cada integrante trabaja con su modelo y su memoria, decide en sus historias y
