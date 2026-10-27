@@ -1649,3 +1649,36 @@ publicado en 2021 se rechaza como "anterior a la de la versión vigente"
 - Ningún dato provisional, como proponía el modelo.
 
 **Estado:** `vigente`
+
+## 2026-10-27: El glosario define los cargos
+
+**Contexto:** El autor escribió:
+
+- "el tema de inicio por session aun me da ideas erradas, entre toda la documentacion, estos roles
+  o supuesto roles dentro de la organizacion, todos estan correctamente definidos?"
+
+El modelo revisó las 29 tarjetas, las láminas, `docs/REQUIREMENTS.md` y el modelo E-R. Los tres
+cargos son los mismos en todos lados, y la matriz de permisos de la tarjeta de reglas comunes es
+igual a la de HU-001. Lo que podía confundir: el glosario no definía "cargo" ni los tres cargos, el
+docente dice "rol", ningún cargo crea usuarios, y la lista de `docs/REQUIREMENTS.md`, sección 1,
+daba a cada cargo menos de lo que le da la matriz. A la pregunta de qué idea le daba el inicio de
+sesión, el autor eligió:
+
+- "Que hay un administrador,Rol y cargo son distintos,Quién ve qué,Cuándo entra HU-001"
+
+Y a la de qué corregir:
+
+- "Glosario de cargos (Recomendado),Tabla de REQUIREMENTS"
+
+**Decisión:**
+
+- `docs/GLOSSARY.md` define cargo, rol, los tres cargos, la matriz de permisos, el equipo técnico,
+  el inicio de sesión y el usuario.
+- `docs/REQUIREMENTS.md`, sección 1, dice todo lo que la matriz da a cada cargo, que los tres
+  consultan los catálogos, que no hay un cargo de administrador y que el docente los llama roles.
+
+**Alternativas:** El modelo también ofreció corregir el modelo E-R, que cita la guía [2.4] para un
+supuesto del equipo, y juntar las preguntas al docente sobre D-02, D-04, D-06 y el escenario de rol
+sin permisos. El autor no las eligió.
+
+**Estado:** `vigente`

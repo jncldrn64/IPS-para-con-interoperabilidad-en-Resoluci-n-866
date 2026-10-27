@@ -70,8 +70,14 @@ que citan su fuente.
   oposición, la voluntad anticipada y la atención; no a un valor de catálogo, que se inactiva.
 - **atención**: un contacto del paciente con el servicio de salud, numerales 16 a 23. La historia
   clínica es el conjunto de atenciones de un paciente y no es una tabla.
+- **auxiliar de admisión**: el cargo que registra, consulta, actualiza y corrige los datos del
+  paciente, y registra, actualiza, corrige y anula su oposición y su voluntad anticipada. Consulta
+  los catálogos y no ve atenciones (2026-10-27 "El glosario define los cargos").
 - **campo**: un dato que vive dentro del paciente o de la atención. No da historias propias: sus
   límites son escenarios de la historia de su entidad.
+- **cargo**: lo que hace en la IPS la persona que inicia sesión, y lo que decide qué opciones tiene.
+  Son tres: auxiliar de admisión, médico tratante y profesional de estadística. No hay un cargo de
+  administrador. El docente lo llama "rol" (2026-10-27 "El glosario define los cargos").
 - **catálogo**: la lista oficial de valores de un dato con más de 5 opciones, con su tabla y su CRUD
   ([2.3]; 2026-10-22 "El umbral de catálogo es más de 5 valores").
 - **componente**: una parte de un numeral con su propio tipo, formato y longitud. El triage tiene
@@ -85,6 +91,9 @@ que citan su fuente.
 - **D-n**: una decisión de la hoja Decisiones del tablero del equipo. La copia del 2026-10-24 está
   en `docs/REQUIREMENTS.md`, sección 6. La mayoría son propuestas sin confirmar; no son entradas de
   `docs/DECISIONS.md`.
+- **equipo técnico**: quien deja creados los usuarios y sus cargos al instalar el sistema. No es un
+  cargo ni entra al sistema. Que los cree al instalar es supuesto del equipo: la guía solo dice que
+  esta fase no tiene registro de usuarios [2.4] (2026-10-27 "El glosario define los cargos").
 - **escenario**: un criterio de aceptación en forma Dado, Cuando, Entonces, numerado dentro de su
   historia.
 - **estimación**: la complejidad de una historia, de 1 a 10, donde 10 es la más difícil. Sube con
@@ -94,7 +103,18 @@ que citan su fuente.
   backlog tiene 30, con ID de HU-001 a HU-043; los números que faltan son tarjetas archivadas.
 - **inactivar**: dejar de ofrecer un valor de catálogo en registros nuevos sin borrarlo; los
   registros que lo usan lo conservan (RC-4, D-20).
+- **inicio de sesión**: HU-001. Identifica a la persona y le muestra solo las opciones de su cargo.
+  Los catálogos y el registro del paciente no dependen de ella: cuando se desarrolla, sus escenarios
+  9 y 14 se aplican a lo que ya existe, y lo registrado antes queda sin autor. El docente dijo que
+  no aporta valor en la primera entrega (2026-10-27 "El glosario define los cargos").
 - **lámina**: la imagen del mockup de una historia, en `docs/context/trello/mockups/`.
+- **matriz de permisos**: la tabla de qué puede hacer cada cargo, en
+  `docs/context/trello/tarjetas/RC-reglas-comunes.md`, sección "Matriz de permisos", copiada igual
+  en la tarjeta de HU-001. Se prueba en HU-001, escenarios 5 a 8 y 14 (2026-10-27 "El glosario
+  define los cargos").
+- **médico tratante**: el cargo que registra, consulta, corrige y anula las atenciones, y consulta
+  al paciente, la oposición, la voluntad anticipada y los catálogos sin cambiarlos (2026-10-27 "El
+  glosario define los cargos").
 - **numeral**: uno de los 49 datos del anexo, con sus valores permitidos, formato y longitud. El
   tablero también lo llama elemento.
 - **ocupación hija**: una ocupación de 4 dígitos, el nivel más específico de la CIUO-88 A.C. Es la
@@ -106,16 +126,25 @@ que citan su fuente.
 - **prioridad**: el valor de una historia para el cliente, en el campo Prioridad de su tarjeta. Las
   12 de la fase 0 dicen "Alta", así que no las ordena: las ordenan sus dependencias (2026-10-24
   "La complejidad se estima de 1 a 10").
+- **profesional de estadística**: el cargo que carga los catálogos desde el archivo oficial y los
+  mantiene: crea, actualiza, inactiva y reactiva. No ve pacientes ni atenciones, solo cuántos
+  pacientes usan un valor (D-02, propuesta del equipo) (2026-10-27 "El glosario define los cargos").
 - **RC-n**: una regla común del backlog, de RC-1 a RC-11, en
   `docs/context/trello/tarjetas/RC-reglas-comunes.md`.
 - **referencia oficial**: el documento de la fuente que respalda crear, cambiar o inactivar un valor
   de catálogo. Sin ella, la IPS no puede tocar el catálogo (artículo 7).
+- **rol**: la palabra del docente para el cargo; en el repo se dice "cargo". En el bloque de cita de
+  un documento, **Rol:** es otra cosa: el tipo del documento (`CLAUDE.md`, sección 2) (2026-10-27
+  "El glosario define los cargos").
 - **tanda**: uno de los seis archivos en que se escribió el backlog v3, con la trazabilidad de cada
   escenario. Salieron del repositorio el 2026-10-24, y las historias se leen en sus tarjetas
   (2026-10-24 "docs/context guarda solo lo que usan las historias").
 - **tarjeta**: el texto de una historia, en `docs/context/trello/tarjetas/`, el mismo que se pega
   en Trello. Desde el 2026-10-24 es la fuente de la historia (2026-10-24 "docs/context guarda solo
   lo que usan las historias").
+- **usuario**: la cuenta con que una persona inicia sesión: un nombre, una contraseña y un cargo.
+  Esta fase no tiene registro de usuarios ni recuperación de clave [2.4] (2026-10-27 "El glosario
+  define los cargos").
 - **versión de un catálogo**: un archivo oficial cargado, con su fuente, su fecha de publicación y
   su fecha de descarga (RC-8).
 
