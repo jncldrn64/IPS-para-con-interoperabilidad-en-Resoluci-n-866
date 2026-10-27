@@ -21,11 +21,12 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `HELP.md` | Enlaces de ayuda que genera Spring Initializr |
 | `LICENSE` | GNU Affero General Public License, versión 3 |
 | `.gitignore` | Deja fuera de git `target/` y la base de prueba, `data/prueba.*` |
+| `.github/workflows/tests.yml` | El CI: GitHub Actions corre `./mvnw -B test` en cada PR |
 | `pom.xml` | Proyecto Maven `com.example:demo`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |
 | `mvnw`, `mvnw.cmd`, `.mvn/wrapper/` | Envoltorio de Maven: la primera corrida baja Maven 3.9.11 |
 | `src/main/java/com/example/demo/` | `DemoApplication`, que arranca Spring, y los paquetes |
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
-| `src/test/java/com/example/demo/` | `DemoApplicationTests` y `CatalogosTest` (`tests/README.md`) |
+| `src/test/java/com/example/demo/` | `BaseComunTest` y una clase por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
@@ -49,9 +50,11 @@ Comprobado el 2026-10-26.
 
 | Paquete, bajo `src/main/java/com/example/demo/` | Qué guarda |
 |---|---|
-| `modelo/` | `Catalogo`, la clase base, y sus dos hijas: `Etnia` y `ComunidadEtnica` |
-| `repositorio/` | `CatalogoRepositorio`, con tres métodos y ningún borrado, y uno por catálogo |
+| `modelo/` | `Catalogo` y sus hijas, `Etnia` y `ComunidadEtnica` |
+| `modelo/` | `CatalogoVersion`, `CatalogoCambio` y el enum `Motivo`, de la tabla de cambios |
+| `repositorio/` | `CatalogoRepositorio`, uno por catálogo, versiones y cambios; ninguno borra |
 | `servicio/` | `CrudCatalogo`, que usa el menú, la base `ServicioCatalogo` y uno por catálogo |
+| `servicio/` | `RegistroCatalogos`: las versiones y la tabla de cambios de todos los catálogos |
 | `menu/` | `MenuPrincipal`, el menú en terminal: un `switch` principal y un submenú por catálogo |
 
 `application.properties` abre la base `jdbc:h2:file:./data/ips`, relativa a la carpeta donde se
@@ -61,17 +64,26 @@ corre el programa, y el registro de arranque la muestra en la línea `Database J
 `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
 El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo: 1 abre etnias, 2
-comunidades étnicas y 0 sale. Cada catálogo lista, agrega o cambia el nombre de un valor, e
-inactiva. Se comprobó el 2026-10-26 con la entrada desde un `printf`, en una copia del repo en el
-contenedor de la sesión, que corre Linux sin `LANG`.
+comunidades étnicas y 0 sale. Cada catálogo lista, crea por cambio oficial, cambia el nombre o el
+código, inactiva, reactiva y muestra el historial de un código, y pide confirmar antes de guardar.
+Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la sesión, que corre
+Linux sin `LANG`.
+
+Cada operación deja su fila en `CatalogoCambio`, la tabla de cambios común, y `CatalogoVersion`
+guarda cada carga de un archivo oficial. La carga desde el CSV todavía no existe, así que hoy
+ninguna versión se crea fuera de los tests. `ServicioCatalogo.contarUsos` devuelve 0 hasta que
+exista el registro del paciente (HU-004).
 
 ## 3. Recursos y cómo se reinicia cada uno
 
 Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el contenedor de la sesión.
 
-- `data/ips.mv.db`: el archivo de la base. H2 lo crea la primera vez que arranca el programa, y con
-  dos etnias pesó 24.576 bytes. Este PR no lo sube, porque todavía no trae un catálogo cargado
+- `data/ips.mv.db`: el archivo de la base. H2 lo crea la primera vez que arranca el programa, con
+  las tablas `ETNIA`, `COMUNIDAD_ETNICA`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO` y dos secuencias
+  para los números de las dos últimas. Todavía no va en git, porque no trae un catálogo cargado
   (`docs/DESIGN.md`, sección 8). Hoy se reinicia borrándolo, y la corrida siguiente lo crea vacío.
+  La consola de H2 lo abre con el usuario vacío y sin clave; con el usuario `sa` falla y deja
+  `data/ips.trace.db`, que `.gitignore` deja fuera.
 - `data/prueba.mv.db`: la base de prueba, una copia del archivo que se abre con otro URL
   (`docs/DESIGN.md`, sección 8). `.gitignore` la deja fuera de git, y se reinicia copiando otra vez
   el archivo de la base.
@@ -81,7 +93,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 483 líneas en 16 archivos. De
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 1481 líneas en 24 archivos. De
 Spring Initializr quedan `DemoApplication.java` entero y la mayor parte de
 `DemoApplicationTests.java`.
 

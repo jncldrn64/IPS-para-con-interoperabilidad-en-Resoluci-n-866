@@ -42,12 +42,27 @@ y "Reglas que el modelo tiene que cumplir".
 ## 3. Los tests
 
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
-(`CLAUDE.md`, sección 8). Cómo se escribe y se nombra el test de un escenario está en la sección 9
-de este archivo, sin escribir todavía.
+(`CLAUDE.md`, sección 8). Cada historia tiene su clase de test, como `HU036EtniasTest`, y cada
+escenario sus métodos, `esc<N>_<alternativa>`: el número del escenario y el caso de su "Dado" que
+prueba. `@DisplayName` repite la historia y el escenario, como "HU-036 Esc. 10".
+
+Un escenario se cumple cuando cada caso de su "Dado" tiene su método y pasa, y una historia, cuando
+se cumplen todos sus escenarios. Las reglas de este archivo que no son el escenario de una historia
+van en `BaseComunTest`.
 
 Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
 y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
-`src/test/resources/application-test.properties`. Cómo se corren está en `tests/README.md`.
+`src/test/resources/application-test.properties`. El CI corre `./mvnw test` en cada PR y en cada
+cambio de `main`, con `.github/workflows/tests.yml`; cómo se corren a mano está en
+`tests/README.md`.
+
+**Por qué:** con el número del escenario en el nombre, la salida de `./mvnw test` dice qué
+escenarios de la tarjeta pasan. Un escenario que mete un valor donde no va, como el 10 de HU-036,
+falla si alguien borra la regla que lo rechaza: se comprobó el 2026-10-26 quitando el `@Pattern` de
+`Etnia`.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-26 "Un escenario se prueba con un test que
+lleva su número" y 2026-10-26 "Un CI corre los tests en cada PR".
 
 ## 4. Presentación y registro
 
@@ -100,7 +115,7 @@ controlador" y 2026-10-26 "El primer código arma la base común con etnias y co
 
 **Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
 de la terminal. Que ningún repositorio de catálogo ofrezca borrar lo comprueba
-`CatalogosTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
+`BaseComunTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
 
 ## 7. La base común de los catálogos
 
@@ -120,17 +135,25 @@ Un catálogo nuevo trae tres clases y su entrada en el menú, con `Etnia` de eje
 - la entidad extiende `Catalogo`, fija el largo del código con `@AttributeOverride` y su formato con
   `@Pattern` sobre `getCodigo`;
 - el repositorio extiende `CatalogoRepositorio`;
-- el servicio extiende `ServicioCatalogo`, que valida el valor antes de guardarlo y no le cambia el
-  estado ni la versión a un código que ya existe.
+- el servicio extiende `ServicioCatalogo` y le pasa la clase de su entidad, como
+  `super(Etnia.class, datos, validador, registro)`.
+
+La base valida cada dato con su numeral, pide la referencia oficial para crear o cambiar un valor
+(RC-3) y aplica RC-10 al inactivar y al reactivar. Cada operación deja su fila en la tabla de
+cambios común, `CatalogoCambio`, por medio de `RegistroCatalogos`: el tipo de cambio, el nombre
+anterior y el nuevo, el motivo, la referencia y la hora. Ninguna operación cambia un valor sin
+dejar su fila.
 
 **Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
 corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
 enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
-archivo oficial con el programa corriendo.
+archivo oficial con el programa corriendo. Los motivos de RC-10 sí son un enum, `Motivo`, porque los
+fija la regla común y no llegan de un archivo.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común",
-2026-10-25 "La base común es una clase con código, nombre, estado y versión" y 2026-10-26 "El primer
-código arma la base común con etnias y comunidades étnicas".
+2026-10-25 "La base común es una clase con código, nombre, estado y versión", y del 2026-10-26 "El
+primer código arma la base común con etnias y comunidades étnicas", "Los motivos de RC-10 son un
+enum" y "La tabla de cambios y RC-10 entran en la base común".
 
 ## 8. La base de datos
 
@@ -183,6 +206,5 @@ Este archivo es una semilla mientras esta lista tenga algo.
   que pide Spring Data, como `findById` y `save`, y el autor no lo ha decidido.
 - De dónde sacan los catálogos los tests de HU-004. La base en memoria de los tests arranca vacía,
   y cada test crea los valores que usa.
-- Cómo se escribe y se nombra el test de cada escenario, para que se vea qué escenario prueba.
 - Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus
   tarjetas (`docs/context/trello/tarjetas/`). Sus reglas ya tienen lugar en la sección 7.

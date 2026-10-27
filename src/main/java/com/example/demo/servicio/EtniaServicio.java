@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EtniaServicio extends ServicioCatalogo<Etnia> {
 
-    public EtniaServicio(EtniaRepositorio datos, Validator validador) {
-        super(datos, validador);
+    public EtniaServicio(EtniaRepositorio datos, Validator validador, RegistroCatalogos registro) {
+        super(Etnia.class, datos, validador, registro);
     }
 }

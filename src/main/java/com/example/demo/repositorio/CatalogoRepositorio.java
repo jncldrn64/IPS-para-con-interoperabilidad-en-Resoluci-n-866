@@ -16,6 +16,8 @@ public interface CatalogoRepositorio<T extends Catalogo> extends Repository<T, S
 
     List<T> findAllByOrderByCodigoAsc();
 
+    List<T> findByEstadoOrderByCodigoAsc(Catalogo.Estado estado);
+
     Optional<T> findById(String codigo);
 
     T save(T valor);

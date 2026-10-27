@@ -190,7 +190,10 @@ al paciente.
 
   El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7), con
   HU-036 y HU-037 empezadas. Del esqueleto quedan por decidir el paquete y el menú, que hoy es
-  provisional (`docs/DESIGN.md`, sección 9).
+  provisional (`docs/DESIGN.md`, sección 9). En HU-036, la tabla de cambios está hecha desde la
+  v0.9, y sigue la carga desde CSV, que sube el archivo de la base con las 7 etnias
+  (`docs/DECISIONS.md`, 2026-10-26 "El archivo de la base trae las 7 etnias y ninguna
+  comunidad").
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
@@ -230,8 +233,9 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   tarjeta. D-12 ya está en la escala de 1 a 10.
   **Entró:** 2026-10-22, PR de siembra.
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
-  `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno, o el archivo de la base que lo trae, se
-  revisa su licencia y su atribución (`CLAUDE.md`, sección 10).
+  `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno que no venga de una norma, o el archivo de
+  la base que lo trae, se revisa su licencia y su atribución; una lista del anexo se copia citando
+  la norma (`CLAUDE.md`, sección 10).
   **Entró:** 2026-10-22, PR de siembra.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a

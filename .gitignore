@@ -2,3 +2,5 @@ target/
 # La base de prueba no va a git: sin esta línea, un paciente de prueba puede subir con un commit
 # (docs/DESIGN.md, sección 8). El archivo de la base, data/ips.mv.db, sí va.
 data/prueba.*
+# H2 escribe aquí sus errores, como un usuario equivocado al abrir la base; no son datos.
+data/*.trace.db

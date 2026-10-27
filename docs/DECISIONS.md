@@ -883,3 +883,200 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
 - Validar solo al escribir en la base. El menú recibe la excepción de la transacción sin el motivo.
 
 **Estado:** `vigente`
+
+## 2026-10-26: Un escenario se prueba con un test que lleva su número
+
+**Contexto:** El autor preguntó el 2026-10-26 qué le falta a HU-036, y si los escenarios podían ser
+interfaces o pruebas:
+
+- "que nos falta para que la historia de usario mia propuesta este hecha? el HU tiene, que sucuede
+  con los ecenario?, por que esa podrian ser tambien interfaces especificas que implementar como
+  reglas de negocio que habia dicho, pero ya veo por donde hiciste el cambio... crees que con todo
+  esto el repositoro ya es auto suficiente, que mis companeros plantean sus ideas, o siguen mis
+  lineamentros establecidos? no crees que los ecenarios tambien podrian ser pruebas en si mismo que
+  el modelo deberia correr, como intentar meter valores donde no son?"
+
+`docs/DESIGN.md`, sección 3, ya pedía una corrida por escenario, y su sección 9 dejaba sin escribir
+cómo se nombra el test. Una interfaz fija nombres y tipos; no puede exigir que un código tenga 2
+dígitos, y Java compila una implementación que lo ignore. El autor eligió:
+
+- "Uno por escenario (Recomendado)"
+
+**Decisión:** Cada historia tiene su clase de test y cada escenario sus métodos,
+`esc<N>_<alternativa>`, con un `@DisplayName` como "HU-036 Esc. 10". Un escenario se cumple cuando
+cada caso de su "Dado" tiene su método y pasa. Las reglas de `docs/DESIGN.md` que no son el
+escenario de una historia van en `BaseComunTest`, que reemplaza a `CatalogosTest`.
+
+**Alternativas:**
+
+- Una interfaz por escenario, como sugirió el autor. Serían 23 en HU-036, casi todas iguales en los
+  8 catálogos, y ninguna obliga a cumplir la regla.
+- Una clase abstracta con los escenarios de RC-8 a RC-11, que corre para los 8 catálogos. Ahorra
+  código, pero el número del escenario no queda en el nombre del test.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Un CI corre los tests en cada PR
+
+**Contexto:** Hasta el 2026-10-26, los tests los corría el modelo que escribía el PR, y nadie los
+volvía a correr en GitHub. Dos integrantes ya tienen rol Write en el fork, Atervolgo y
+jorge-a-restrepo. El autor eligió:
+
+- "Sí, con GitHub Actions (Recomendado)"
+
+**Decisión:** `.github/workflows/tests.yml` corre `./mvnw -B test` con Java 21 en cada PR y en cada
+cambio de `main`. El PR muestra el check `tests` en verde o en rojo.
+
+**Alternativas:** Que cada modelo corra los tests y pegue el resultado en el PR. Nadie comprueba
+que esa corrida existió.
+
+**Estado:** `vigente`
+
+## 2026-10-26: main queda abierta a los integrantes
+
+**Contexto:** `main` no tiene protección: un integrante con rol Write puede mezclar su propio PR o
+empujar a `main` sin revisión. El modelo propuso exigir un PR con la aprobación del autor. El autor
+contestó:
+
+- "realmente el fork es para que trabajen libremente, ya lo habiamos discutiod, no quiero limitar lo
+  que puedan hacer, es mas permito que hagan cambios, de hecho quiero que hagan cambios, de igual
+  manera todo quedara cosignado en la documentacion."
+
+**Decisión:** `main` sigue sin protección. Cada integrante trabaja con libertad, y lo que cambie
+queda escrito en los documentos y en su PR, como pide `CLAUDE.md`. El CI de la entrada 2026-10-26
+"Un CI corre los tests en cada PR" informa el resultado y no bloquea la mezcla.
+
+**Alternativas:** Una regla de rama en GitHub con PR obligatorio y una aprobación. El autor la
+descartó, porque el fork es para que los integrantes trabajen libremente.
+
+**Estado:** `vigente`
+
+## 2026-10-26: La terminal dice qué archivo espera antes de pedir la ruta
+
+**Contexto:** La entrada 2026-10-25 "Un catálogo se carga desde un CSV, con la ruta en la terminal"
+dejó la carga en CSV. El modelo preguntó qué pieza de HU-036 sigue, la tabla de cambios o la carga,
+y el autor contestó:
+
+- "lo habia olvidado, realmente amabas, por que si termino encontrando el documento de comunidad
+  etnica que imagcino que sera mas de 100 valores como sueguiere le otro modelo, debo ser capaz de
+  subir o parsear el docmuento y establecer un reglamento o que la terminal me diga que tipo de
+  archivo espera, quizas en json o algo asi, an que bueno jsno no es csv, mi idea es que pueda
+  editar todo en una tabla de hoja de calculo y luego submir el archivo y sea capaz ed procesarlo y
+  ver si se puede surbir completo o genera errores..."
+
+**Decisión:** Siguen las dos piezas de HU-036: la tabla de cambios y la carga desde CSV. Antes de
+pedir la ruta, la terminal dice qué archivo espera: CSV en UTF-8, separado por punto y coma, con
+las columnas de su historia, guardado desde la hoja de cálculo con el código como texto (RC-8).
+Después de leerlo dice si se puede cargar completo, o qué filas fallan y por qué, como pide el
+escenario 3 de HU-036.
+
+**Alternativas:** JSON. El autor lo nombró y lo dejó en la misma frase: su idea es editar el
+catálogo en una hoja de cálculo, que guarda CSV.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Los motivos de RC-10 son un enum
+
+**Contexto:** RC-10 fija 4 motivos de inactivación, y RC-9 agrega "Vuelve en la versión" para el
+valor que una versión nueva trae de vuelta. `docs/DESIGN.md`, sección 7, dice que un catálogo no es
+un enum, y la memoria contextual tenía sin respuesta si una lista cerrada de 5 valores o menos lo
+es. El modelo preguntó por los motivos, y el autor eligió:
+
+- "Enum de Java (Recomendado)"
+
+**Decisión:** `Motivo` es un enum con 5 valores: los 4 de RC-10 y "Vuelve en la versión".
+`Motivo.loPoneElSistema` marca los 2 que pone la carga de una versión, y el servicio no deja que una
+persona los elija.
+
+**Alternativas:** Una tabla en la base, como un catálogo más. Cambiar un motivo no pediría
+compilar, pero RC-10 no prevé que la IPS los cambie, y serían una entidad, un repositorio y una
+carga más.
+
+**Estado:** `vigente`
+
+## 2026-10-26: La tabla de cambios y RC-10 entran en la base común
+
+**Contexto:** La entrada 2026-10-26 "La terminal dice qué archivo espera antes de pedir la ruta"
+puso la tabla de cambios como pieza siguiente de HU-036. El modelo E-R ya la describía, con dos
+tablas: `catalogo_version`, una fila por carga, y `catalogo_cambio`, una fila por creación, cambio
+de nombre, inactivación o reactivación (`docs/context/modelo-datos/modelo-entidad-relacion.md`,
+diagrama 2).
+
+**Decisión:**
+
+- `CatalogoVersion` y `CatalogoCambio` siguen esas dos tablas, y `RegistroCatalogos` las usa por
+  los 8 catálogos.
+- `guardar` sale de `CrudCatalogo`. En su lugar, `crear`, `cambiarNombre` y `cambiarCodigo` piden la
+  referencia oficial (RC-3); `inactivar` pide un motivo de RC-10, y `reactivar`, otra referencia o
+  por qué se reactiva.
+- La versión vigente de un catálogo es la de fecha de publicación más reciente. Un código está en
+  ella si su `versionId` es el de esa versión.
+- `contarUsos` devuelve 0 hasta que exista el registro del paciente (HU-004).
+- El menú pide confirmar antes de guardar, y cualquier respuesta distinta de "s" cancela, como pide
+  el escenario 12 de HU-036.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- El tipo "reemplazado" del modelo E-R no entra: el motivo "Reemplazado por" ya lo dice, con el
+  código nuevo en `codigoReemplazo`.
+- `CatalogoCambio` suma `justificacion`, que el modelo E-R no tenía, para reactivar sin otra
+  referencia.
+- Para saber si un cambio oficial es posterior a la versión vigente se compara su hora con la hora
+  de carga de esa versión, porque un cambio oficial no guarda su fecha de publicación.
+
+**Alternativas:** Dejar `guardar` con la referencia como dato opcional. Crear un código que ya
+existe se seguiría tomando como cambio de nombre, y el escenario 10 de HU-036 pide rechazarlo.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Lo que transcribe una norma se copia citando su fuente
+
+**Contexto:** `CLAUDE.md`, sección 10, pide la licencia de lo que se copia de terceros, y el
+Backlog de `docs/ROADMAP.md` pedía revisarla antes de subir un catálogo o el archivo de la base que
+lo trae. El modelo preguntó de dónde salen los 7 nombres de etnia de la hoja 15, y el autor
+contestó:
+
+- "realmente que licencia puede tener un documento legal? etnias deberia ser los 7 valores que ya
+  estan transcriptos, y los podemos dejar directamente en la h2 de persitencia en el repositorio ya
+  escrtias, para que los otros modelos que las ceseciten las puedas referenciar... el problema es la
+  comunidadad, que supongo que dependiendo de donde las extraiga pueden tener licencia o no, asi que
+  entiedo que por poder puedes poner los 7 valores en ambas entidades, manualmente via el crud y via
+  es cvs, (existiendo o no ya en la db previamente los varoles), para saber que pasa y como manera
+  el programa los edgcasne... y cuando encienter el otro documento entiendo que poder poder ahi
+  podiramso discutir... y luego de las pruebas, unicament dejar poblado la entidad etnias y no la de
+  la comunidad, ademas por que te preocupa el tema de la licenica de un documento legal? si es una
+  normativa, lo logico es que literamlete esten asi expreseadas no?"
+
+La Ley 23 de 1982, artículo 41, permite reproducir leyes, decretos y actos administrativos, con la
+condición de seguir la edición oficial. El modelo lo tomó de un concepto del Ministerio de
+Educación del 2017 que cita el artículo, y no leyó el texto de la ley.
+
+**Decisión:** Un valor que viene de una norma, como una lista del anexo de la Resolución 866, se
+copia sin licencia aparte, citando la norma y su hoja. La licencia se revisa para lo que publica
+otra fuente, como una tabla de SISPRO o el catálogo de comunidades étnicas cuando aparezca.
+`CLAUDE.md`, sección 10, y el Backlog lo dicen.
+
+**Alternativas:** Pedir también la licencia de la norma. Una resolución no trae un archivo de
+licencia, así que la regla dejaría fuera las 7 etnias del anexo.
+
+**Estado:** `vigente`
+
+## 2026-10-26: El archivo de la base trae las 7 etnias y ninguna comunidad
+
+**Contexto:** La cita del autor está en la entrada anterior. Pidió que las 7 etnias queden en el
+archivo de la base que va en git, para que los modelos de los otros integrantes las usen. También
+pidió probar la carga con esos 7 valores en las dos entidades, por el menú y por el CSV, con la base
+vacía y con los valores ya cargados.
+
+**Decisión:** El PR de la carga desde el CSV prueba esos casos y sube `data/ips.mv.db` con las 7
+etnias de la hoja 15. Las carga con la versión "Resolución 866 de 2021", publicada el 2021-06-25
+en el Diario Oficial 51.716. La tabla de comunidades étnicas queda vacía hasta que aparezca su
+catálogo oficial (D-19).
+
+Los 7 nombres salen de la transcripción del anexo del 2026-10-18, que no está en el repositorio.
+Si alguno no coincide con la hoja 15, manda la hoja.
+
+**Alternativas:** Dejar también comunidades de prueba en el archivo. Un valor de prueba llegaría a
+git, que es lo que evita la entrada 2026-10-25 "Las pruebas corren sobre otra base".
+
+**Estado:** `vigente`
