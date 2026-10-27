@@ -5,6 +5,38 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.14 — 2026-10-27
+
+Por la terminal sale solo el menú, que abre con la base abierta. `Terminal` recibe también la
+salida, los tests leen lo que el menú dice, y la lista de rechazadas pregunta antes de reemplazar
+un archivo. El programa no muestra una versión.
+
+### Added
+- `MenuPrincipal` abre con `Base abierta: <URL>`, la URL de la conexión a la base.
+- `Terminal` recibe un `PrintStream` y escribe con `escribir`. El menú y los controladores ya no
+  usan `System.out`.
+- Antes de escribir `<nombre>-rechazadas.csv` sobre un archivo que ya existe, el controlador
+  pregunta "Ya existe <ruta>. ¿Reemplazarlo? (s/n)".
+- `Terminal.leer` lanza `NoSuchElementException` si el menú sigue preguntando 100 veces después de
+  acabada la entrada.
+- Tests de lo que el menú dice en el 16, el 17 y el 19 de HU-036 y en el 15, el 16 y el 18 de
+  HU-037. `BaseComunTest` prueba la línea de la base, el corte de la terminal y la lista de
+  rechazadas: 111 tests en total.
+- `docs/DECISIONS.md`: las entradas 2026-10-27 "Por la terminal sale solo el menú, y el menú dice
+  qué base abrió", "La terminal recibe también la salida, y un test lee lo que dice" y "La lista de
+  rechazadas no reemplaza un archivo sin preguntar".
+
+### Changed
+- `application.properties` pone el log en `warn` y apaga el cartel de arranque y el aviso de las
+  plantillas de Thymeleaf.
+- Los tests del menú llevan `@Timeout(10)` y leen lo que el menú imprimió.
+- `docs/ARCHITECTURE.md`, sección 2, decía que la base abierta se ve en la línea `Database JDBC URL`
+  del log. Con el log en `warn` esa línea no sale, y la base la dice el menú.
+- `docs/DESIGN.md`, secciones 3, 4, 6, 8 y 9, `docs/GLOSSARY.md` y `tests/README.md` describen la
+  salida de la terminal.
+- La memoria contextual anota las propuestas, las respuestas del autor y lo hecho, y
+  `docs/TEMPORARY-CONTEXT.md`, que el menú dice "registros" donde los escenarios dicen "pacientes".
+
 ## v0.13 — 2026-10-26
 
 Cada historia tiene su controlador, que el menú común abre, y HU-037 recibe los 4 casos que le

@@ -2019,6 +2019,48 @@ el menú común lo abre" de `docs/DECISIONS.md`.
 
 **Estado:** `vigente`
 
+## 2026-10-27: La salida de la terminal, valorada en dos sesiones
+
+**Contexto:** en otra sesión de Claude, la que mantiene la plantilla y los scripts del autor, él
+preguntó, textual:
+
+- "antes de ello, estoy "implementado una "pseudo terminal" en mi proyecto ips, deberia darle el
+  mismo manejo en ciertos aspectos? o java ya se encarga de por ejemplo del XDG o cosas asi?"
+- "dame un md con cambios y un prompt de relevo, le dare la info al modelo que esta trabajando con
+  el repo y que la valore, luego te doy la retro alimentacion para que tu hagas los cambios."
+
+Lo que pasó:
+
+- La sesión de la plantilla midió la salida sobre `383564b` y escribió seis propuestas, P1 a P6,
+  con un prompt de relevo. El modelo de este repo las valoró sobre `cba3cc5`: P1 con la opción A
+  sin perder la URL de la base, P2 descartada con A, P3 documentada y no arreglada en el código,
+  P4 con el `PrintStream` en `Terminal`, P5 preguntando antes de reemplazar, y P6 confirmada.
+- El modelo de este repo dejó cuatro preguntas para el autor: qué sesión hace el cambio, A o B,
+  cómo se ve la base con A, y si P4 espera al equipo. El autor contestó en la sesión de la
+  plantilla, que hizo el cambio:
+- "A + una línea del menú (Recomendado)"
+- "Ahora, sin tocar pantallas (Recomendado)"
+- "Uno solo (Recomendado)"
+
+Lo que hizo la sesión de la plantilla:
+
+- Las tres entradas del 2026-10-27 de `docs/DECISIONS.md`, con lo que agregó sin respuesta del
+  autor: el corte de `Terminal.leer` después de 100 lecturas sin entrada. `@Timeout` no cortaba
+  un bucle, y un test con un menú roto llenó 2 GB de memoria.
+- Comprobado el 2026-10-27: 111 tests pasan. Cada test nuevo falla con su regla rota, en 9
+  mutaciones hechas en una copia aparte. El jar, sin terminal y en una terminal abierta con
+  `script`, imprime solo la línea de la base y el menú.
+- Anotado en `docs/TEMPORARY-CONTEXT.md`: el menú dice "registros" donde los escenarios dicen
+  "pacientes".
+
+Lo que el modelo de este repo dejó como falta saber, con lo que se sabe:
+
+- SUS-170: según la sesión de la plantilla, es el equipo del autor donde corrieron sus scripts. La
+  IPS no se corrió ahí.
+- Si el docente acepta Postman, y cómo corren el programa los integrantes 1 y 2: sin respuesta.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2164,7 +2206,15 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000. **Próximo (2026-10-26, controlador por historia):** que el autor revise y
+0000000000000000000000000. **Próximo (2026-10-27, salida de la terminal):** que el autor revise y
+   fusione el PR de la salida de la terminal: la línea de la base, la salida por `Terminal`, la
+   pregunta antes de reemplazar la lista de rechazadas y el corte de la terminal, que el modelo
+   agregó sin respuesta del autor. Después, lo que elija: buscar el archivo de comunidades en
+   SISPRO o empezar HU-035. Sin respuesta: lo que el modelo agregó en las entradas del 2026-10-26
+   y del 2026-10-27 de `docs/DECISIONS.md`; si el docente acepta Postman; el idioma de los
+   identificadores; la zona horaria de la tabla de cambios; "registros" o "pacientes" en el menú;
+   cómo corren el programa los integrantes 1 y 2; y sus PR de prueba.
+000000000000000000000000. **Anterior (2026-10-26, controlador por historia):** que el autor revise y
    fusione el PR de los controladores y de los 4 casos de HU-037. Después, lo que elija: buscar el
    archivo de comunidades en SISPRO o empezar HU-035. Sin respuesta: lo que el modelo agregó en las
    entradas del 2026-10-26 de `docs/DECISIONS.md`; si el docente acepta Postman; el idioma de los

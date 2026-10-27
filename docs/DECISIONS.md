@@ -1322,3 +1322,117 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
   el mismo archivo (`docs/DESIGN.md`, sección 9, antes de esta entrada).
 
 **Estado:** `vigente`
+
+## 2026-10-27: Por la terminal sale solo el menú, y el menú dice qué base abrió
+
+**Contexto:** El autor le preguntó a otra sesión de Claude, la que mantiene su plantilla y sus
+scripts, si la terminal de este repo pedía el mismo manejo:
+
+- "antes de ello, estoy "implementado una "pseudo terminal" en mi proyecto ips, deberia darle el
+  mismo manejo en ciertos aspectos? o java ya se encarga de por ejemplo del XDG o cosas asi?"
+
+Esa sesión midió la salida sobre `main` en `383564b` y escribió seis propuestas, P1 a P6. El modelo
+de este repo las valoró sobre `cba3cc5`, y el autor eligió con esa valoración.
+
+Sin terminal, `printf '0\n' | java -jar` dejaba 44 líneas en stdout, 19 de ellas de log, y 0 en
+stderr. P6 confirmó lo que no aplica: XDG, porque la base vive en `./data` (`docs/DESIGN.md`,
+sección 8), y la ayuda y las opciones, porque el programa es un menú. En la pregunta del log, el
+autor eligió:
+
+- "A + una línea del menú (Recomendado)"
+
+**Decisión:**
+
+- `application.properties` pone el log en `warn`, apaga el cartel de arranque y apaga el aviso de
+  las plantillas de Thymeleaf, que la fase 0 no tiene.
+- `MenuPrincipal` abre con `Base abierta: <URL>`, la URL de la conexión a la base. Con el log en
+  `warn` no sale la línea `Database JDBC URL`, y quien tiene el turno del archivo de la base
+  necesita saber si abrió `data/ips` o `data/prueba`.
+- `docs/ARCHITECTURE.md`, sección 2, decía que la base se ve en `Database JDBC URL`, y se corrige.
+
+Medido el 2026-10-27 con el jar, en el contenedor de la sesión: sin terminal, stdout trae 5 líneas,
+la de la base y las del menú, y stderr nada; en una terminal de verdad, abierta con `script`, salen
+0 secuencias de escape y 0 líneas de log. Con `--spring.datasource.url=jdbc:h2:file:./data/ips`, la
+primera línea dice `Base abierta: jdbc:h2:file:./data/ips`.
+
+**Alternativas:**
+
+- El log a stderr con un `logback-spring.xml` (P1-B), y el color apagado con
+  `spring.output.ansi.enabled=never` (P2). En una terminal las 19 líneas seguían en pantalla,
+  porque stderr también va a ella. Sin apagar el color, `2> archivo` desde una terminal llenó el
+  archivo con 228 secuencias de escape.
+- El log en `warn` más `logging.level.org.hibernate.orm.connections.pooling=info`, que según la
+  medición del modelo de este repo devuelve la línea de la URL dentro de un bloque de 11 de log.
+- Forzar UTF-8 en la salida desde el código (P3). Sigue el hueco "las tildes salen como "?" en una
+  terminal sin UTF-8" de `docs/ARCHITECTURE.md`, sección 6: Windows no se probó, y forzarlo podría
+  dejar peor una consola que no use UTF-8.
+
+**Estado:** `vigente`
+
+## 2026-10-27: La terminal recibe también la salida, y un test lee lo que dice
+
+**Contexto:** `Terminal` recibía las respuestas del test, y nadie leía lo que el menú imprimía. En
+`src/main` había 59 `System.out`, 53 en `ControladorCatalogo`, 4 en `MenuPrincipal` y 2 en
+`Terminal`. Lo que un escenario pide decir, como el aviso del catálogo vacío, se probaba en el
+servicio y no en la terminal.
+
+La propuesta, P4, citaba también una regla de la plantilla 1.4 del autor, la de que un test de algo
+que puede quedarse esperando corre con un tiempo máximo. Este repo no adoptó esa plantilla, y la
+regla entra por esta entrada. El autor eligió:
+
+- "Ahora, sin tocar pantallas (Recomendado)"
+
+**Decisión:**
+
+- `Terminal` recibe un `PrintStream` junto con la entrada. Spring le da `System.out`, y un test, un
+  `ByteArrayOutputStream`. El menú y los controladores imprimen con `Terminal.escribir`.
+- Ninguna pantalla cambia: las líneas que imprime el menú son las de antes.
+- Los tests nuevos comprueban por el menú lo que el escenario pide decir: el 16, el 17 y el 19 de
+  HU-036, y el 15, el 16 y el 18 de HU-037. La pantalla entera la deciden los tres integrantes.
+- Cada test del menú lleva `@Timeout(10)`.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- `@Timeout`, en el modo que deja la transacción del test, no corta un bucle: el 2026-10-27, un
+  bucle de 8 segundos con un tope de 3 falló recién a los 8. Por eso `Terminal.leer`, acabada la
+  entrada, contesta una línea vacía hasta 100 veces y a la siguiente lanza
+  `NoSuchElementException`. Los menús atrapan `IllegalStateException` y siguen, y por eso el corte
+  es otra excepción.
+- Con un menú que no salía con la línea vacía y un test con las respuestas cortas, el test llenó
+  2 GB de memoria sin el corte, y con el corte falló a los 2 segundos.
+
+**Alternativas:**
+
+- El `PrintStream` en `MenuPrincipal`, como decía la propuesta. Desde la entrada 2026-10-26 "Cada
+  historia tiene su controlador, y el menú común lo abre", el menú principal solo elige la historia,
+  y 53 de las 59 líneas estaban en `ControladorCatalogo`.
+- `@Timeout` con `threadMode = SEPARATE_THREAD`, que cortó el bucle a los 3 segundos. Corre el test
+  en otro hilo, y ahí `TransactionSynchronizationManager.isActualTransactionActive()` dio `false`:
+  lo que el test guarda quedaría en la base de los demás tests.
+- Esperar a que el equipo decida las pantallas.
+
+**Estado:** `vigente`
+
+## 2026-10-27: La lista de rechazadas no reemplaza un archivo sin preguntar
+
+**Contexto:** El menú escribe `<nombre>-rechazadas.csv` junto al archivo de la carga, con
+`ServicioCatalogo.escribirRechazadas`, que llama a `Files.write` sin opciones. Un programa aparte
+con la misma llamada reemplazó sin aviso un archivo que ya existía. Pisar la lista de una carga
+anterior del mismo archivo no pierde nada, y un archivo propio con ese nombre sí. El autor pidió un
+solo PR, en la opción que decía que traía P1, P5 y P4:
+
+- "Uno solo (Recomendado)"
+
+**Decisión:** si el archivo existe, `ControladorCatalogo` pregunta "Ya existe <ruta>.
+¿Reemplazarlo? (s/n)" antes de escribirlo. Con otra respuesta que "s", dice que no escribió la
+lista, y el archivo queda como estaba. La pregunta va en el controlador, porque un servicio no lee
+del teclado (`docs/DESIGN.md`, sección 6).
+
+**Alternativas:**
+
+- Avisar "Reemplaza el archivo que ya había" y escribir igual. El aviso llega con el archivo ya
+  perdido.
+- `StandardOpenOption.CREATE_NEW`, y pedir otro nombre si existe. Pide escribir una ruta nueva cada
+  vez que se repite una carga, donde la pregunta pide una "s".
+
+**Estado:** `vigente`

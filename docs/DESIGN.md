@@ -60,25 +60,68 @@ cambio de `main`, con `.github/workflows/tests.yml`; cómo se corren a mano est�
 
 Un escenario que pasa por la terminal, como cancelar antes de confirmar, se prueba abriendo el
 controlador de su historia, como `new EtniaControlador(etnias, terminal)`, con una `Terminal` que
-lee las respuestas de un `ByteArrayInputStream`. El test usa el constructor de `Terminal` que
-recibe la entrada, y Spring, el que usa el teclado.
+lee las respuestas de un `ByteArrayInputStream` y escribe en un `ByteArrayOutputStream`. El test
+usa el constructor de `Terminal` que recibe la entrada y la salida, y Spring, el que usa el teclado
+y la pantalla. De la salida, el test comprueba lo que el escenario pide decir, como "No hay etnias
+que coincidan con la búsqueda" en el 16 de HU-036. La pantalla entera todavía no está decidida
+(sección 9).
+
+Un test del menú lleva `@Timeout(10)`, que marca como fallido un test que tardó de más pero no
+corta un menú que se quedó preguntando. El 2026-10-27, un bucle de 8 segundos con un tope de 3
+falló recién a los 8. Lo corta `Terminal.leer`, que después de acabada la entrada contesta una línea
+vacía hasta 100 veces y a la siguiente lanza `NoSuchElementException`. Ese día, un test con las
+respuestas cortas y un menú que no salía con la línea vacía llenó 2 GB de memoria, y con el corte
+falló a los 2 segundos.
 
 **Por qué:** con el número del escenario en el nombre, la salida de `./mvnw test` dice qué
 escenarios de la tarjeta pasan. Un escenario que mete un valor donde no va, como el 10 de HU-036,
 falla si alguien borra la regla que lo rechaza: se comprobó el 2026-10-26 quitando el `@Pattern` de
 `Etnia`.
 
+El modo de `@Timeout` que sí corta, `SEPARATE_THREAD`, corre el test en otro hilo, sin la
+transacción de `@Transactional`, así que lo que guarda no se deshace al terminar. Se midió el
+2026-10-27: en ese hilo, `TransactionSynchronizationManager.isActualTransactionActive()` dio `false`.
+
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-26 "Un escenario se prueba con un test que
-lleva su número" y 2026-10-26 "Un CI corre los tests en cada PR".
+lleva su número", 2026-10-26 "Un CI corre los tests en cada PR" y 2026-10-27 "La terminal recibe
+también la salida, y un test lee lo que dice".
 
 ## 4. Presentación y registro
 
 **Regla:** la pantalla de cada historia sigue su lámina en `docs/context/trello/mockups/`, donde una
-etiqueta "Esc. N" dice qué escenario muestra cada panel.
+etiqueta "Esc. N" dice qué escenario muestra cada panel. Por la terminal sale solo lo que imprime el
+menú. El log de Spring muestra los avisos y los errores, nada del arranque, y el menú principal abre
+con la base que quedó abierta, como `Base abierta: jdbc:h2:file:./data/prueba`.
+
+El menú y los controladores imprimen con `Terminal.escribir`, y ninguno escribe en `System.out`. Un
+archivo que el programa escribe y que ya existe se reemplaza solo si quien usa la terminal lo
+confirma. La lista de rechazadas de una carga, por ejemplo, pregunta "Ya existe <ruta>.
+¿Reemplazarlo? (s/n)" antes de escribir encima.
 
 La guía pide una aplicación web, y el docente aceptó terminal: el primer sprint tiene al menos el
 esqueleto en terminal (`docs/DECISIONS.md`, 2026-10-24 "El primer sprint arranca en terminal").
-Qué imprime el programa, a qué stream y qué se registra está en la sección 9, sin escribir todavía.
+Qué imprime cada pantalla, línea por línea, está en la sección 9, sin escribir todavía.
+
+Los acentos salen bien solo con la terminal en UTF-8. Java toma la codificación de la salida del
+idioma del sistema, y sin `LANG` imprime "Opci?n", un hueco de `docs/ARCHITECTURE.md`, sección 6.
+El código no fuerza UTF-8: en una consola de Windows que no lo use podría salir peor, y Windows no
+se probó.
+
+**Por qué:** sin terminal, `printf '0\n' | java -jar` dejaba en stdout 44 líneas, 19 de ellas de
+log, y la primera del cierre quedaba pegada a "Opción: ". Con el log en stderr, en una terminal de
+verdad las 19 seguían en pantalla, porque stderr también va a ella. El nivel `warn` apaga además la
+línea `Database JDBC URL`, la única que decía qué base estaba abierta, y quien tiene el turno del
+archivo de la base necesita verla (sección 8). La pregunta antes de reemplazar sale de
+`Files.write`, que sin opciones trunca el archivo que ya existe.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-27 "Por la terminal sale solo el menú, y el
+menú dice qué base abrió" y 2026-10-27 "La lista de rechazadas no reemplaza un archivo sin
+preguntar".
+
+**Cómo se comprueba:** `printf '0\n' | sh ./mvnw -q spring-boot:run`, desde la raíz del repo,
+imprime la línea de la base y el menú, sin una línea de log; `grep -rn System.out src/main` devuelve
+solo el constructor de `Terminal`. Los tests son `BaseComunTest.elMenuPrincipalDiceQueBaseAbrio` y
+los tres de `BaseComunTest` que empiezan con `laListaDeRechazadas`.
 
 ## 5. Los comentarios
 
@@ -129,9 +172,9 @@ historia, como la lista de la hoja 15 en `ContratoEtnias`. Su comentario dice qu
 cada operación. El servicio implementa el contrato, y el controlador lo pide por la interfaz, nunca
 por el servicio.
 
-El menú principal vive en `comun/menu/`, con `Terminal`, la entrada que comparte con los
-controladores. Lista las historias por su número y abre el controlador de la elegida, que cumple la
-interfaz `Controlador`. Las 11 opciones que comparten los catálogos están en
+El menú principal vive en `comun/menu/`, con `Terminal`, la entrada y la salida que comparte con
+los controladores. Lista las historias por su número y abre el controlador de la elegida, que
+cumple la interfaz `Controlador`. Las 11 opciones que comparten los catálogos están en
 `comun/controladores/ControladorCatalogo`, y el controlador de cada historia pone lo suyo, como la
 comparación con la hoja 15 en `EtniaControlador`.
 
@@ -226,6 +269,8 @@ sh ./mvnw spring-boot:run \
   -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:file:./data/ips
 ```
 
+Con esa URL, la primera línea del menú es `Base abierta: jdbc:h2:file:./data/ips` (sección 4).
+
 Esa corrida cambia los bytes de `data/ips.mv.db` aunque no guarde nada, porque H2 lo reescribe al
 abrirlo y al cerrarlo. Para traer a la base de prueba los catálogos nuevos de `main`, se borra
 `data/prueba.mv.db` y la corrida siguiente la copia otra vez. `spring.jpa.hibernate.ddl-auto=update`
@@ -252,7 +297,8 @@ programa trabaja sobre una copia del archivo de la base".
 
 Este archivo es una semilla mientras esta lista tenga algo.
 
-- Qué imprime cada pantalla del esqueleto en terminal, a qué stream y qué se registra.
+- Qué imprime cada pantalla del esqueleto en terminal, que deciden los tres integrantes. A qué
+  stream va cada cosa y qué se registra ya está en la sección 4.
 - Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
   que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
   `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
