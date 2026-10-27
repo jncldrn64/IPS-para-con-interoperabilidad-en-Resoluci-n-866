@@ -325,3 +325,7 @@ archivos de una vez y se reescribe la línea base con su fecha nueva.
   licencia aparte, citando la norma y su hoja: la Ley 23 de 1982, artículo 41, permite reproducir
   los actos administrativos fieles a la edición oficial (`docs/DECISIONS.md`, 2026-10-26 "Lo que
   transcribe una norma se copia citando su fuente").
+- **Un catálogo que publica una entidad del Estado**, como la DIVIPOLA del DANE, la CIUO-88 A.C. o
+  una tabla de SISPRO, se copia citando la entidad y la dirección de donde se bajó, sin buscar
+  licencia aparte. La carga guarda las dos en su versión (`docs/DECISIONS.md`, 2026-10-27 "Un
+  catálogo del Estado se copia citando su fuente").

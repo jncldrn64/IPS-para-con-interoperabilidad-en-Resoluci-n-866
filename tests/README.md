@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-10-27 en el contenedor de la sesión, con Linux: 111 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-10-27 en el contenedor de la sesión, con Linux: 112 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -24,18 +24,18 @@ vacía, cada test crea los valores que usa y `@Transactional` los deshace al ter
 
 ## 2. Las suites
 
-Están bajo `src/test/java/com/example/demo/`, en la carpeta de su historia o en `comun/`. Cómo se
+Están bajo `src/test/java/com/ipssaludyvida/`, en la carpeta de su historia o en `comun/`. Cómo se
 nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
 
-- `DemoApplicationTests.contextLoads`: comprueba que el contexto de Spring arranca. La generó Spring
+- `IpsApplicationTests.contextLoads`: comprueba que el contexto de Spring arranca. La generó Spring
   Initializr.
-- `comun/BaseComunTest`, con 15 tests de las reglas que no son un escenario: los ceros iniciales
-  del código, inactivar sin borrar, que cambiar el nombre no reactive un valor, los motivos que pone
-  el sistema, "Creado por error" fuera de la versión vigente, reactivar con otra referencia, la
-  copia de la base de prueba, que ningún repositorio tenga un método para borrar, que el menú
-  principal ordene las historias, abra la elegida y diga qué base abrió, el corte de la terminal
-  cuando se acaba la entrada, los tres casos de la lista de rechazadas que ya existe y el largo de
-  la columna del código.
+- `comun/BaseComunTest`, con 16 tests de las reglas que no son un escenario: los ceros iniciales del
+  código, la hora de Colombia en la tabla de cambios y en la carga, inactivar sin borrar, que
+  cambiar el nombre no reactive un valor, los motivos que pone el sistema, "Creado por error" fuera
+  de la versión vigente, reactivar con otra referencia, la copia de la base de prueba, que ningún
+  repositorio tenga un método para borrar, que el menú principal ordene las historias, abra la
+  elegida y diga qué base abrió, el corte de la terminal cuando se acaba la entrada, los tres casos
+  de la lista de rechazadas que ya existe y el largo de la columna del código.
 - `hu036/HU036EtniasTest`, con 44 tests, y `hu037/HU037ComunidadesEtnicasTest`, con 38: los
   escenarios de cada historia, de la carga a la consulta, la búsqueda y la comparación con la
   lista oficial. Los de cancelar, y los que comprueban lo que el menú dice en la búsqueda sin
@@ -54,7 +54,7 @@ carpeta temporal de JUnit, así que no dependen de ningún archivo fuera del rep
 Este comando lista los números de escenario de HU-036 que tienen al menos un método:
 
 ```sh
-grep -ohE 'esc[0-9]+_' src/test/java/com/example/demo/hu036/*.java | sort -uV
+grep -ohE 'esc[0-9]+_' src/test/java/com/ipssaludyvida/hu036/*.java | sort -uV
 ```
 
 El 2026-10-26 imprimió los 23 números de la tarjeta, y con `hu037` en la ruta, los 22 de HU-037.

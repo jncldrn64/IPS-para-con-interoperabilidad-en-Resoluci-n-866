@@ -22,11 +22,11 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `LICENSE` | GNU Affero General Public License, versión 3 |
 | `.gitignore` | Deja fuera de git `target/` y la base de prueba, `data/prueba.*` |
 | `.github/workflows/tests.yml` | El CI: GitHub Actions corre `./mvnw -B test` en cada PR |
-| `pom.xml` | Proyecto Maven `com.example:demo`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |
+| `pom.xml` | Maven `com.ipssaludyvida:ips`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |
 | `mvnw`, `mvnw.cmd`, `.mvn/wrapper/` | Envoltorio de Maven: la primera corrida baja Maven 3.9.11 |
-| `src/main/java/com/example/demo/` | `DemoApplication`: copia la base de prueba y arranca Spring |
+| `src/main/java/com/ipssaludyvida/` | `IpsApplication`: copia la base de prueba y arranca Spring |
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
-| `src/test/java/com/example/demo/` | `comun/` y una carpeta por historia (`tests/README.md`) |
+| `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
 | `data/ips.mv.db` | El archivo de la base, con las 7 etnias cargadas (sección 3) |
@@ -41,16 +41,17 @@ de H2, SQL Server, MySQL y MariaDB, más sus pares de test. Para listarlas:
 
 ## 2. Dónde vive cada cosa
 
-Comprobado el 2026-10-27.
+Comprobado el 2026-10-27. `grep -c '^[a-z]' src/main/resources/application.properties` cuenta
+las 7 claves de la configuración.
 
 | Qué | Variable o símbolo | Ruta |
 |---|---|---|
-| Configuración | `spring.datasource.url`, el nivel del log y cuatro más | `src/main/resources/application.properties` |
-| Punto de entrada | `DemoApplication.main` | `src/main/java/com/example/demo/` |
+| Configuración | 7 claves, una por línea | `src/main/resources/application.properties` |
+| Punto de entrada | `IpsApplication.main` | `src/main/java/com/ipssaludyvida/` |
 | Historias de usuario | Una tarjeta por historia, más la de reglas comunes | `docs/context/trello/tarjetas/` |
 | Modelo de datos propuesto | 24 tablas en Mermaid | `docs/context/modelo-datos/modelo-entidad-relacion.md` |
 
-| Carpeta, bajo `src/main/java/com/example/demo/` | Qué guarda |
+| Carpeta, bajo `src/main/java/com/ipssaludyvida/` | Qué guarda |
 |---|---|
 | `comun/interfaces/` | `CrudCatalogo`, el contrato de los 8 catálogos, y `Controlador` |
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
@@ -63,7 +64,7 @@ Comprobado el 2026-10-27.
 
 `application.properties` abre la base de prueba, `jdbc:h2:file:./data/prueba`, relativa a la
 carpeta donde se corre el programa, y el menú principal la muestra en su primera línea, la de
-`Base abierta`. `DemoApplication.main` la copia de `data/ips.mv.db` antes de arrancar Spring, si no
+`Base abierta`. `IpsApplication.main` la copia de `data/ips.mv.db` antes de arrancar Spring, si no
 existe. El log de Spring está en `warn` y sin el cartel de arranque, así que por la terminal sale
 solo el menú.
 
@@ -100,11 +101,13 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
   `COMUNIDAD_ETNICA`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO` y dos secuencias para los números de
   las dos últimas. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de
   2021"; ninguna comunidad étnica; y 7 filas de cambios, una por etnia creada. Se cargó con la
-  opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se reinicia con
-  `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
+  opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se cargó en UTC, y
+  el 2026-10-27 sus 8 horas, las 7 de los cambios y la de la carga, pasaron a la de Colombia: de las
+  02:25 del 2026-10-27 a las 21:25 del 2026-10-26, con un `UPDATE` en la consola de H2. Se reinicia
+  con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
-- `data/prueba.mv.db`: la base de prueba, donde corre el programa. `DemoApplication.main` la copia
+- `data/prueba.mv.db`: la base de prueba, donde corre el programa. `IpsApplication.main` la copia
   del archivo de la base si no existe, y `.gitignore` la deja fuera de git. Se reinicia borrándola:
   la corrida siguiente la copia otra vez con lo que traiga `data/ips.mv.db`.
 - `target/`: lo que compila Maven. `.gitignore` lo deja fuera, y cada build lo rehace.
@@ -113,8 +116,8 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-27 con `git ls-files 'src/*' | xargs wc -l`: 3578 líneas en 39 archivos. De
-Spring Initializr queda la mayor parte de `DemoApplicationTests.java`.
+Comprobado el 2026-10-27 con `git ls-files 'src/*' | xargs wc -l`: 3611 líneas en 39 archivos. De
+Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
 
@@ -146,3 +149,8 @@ si eso cierra un hueco de esta lista.
 - **2026-10-26: `mvnw.cmd` no se corrió.** El contenedor de la sesión es Linux, así que el
   envoltorio solo se probó con `sh ./mvnw`. Comando, en Windows: `mvnw.cmd -v`, que tiene que
   imprimir "Apache Maven 3.9.11".
+- **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
+  pacientes usan un valor, en el escenario 19 de HU-036 y el 18 de HU-037: `contarUsos` devuelve 0.
+  Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no
+  tiene código porque todavía no hay registros. Comando:
+  `grep -n -A2 'public long contarUsos' src/main/java/com/ipssaludyvida/comun/servicios/*.java`.

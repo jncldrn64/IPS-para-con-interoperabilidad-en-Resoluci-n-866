@@ -43,14 +43,14 @@ y "Reglas que el modelo tiene que cumplir".
 
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
 (`CLAUDE.md`, sección 8). Cada historia tiene su clase de test en su carpeta, como
-`src/test/java/com/example/demo/hu036/HU036EtniasTest.java`, y cada escenario sus métodos,
+`src/test/java/com/ipssaludyvida/hu036/HU036EtniasTest.java`, y cada escenario sus métodos,
 `esc<N>_<alternativa>`: el número del escenario y el caso de su "Dado" que prueba. `@DisplayName`
 repite la historia y el escenario, como "HU-036 Esc. 10".
 
 Un escenario se cumple cuando cada caso de su "Dado" tiene su método y pasa, y una historia, cuando
 se cumplen todos sus escenarios. Las reglas de este archivo que no son el escenario de una historia
 van en `BaseComunTest`, y los casos límite que pidió el autor, como cargar las 7 etnias en las dos
-entidades, en `CasosLimiteTest`. Las dos están en `src/test/java/com/example/demo/comun/`.
+entidades, en `CasosLimiteTest`. Las dos están en `src/test/java/com/ipssaludyvida/comun/`.
 
 Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
 y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
@@ -80,7 +80,8 @@ falla si alguien borra la regla que lo rechaza: se comprobó el 2026-10-26 quita
 
 El modo de `@Timeout` que sí corta, `SEPARATE_THREAD`, corre el test en otro hilo, sin la
 transacción de `@Transactional`, así que lo que guarda no se deshace al terminar. Se midió el
-2026-10-27: en ese hilo, `TransactionSynchronizationManager.isActualTransactionActive()` dio `false`.
+2026-10-27: en ese hilo, `TransactionSynchronizationManager.isActualTransactionActive()` dio
+`false`.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-26 "Un escenario se prueba con un test que
 lleva su número", 2026-10-26 "Un CI corre los tests en cada PR" y 2026-10-27 "La terminal recibe
@@ -158,7 +159,7 @@ y declara solo `findAllByOrderByCodigoAsc`, `findById` y `save`. `CrudRepository
 `ListCrudRepository`, trae `deleteById`, `delete`, `deleteAll` y `deleteAllById`.
 
 El código de una historia vive en su carpeta, como `hu036/`, y lo que usan varias historias, en
-`comun/`. Las dos cuelgan de `src/main/java/com/example/demo/`, donde Maven y Spring buscan las
+`comun/`. Las dos cuelgan de `src/main/java/com/ipssaludyvida/`, donde Maven y Spring buscan las
 clases, y tienen las mismas subcarpetas:
 
 - `interfaces/`: el contrato;
@@ -166,6 +167,11 @@ clases, y tienen las mismas subcarpetas:
 - `repositorios/`: el acceso a la base;
 - `servicios/`: los métodos de la historia y sus validaciones;
 - `controladores/`: el controlador, que lee la terminal y llama al contrato.
+
+El paquete raíz es `com.ipssaludyvida`, y el artefacto de Maven, `ips`. Los nombres del código van
+en español: paquetes, clases, métodos y variables. Quedan en inglés los que pide Spring, como
+`findById` y `save`, que Spring Data lee para armar la consulta, y los que se sobrescriben de Java o
+de Spring, como `run`.
 
 El contrato de una historia es una interfaz que extiende `CrudCatalogo` y agrega lo propio de la
 historia, como la lista de la hoja 15 en `ContratoEtnias`. Su comentario dice qué escenario cumple
@@ -193,7 +199,8 @@ el controlador de cada historia sin que nadie lo edite.
 controlador", y del 2026-10-26 "El primer código arma la base común con etnias y comunidades
 étnicas", "El código se ordena por historia, con lo común aparte", "Cada historia tiene su
 contrato, y lo implementa su servicio" y "Cada historia tiene su controlador, y el menú común lo
-abre".
+abre", y del 2026-10-27 "Los nombres del código van en español" y "El paquete es com.ipssaludyvida
+y el artefacto ips".
 
 **Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
 de la terminal. Que ningún repositorio ofrezca borrar lo comprueba
@@ -229,7 +236,9 @@ La base valida cada dato con su numeral, pide la referencia oficial para crear o
 (RC-3) y aplica RC-10 al inactivar y al reactivar. Cada operación deja su fila en la tabla de
 cambios común, `CatalogoCambio`, por medio de `RegistroCatalogos`: el tipo de cambio, el nombre
 anterior y el nuevo, el motivo, la referencia y la hora. Ninguna operación cambia un valor sin
-dejar su fila.
+dejar su fila. La hora de la tabla de cambios y la de cada carga son las de Colombia,
+`RegistroCatalogos.ZONA`, corra donde corra el programa, y una fecha futura en una carga se mide
+con la fecha de Colombia.
 
 La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guardar, y
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
@@ -249,7 +258,8 @@ fija la regla común y no llegan de un archivo.
 2026-10-25 "La base común es una clase con código, nombre, estado y versión", y del 2026-10-26 "El
 primer código arma la base común con etnias y comunidades étnicas", "Los motivos de RC-10 son un
 enum", "La tabla de cambios y RC-10 entran en la base común", "La carga lee primero y guarda al
-confirmar" y "La consulta, la búsqueda y la comparación entran en la base común".
+confirmar" y "La consulta, la búsqueda y la comparación entran en la base común", y 2026-10-27 "La
+tabla de cambios guarda la hora de Colombia".
 
 ## 8. La base de datos
 
@@ -258,7 +268,7 @@ y las pruebas corren sobre otra base, con otro nombre. El turno lo tiene quien t
 que cambia el archivo, y la base de prueba arranca como copia del archivo.
 
 El programa corre sobre la base de prueba, `data/prueba.mv.db`. `application.properties` abre
-`jdbc:h2:file:./data/prueba`, y `DemoApplication.main` la copia de `data/ips.mv.db` si no existe.
+`jdbc:h2:file:./data/prueba`, y `IpsApplication.main` la copia de `data/ips.mv.db` si no existe.
 `.gitignore` la deja fuera de git, así que una corrida no cambia el archivo de la base. Las rutas
 son relativas a la carpeta donde se corre, y por eso el programa se corre desde la raíz del repo.
 
@@ -302,10 +312,10 @@ Este archivo es una semilla mientras esta lista tenga algo.
 - Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
   que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
   `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
-- El paquete y el nombre del artefacto: hoy son `com.example.demo` y `demo`, los de Spring
-  Initializr.
-- El idioma de los identificadores del código. El primer código usa español, salvo los nombres
-  que pide Spring Data, como `findById` y `save`, y el autor no lo ha decidido.
+- Cómo entra un valor provisional al archivo de la base sin trabar al oficial que llegue después.
+  Medido el 2026-10-27 con un test que no quedó en el repo: después de una carga provisional
+  fechada ese día, un archivo oficial publicado en 2021 se rechaza como "anterior a la de la
+  versión vigente" (`ServicioCatalogo.tipoDeCarga`).
 - De dónde sacan los catálogos los tests de HU-004. La base en memoria de los tests arranca vacía,
   y cada test crea los valores que usa.
 - Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus

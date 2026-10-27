@@ -135,7 +135,7 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   común es una clase con código, nombre, estado y versión"; 2026-10-26 "El primer código arma la
   base común con etnias y comunidades étnicas").
 - **base de prueba**: `data/prueba.mv.db`, la base donde corre el programa, para que un dato de
-  prueba no llegue al archivo de la base que va en git. `DemoApplication.main` la copia de ese
+  prueba no llegue al archivo de la base que va en git. `IpsApplication.main` la copia de ese
   archivo si no existe (2026-10-25 "Las pruebas corren sobre otra base"; 2026-10-25 "La base de
   prueba arranca como copia del archivo"; 2026-10-26 "El programa trabaja sobre una copia del
   archivo de la base").
@@ -167,6 +167,9 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   test que lleva su número").
 - **turno**: el permiso de cambiar el archivo de la base. Lo tiene quien tenga abierto el PR que lo
   cambia (2026-10-25 "El turno del archivo de la base es del PR abierto").
+- **valor provisional**: un valor de catálogo que entra al archivo de la base antes de que llegue
+  el archivo oficial, y que el oficial reemplaza. Cómo se marca y cómo cede su lugar no está
+  decidido (2026-10-27 "El archivo de la base admite valores provisionales").
 - **versión vigente**: la versión de un catálogo con la fecha de publicación más reciente. Un
   código está en ella si su `versionId` es el de esa versión (RC-10; 2026-10-26 "La tabla de
   cambios y RC-10 entran en la base común").

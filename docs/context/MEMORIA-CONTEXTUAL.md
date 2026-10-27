@@ -2061,6 +2061,85 @@ Lo que el modelo de este repo dejó como falta saber, con lo que se sabe:
 
 **Estado:** `vigente`
 
+## 2026-10-27: HU-036 y HU-037 completas, el paquete, el idioma de los nombres y la hora
+
+Con el PR #19 fusionado, el autor escribió:
+
+- "el otro modelo ya aplico los cambios que vio convenientes, valora y dime que tal, y dame
+  preguntas para saber entncose que falta para tenel las dos hu complentas que estamos haciendo y
+  que faltaria para que el repo sea autosuficiente"
+
+Lo que respondió el modelo:
+
+- El PR #19 está bien hecho: 111 tests, el piso en cero, y una corrida real imprime solo la línea
+  de la base y el menú. Siguió la valoración en las cinco propuestas y encontró el bucle que
+  `@Timeout` no corta.
+- Tres detalles: una línea de 101 columnas en `docs/DESIGN.md`, un conteo de claves corrido en uno
+  en `docs/ARCHITECTURE.md`, sección 2, y el riesgo de dos sesiones con PR abiertos a la vez.
+- Que una sesión sin este chat siguiera el método solo con lo que dice el repo fue la primera
+  prueba real de que el repo se sostiene solo.
+
+El modelo hizo cuatro preguntas, y el autor eligió:
+
+- "Ya, con HU-004 anotado (Recomendado)"
+- "Buscare yo, con otro modelo en otra base de datso asi que dejala asi hasta nueva orden"
+- "Pacientes, como las tarjetas (Recomendado)"
+- "PR de prueba de 1 y 2,Decidir lo pendiente,Revisar lo que eligió el modelo"
+
+Después hizo otras cuatro, y el autor eligió:
+
+- "Español, como ahora (Recomendado)"
+- "Cambiarlo ya (Recomendado)"
+- "Hora de Colombia (Recomendado)"
+- "Preguntas por tandas (Recomendado)"
+
+Lo que hizo el modelo:
+
+- El paquete pasa a `com.ipssaludyvida`, el artefacto a `ips` y `DemoApplication` a
+  `IpsApplication`, con `git mv` y `sed`.
+- `RegistroCatalogos.ZONA`, `America/Bogota`, para la hora de los cambios y de las cargas, y la
+  fecha de una carga futura. Las 8 horas de `data/ips.mv.db` pasaron 5 horas atrás con un
+  `UPDATE` en la consola de H2.
+- El menú dice "La usan N pacientes".
+- Comprobado el 2026-10-27: 112 tests pasan. Con `LocalDateTime.now()` en `RegistroCatalogos`, el
+  test de la hora falla con 04:44 contra 23:44.
+
+Después, la revisión por tandas de lo que el modelo agregó sin respuesta del autor. En la primera,
+el autor eligió:
+
+- "Aceptar (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar (Recomendado)"
+
+En la segunda:
+
+- "Citar la fuente basta"
+- "Aceptar las cuatro (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar las cuatro (Recomendado)"
+
+En la tercera:
+
+- "Permitir datos provisionales"
+- "Darlas por reemplazadas (Recomendado)"
+- "Aceptar los seis (Recomendado)"
+
+Como el `docs/ROADMAP.md` dice que el docente no acepta datos provisionales, el modelo preguntó si
+solo en la base de prueba, y el autor eligió:
+
+- "También en el archivo de la base"
+
+El modelo midió con un test que no quedó en el repo que, después de una carga provisional fechada
+hoy, el archivo oficial publicado en 2021 se rechaza como anterior. Cómo entra un valor provisional
+quedó en `docs/DESIGN.md`, sección 9.
+
+Hecho en el PR que sigue a 5b3f74a: las ocho entradas del 2026-10-27 de `docs/DECISIONS.md`, de
+"HU-036 y HU-037 están completas" a "El archivo de la base admite valores provisionales", y
+`CLAUDE.md`, sección 10.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2206,7 +2285,14 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000. **Próximo (2026-10-27, salida de la terminal):** que el autor revise y
+00000000000000000000000000. **Próximo (2026-10-27, HU completas y paquete):** que el autor revise y
+   fusione el PR del paquete, la hora de Colombia, "pacientes" y la revisión de lo que eligió el
+   modelo, que quedó hecha. Después, los PR de prueba de los integrantes 1 y 2 (`CLAUDE.md`,
+   sección 7), y cómo entra un valor provisional cuando haga falta el primero. El archivo de
+   comunidades lo busca el autor; no se toca hasta nueva orden. Sin respuesta: si el docente acepta
+   Postman; cómo corren el programa los integrantes 1 y 2; y D-02, D-18, D-21, D-23 y D-25, que son
+   del equipo.
+0000000000000000000000000. **Anterior (2026-10-27, salida de la terminal):** que el autor revise y
    fusione el PR de la salida de la terminal: la línea de la base, la salida por `Terminal`, la
    pregunta antes de reemplazar la lista de rechazadas y el corte de la terminal, que el modelo
    agregó sin respuesta del autor. Después, lo que elija: buscar el archivo de comunidades en

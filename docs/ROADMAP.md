@@ -10,9 +10,13 @@
 El docente no acepta que se desarrolle una historia que dependa directamente de otra que no esté
 desarrollada, aunque le dé valor al cliente, ni un dato provisional para crear su catálogo en otro
 sprint. Por eso los pasos de la fase 0 siguen las dependencias de las 12 historias del plan B y no
-su prioridad: primero lo que no depende de nada, después lo que depende de eso. La complejidad se
-estima de 1 a 10 y sube con las dependencias directas (`docs/context/MEMORIA-CONTEXTUAL.md`,
-entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente").
+su prioridad: primero lo que no depende de nada, después lo que depende de eso. El archivo de la
+base sí admite valores provisionales mientras llega el archivo oficial de un catálogo ya hecho
+(`docs/DECISIONS.md`, 2026-10-27 "El archivo de la base admite valores provisionales").
+
+La complejidad se estima de 1 a 10 y sube con las dependencias directas
+(`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-21 "Límite de 12 historias; dependencias
+y el paciente").
 
 Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
 2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
@@ -188,14 +192,13 @@ al paciente.
      principal. HU-001 no es un catálogo, así que puede empezar desde aquí.
   3. La base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el integrante 3.
 
-  El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7), con
-  HU-036 y HU-037 empezadas. Del esqueleto queda por decidir el paquete (`docs/DESIGN.md`, sección
-  9). Desde la v0.11, cada historia tiene su carpeta y su contrato, y desde la v0.13, su
-  controlador. En HU-036, la tabla de cambios (v0.9) y la carga desde CSV con las 7 etnias en el
-  archivo de la base (v0.10) están hechas. Desde la v0.13, cada caso del "Dado" de HU-036 y de
-  HU-037 tiene su test; en la v0.12 le faltaban 4 a HU-037. Dos partes esperan a HU-004: cuántos
-  pacientes usan un valor y lo que RC-11 pide de un registro ya guardado (`tests/README.md`,
-  sección 3).
+  El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7). El
+  esqueleto está hecho desde la v0.15, con el paquete `com.ipssaludyvida`. Desde la v0.11, cada
+  historia tiene su carpeta y su contrato, y desde la v0.13, su controlador. HU-036 y HU-037 están
+  completas desde la v0.15: cada caso del "Dado" tiene su test. Dos partes esperan a HU-004,
+  cuántos pacientes usan un valor y lo que RC-11 pide de un registro ya guardado, y son un hueco de
+  `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
+  completas"). Del integrante 3 queda HU-035.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
@@ -235,9 +238,9 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   tarjeta. D-12 ya está en la escala de 1 a 10.
   **Entró:** 2026-10-22, PR de siembra.
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
-  `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno que no venga de una norma, o el archivo de
-  la base que lo trae, se revisa su licencia y su atribución; una lista del anexo se copia citando
-  la norma (`CLAUDE.md`, sección 10).
+  `docs/ARCHITECTURE.md`, sección 6. El que publica una entidad del Estado se copia citando la
+  entidad y la dirección de descarga, y una lista del anexo, citando la norma (`CLAUDE.md`,
+  sección 10).
   **Entró:** 2026-10-22, PR de siembra.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a
