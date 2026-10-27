@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.demo.comun.interfaces.CrudCatalogo;
-import com.example.demo.comun.menu.MenuPrincipal;
+import com.example.demo.comun.menu.Terminal;
 import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoCambio;
 import com.example.demo.comun.modelos.CatalogoVersion;
@@ -17,10 +17,10 @@ import com.example.demo.comun.servicios.DatosVersion;
 import com.example.demo.comun.servicios.RegistroCatalogos;
 import com.example.demo.comun.servicios.ResultadoCarga;
 import com.example.demo.comun.servicios.ResumenVersion;
+import com.example.demo.hu036.controladores.EtniaControlador;
 import com.example.demo.hu036.interfaces.ContratoEtnias;
 import com.example.demo.hu036.modelos.Etnia;
 import com.example.demo.hu036.repositorios.EtniaRepositorio;
-import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import jakarta.validation.ConstraintViolationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -59,7 +59,6 @@ class HU036EtniasTest {
     @TempDir Path carpeta;
 
     @Autowired ContratoEtnias etnias;
-    @Autowired ContratoComunidadesEtnicas comunidades;
     @Autowired EtniaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
 
@@ -375,7 +374,7 @@ class HU036EtniasTest {
     @Test
     @DisplayName("HU-036 Esc. 12: cancelar una creación en el menú deja el catálogo igual")
     void esc12_cancelarLaCreacion() {
-        menu("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\nn\n0\n0\n");
+        menu("2\n07\nEtnia de prueba\n" + REFERENCIA + "\nn\n0\n");
         assertTrue(etnias.listar().isEmpty());
     }
 
@@ -383,7 +382,7 @@ class HU036EtniasTest {
     @DisplayName("HU-036 Esc. 12: cancelar un cambio de nombre en el menú deja el catálogo igual")
     void esc12_cancelarElCambio() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
-        menu("1\n3\n07\nOtro nombre\n" + REFERENCIA + "\nn\n0\n0\n");
+        menu("3\n07\nOtro nombre\n" + REFERENCIA + "\nn\n0\n");
         assertEquals("Etnia de prueba", etnias.buscarPorCodigo("07").orElseThrow().getNombre());
     }
 
@@ -391,7 +390,7 @@ class HU036EtniasTest {
     @DisplayName("HU-036 Esc. 12: cancelar una inactivación en el menú deja el catálogo igual")
     void esc12_cancelarLaInactivacion() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
-        menu("1\n5\n07\n1\n" + REFERENCIA + "\nn\n0\n0\n");
+        menu("5\n07\n1\n" + REFERENCIA + "\nn\n0\n");
         assertEquals(Catalogo.Estado.ACTIVO, estado("07"));
     }
 
@@ -400,15 +399,15 @@ class HU036EtniasTest {
     void esc12_cancelarLaReactivacion() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
         etnias.inactivar("07", Motivo.CREADO_POR_ERROR, null);
-        menu("1\n6\n07\n\nLa referencia retiraba otro código\nn\n0\n0\n");
+        menu("6\n07\n\nLa referencia retiraba otro código\nn\n0\n");
         assertEquals(Catalogo.Estado.INACTIVO, estado("07"));
     }
 
     @Test
     @DisplayName("HU-036 Esc. 12: cancelar una carga en el menú deja el catálogo igual")
     void esc12_cancelarLaCargaEnElMenu() {
-        menu("1\n8\n" + HOJA_15 + "\nFuente\n\n2026-10-18\nResolución 866 de 2021\n2021-06-25\n"
-                + "n\n0\n0\n");
+        menu("8\n" + HOJA_15 + "\nFuente\n\n2026-10-18\nResolución 866 de 2021\n2021-06-25\n"
+                + "n\n0\n");
         assertTrue(etnias.listar().isEmpty());
         assertTrue(etnias.versionVigente().isEmpty());
     }
@@ -516,8 +515,8 @@ class HU036EtniasTest {
     }
 
     private void menu(String respuestas) {
-        new MenuPrincipal(etnias, comunidades,
-                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8))).run();
+        new EtniaControlador(etnias, new Terminal(
+                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)))).abrir();
     }
 
     private static List<String> codigos(List<Etnia> valores) {

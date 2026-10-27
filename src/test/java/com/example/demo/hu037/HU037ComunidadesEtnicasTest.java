@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.demo.comun.interfaces.CrudCatalogo;
-import com.example.demo.comun.menu.MenuPrincipal;
+import com.example.demo.comun.menu.Terminal;
 import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoCambio;
 import com.example.demo.comun.modelos.CatalogoVersion;
@@ -16,7 +16,7 @@ import com.example.demo.comun.servicios.Consulta;
 import com.example.demo.comun.servicios.DatosVersion;
 import com.example.demo.comun.servicios.RegistroCatalogos;
 import com.example.demo.comun.servicios.ResultadoCarga;
-import com.example.demo.hu036.interfaces.ContratoEtnias;
+import com.example.demo.hu037.controladores.ComunidadEtnicaControlador;
 import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.example.demo.hu037.modelos.ComunidadEtnica;
 import com.example.demo.hu037.repositorios.ComunidadEtnicaRepositorio;
@@ -58,7 +58,6 @@ class HU037ComunidadesEtnicasTest {
     @TempDir Path carpeta;
 
     @Autowired ContratoComunidadesEtnicas comunidades;
-    @Autowired ContratoEtnias etnias;
     @Autowired ComunidadEtnicaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
 
@@ -262,6 +261,14 @@ class HU037ComunidadesEtnicasTest {
     }
 
     @Test
+    @DisplayName("HU-037 Esc. 3: una fecha de publicación futura rechaza el archivo completo")
+    void esc3_fechaFutura() {
+        DatosVersion futura = new DatosVersion("Fuente de prueba", null, LocalDate.of(2026, 10, 18),
+                "Versión futura", LocalDate.now().plusDays(1));
+        assertThrows(IllegalArgumentException.class, () -> comunidades.leerCarga(csv(TRES), futura));
+    }
+
+    @Test
     @DisplayName("HU-037 Esc. 4: dos filas con el mismo código se rechazan las dos")
     void esc4_codigoRepetido() {
         ResultadoCarga carga = comunidades.leerCarga(csv(TRES + "101;Otra vez\n"), PRIMERA);
@@ -310,7 +317,7 @@ class HU037ComunidadesEtnicasTest {
     @Test
     @DisplayName("HU-037 Esc. 11: cancelar una creación en el menú deja el catálogo igual")
     void esc11_cancelarLaCreacion() {
-        menu("2\n2\n101\nComunidad uno\n" + REFERENCIA + "\nn\n0\n0\n");
+        menu("2\n101\nComunidad uno\n" + REFERENCIA + "\nn\n0\n");
         assertTrue(comunidades.listar().isEmpty());
     }
 
@@ -318,8 +325,34 @@ class HU037ComunidadesEtnicasTest {
     @DisplayName("HU-037 Esc. 11: cancelar una inactivación en el menú deja el catálogo igual")
     void esc11_cancelarLaInactivacion() {
         comunidades.crear(new ComunidadEtnica("101", "Comunidad uno"), REFERENCIA);
-        menu("2\n5\n101\n1\n" + REFERENCIA + "\nn\n0\n0\n");
+        menu("5\n101\n1\n" + REFERENCIA + "\nn\n0\n");
         assertEquals(Catalogo.Estado.ACTIVO, estado("101"));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: leer una versión nueva y no confirmarla deja el catálogo igual")
+    void esc11_cancelarLaVersionNueva() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        comunidades.leerCarga(csv(TRES.replace("103;Comunidad tres\n", "")), SEGUNDA);
+        assertEquals(Catalogo.Estado.ACTIVO, estado("103"));
+        assertEquals("Versión de prueba 1", comunidades.versionVigente().orElseThrow().getVersion());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: cancelar un cambio de nombre en el menú deja el catálogo igual")
+    void esc11_cancelarElCambio() {
+        comunidades.crear(new ComunidadEtnica("101", "Comunidad uno"), REFERENCIA);
+        menu("3\n101\nOtro nombre\n" + REFERENCIA + "\nn\n0\n");
+        assertEquals("Comunidad uno", comunidades.buscarPorCodigo("101").orElseThrow().getNombre());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: cancelar una reactivación en el menú deja el catálogo igual")
+    void esc11_cancelarLaReactivacion() {
+        comunidades.crear(new ComunidadEtnica("101", "Comunidad uno"), REFERENCIA);
+        comunidades.inactivar("101", Motivo.CREADO_POR_ERROR, null);
+        menu("6\n101\n\nLa referencia retiraba otro código\nn\n0\n");
+        assertEquals(Catalogo.Estado.INACTIVO, estado("101"));
     }
 
     @Test
@@ -391,8 +424,8 @@ class HU037ComunidadesEtnicasTest {
     }
 
     private void menu(String respuestas) {
-        new MenuPrincipal(etnias, comunidades,
-                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8))).run();
+        new ComunidadEtnicaControlador(comunidades, new Terminal(
+                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)))).abrir();
     }
 
     private static List<String> codigos(List<ComunidadEtnica> valores) {

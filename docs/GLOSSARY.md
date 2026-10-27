@@ -145,12 +145,15 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   `.github/workflows/tests.yml`. Informa el resultado y no impide fusionar (2026-10-26 "Un CI
   corre los tests en cada PR"; 2026-10-26 "main queda abierta a los integrantes").
 - **contrato**: la interfaz de una historia, en `hu0NN/interfaces/`, que extiende `CrudCatalogo` y
-  agrega lo propio de la historia. La implementa su servicio y el menú la usa (2026-10-26 "Cada
-  historia tiene su contrato, y lo implementa su servicio").
-- **controlador**: en la fase 0, el menú en terminal, `MenuPrincipal`, que lee la opción y llama al
-  servicio. No hay controladores web (2026-10-24 "El código se separa en modelo, vista y
-  controlador"). Lo que el autor llamó controlador el 2026-10-26, los métodos de la historia con sus
-  validaciones, es aquí el servicio.
+  agrega lo propio de la historia. La implementa su servicio y su controlador la usa (2026-10-26
+  "Cada historia tiene su contrato, y lo implementa su servicio").
+- **controlador**: la clase de una historia en `hu0NN/controladores/`, como `EtniaControlador`, que
+  pide en la terminal los datos de cada opción, llama al contrato e imprime. En la fase 0 no hay
+  controladores web (2026-10-24 "El código se separa en modelo, vista y controlador"; 2026-10-26
+  "Cada historia tiene su controlador, y el menú común lo abre").
+- **menú principal**: `MenuPrincipal`, en `comun/menu/`. Lista las historias por su número y abre
+  el controlador de la elegida, sin saber qué hace cada una (2026-10-26 "Cada historia tiene su
+  controlador, y el menú común lo abre").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su

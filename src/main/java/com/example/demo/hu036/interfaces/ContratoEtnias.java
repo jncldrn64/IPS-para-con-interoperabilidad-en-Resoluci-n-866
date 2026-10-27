@@ -8,12 +8,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * El contrato de HU-036, catálogo de etnias. Lo implementa EtniaServicio y lo usa el menú. Las
- * operaciones comunes vienen de CrudCatalogo; aquí va lo propio de la historia.
+ * El contrato de HU-036, catálogo de etnias. Lo implementa EtniaServicio y lo usa
+ * EtniaControlador. Las operaciones comunes vienen de CrudCatalogo; aquí va lo propio de la
+ * historia.
  *
  * <p>Escenarios de docs/context/trello/tarjetas/HU-036.md y la operación que los cumple: 1 a 7,
  * leerCarga, confirmarCarga y escribirRechazadas; 8, cambiarCodigo; 9 y 10, crear y cambiarNombre;
- * 11, cambiarNombre e historial; 12, no confirmar, en el menú; 13, consultar e
+ * 11, cambiarNombre e historial; 12, no confirmar, en el controlador; 13, consultar e
  * historialDeVersiones; 14 y 15, buscar; 16, buscar y sinCoincidencias; 17, consultar; 18,
  * comprobarContraLaHoja; 19 a 22, contarUsos, inactivar y reactivar; 23, historial.
  */

@@ -621,7 +621,7 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     }
 
     // Valida aquí y no solo al persistir: al persistir, el error llega envuelto en una excepción de
-    // la transacción y el menú no puede mostrar el motivo.
+    // la transacción y el controlador no puede mostrar el motivo.
     private static <V> void validar(Set<ConstraintViolation<V>> errores) {
         if (!errores.isEmpty()) {
             throw new ConstraintViolationException(errores);
