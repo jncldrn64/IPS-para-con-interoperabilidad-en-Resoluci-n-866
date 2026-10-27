@@ -85,3 +85,4 @@ y uno grande sí.
 - 2026-10-22, modelo: el docente pidió el escenario de rol sin permisos en HU-025, HU-026, HU-028 y
   HU-030, y después dijo que el inicio de sesión no aporta valor en la primera entrega. Hoy ese
   escenario es HU-001 esc. 14. Pregunta 2 del plan de desarrollo.
+- 2026-10-27, Jorge (Jorge-a-Restrepo, integrante 1), con su modelo: probé el flujo de PR.
