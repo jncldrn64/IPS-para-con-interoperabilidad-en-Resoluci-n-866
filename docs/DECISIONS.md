@@ -773,3 +773,43 @@ escribe con su corrida en el primer PR de código.
 - El último motivo dentro de cada valor, sin tabla de cambios. No alcanza para RC-11.
 
 **Estado:** `vigente`
+
+## 2026-10-26: El PR va contra main del fork
+
+**Contexto:** La entrada 2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo
+habilite" decidió trabajar en el fork, pero `CLAUDE.md` no lo decía, y un modelo nuevo empieza por
+ahí. En un fork, la web de GitHub propone como destino el repositorio original: así llegó a
+Atervolgo el PR #3 del 2026-10-24. El autor preguntó el 2026-10-25, y pidió escribirlo el
+2026-10-26:
+
+- "anhes de continuar discutiendo, como me aseguro que el modelo de mis contribuidores, son
+  capaces de hacer los PR?"
+- "procede con el Pr con dicha informacion"
+
+**Decisión:** `CLAUDE.md`, sección 7, dice que el PR va contra `main` del fork y nunca contra
+Atervolgo. También dice cómo se fija el destino con `gh pr create`.
+
+**Alternativas:** Dejarlo solo en `docs/DECISIONS.md`, como estaba. Un modelo que sigue lo que
+GitHub le propone abriría el PR en Atervolgo.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Un integrante nuevo abre un PR de prueba
+
+**Contexto:** El 2026-10-25 la lista de colaboradores del fork tenía un solo nombre, el del autor.
+Ningún compañero podía abrir un PR, y nadie sabía si sus modelos siguen el método. Las citas del
+autor están en la entrada anterior.
+
+**Decisión:** Antes de su primera historia, cada integrante abre un PR de prueba con el pedido de
+`CLAUDE.md`, sección 7. El autor lo revisa contra la lista de esa sección y lo cierra sin mezclar.
+Las condiciones van junto a los pasos: ser colaborador con rol Write, conectar la cuenta de GitHub
+si usa la nube, y tener git, bash y python3 si trabaja en su equipo.
+
+**Alternativas:**
+
+- Darle la primera historia sin prueba. Un error de método aparecería en un PR con código, donde
+  cuesta más separarlo del resto.
+- Escribir la prueba en un documento aparte. Un documento nuevo pide permiso al autor
+  (`CLAUDE.md`, sección 3), y el pedido cabe en la sección 7.
+
+**Estado:** `vigente`
