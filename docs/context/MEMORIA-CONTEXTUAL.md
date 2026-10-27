@@ -1929,6 +1929,35 @@ trabaja sobre una copia del archivo de la base" y "El merge de un PR se dice fus
 
 **Estado:** `vigente`
 
+## 2026-10-26: Los escenarios 13 a 18 de HU-036, y cancelar por el menú
+
+El autor fusionó el PR #16, el de las carpetas, y el modelo siguió con lo que él había ordenado:
+
+- "Primero las carpetas, después 13 a 18 (Recomendado)"
+
+Lo que hizo el modelo:
+
+- `CrudCatalogo` agrega `consultar`, con el filtro de activos, inactivos o todos,
+  `historialDeVersiones` y `buscar`. La base los implementa, y también la comparación con una
+  lista oficial.
+- `ContratoEtnias.comprobarContraLaHoja` compara con la hoja 15, y
+  `ContratoComunidadesEtnicas.comprobarContraElArchivo`, con el archivo que se sube.
+- El menú de cada catálogo pasa de 8 a 11 opciones: buscar, el historial de versiones y comparar
+  con la lista oficial.
+- Tests para los escenarios 12 a 18 de HU-036 y 11 a 17 de HU-037. Los de cancelar pasan por el
+  menú, con las respuestas escritas en el test.
+- Comprobado el 2026-10-26: 95 tests pasan. Con la búsqueda sin normalizar las tildes fallan el 15
+  de HU-036 y el 14 de HU-037; con el menú guardando sin confirmar fallan los de cancelar. Una
+  corrida real del menú consultó, buscó "san" y "xyz", mostró las versiones y comparó, y git no vio
+  cambios en `data/`.
+
+Lo que el modelo eligió sin preguntar quedó en la entrada 2026-10-26 "La consulta, la búsqueda y
+la comparación entran en la base común" de `docs/DECISIONS.md`, en la lista de lo que agregó.
+
+Hecho en el PR que sigue a ab709d3: esa entrada.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2070,7 +2099,14 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000. **Próximo (2026-10-26, carpetas por historia):** que el autor revise y
+00000000000000000000000. **Próximo (2026-10-26, escenarios 13 a 18):** que el autor revise y
+   fusione el PR de la consulta, la búsqueda y la comparación. Con eso, cada escenario de HU-036 y
+   de HU-037 tiene su test; dos partes esperan a HU-004, cuántos pacientes usan un valor y lo que
+   RC-11 pide de un registro ya guardado. Sin respuesta: lo que el modelo agregó en las entradas
+   del 2026-10-26 de `docs/DECISIONS.md`; si el docente acepta Postman; el menú y el `switch`; el
+   idioma de los identificadores; la zona horaria de la tabla de cambios; y los PR de prueba de
+   los integrantes 1 y 2.
+0000000000000000000000. **Anterior (2026-10-26, carpetas por historia):** que el autor revise y
    fusione el PR de las carpetas, los contratos y la base de prueba. Después, en HU-036, los
    escenarios 13 a 18 en la estructura nueva: la consulta completa, la búsqueda, el aviso de
    catálogo vacío y la comparación con la hoja 15. Sin respuesta: lo que el modelo agregó en las

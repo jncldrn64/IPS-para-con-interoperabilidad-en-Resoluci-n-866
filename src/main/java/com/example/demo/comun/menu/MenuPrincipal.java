@@ -5,21 +5,27 @@ import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoCambio;
 import com.example.demo.comun.modelos.CatalogoVersion;
 import com.example.demo.comun.modelos.Motivo;
+import com.example.demo.comun.servicios.Comprobacion;
+import com.example.demo.comun.servicios.Consulta;
 import com.example.demo.comun.servicios.DatosVersion;
 import com.example.demo.comun.servicios.ResultadoCarga;
+import com.example.demo.comun.servicios.ResumenVersion;
 import com.example.demo.hu036.interfaces.ContratoEtnias;
 import com.example.demo.hu036.modelos.Etnia;
 import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.example.demo.hu037.modelos.ComunidadEtnica;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiFunction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -35,11 +41,19 @@ public class MenuPrincipal implements CommandLineRunner {
 
     private final ContratoEtnias etnias;
     private final ContratoComunidadesEtnicas comunidades;
-    private final Scanner teclado = new Scanner(System.in);
+    private final Scanner teclado;
 
+    @Autowired
     public MenuPrincipal(ContratoEtnias etnias, ContratoComunidadesEtnicas comunidades) {
+        this(etnias, comunidades, System.in);
+    }
+
+    /** Con otra entrada que el teclado, para que un test escriba las respuestas. */
+    public MenuPrincipal(ContratoEtnias etnias, ContratoComunidadesEtnicas comunidades,
+            InputStream entrada) {
         this.etnias = etnias;
         this.comunidades = comunidades;
+        this.teclado = new Scanner(entrada);
     }
 
     @Override
@@ -50,8 +64,11 @@ public class MenuPrincipal implements CommandLineRunner {
             System.out.println("2. Comunidades étnicas");
             System.out.println("0. Salir");
             switch (leer("Opción: ")) {
-                case "1" -> catalogo("Etnias", etnias, Etnia::new);
-                case "2" -> catalogo("Comunidades étnicas", comunidades, ComunidadEtnica::new);
+                case "1" -> catalogo("Etnias", etnias, Etnia::new,
+                        () -> imprimir(etnias.comprobarContraLaHoja()));
+                case "2" -> catalogo("Comunidades étnicas", comunidades, ComunidadEtnica::new,
+                        () -> imprimir(comunidades.comprobarContraElArchivo(
+                                Path.of(leer("Ruta del archivo oficial: ")))));
                 case "0", "" -> {
                     return;
                 }
@@ -61,11 +78,11 @@ public class MenuPrincipal implements CommandLineRunner {
     }
 
     private <T extends Catalogo> void catalogo(String titulo, CrudCatalogo<T> crud,
-            BiFunction<String, String, T> nuevo) {
+            BiFunction<String, String, T> nuevo, Runnable comprobar) {
         while (true) {
             System.out.println();
             System.out.println("== " + titulo);
-            System.out.println("1. Listar");
+            System.out.println("1. Consultar");
             System.out.println("2. Crear por cambio oficial");
             System.out.println("3. Cambiar el nombre");
             System.out.println("4. Cambiar el código (Reemplazado por)");
@@ -73,11 +90,13 @@ public class MenuPrincipal implements CommandLineRunner {
             System.out.println("6. Reactivar");
             System.out.println("7. Historial de un código");
             System.out.println("8. Cargar desde un CSV");
+            System.out.println("9. Buscar por código o por nombre");
+            System.out.println("10. Historial de versiones");
+            System.out.println("11. Comparar con la lista oficial");
             System.out.println("0. Volver");
             try {
                 switch (leer("Opción: ")) {
-                    case "1" -> crud.listar().forEach(v -> System.out.println(
-                            v.getCodigo() + "  " + v.getNombre() + "  " + v.getEstado()));
+                    case "1" -> consultar(crud);
                     case "2" -> crear(crud, nuevo);
                     case "3" -> cambiarNombre(crud);
                     case "4" -> cambiarCodigo(crud, nuevo);
@@ -85,6 +104,9 @@ public class MenuPrincipal implements CommandLineRunner {
                     case "6" -> reactivar(crud);
                     case "7" -> crud.historial(leer("Código: ")).forEach(this::imprimir);
                     case "8" -> cargar(crud);
+                    case "9" -> buscar(crud);
+                    case "10" -> crud.historialDeVersiones().forEach(this::imprimir);
+                    case "11" -> comprobar.run();
                     case "0", "" -> {
                         return;
                     }
@@ -172,6 +194,55 @@ public class MenuPrincipal implements CommandLineRunner {
             System.out.println("Ya no están: " + carga.getYaNoEstan());
         }
         carga.getAvisos().forEach(a -> System.out.println("Aviso: " + a));
+    }
+
+    private <T extends Catalogo> void consultar(CrudCatalogo<T> crud) {
+        CrudCatalogo.Filtro filtro = switch (leer("Mostrar 1. activas, 2. inactivas, 3. todas: ")) {
+            case "1" -> CrudCatalogo.Filtro.ACTIVOS;
+            case "2" -> CrudCatalogo.Filtro.INACTIVOS;
+            default -> CrudCatalogo.Filtro.TODOS;
+        };
+        Consulta<T> consulta = crud.consultar(filtro);
+        if (consulta.aviso() != null) {
+            System.out.println(consulta.aviso());
+            return;
+        }
+        consulta.valores().forEach(this::imprimir);
+        System.out.println("Activos: " + consulta.activos() + ".");
+        consulta.vigente().ifPresent(v -> System.out.println("Versión vigente: " + v.getVersion()
+                + ", publicada el " + v.getFechaPublicacion() + " y descargada el "
+                + v.getFechaDescarga() + "."));
+    }
+
+    private <T extends Catalogo> void buscar(CrudCatalogo<T> crud) {
+        List<T> encontrados = crud.buscar(leer("Código o nombre: "));
+        if (encontrados.isEmpty()) {
+            System.out.println(crud.sinCoincidencias());
+        }
+        encontrados.forEach(this::imprimir);
+    }
+
+    private void imprimir(Catalogo valor) {
+        System.out.println(valor.getCodigo() + "  " + valor.getNombre() + "  " + valor.getEstado());
+    }
+
+    private void imprimir(ResumenVersion resumen) {
+        CatalogoVersion v = resumen.version();
+        System.out.println(v.getVersion() + ", publicada el " + v.getFechaPublicacion()
+                + ", descargada el " + v.getFechaDescarga() + ", de " + v.getFuente() + ": "
+                + resumen.creados() + " creados, " + resumen.cambiados() + " cambiados, "
+                + resumen.inactivados() + " inactivados.");
+    }
+
+    private void imprimir(Comprobacion comprobacion) {
+        if (comprobacion.coincide()) {
+            System.out.println("El catálogo coincide con la lista oficial.");
+            return;
+        }
+        System.out.println("Faltan: " + comprobacion.faltan());
+        System.out.println("Inactivos en el catálogo: " + comprobacion.inactivos());
+        System.out.println("Sobran: " + comprobacion.sobran());
+        System.out.println("Nombres distintos: " + comprobacion.nombresDistintos());
     }
 
     private <T extends Catalogo> void crear(CrudCatalogo<T> crud,

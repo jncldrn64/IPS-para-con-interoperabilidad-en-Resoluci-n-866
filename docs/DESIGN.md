@@ -58,6 +58,10 @@ y lo deja esperando el teclado, y el test abre el archivo de la base en vez de l
 cambio de `main`, con `.github/workflows/tests.yml`; cómo se corren a mano está en
 `tests/README.md`.
 
+Un escenario que pasa por el menú, como cancelar antes de confirmar, se prueba creando
+`MenuPrincipal` con las respuestas en un `ByteArrayInputStream`. El test usa el constructor que
+recibe la entrada, y Spring, el que usa el teclado.
+
 **Por qué:** con el número del escenario en el nombre, la salida de `./mvnw test` dice qué
 escenarios de la tarjeta pasan. Un escenario que mete un valor donde no va, como el 10 de HU-036,
 falla si alguien borra la regla que lo rechaza: se comprobó el 2026-10-26 quitando el `@Pattern` de
@@ -170,6 +174,10 @@ La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guar
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
 de la base, `nombreOficial` y `revisarPrimeraCarga`.
 
+La consulta con filtro, la búsqueda de D-23 y la comparación con una lista oficial también son de
+la base. Cada contrato pone lo suyo: el nombre del catálogo en plural para los mensajes y la lista
+contra la que se compara, que en HU-036 es la hoja 15 y en HU-037, el archivo que se sube.
+
 **Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
 corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
 enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
@@ -179,8 +187,8 @@ fija la regla común y no llegan de un archivo.
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común",
 2026-10-25 "La base común es una clase con código, nombre, estado y versión", y del 2026-10-26 "El
 primer código arma la base común con etnias y comunidades étnicas", "Los motivos de RC-10 son un
-enum", "La tabla de cambios y RC-10 entran en la base común" y "La carga lee primero y guarda al
-confirmar".
+enum", "La tabla de cambios y RC-10 entran en la base común", "La carga lee primero y guarda al
+confirmar" y "La consulta, la búsqueda y la comparación entran en la base común".
 
 ## 8. La base de datos
 

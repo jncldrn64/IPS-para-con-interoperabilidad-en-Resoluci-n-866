@@ -5,17 +5,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.example.demo.comun.interfaces.CrudCatalogo;
+import com.example.demo.comun.menu.MenuPrincipal;
 import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoCambio;
 import com.example.demo.comun.modelos.CatalogoVersion;
 import com.example.demo.comun.modelos.Motivo;
+import com.example.demo.comun.servicios.Comprobacion;
+import com.example.demo.comun.servicios.Consulta;
 import com.example.demo.comun.servicios.DatosVersion;
 import com.example.demo.comun.servicios.RegistroCatalogos;
 import com.example.demo.comun.servicios.ResultadoCarga;
+import com.example.demo.comun.servicios.ResumenVersion;
 import com.example.demo.hu036.interfaces.ContratoEtnias;
 import com.example.demo.hu036.modelos.Etnia;
 import com.example.demo.hu036.repositorios.EtniaRepositorio;
+import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import jakarta.validation.ConstraintViolationException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -52,6 +59,7 @@ class HU036EtniasTest {
     @TempDir Path carpeta;
 
     @Autowired ContratoEtnias etnias;
+    @Autowired ContratoComunidadesEtnicas comunidades;
     @Autowired EtniaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
 
@@ -362,6 +370,167 @@ class HU036EtniasTest {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: cancelar una creación en el menú deja el catálogo igual")
+    void esc12_cancelarLaCreacion() {
+        menu("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\nn\n0\n0\n");
+        assertTrue(etnias.listar().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: cancelar un cambio de nombre en el menú deja el catálogo igual")
+    void esc12_cancelarElCambio() {
+        etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
+        menu("1\n3\n07\nOtro nombre\n" + REFERENCIA + "\nn\n0\n0\n");
+        assertEquals("Etnia de prueba", etnias.buscarPorCodigo("07").orElseThrow().getNombre());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: cancelar una inactivación en el menú deja el catálogo igual")
+    void esc12_cancelarLaInactivacion() {
+        etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
+        menu("1\n5\n07\n1\n" + REFERENCIA + "\nn\n0\n0\n");
+        assertEquals(Catalogo.Estado.ACTIVO, estado("07"));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: cancelar una reactivación en el menú deja el catálogo igual")
+    void esc12_cancelarLaReactivacion() {
+        etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
+        etnias.inactivar("07", Motivo.CREADO_POR_ERROR, null);
+        menu("1\n6\n07\n\nLa referencia retiraba otro código\nn\n0\n0\n");
+        assertEquals(Catalogo.Estado.INACTIVO, estado("07"));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: cancelar una carga en el menú deja el catálogo igual")
+    void esc12_cancelarLaCargaEnElMenu() {
+        menu("1\n8\n" + HOJA_15 + "\nFuente\n\n2026-10-18\nResolución 866 de 2021\n2021-06-25\n"
+                + "n\n0\n0\n");
+        assertTrue(etnias.listar().isEmpty());
+        assertTrue(etnias.versionVigente().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 12: leer una versión nueva y no confirmarla deja el catálogo igual")
+    void esc12_cancelarLaVersionNueva() throws IOException {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        etnias.leerCarga(csv(Files.readString(HOJA_15).replace("02;ROM (Gitanos)\n", "")),
+                VERSION_2022);
+        assertEquals(Catalogo.Estado.ACTIVO, estado("02"));
+        assertEquals(LocalDate.of(2021, 6, 25),
+                etnias.versionVigente().orElseThrow().getFechaPublicacion());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 13: la consulta trae el filtro, cuántas hay activas y la versión vigente")
+    void esc13_consulta() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        etnias.inactivar("03", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        int cambios = etnias.historial("03").size();
+        Consulta<Etnia> todas = etnias.consultar(CrudCatalogo.Filtro.TODOS);
+        assertEquals(7, todas.valores().size());
+        assertEquals(6, todas.activos());
+        assertEquals(LocalDate.of(2021, 6, 25), todas.vigente().orElseThrow().getFechaPublicacion());
+        assertEquals(LocalDate.of(2026, 10, 18), todas.vigente().orElseThrow().getFechaDescarga());
+        assertEquals(6, etnias.consultar(CrudCatalogo.Filtro.ACTIVOS).valores().size());
+        assertEquals(List.of("03"), etnias.consultar(CrudCatalogo.Filtro.INACTIVOS).valores().stream()
+                .map(Catalogo::getCodigo).toList());
+        assertEquals(cambios, etnias.historial("03").size(), "la consulta no cambia nada");
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 13: el historial de versiones dice cuántos códigos creó, cambió e inactivó")
+    void esc13_historialDeVersiones() throws IOException {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        etnias.inactivar("03", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        etnias.confirmarCarga(etnias.leerCarga(csv(Files.readString(HOJA_15)
+                .replace("02;ROM (Gitanos)\n", "") + "07;Etnia nueva\n"), VERSION_2022), Map.of());
+        List<ResumenVersion> versiones = etnias.historialDeVersiones();
+        assertEquals(2, versiones.size());
+        assertEquals(List.of(7L, 0L, 0L), cuentas(versiones.get(0)));
+        assertEquals(List.of(1L, 1L, 1L), cuentas(versiones.get(1)));
+        assertEquals("Resolución de prueba", versiones.get(1).version().getFuente());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 14: la búsqueda por código trae solo la etnia con ese código")
+    void esc14_busquedaPorCodigo() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        assertEquals(List.of("05"), codigos(etnias.buscar("05")));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 15: la búsqueda por nombre ignora mayúsculas y tildes y ordena por nombre")
+    void esc15_busquedaPorNombre() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        assertEquals(List.of("04", "03"), codigos(etnias.buscar("san")));
+        assertEquals(List.of("01"), codigos(etnias.buscar("INDIGENA")));
+        assertEquals(List.of("03"), codigos(etnias.buscar("Andres")));
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 16: una búsqueda sin resultados lo dice")
+    void esc16_sinResultados() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        assertTrue(etnias.buscar("xyz").isEmpty());
+        assertEquals("No hay etnias que coincidan con la búsqueda", etnias.sinCoincidencias());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 17: el catálogo vacío dice que falta cargar el archivo oficial")
+    void esc17_catalogoVacio() {
+        Consulta<Etnia> consulta = etnias.consultar(CrudCatalogo.Filtro.TODOS);
+        assertTrue(consulta.valores().isEmpty());
+        assertEquals("El catálogo de etnias está vacío: falta cargar el archivo oficial",
+                consulta.aviso());
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 18: la comparación con la hoja 15 lista lo que falta, sobra o cambió")
+    void esc18_comprobacionContraLaHoja() {
+        ContratoEtnias.HOJA_15.forEach((codigo, nombre) -> {
+            if (!codigo.equals("99")) {
+                etnias.crear(new Etnia(codigo, nombre), REFERENCIA);
+            }
+        });
+        etnias.inactivar("03", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        etnias.cambiarNombre("05", "Negro", REFERENCIA);
+        etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
+        List<String> antes = foto();
+        Comprobacion comprobacion = etnias.comprobarContraLaHoja();
+        assertEquals(List.of("99"), comprobacion.faltan());
+        assertEquals(List.of("03"), comprobacion.inactivos());
+        assertEquals(List.of("07"), comprobacion.sobran());
+        assertEquals(List.of("05"), comprobacion.nombresDistintos());
+        assertEquals(antes, foto(), "la comparación no cambia nada");
+    }
+
+    @Test
+    @DisplayName("HU-036 Esc. 18: después de la primera carga, el catálogo coincide con la hoja 15")
+    void esc18_coincideDespuesDeLaCarga() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        assertTrue(etnias.comprobarContraLaHoja().coincide());
+    }
+
+    private void menu(String respuestas) {
+        new MenuPrincipal(etnias, comunidades,
+                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8))).run();
+    }
+
+    private static List<String> codigos(List<Etnia> valores) {
+        return valores.stream().map(Catalogo::getCodigo).toList();
+    }
+
+    private static List<Long> cuentas(ResumenVersion resumen) {
+        return List.of(resumen.creados(), resumen.cambiados(), resumen.inactivados());
+    }
+
+    private List<String> foto() {
+        return etnias.listar().stream()
+                .map(e -> e.getCodigo() + e.getNombre() + e.getEstado() + e.getVersionId()).toList();
     }
 
     private Catalogo.Estado estado(String codigo) {

@@ -5,6 +5,30 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.12 — 2026-10-26
+
+La consulta, la búsqueda y la comparación con la lista oficial entran en la base común, y cada
+escenario de HU-036 y de HU-037 tiene su test. El programa no muestra una versión.
+
+### Added
+- `CrudCatalogo.consultar`, con el filtro de activos, inactivos o todos, `historialDeVersiones` y
+  `buscar`, que la base implementa para todos los catálogos. Sus resultados son `Consulta`,
+  `ResumenVersion` y `Comprobacion`, en `comun/servicios/`.
+- `ContratoEtnias.comprobarContraLaHoja`, contra la hoja 15, y
+  `ContratoComunidadesEtnicas.comprobarContraElArchivo`, contra el archivo que se sube.
+- El menú de cada catálogo pasa de 8 a 11 opciones: buscar, el historial de versiones y comparar
+  con la lista oficial. La consulta pide el filtro.
+- Tests de los escenarios 12 a 18 de HU-036 y 11 a 17 de HU-037: 95 tests en total. Los de
+  cancelar pasan por el menú.
+- `docs/DECISIONS.md`: la entrada 2026-10-26 "La consulta, la búsqueda y la comparación entran en
+  la base común".
+
+### Changed
+- `MenuPrincipal` recibe la entrada por su constructor, para que un test le pase las respuestas.
+- `docs/DESIGN.md`, secciones 3 y 7, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` y
+  `tests/README.md` describen la consulta, la búsqueda, la comparación y los tests nuevos.
+- La memoria contextual anota lo hecho y el próximo paso.
+
 ## v0.11 — 2026-10-26
 
 El código se ordena por historia, con lo común aparte; cada historia tiene su contrato, y el
