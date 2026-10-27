@@ -5,6 +5,21 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.16 — 2026-10-27
+
+Solo documentación. El glosario define los cargos, y `docs/REQUIREMENTS.md` dice todo lo que la
+matriz de permisos da a cada uno. No hay código del producto que muestre una versión.
+
+### Added
+- `docs/GLOSSARY.md`: auxiliar de admisión, cargo, equipo técnico, inicio de sesión, matriz de
+  permisos, médico tratante, profesional de estadística, rol y usuario.
+- `docs/DECISIONS.md`: la entrada 2026-10-27 "El glosario define los cargos".
+
+### Changed
+- `docs/REQUIREMENTS.md`, sección 1: la tabla de cargos pasa a una lista con todos los permisos de
+  la matriz, y dice que no hay un cargo de administrador y que el docente los llama roles.
+- La memoria contextual anota la pregunta del autor y sus respuestas.
+
 ## v0.15 — 2026-10-27
 
 HU-036 y HU-037 quedan completas. El paquete pasa a `com.ipssaludyvida`, la tabla de cambios guarda

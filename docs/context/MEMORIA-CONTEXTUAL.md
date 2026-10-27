@@ -2140,6 +2140,34 @@ Hecho en el PR que sigue a 5b3f74a: las ocho entradas del 2026-10-27 de `docs/DE
 
 **Estado:** `vigente`
 
+## 2026-10-27: Los cargos, revisados en toda la documentación
+
+Con el PR #20 fusionado, el autor preguntó cómo estaban divididas las historias, y el modelo le
+mostró el reparto de `docs/ROADMAP.md`. Después escribió:
+
+- "el tema de inicio por session aun me da ideas erradas, entre toda la documentacion, estos roles
+  o supuesto roles dentro de la organizacion, todos estan correctamente definidos?"
+
+Lo que encontró el modelo:
+
+- Los tres cargos son los mismos en las 29 tarjetas, las láminas, `docs/REQUIREMENTS.md` y el
+  modelo E-R, y la matriz de la tarjeta de reglas comunes es igual a la de HU-001 (`diff`).
+- Seis cosas que confunden: los cargos son propuesta (D-02, D-04 y D-06 `pendiente`); el docente
+  dice "rol" y el glosario no definía "cargo"; ningún cargo crea usuarios, y el modelo E-R cita
+  [2.4] para ese supuesto; la lista de `docs/REQUIREMENTS.md` daba menos que la matriz; la matriz
+  está escrita dos veces; y la pregunta al docente sobre el escenario de rol sin permisos sigue sin
+  respuesta.
+
+El autor eligió:
+
+- "Que hay un administrador,Rol y cargo son distintos,Quién ve qué,Cuándo entra HU-001"
+- "Glosario de cargos (Recomendado),Tabla de REQUIREMENTS"
+
+Hecho en el PR que sigue a 79e21d3: la entrada 2026-10-27 "El glosario define los cargos" de
+`docs/DECISIONS.md`.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2285,7 +2313,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000000. **Próximo (2026-10-27, HU completas y paquete):** que el autor revise y
+000000000000000000000000000. **Próximo (2026-10-27, cargos en el glosario):** que el autor revise
+   y fusione el PR del glosario de cargos. Después, los PR de prueba de los integrantes 1 y 2
+   (`CLAUDE.md`, sección 7). Sin hacer, porque el autor no las eligió: la cita del modelo E-R a
+   [2.4] y la lista de preguntas al docente sobre D-02, D-04, D-06 y el escenario de rol sin
+   permisos. El archivo de comunidades lo busca el autor.
+00000000000000000000000000. **Anterior (2026-10-27, HU completas y paquete):** que el autor revise y
    fusione el PR del paquete, la hora de Colombia, "pacientes" y la revisión de lo que eligió el
    modelo, que quedó hecha. Después, los PR de prueba de los integrantes 1 y 2 (`CLAUDE.md`,
    sección 7), y cómo entra un valor provisional cuando haga falta el primero. El archivo de

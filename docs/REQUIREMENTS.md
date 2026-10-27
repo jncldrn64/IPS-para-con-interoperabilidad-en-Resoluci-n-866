@@ -16,13 +16,18 @@ Resolución 866 de 2021, para que la información se pueda intercambiar con otro
 tiene un sistema que lo haga.
 
 Lo usan tres cargos, con los permisos de la matriz de la tarjeta de reglas comunes
-(`docs/context/trello/tarjetas/RC-reglas-comunes.md`):
+(`docs/context/trello/tarjetas/RC-reglas-comunes.md`, sección "Matriz de permisos"):
 
-| Cargo | Para qué |
-|---|---|
-| Auxiliar de admisión | Registra, consulta, actualiza y corrige los datos del paciente |
-| Médico tratante | Consulta al paciente sin cambiarlo; registra y consulta las atenciones |
-| Profesional de estadística | Carga los catálogos desde el archivo oficial y los mantiene iguales a la fuente (D-02, propuesta del equipo) |
+- **Auxiliar de admisión:** registra, consulta, actualiza y corrige los datos del paciente, y
+  registra, actualiza, corrige y anula su oposición a la donación y su voluntad anticipada.
+- **Médico tratante:** registra, consulta, corrige y anula las atenciones, y consulta al paciente,
+  la oposición y la voluntad anticipada sin cambiarlos.
+- **Profesional de estadística:** carga los catálogos desde el archivo oficial y los mantiene
+  iguales a la fuente. No ve pacientes ni atenciones, solo cuántos pacientes usan un valor (D-02,
+  propuesta del equipo).
+
+Los tres consultan los catálogos, y ninguno crea usuarios ni asigna cargos, porque no hay un cargo
+de administrador (sección 4). El docente los llama roles.
 
 Si falla, el paciente repite sus datos en cada atención y los datos guardados no sirven para
 intercambiarse, porque no usan los códigos oficiales.
