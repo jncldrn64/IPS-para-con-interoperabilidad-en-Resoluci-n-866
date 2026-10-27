@@ -33,6 +33,8 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
   original en la cuenta del autor. Ahí se trabaja y se abren los PR hasta que el original, en
   Atervolgo, lo habilite (2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo
   habilite").
+- **fusionar**: aceptar un PR en `main`, con el botón "Merge pull request" de GitHub. Lo hace el
+  autor después de revisarlo (2026-10-26 "El merge de un PR se dice fusionar").
 - **hueco conocido**: una entrada fechada de la sección "Huecos conocidos" de
   `docs/ARCHITECTURE.md`, con la corrida que la muestra. Se borra cuando se cierra.
 - **Hipótesis**: el marcador de una inferencia hecha al reconstruir contexto, con su base a la
@@ -48,7 +50,7 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
 - **PR de prueba**: el PR con que un integrante nuevo comprueba que su modelo sigue el método. El
-  autor lo revisa contra la lista de `CLAUDE.md`, sección 7, y lo cierra sin mezclar (2026-10-26
+  autor lo revisa contra la lista de `CLAUDE.md`, sección 7, y lo cierra sin fusionar (2026-10-26
   "Un integrante nuevo abre un PR de prueba").
 - **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG, con la
   versión siguiente, y no toca la versión que muestra el programa (2026-10-25 "La sección de un PR
@@ -122,7 +124,7 @@ que citan su fuente.
 Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sección 2.
 
 - **archivo de la base**: el archivo de H2 donde quedan los datos entre una corrida y otra. Va en
-  git con los catálogos ya cargados, y como git no mezcla dos cambios suyos, se cambia por turnos
+  git con los catálogos ya cargados, y como git no fusiona dos cambios suyos, se cambia por turnos
   (2026-10-24 "La base es H2 en un archivo que va en git"; 2026-10-24 "El archivo de la base trae
   los catálogos cargados"; 2026-10-25 "El archivo de la base se cambia por turnos").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
@@ -132,19 +134,23 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   comparten una base común"; 2026-10-24 "El integrante 3 arma la base común"; 2026-10-25 "La base
   común es una clase con código, nombre, estado y versión"; 2026-10-26 "El primer código arma la
   base común con etnias y comunidades étnicas").
-- **base de prueba**: la base con otro nombre donde se prueba, para que un dato de prueba no llegue
-  al archivo de la base que va en git. Arranca como copia de ese archivo, `data/prueba.mv.db`, y se
-  abre pasando su URL al arrancar (2026-10-25 "Las pruebas corren sobre otra base"; 2026-10-25 "La
-  base de prueba arranca como copia del archivo"; 2026-10-26 "El primer código arma la base común
-  con etnias y comunidades étnicas").
+- **base de prueba**: `data/prueba.mv.db`, la base donde corre el programa, para que un dato de
+  prueba no llegue al archivo de la base que va en git. `DemoApplication.main` la copia de ese
+  archivo si no existe (2026-10-25 "Las pruebas corren sobre otra base"; 2026-10-25 "La base de
+  prueba arranca como copia del archivo"; 2026-10-26 "El programa trabaja sobre una copia del
+  archivo de la base").
 - **catálogo de ejemplo**: HU-036, etnias, con el primer CSV y la primera carga en el archivo de la
   base, que copian los otros 7 catálogos (2026-10-25 "HU-036 es el catálogo de ejemplo").
 - **CI**: los tests que GitHub Actions corre en cada PR y en cada cambio de `main`, con
-  `.github/workflows/tests.yml`. Informa el resultado y no bloquea la mezcla (2026-10-26 "Un CI
+  `.github/workflows/tests.yml`. Informa el resultado y no impide fusionar (2026-10-26 "Un CI
   corre los tests en cada PR"; 2026-10-26 "main queda abierta a los integrantes").
+- **contrato**: la interfaz de una historia, en `hu0NN/interfaces/`, que extiende `CrudCatalogo` y
+  agrega lo propio de la historia. La implementa su servicio y el menú la usa (2026-10-26 "Cada
+  historia tiene su contrato, y lo implementa su servicio").
 - **controlador**: en la fase 0, el menú en terminal, `MenuPrincipal`, que lee la opción y llama al
   servicio. No hay controladores web (2026-10-24 "El código se separa en modelo, vista y
-  controlador").
+  controlador"). Lo que el autor llamó controlador el 2026-10-26, los métodos de la historia con sus
+  validaciones, es aquí el servicio.
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su

@@ -24,7 +24,8 @@
    pegar.
 7. Preferencias del autor que aplican aquí: él responde primero cada numeral y el modelo corrige
    después; correcciones nombradas de frente y explicadas por mecanismo; sin guion largo ni
-   intensificadores; TL;DR en respuestas largas; no adelantarse.
+   intensificadores; TL;DR en respuestas largas; no adelantarse; "fusionar" y no "mezclar" para el
+   merge de un PR, porque "mezclar" le sonó a falta (2026-10-26).
 
 ## 1. Proyecto y fuentes
 
@@ -1865,6 +1866,69 @@ confirmar"; `data/ips.mv.db`; `docs/DESIGN.md`, secciones 3, 7 y 8.
 
 **Estado:** `vigente`
 
+## 2026-10-26: Carpetas por historia, un contrato por historia y la base de prueba
+
+**Contexto:** el autor fusionó el PR #15 del fork (e236ca0) y escribió, textual:
+
+- "hazme preguntas, por que learmente no se como exponerte ideas para poder que cerremos el HU 36
+  y le demos autonomia al propio repositorio, y no uses Mezclar, que suena que estoy haciendo algo
+  malo, hice algo malo? no me queda claro si debia hacer o no el PR, y no se si separar aun mas los
+  codigos, por que si recuerdas en mis 9 puntos originales, tenia la intencios de que liretalemnet
+  tubierasmos una interface coomo contrado que hiciera uso de los ecenarios (aun que creo que lo
+  dije de ottra forma) y este se implementaria en el controllador, se que pasamos muchos detalles
+  por alto de mis 9 puntos originales, pero esa mi idea de legibilida, donde estaba cada modulo y
+  el por que, por que para mi una interface debia ser un contrato, y que este en servicio,
+  dificulta la lectura, es mas, hasta que punto podemos separar en src/HU36/interfaces(con los
+  contratos)  src/HU36/services(implementacion de las interfgaces)  src/HU36/models(entidades)
+  src/HU36/repository(solo para el que permite el acceso al crud), y que hay de los otros 9
+  puntos, como resolvirtes los detalles para costruir por otro lado?... y el tema del catalogo
+  general y el cvs como son generales, imagino que pudene estar en la estrucura basica,
+  src/interfaces y sus otras respectivas...."
+
+Lo que respondió el modelo:
+
+- No hizo nada malo: el modelo abre el PR en borrador, y el autor lo revisa, lo marca listo y lo
+  fusiona. Desde ahora se dice "fusionar".
+- Una tabla con sus 9 puntos y lo que quedó de cada uno, que repite la entrada 2026-10-26 "El
+  primer código arma la base común con etnias y comunidades étnicas" de `docs/DECISIONS.md`.
+- En Java cada carpeta es un paquete: `src/HU36/interfaces` queda como
+  `src/main/java/com/example/demo/hu036/interfaces/`. Solo `interface` en singular es palabra
+  reservada.
+- Si el menú implementa el contrato, las reglas viven en el menú; lo usual es que el servicio lo
+  implemente y el menú lo use.
+
+El modelo hizo cuatro preguntas. El autor eligió la opción recomendada en tres:
+
+- "Por historia, como propones (Recomendado)"
+- "Trabajar sobre una copia (Recomendado)"
+- "Primero las carpetas, después 13 a 18 (Recomendado)"
+
+En la del contrato escribió, textual:
+
+- "haber no te digo que no exista puntos comunes, pero para facilitar la lectura, lo hyper
+  especifico de la HU es su capreta, catalogo crud realmente puede y es general verdad? puede ser
+  reutilizado por otros HU; por otro lado el controlador solo es una fany word por decir algo donde
+  estaran los metodos reales de la HU y sus validacorios y toda la logica interna que pueda o no
+  traer, ya sea de sus propios contratos interfaces o no,, al final tecnicamente servicio que sera
+  expuesto por su interface de contrato sera lo que deba instanciar donde quiera llamar sus
+  acciones no?"
+
+Lo que hizo el modelo:
+
+- Movió las clases a `comun/`, `hu036/` y `hu037/` con `git mv`, y reescribió paquetes e imports
+  con un script.
+- Escribió `ContratoEtnias`, que trae la lista de la hoja 15, y `ContratoComunidadesEtnicas`.
+- `application.properties` abre `data/prueba`, y `DemoApplication.main` la copia de
+  `data/ips.mv.db` si no existe.
+- Comprobado el 2026-10-26: 73 tests pasan. Sin `data/prueba.mv.db`, una corrida la creó con las 7
+  etnias y git no vio cambios; con el URL de `ips`, git vio `M data/ips.mv.db`.
+
+Hecho en el PR que sigue a e236ca0: las entradas 2026-10-26 "El código se ordena por historia, con
+lo común aparte", "Cada historia tiene su contrato, y lo implementa su servicio", "El programa
+trabaja sobre una copia del archivo de la base" y "El merge de un PR se dice fusionar".
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2006,7 +2070,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000. **Próximo (2026-10-26, carga desde CSV):** que el autor revise y fusione el
+0000000000000000000000. **Próximo (2026-10-26, carpetas por historia):** que el autor revise y
+   fusione el PR de las carpetas, los contratos y la base de prueba. Después, en HU-036, los
+   escenarios 13 a 18 en la estructura nueva: la consulta completa, la búsqueda, el aviso de
+   catálogo vacío y la comparación con la hoja 15. Sin respuesta: lo que el modelo agregó en las
+   entradas del 2026-10-26 de `docs/DECISIONS.md`; si el docente acepta Postman; el menú y el
+   `switch`; el idioma de los identificadores; y los PR de prueba de los integrantes 1 y 2.
+000000000000000000000. **Anterior (2026-10-26, carga desde CSV):** que el autor revise y fusione el
    PR de la carga y del archivo de la base con las 7 etnias, y decida qué hacer con el hueco "cada
    corrida cambia `data/ips.mv.db`". Después, en HU-036, los escenarios 13 a 18: la consulta
    completa, la búsqueda y la comparación con la hoja 15. Sin respuesta: lo que el modelo agregó

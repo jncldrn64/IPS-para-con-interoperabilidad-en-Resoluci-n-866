@@ -164,7 +164,7 @@ entero:
   secciones 6 y 7, con el piso de prosa medido.
   ```
 
-  El autor revisa ese PR contra esta lista y lo cierra sin mezclar:
+  El autor revisa ese PR contra esta lista y lo cierra sin fusionar:
   - el destino es `main` del fork, y el PR está en borrador;
   - el título y el commit llevan tipo, y el cuerpo del commit tiene una o dos líneas y su sección
     del CHANGELOG;
