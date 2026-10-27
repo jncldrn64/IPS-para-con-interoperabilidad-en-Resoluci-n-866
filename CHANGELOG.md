@@ -5,6 +5,27 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.17 — 2026-10-27
+
+Solo documentación. Cada integrante trabaja con su modelo y su memoria, decide en sus historias y
+revisa en el PR lo que su modelo decidió. No hay código del producto que muestre una versión.
+
+### Added
+- `CLAUDE.md`, sección 5: quién decide, qué es lo común y cómo se marca, y que el modelo lista lo
+  que decidió sin preguntar.
+- `CLAUDE.md`, sección 7: qué hace el PR que se fusiona después cuando hay dos abiertos.
+- `docs/GLOSSARY.md`: autor, integrante y común.
+- `docs/DECISIONS.md`: la entrada 2026-10-27 "Cada integrante trabaja con su modelo".
+
+### Changed
+- `CLAUDE.md`, sección 1: cada modelo lee entera la memoria de su integrante, y la crea si no
+  existe. Las secciones 3, 7 y 9 se ajustan a eso.
+- `docs/GLOSSARY.md`: borrador, cita textual, fusionar y memoria contextual hablan del integrante,
+  y borrador dice "fusiona" y no "mergea".
+- `docs/ARCHITECTURE.md`, sección 1, y `docs/context/README.md` nombran la memoria de cada
+  integrante.
+- La memoria contextual del autor anota su pedido y sus respuestas.
+
 ## v0.16 — 2026-10-27
 
 Solo documentación. El glosario define los cargos, y `docs/REQUIREMENTS.md` dice todo lo que la

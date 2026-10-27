@@ -32,7 +32,7 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `data/ips.mv.db` | El archivo de la base, con las 7 etnias cargadas (sección 3) |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
-| `docs/context/` | Las tarjetas y las láminas de las 30 historias, el modelo E-R y la memoria contextual; lo explica su `README.md` |
+| `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
 
 Dependencias que declara `pom.xml`: Spring Web MVC, Thymeleaf con su extra de Spring Security,
 Spring Security, Spring Data JPA, Validation, DevTools, la consola de H2, Lombok y los controladores

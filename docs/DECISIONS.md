@@ -1682,3 +1682,63 @@ supuesto del equipo, y juntar las preguntas al docente sobre D-02, D-04, D-06 y 
 sin permisos. El autor no las eligió.
 
 **Estado:** `vigente`
+
+## 2026-10-27: Cada integrante trabaja con su modelo
+
+**Contexto:** El repo estaba escrito para el autor y su modelo: `CLAUDE.md` decía "el autor" sin
+definirlo, la memoria contextual era la del autor y se leía entera, y la costumbre de preguntar y de
+anotar lo que el modelo agregaba vivía en esta historia y en la memoria. El autor escribió:
+
+- "Ahora si, quiero pensar que cada integrate puede usar su modelo de forma autonoma y decirle como
+  quiere las cosas, que partes le toca, y como quiere hacerla, (si es que quiere hacerla diferente
+  de alguna forma, en la que se sienta mas agusto; pero por algo dejamos una base, para que aun asi
+  pueda seguir algun tipo de estandar) o en caso contrario solo discutir y que el modelo programe
+  segun los lineamientos, pero aun asi el usuario tiene que estar pendiente de cada paso del
+  modelo, yo estubie ahi corrigiendo ideas, y es posible que los usuarios integrantes quiera aportar
+  ideas (o no como te decia)... de ahi que el repositorio sea auto suficiente sin que este chat mio
+  este presente, por que la documentacion ya le deja claro un camino al modelo."
+
+El modelo le hizo cuatro preguntas, y el autor eligió:
+
+- "Una por integrante (Recomendado)"
+- "Su usuario; lo común, al PR (Recomendado)"
+- "Decide y avisa en el PR"
+- "El segundo se pone al día (Recomendado)"
+
+**Decisión:**
+
+- Cada integrante tiene su memoria en `docs/context/`. La de hoy queda como la del autor, y el
+  modelo de otro integrante crea la suya en la primera sesión. Cada modelo lee entera solo la de su
+  integrante (`CLAUDE.md`, sección 1).
+- En sus historias decide su integrante. Lo común también lo cambia cualquiera, con su decisión en
+  el mismo PR, y el commit y el título del PR lo marcan para que los otros dos lo vean
+  (`CLAUDE.md`, sección 5).
+- El modelo decide lo que necesita sin preguntar, y lo lista en su entrada de esta bitácora y en el
+  cuerpo del PR. Su integrante lo revisa ahí antes de fusionar (`CLAUDE.md`, secciones 5 y 7).
+- Si dos PR están abiertos a la vez, el que se fusiona después trae `main` a su rama y toma la
+  siguiente versión libre del CHANGELOG (`CLAUDE.md`, sección 7).
+
+Lo que decidió el modelo:
+
+- La memoria de otro integrante se llama `MEMORIA-<su usuario de GitHub>.md`, porque el usuario de
+  GitHub no se repite y no depende de quién sea el integrante 1 o el 2.
+- Si el modelo no sabe quién es su integrante, le pregunta su nombre, su usuario de GitHub y qué
+  número de integrante es.
+- Lo común es `comun/`, `IpsApplication`, `pom.xml`, `src/main/resources/`, `.github/`,
+  `CLAUDE.md`, `docs/REQUIREMENTS.md`, `docs/DESIGN.md` y `docs/ROADMAP.md`, y la marca es `común:`
+  después del tipo. El archivo de la base queda fuera, porque tiene sus turnos (`docs/DESIGN.md`,
+  sección 8).
+- Fusionar el PR acepta lo que su sección "Lo que decidió el modelo" lista.
+- `docs/GLOSSARY.md` define autor, integrante y común. La lista del PR de prueba pide también la
+  memoria nueva de su integrante.
+
+**Alternativas:**
+
+- Una memoria compartida, con cada entrada firmada. Seguiría creciendo, y cada modelo la leería
+  entera.
+- Que lo común solo lo cambie el autor. El 2026-10-26 eligió dejar `main` abierta a los
+  integrantes (`docs/DECISIONS.md`, 2026-10-26 "main queda abierta a los integrantes").
+- Que el modelo pregunte antes de cada decisión, como hacía el modelo del autor.
+- Un PR abierto a la vez. Los demás esperarían.
+
+**Estado:** `vigente`

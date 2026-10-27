@@ -14,10 +14,18 @@ el producto trae sus propias palabras.
 
 Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la plantilla 1.2".
 
-- **borrador**: el estado en que se abre un PR. El autor lo marca listo y lo mergea.
-- **cita textual**: palabras del autor copiadas tal cual, en una viñeta propia que abre con
+- **autor**: Juan Fernando, `jncldrn64` en GitHub, dueño del fork e integrante 3. Decide lo que es
+  del repo entero, como un documento nuevo, y revisa el PR de prueba de cada integrante (2026-10-27
+  "Cada integrante trabaja con su modelo").
+- **borrador**: el estado en que se abre un PR. Lo marca listo y lo fusiona su integrante
+  (2026-10-27 "Cada integrante trabaja con su modelo").
+- **cita textual**: palabras de un integrante copiadas tal cual, en una viñeta propia que abre con
   comillas o con su etiqueta, como `**A13.**`. No se reescribe ni se resume, y no cuenta para las
   reglas 1 y 2 de prosa.
+- **común**: lo que comparten los tres integrantes: `comun/`, `IpsApplication`, `pom.xml`,
+  `src/main/resources/`, `.github/`, `CLAUDE.md`, `docs/REQUIREMENTS.md`, `docs/DESIGN.md` y
+  `docs/ROADMAP.md`. Cualquiera lo cambia, y el commit y el título del PR llevan `común:` después
+  del tipo (2026-10-27 "Cada integrante trabaja con su modelo").
 - **contexto temporal**: lo que se observó y se perdería si nadie lo escribe, antes de saber si se
   quiere. Vive en `docs/TEMPORARY-CONTEXT.md`, y cada línea se coloca o se descarta.
 - **decisión**: una entrada de `docs/DECISIONS.md` que dice por qué algo es como es. No se edita
@@ -34,15 +42,24 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
   Atervolgo, lo habilite (2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo
   habilite").
 - **fusionar**: aceptar un PR en `main`, con el botón "Merge pull request" de GitHub. Lo hace el
-  autor después de revisarlo (2026-10-26 "El merge de un PR se dice fusionar").
+  integrante del PR después de revisarlo, y fusionarlo acepta lo que su sección "Lo que decidió el
+  modelo" lista (2026-10-26 "El merge de un PR se dice fusionar"; 2026-10-27 "Cada integrante
+  trabaja con su modelo").
 - **hueco conocido**: una entrada fechada de la sección "Huecos conocidos" de
   `docs/ARCHITECTURE.md`, con la corrida que la muestra. Se borra cuando se cierra.
 - **Hipótesis**: el marcador de una inferencia hecha al reconstruir contexto, con su base a la
   vista. Su contraparte es **Sin origen recuperable**.
+- **integrante**: una de las 3 personas del equipo, numeradas del 1 al 3 en `docs/ROADMAP.md`, fase
+  0, cada una con su modelo y su memoria. Para un modelo, su integrante es quien lo dirige: decide
+  en sus historias y revisa lo que el modelo decidió solo (2026-10-27 "Cada integrante trabaja con
+  su modelo").
 - **línea base**: un conteo de prosa medido en una fecha con un comando escrito. No puede subir.
-- **memoria contextual**: `docs/context/MEMORIA-CONTEXTUAL.md`, la memoria de trabajo del modelo.
-  Se lee entera antes de trabajar, se actualiza con cada decisión del autor y no manda sobre ningún
-  documento canónico (2026-10-24 "La memoria contextual vuelve a ser la memoria del modelo").
+- **memoria contextual**: la memoria de trabajo del modelo de un integrante, en `docs/context/`. La
+  del autor es `MEMORIA-CONTEXTUAL.md`, y la de otro integrante,
+  `MEMORIA-<su usuario de GitHub>.md`. Se lee entera antes de trabajar, se actualiza con cada
+  decisión de su integrante y no manda sobre ningún documento canónico (2026-10-24 "La memoria
+  contextual vuelve a ser la memoria del modelo"; 2026-10-27 "Cada integrante trabaja con su
+  modelo").
 - **modelo**: tres cosas distintas. El modelo de lenguaje que trabaja en el repositorio, como en
   "propuesta del modelo"; el modelo E-R de `docs/context/modelo-datos/`; y la parte del código con
   las entidades, los repositorios y los servicios (2026-10-24 "El código se separa en modelo, vista
