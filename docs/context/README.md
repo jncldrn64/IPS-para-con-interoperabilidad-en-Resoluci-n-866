@@ -11,12 +11,13 @@ que usan las historias".
 | `trello/tarjetas/` | Una tarjeta por historia, de HU-001 a HU-043, más la de reglas comunes, con la matriz de permisos y RC-1 a RC-11. Es el mismo texto que se pega en Trello | Fuente |
 | `trello/mockups/` | Una lámina PNG por historia, con etiquetas "Esc. N" que dicen qué escenario muestra cada panel | Sale de las tarjetas |
 | `modelo-datos/` | Modelo entidad-relación propuesto, 24 tablas en Mermaid, y dos PNG. La guía pide el diagrama E-R en el repositorio [3.6] | Borrador |
-| `MEMORIA-CONTEXTUAL.md` | Memoria de trabajo del modelo desde el 2026-10-18: decisiones del autor con sus palabras, bitácora y pendientes | Memoria del modelo |
+| `MEMORIA-CONTEXTUAL.md` | Memoria de trabajo del modelo del autor desde el 2026-10-18: sus decisiones con sus palabras, bitácora y pendientes | Memoria del modelo |
+| `MEMORIA-<usuario de GitHub>.md` | Memoria del modelo de otro integrante, que su modelo crea en la primera sesión (`CLAUDE.md`, sección 1). Todavía no hay ninguna | Memoria del modelo |
 
 "Fuente" quiere decir que una historia se corrige ahí primero, y su lámina se rehace si el cambio la
-toca. "Memoria del modelo" quiere decir que se actualiza con cada decisión del autor y no manda
-sobre los documentos de `docs/` (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a
-ser la memoria del modelo").
+toca. "Memoria del modelo" quiere decir que se actualiza con cada decisión de su integrante y no
+manda sobre los documentos de `docs/` (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual
+vuelve a ser la memoria del modelo", y 2026-10-27 "Cada integrante trabaja con su modelo").
 
 Las decisiones del equipo que citan las tarjetas, de D-01 a D-27, están en `docs/REQUIREMENTS.md`,
 sección 6.

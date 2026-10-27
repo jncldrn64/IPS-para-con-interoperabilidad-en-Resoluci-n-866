@@ -11,6 +11,9 @@
 
 ## 0. Cómo se usa (instrucciones para el modelo)
 
+0. Esta es la memoria del modelo que trabaja con el autor. La de otro integrante es
+   `docs/context/MEMORIA-<su usuario de GitHub>.md`, y la crea su modelo (`CLAUDE.md`, sección 1;
+   `docs/DECISIONS.md`, 2026-10-27 "Cada integrante trabaja con su modelo").
 1. Leer este archivo entero antes de responder sobre el proyecto, y siempre después de una
    compresión del chat.
 2. Actualizarlo después de cada numeral discutido y de cada decisión del autor, en el mismo turno.
@@ -2168,6 +2171,34 @@ Hecho en el PR que sigue a 79e21d3: la entrada 2026-10-27 "El glosario define lo
 
 **Estado:** `vigente`
 
+## 2026-10-27: Cada integrante con su modelo
+
+Con el PR #21 fusionado, el autor escribió:
+
+- "Ahora si, quiero pensar que cada integrate puede usar su modelo de forma autonoma y decirle como
+  quiere las cosas, que partes le toca, y como quiere hacerla, (si es que quiere hacerla diferente
+  de alguna forma, en la que se sienta mas agusto; pero por algo dejamos una base, para que aun asi
+  pueda seguir algun tipo de estandar) o en caso contrario solo discutir y que el modelo programe
+  segun los lineamientos, pero aun asi el usuario tiene que estar pendiente de cada paso del
+  modelo, yo estubie ahi corrigiendo ideas, y es posible que los usuarios integrantes quiera aportar
+  ideas (o no como te decia)... de ahi que el repositorio sea auto suficiente sin que este chat mio
+  este presente, por que la documentacion ya le deja claro un camino al modelo."
+
+Lo que encontró el modelo: "el autor" sin definir en `CLAUDE.md`; esta memoria, de 2.502 líneas,
+como la única y con las preferencias del autor; nada que le dijera al modelo preguntar quién es su
+integrante; la costumbre de preguntar y anotar solo en la bitácora y aquí; y nada para dos PR
+abiertos a la vez. El autor eligió:
+
+- "Una por integrante (Recomendado)"
+- "Su usuario; lo común, al PR (Recomendado)"
+- "Decide y avisa en el PR"
+- "El segundo se pone al día (Recomendado)"
+
+Hecho en el PR que sigue a 5bc734e: la entrada 2026-10-27 "Cada integrante trabaja con su modelo"
+de `docs/DECISIONS.md` y `CLAUDE.md`, secciones 1, 3, 5, 7 y 9.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2313,7 +2344,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000. **Próximo (2026-10-27, cargos en el glosario):** que el autor revise
+0000000000000000000000000000. **Próximo (2026-10-27, cada integrante con su modelo):** que el autor
+   revise y fusione el PR del trabajo por integrante. Después, los PR de prueba de los integrantes
+   1 y 2, que ahora traen su memoria nueva (`CLAUDE.md`, sección 7). Desde esta decisión, el modelo
+   decide lo que necesita y lo lista en el PR, sección "Lo que decidió el modelo".
+000000000000000000000000000. **Anterior (2026-10-27, cargos en el glosario):** que el autor revise
    y fusione el PR del glosario de cargos. Después, los PR de prueba de los integrantes 1 y 2
    (`CLAUDE.md`, sección 7). Sin hacer, porque el autor no las eligió: la cita del modelo E-R a
    [2.4] y la lista de preguntas al docente sobre D-02, D-04, D-06 y el escenario de rol sin

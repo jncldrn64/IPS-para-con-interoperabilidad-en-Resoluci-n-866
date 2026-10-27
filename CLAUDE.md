@@ -18,10 +18,16 @@ Antes de tocar nada se lee, en este orden:
 5. `docs/DECISIONS.md`, por sus títulos: `grep '^## ' docs/DECISIONS.md` y se leen las entradas
    que toca el trabajo. Antes de proponer un cambio de estructura o de método se lee además la
    entrada "Ideas descartadas", que existe para que nadie las vuelva a proponer.
-6. `docs/context/MEMORIA-CONTEXTUAL.md`, entera: la memoria de trabajo del modelo, con sus
-   instrucciones en la sección 0 y lo pendiente en la sección 12. No manda sobre ningún documento
-   canónico (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a ser la memoria del
-   modelo").
+6. La memoria de tu integrante, entera. Cada integrante tiene la suya en `docs/context/`
+   (`docs/DECISIONS.md`, 2026-10-27 "Cada integrante trabaja con su modelo"). La del autor es
+   `docs/context/MEMORIA-CONTEXTUAL.md`, con sus instrucciones en la sección 0 y lo pendiente en la
+   sección 12; la de otro integrante es
+   `docs/context/MEMORIA-<su usuario de GitHub>.md`. Si no sabes quién es tu integrante, le
+   preguntas su nombre, su usuario de GitHub y qué número de integrante es (`docs/ROADMAP.md`,
+   fase 0). Si su memoria no existe, la creas en la primera sesión, con lo que él decide y lo
+   pendiente. La memoria de otro integrante se lee solo cuando el trabajo la toca, y ninguna manda
+   sobre un documento canónico (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a
+   ser la memoria del modelo").
 7. `docs/TEMPORARY-CONTEXT.md`, último: lo más volátil. Su estado normal es vacío, y se lee igual,
    porque una línea de ahí puede contradecir lo que uno estaba por proponer.
 
@@ -65,8 +71,9 @@ Los documentos canónicos son los de la tabla de la sección 2, más `CHANGELOG.
 en `docs/<módulo>/`, con un par: un estándar normativo y una superficie descriptiva. La carpeta
 existe solo cuando hay un módulo; mientras no lo haya, no se crea.
 
-- **No se crea un documento nuevo sin preguntar al autor.** La excepción es un `README.md` de
-  subcarpeta que solo explica esa carpeta, como `tests/README.md`.
+- **No se crea un documento nuevo sin preguntar al autor.** Las excepciones son un `README.md` de
+  subcarpeta que solo explica esa carpeta, como `tests/README.md`, y la memoria de un integrante
+  (sección 1).
 - **Los nombres de archivo van en inglés** y el contenido en el idioma del repo. Los nombres son
   convención de herramientas; el idioma, del autor.
 - **Este repo no describe otros repos.** El nombre de otro puede aparecer como procedencia, nunca
@@ -112,6 +119,17 @@ entero:
   mismo PR.
 - **Lo que se observó y se perdería** va a `docs/TEMPORARY-CONTEXT.md`, sin pedir permiso. Sus
   reglas viven en ese archivo.
+- **En sus historias decide su integrante,** y su decisión va con su nombre y sus palabras
+  textuales (`docs/DECISIONS.md`, 2026-10-27 "Cada integrante trabaja con su modelo").
+- **Lo común también lo cambia cualquier integrante,** con su decisión en el mismo PR. El commit y
+  el título del PR llevan `común:` después del tipo, como `chg: común: …`, para que los otros dos
+  lo vean en la lista de PR antes de que se fusione. Lo común es `comun/`, `IpsApplication`,
+  `pom.xml`, `src/main/resources/`, `.github/`, `CLAUDE.md`, `docs/REQUIREMENTS.md`,
+  `docs/DESIGN.md` y `docs/ROADMAP.md`.
+- **El modelo decide lo que necesita y lo avisa.** Lo que decide sin preguntar a su integrante va
+  en su entrada de `docs/DECISIONS.md`, en la lista "Lo que decidió el modelo", y en el cuerpo del
+  PR, en la sección del mismo nombre. Su integrante lo revisa ahí: fusionar el PR lo acepta, y lo
+  que no acepta lo dice antes, para que el modelo lo cambie.
 
 ## 6. CHANGELOG y versión mostrada
 
@@ -137,9 +155,15 @@ entero:
   herramienta van al final del mensaje.
 - **Título del PR:** el mismo formato y el mismo tipo que el commit.
 - **Cuerpo del PR:** la tabla de archivos se copia de `git diff --numstat origin/main...HEAD`,
-  corrido como último paso antes de escribirla.
-- **Se trabaja vía PR, abierto como borrador.** Si `push`, crear una rama o abrir el PR devuelve
-  `403`, se para y se avisa que falta permiso de escritura.
+  corrido como último paso antes de escribirla. Si el modelo decidió algo sin preguntar, el cuerpo
+  trae la sección "Lo que decidió el modelo" (sección 5).
+- **Se trabaja vía PR, abierto como borrador.** Lo marca listo y lo fusiona su integrante. Si
+  `push`, crear una rama o abrir el PR devuelve `403`, se para y se avisa que falta permiso de
+  escritura.
+- **Dos PR abiertos a la vez.** Antes de marcar listo el suyo, el modelo trae `main` a su rama con
+  un merge, sin reescribir la historia. Si `main` ya tiene la versión que tomó su sección del
+  CHANGELOG, toma la siguiente libre y deja su sección arriba; sus entradas de `docs/DECISIONS.md`
+  quedan después de las que trajo `main`.
 - **El PR va contra `main` del fork, `jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866`,**
   nunca contra el repositorio original de Atervolgo. En un fork, la web de GitHub propone como
   destino el original, y así llegó allá el PR #3 del 2026-10-24 (`docs/DECISIONS.md`, 2026-10-26
@@ -172,6 +196,7 @@ entero:
     `Solo documentación.`;
   - el cuerpo del PR trae la tabla de `git diff --numstat origin/main...HEAD` y las cifras del
     piso;
+  - trae la memoria nueva de su integrante, `docs/context/MEMORIA-<su usuario de GitHub>.md`;
   - ninguna línea pasa de 100 columnas, y no hay guion largo.
 - **Fechas:** siempre ISO 8601. Un ítem del Backlog nace con una línea `**Entró:**`, con la fecha
   y el PR que lo trajo, sacados de `git log -S` sobre el archivo.
@@ -226,17 +251,17 @@ cada PR la compara.
 8. **Tres oraciones seguidas de largo parecido** son la señal de que el texto se alisa. La medida es
    qué porcentaje de las ternas consecutivas cae dentro de 3 palabras.
 
-**Las citas textuales del autor no cuentan para las reglas 1 y 2.** Una cita no se reescribe, así
-que con ella adentro esas dos reglas subirían sin prosa nueva. Va en una viñeta propia que abre con
-comillas, o con su etiqueta, como `**A13.**`, y comillas. El comando de esas dos reglas la deja en
-blanco junto con sus líneas de continuación.
+**Las citas textuales de un integrante no cuentan para las reglas 1 y 2.** Una cita no se
+reescribe, así que con ella adentro esas dos reglas subirían sin prosa nueva. Va en una viñeta
+propia que abre con comillas, o con su etiqueta, como `**A13.**`, y comillas. El comando de esas
+dos reglas la deja en blanco junto con sus líneas de continuación.
 
 **El piso mide los `.md`.** Los comentarios del código siguen las mismas reglas y se revisan a mano,
 porque medirlos sería una línea base más que mantener.
 
 El corpus son todos los `.md` versionados menos tres cosas: este archivo, que movería sus propios
 números; `docs/TEMPORARY-CONTEXT.md`, exento por diseño; y `docs/context/`, que guarda las tarjetas
-del curso y la memoria del modelo con las palabras del autor, y no se corrige contra este piso
+del curso y la memoria de cada integrante con sus palabras, y no se corrige contra este piso
 (`docs/DECISIONS.md`, 2026-10-25 "docs/context sale del corpus del piso"). Los comandos, desde la
 raíz:
 
