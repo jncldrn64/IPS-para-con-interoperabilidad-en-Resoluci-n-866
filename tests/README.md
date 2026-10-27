@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-10-26 en el contenedor de la sesión, con Linux: 100 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-10-27 en el contenedor de la sesión, con Linux: 111 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -29,15 +29,19 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
 
 - `DemoApplicationTests.contextLoads`: comprueba que el contexto de Spring arranca. La generó Spring
   Initializr.
-- `comun/BaseComunTest`, con 10 tests de las reglas que no son un escenario: los ceros iniciales
+- `comun/BaseComunTest`, con 15 tests de las reglas que no son un escenario: los ceros iniciales
   del código, inactivar sin borrar, que cambiar el nombre no reactive un valor, los motivos que pone
   el sistema, "Creado por error" fuera de la versión vigente, reactivar con otra referencia, la
   copia de la base de prueba, que ningún repositorio tenga un método para borrar, que el menú
-  principal ordene las historias y abra la elegida, y el largo de la columna del código.
-- `hu036/HU036EtniasTest`, con 41 tests, y `hu037/HU037ComunidadesEtnicasTest`, con 35: los
+  principal ordene las historias, abra la elegida y diga qué base abrió, el corte de la terminal
+  cuando se acaba la entrada, los tres casos de la lista de rechazadas que ya existe y el largo de
+  la columna del código.
+- `hu036/HU036EtniasTest`, con 44 tests, y `hu037/HU037ComunidadesEtnicasTest`, con 38: los
   escenarios de cada historia, de la carga a la consulta, la búsqueda y la comparación con la
-  lista oficial. Los de cancelar pasan por el controlador de la historia, con las respuestas
-  escritas en el test.
+  lista oficial. Los de cancelar, y los que comprueban lo que el menú dice en la búsqueda sin
+  resultados, el catálogo vacío y la inactivación, pasan por el controlador de la historia, con
+  las respuestas escritas en el test. Esos tests leen lo que el menú imprimió y llevan
+  `@Timeout(10)` (`docs/DESIGN.md`, sección 3).
 - `comun/CasosLimiteTest`, con 13 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.

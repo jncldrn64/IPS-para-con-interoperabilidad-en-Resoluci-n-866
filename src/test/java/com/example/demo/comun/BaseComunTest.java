@@ -25,7 +25,9 @@ import com.example.demo.hu037.modelos.ComunidadEtnica;
 import com.example.demo.hu037.repositorios.ComunidadEtnicaRepositorio;
 import jakarta.persistence.EntityManager;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +35,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,6 +63,9 @@ class BaseComunTest {
     @Autowired EtniaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
     @Autowired EntityManager em;
+    @Autowired DataSource base;
+    // Lo que imprimió la terminal del test.
+    private final ByteArrayOutputStream impreso = new ByteArrayOutputStream();
 
     @Test
     void elCodigoConservaSusCerosIniciales() {
@@ -151,21 +159,92 @@ class BaseComunTest {
     }
 
     @Test
-    void elMenuPrincipalOrdenaLasHistoriasYAbreLaElegida() {
-        Terminal terminal = new Terminal(new ByteArrayInputStream(
-                ("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\ns\n0\n0\n")
-                        .getBytes(StandardCharsets.UTF_8)));
+    @Timeout(10)
+    void elMenuPrincipalOrdenaLasHistoriasYAbreLaElegida() throws Exception {
+        Terminal terminal = terminal("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\ns\n0\n0\n");
         // Llegan con HU-037 primero, y la opción 1 abre HU-036.
         new MenuPrincipal(List.of(new ComunidadEtnicaControlador(contratoComunidades, terminal),
-                new EtniaControlador(contratoEtnias, terminal)), terminal).run();
+                new EtniaControlador(contratoEtnias, terminal)), terminal, base).run();
         assertTrue(etnias.buscarPorCodigo("07").isPresent());
         assertTrue(comunidades.listar().isEmpty());
+    }
+
+    @Test
+    @Timeout(10)
+    void elMenuPrincipalDiceQueBaseAbrio() throws Exception {
+        Terminal terminal = terminal("0\n");
+        new MenuPrincipal(List.of(new EtniaControlador(contratoEtnias, terminal)), terminal, base)
+                .run();
+        assertTrue(salida().startsWith("Base abierta: jdbc:h2:mem:pruebas\n"), salida());
+    }
+
+    @Test
+    @Timeout(10)
+    void laTerminalCortaUnMenuQueNoSaleCuandoSeAcabaLaEntrada() {
+        Terminal terminal = terminal("");
+        for (int i = 0; i < 100; i++) {
+            assertEquals("", terminal.leer("Opción: "));
+        }
+        assertThrows(NoSuchElementException.class, () -> terminal.leer("Opción: "));
+    }
+
+    @Test
+    @Timeout(10)
+    void laListaDeRechazadasNoReemplazaUnArchivoSinPreguntar(@TempDir Path carpeta)
+            throws IOException {
+        Path archivo = conUnaFilaRechazada(carpeta);
+        Path lista = Files.writeString(carpeta.resolve("carga-rechazadas.csv"), "archivo propio");
+        cargarYDescargarLaLista(archivo, "n\n");
+        assertTrue(salida().contains("Ya existe " + lista + ". ¿Reemplazarlo? (s/n): "), salida());
+        assertEquals("archivo propio", Files.readString(lista));
+    }
+
+    @Test
+    @Timeout(10)
+    void laListaDeRechazadasReemplazaElArchivoSiSeConfirma(@TempDir Path carpeta)
+            throws IOException {
+        Path archivo = conUnaFilaRechazada(carpeta);
+        Path lista = Files.writeString(carpeta.resolve("carga-rechazadas.csv"), "archivo propio");
+        cargarYDescargarLaLista(archivo, "s\n");
+        assertTrue(Files.readString(lista).contains("100"), Files.readString(lista));
+    }
+
+    @Test
+    @Timeout(10)
+    void laListaDeRechazadasNuevaSeEscribeSinPreguntar(@TempDir Path carpeta) throws IOException {
+        Path archivo = conUnaFilaRechazada(carpeta);
+        cargarYDescargarLaLista(archivo, "");
+        assertFalse(salida().contains("Ya existe"), salida());
+        assertTrue(Files.readString(carpeta.resolve("carga-rechazadas.csv")).contains("100"));
     }
 
     @Test
     void cadaCatalogoTieneSuTablaConElLargoDeSuCodigo() {
         assertEquals("CHARACTER VARYING:2", columna("ETNIA"));
         assertEquals("CHARACTER VARYING:3", columna("COMUNIDAD_ETNICA"));
+    }
+
+    private Terminal terminal(String respuestas) {
+        return new Terminal(new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)),
+                new PrintStream(impreso, true, StandardCharsets.UTF_8));
+    }
+
+    private String salida() {
+        return impreso.toString(StandardCharsets.UTF_8);
+    }
+
+    // Las 7 etnias de la hoja 15 y una fila con un código de 3 caracteres, que se rechaza.
+    private static Path conUnaFilaRechazada(Path carpeta) throws IOException {
+        return Files.writeString(carpeta.resolve("carga.csv"), Files.readString(
+                Path.of("src/test/resources/cargas/etnias-hoja-15.csv"))
+                + "100;Valor de 3 caracteres\n", StandardCharsets.UTF_8);
+    }
+
+    // La opción 8 con el archivo, "s" para descargar la lista, la respuesta a "Ya existe", si la
+    // hay, y "n" para no guardar la carga.
+    private void cargarYDescargarLaLista(Path archivo, String siYaExiste) {
+        new EtniaControlador(contratoEtnias, terminal("8\n" + archivo + "\nFuente\n\n2026-10-18\n"
+                + "Resolución 866 de 2021\n2021-06-25\ns\n" + siYaExiste + "n\n0\n")).abrir();
     }
 
     private Object columna(String tabla) {

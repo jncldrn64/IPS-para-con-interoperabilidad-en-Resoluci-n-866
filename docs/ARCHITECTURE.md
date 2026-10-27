@@ -41,11 +41,11 @@ de H2, SQL Server, MySQL y MariaDB, más sus pares de test. Para listarlas:
 
 ## 2. Dónde vive cada cosa
 
-Comprobado el 2026-10-26.
+Comprobado el 2026-10-27.
 
 | Qué | Variable o símbolo | Ruta |
 |---|---|---|
-| Configuración | `spring.datasource.url` y dos más | `src/main/resources/application.properties` |
+| Configuración | `spring.datasource.url`, el nivel del log y cuatro más | `src/main/resources/application.properties` |
 | Punto de entrada | `DemoApplication.main` | `src/main/java/com/example/demo/` |
 | Historias de usuario | Una tarjeta por historia, más la de reglas comunes | `docs/context/trello/tarjetas/` |
 | Modelo de datos propuesto | 24 tablas en Mermaid | `docs/context/modelo-datos/modelo-entidad-relacion.md` |
@@ -56,15 +56,18 @@ Comprobado el 2026-10-26.
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
 | `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
 | `comun/servicios/` | La base `ServicioCatalogo`, la carga y sus resultados, como `Consulta` |
-| `comun/menu/` | `MenuPrincipal`, que elige la historia, y `Terminal`, la entrada |
+| `comun/menu/` | `MenuPrincipal`, que elige la historia, y `Terminal`, la entrada y la salida |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
 `application.properties` abre la base de prueba, `jdbc:h2:file:./data/prueba`, relativa a la
-carpeta donde se corre el programa, y el registro de arranque la muestra en la línea
-`Database JDBC URL`. `DemoApplication.main` la copia de `data/ips.mv.db` antes de arrancar Spring,
-si no existe. `spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las
+carpeta donde se corre el programa, y el menú principal la muestra en su primera línea, la de
+`Base abierta`. `DemoApplication.main` la copia de `data/ips.mv.db` antes de arrancar Spring, si no
+existe. El log de Spring está en `warn` y sin el cartel de arranque, así que por la terminal sale
+solo el menú.
+
+`spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las
 entidades, y `spring.main.web-application-type=none` deja sin arrancar Tomcat y Spring Security.
 Con el perfil `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
@@ -79,7 +82,8 @@ sale. El controlador de cada catálogo tiene 11 opciones:
 - cargar un CSV, buscar por código o por nombre y comparar con la lista oficial.
 
 Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la sesión, que corre
-Linux sin `LANG`.
+Linux sin `LANG`. El 2026-10-27, `printf '0\n' | sh ./mvnw -q spring-boot:run` imprimió la línea de
+la base y el menú, sin líneas de log, y nada en stderr.
 
 La carga dice primero qué archivo espera y pide la ruta y los datos de la versión.
 `ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
@@ -109,7 +113,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 3361 líneas en 39 archivos. De
+Comprobado el 2026-10-27 con `git ls-files 'src/*' | xargs wc -l`: 3578 líneas en 39 archivos. De
 Spring Initializr queda la mayor parte de `DemoApplicationTests.java`.
 
 ## 5. Sin describir todavía

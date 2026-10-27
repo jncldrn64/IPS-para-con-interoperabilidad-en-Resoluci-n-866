@@ -151,9 +151,10 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   pide en la terminal los datos de cada opción, llama al contrato e imprime. En la fase 0 no hay
   controladores web (2026-10-24 "El código se separa en modelo, vista y controlador"; 2026-10-26
   "Cada historia tiene su controlador, y el menú común lo abre").
-- **menú principal**: `MenuPrincipal`, en `comun/menu/`. Lista las historias por su número y abre
-  el controlador de la elegida, sin saber qué hace cada una (2026-10-26 "Cada historia tiene su
-  controlador, y el menú común lo abre").
+- **menú principal**: `MenuPrincipal`, en `comun/menu/`. Dice qué base abrió el programa, lista las
+  historias por su número y abre el controlador de la elegida, sin saber qué hace cada una
+  (2026-10-26 "Cada historia tiene su controlador, y el menú común lo abre"; 2026-10-27 "Por la
+  terminal sale solo el menú, y el menú dice qué base abrió").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su
@@ -169,5 +170,8 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
 - **versión vigente**: la versión de un catálogo con la fecha de publicación más reciente. Un
   código está en ella si su `versionId` es el de esa versión (RC-10; 2026-10-26 "La tabla de
   cambios y RC-10 entran en la base común").
-- **vista**: en la fase 0, lo que el programa imprime en la terminal, según la lámina de la
-  historia (2026-10-24 "El código se separa en modelo, vista y controlador").
+- **vista**: en la fase 0, lo que el programa imprime en la terminal con `Terminal.escribir`, según
+  la lámina de la historia. El log de Spring no es parte de ella: solo muestra avisos y errores
+  (2026-10-24 "El código se separa en modelo, vista y controlador"; 2026-10-27 "Por la terminal
+  sale solo el menú, y el menú dice qué base abrió"; 2026-10-27 "La terminal recibe también la
+  salida, y un test lee lo que dice").

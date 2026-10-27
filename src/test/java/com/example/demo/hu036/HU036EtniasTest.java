@@ -23,7 +23,9 @@ import com.example.demo.hu036.modelos.Etnia;
 import com.example.demo.hu036.repositorios.EtniaRepositorio;
 import jakarta.validation.ConstraintViolationException;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -149,6 +152,18 @@ class HU036EtniasTest {
         assertEquals(Catalogo.Estado.INACTIVO, estado("07"));
         assertTrue(activos().isEmpty());
         assertEquals(Motivo.RETIRADO_POR_LA_FUENTE, ultimoCambio("07").getMotivo());
+    }
+
+    @Test
+    @Timeout(10)
+    @DisplayName("HU-036 Esc. 19: el menú muestra cuántos usan la etnia antes de pedir confirmar")
+    void esc19_elMenuMuestraLosUsos() {
+        etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
+        String salida = menu("5\n07\n1\n" + REFERENCIA + "\ns\n0\n");
+        int usos = salida.indexOf("La usan " + etnias.contarUsos("07") + " registros");
+        assertTrue(usos >= 0, salida);
+        assertTrue(usos < salida.indexOf("¿Confirma?"), "los usos van antes de confirmar");
+        assertEquals(Catalogo.Estado.INACTIVO, estado("07"));
     }
 
     @Test
@@ -372,6 +387,7 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
     @DisplayName("HU-036 Esc. 12: cancelar una creación en el menú deja el catálogo igual")
     void esc12_cancelarLaCreacion() {
         menu("2\n07\nEtnia de prueba\n" + REFERENCIA + "\nn\n0\n");
@@ -379,6 +395,7 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
     @DisplayName("HU-036 Esc. 12: cancelar un cambio de nombre en el menú deja el catálogo igual")
     void esc12_cancelarElCambio() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
@@ -387,6 +404,7 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
     @DisplayName("HU-036 Esc. 12: cancelar una inactivación en el menú deja el catálogo igual")
     void esc12_cancelarLaInactivacion() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
@@ -395,6 +413,7 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
     @DisplayName("HU-036 Esc. 12: cancelar una reactivación en el menú deja el catálogo igual")
     void esc12_cancelarLaReactivacion() {
         etnias.crear(new Etnia("07", "Etnia de prueba"), REFERENCIA);
@@ -404,6 +423,7 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
     @DisplayName("HU-036 Esc. 12: cancelar una carga en el menú deja el catálogo igual")
     void esc12_cancelarLaCargaEnElMenu() {
         menu("8\n" + HOJA_15 + "\nFuente\n\n2026-10-18\nResolución 866 de 2021\n2021-06-25\n"
@@ -479,12 +499,28 @@ class HU036EtniasTest {
     }
 
     @Test
+    @Timeout(10)
+    @DisplayName("HU-036 Esc. 16: el menú dice que la búsqueda no trajo resultados")
+    void esc16_sinResultadosEnElMenu() {
+        etnias.confirmarCarga(etnias.leerCarga(HOJA_15, RESOLUCION_866), Map.of());
+        assertTrue(menu("9\nxyz\n0\n").contains("No hay etnias que coincidan con la búsqueda"));
+    }
+
+    @Test
     @DisplayName("HU-036 Esc. 17: el catálogo vacío dice que falta cargar el archivo oficial")
     void esc17_catalogoVacio() {
         Consulta<Etnia> consulta = etnias.consultar(CrudCatalogo.Filtro.TODOS);
         assertTrue(consulta.valores().isEmpty());
         assertEquals("El catálogo de etnias está vacío: falta cargar el archivo oficial",
                 consulta.aviso());
+    }
+
+    @Test
+    @Timeout(10)
+    @DisplayName("HU-036 Esc. 17: la consulta del menú dice que el catálogo está vacío")
+    void esc17_catalogoVacioEnElMenu() {
+        assertTrue(menu("1\n3\n0\n")
+                .contains("El catálogo de etnias está vacío: falta cargar el archivo oficial"));
     }
 
     @Test
@@ -514,9 +550,14 @@ class HU036EtniasTest {
         assertTrue(etnias.comprobarContraLaHoja().coincide());
     }
 
-    private void menu(String respuestas) {
+    // Lo que el menú imprimió con esas respuestas. Un test del menú lleva @Timeout, porque un menú
+    // que no sale con la entrada vacía se queda en un bucle (docs/DESIGN.md, sección 3).
+    private String menu(String respuestas) {
+        ByteArrayOutputStream salida = new ByteArrayOutputStream();
         new EtniaControlador(etnias, new Terminal(
-                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)))).abrir();
+                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)),
+                new PrintStream(salida, true, StandardCharsets.UTF_8))).abrir();
+        return salida.toString(StandardCharsets.UTF_8);
     }
 
     private static List<String> codigos(List<Etnia> valores) {
