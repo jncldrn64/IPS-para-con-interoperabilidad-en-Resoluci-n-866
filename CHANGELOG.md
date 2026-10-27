@@ -5,6 +5,32 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.15 — 2026-10-27
+
+HU-036 y HU-037 quedan completas. El paquete pasa a `com.ipssaludyvida`, la tabla de cambios guarda
+la hora de Colombia y el menú dice "pacientes". El programa no muestra una versión.
+
+### Added
+- `RegistroCatalogos.ZONA`, `America/Bogota`, con `ahora` y `hoy`, y su test en `BaseComunTest`:
+  112 tests en total.
+- `docs/DECISIONS.md`: cinco entradas del 2026-10-27, de "HU-036 y HU-037 están completas" a "La
+  tabla de cambios guarda la hora de Colombia".
+- `docs/ARCHITECTURE.md`, sección 6: el hueco de lo que espera a HU-004.
+
+### Changed
+- El paquete pasa de `com.example.demo` a `com.ipssaludyvida`, el artefacto de `demo` a `ips`, y
+  `DemoApplication` a `IpsApplication`.
+- La hora de los cambios y de las cargas, y la fecha con que se rechaza una carga futura, son las
+  de Colombia. Las 8 horas de `data/ips.mv.db` pasan de UTC a la hora de Colombia.
+- Al inactivar, el menú dice "La usan N pacientes".
+- `docs/DESIGN.md`, secciones 3, 6, 7 y 9, `docs/ARCHITECTURE.md`, `docs/GLOSSARY.md`,
+  `docs/ROADMAP.md` y `tests/README.md` describen el paquete, el idioma de los nombres y la hora.
+- La memoria contextual anota las preguntas del autor, sus respuestas y lo hecho.
+
+### Removed
+- De `docs/TEMPORARY-CONTEXT.md`, las notas de la zona horaria y de "registros" o "pacientes", que
+  este PR coloca.
+
 ## v0.14 — 2026-10-27
 
 Por la terminal sale solo el menú, que abre con la base abierta. `Terminal` recibe también la

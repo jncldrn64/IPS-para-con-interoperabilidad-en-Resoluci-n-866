@@ -188,14 +188,13 @@ al paciente.
      principal. HU-001 no es un catálogo, así que puede empezar desde aquí.
   3. La base común de los catálogos (`docs/DESIGN.md`, sección 7), que arma el integrante 3.
 
-  El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7), con
-  HU-036 y HU-037 empezadas. Del esqueleto queda por decidir el paquete (`docs/DESIGN.md`, sección
-  9). Desde la v0.11, cada historia tiene su carpeta y su contrato, y desde la v0.13, su
-  controlador. En HU-036, la tabla de cambios (v0.9) y la carga desde CSV con las 7 etnias en el
-  archivo de la base (v0.10) están hechas. Desde la v0.13, cada caso del "Dado" de HU-036 y de
-  HU-037 tiene su test; en la v0.12 le faltaban 4 a HU-037. Dos partes esperan a HU-004: cuántos
-  pacientes usan un valor y lo que RC-11 pide de un registro ya guardado (`tests/README.md`,
-  sección 3).
+  El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7). El
+  esqueleto está hecho desde la v0.15, con el paquete `com.ipssaludyvida`. Desde la v0.11, cada
+  historia tiene su carpeta y su contrato, y desde la v0.13, su controlador. HU-036 y HU-037 están
+  completas desde la v0.15: cada caso del "Dado" tiene su test. Dos partes esperan a HU-004,
+  cuántos pacientes usan un valor y lo que RC-11 pide de un registro ya guardado, y son un hueco de
+  `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
+  completas"). Del integrante 3 queda HU-035.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022

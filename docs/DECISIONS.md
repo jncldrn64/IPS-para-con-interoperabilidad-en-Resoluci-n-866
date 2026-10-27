@@ -1436,3 +1436,123 @@ del teclado (`docs/DESIGN.md`, sección 6).
   vez que se repite una carga, donde la pregunta pide una "s".
 
 **Estado:** `vigente`
+
+## 2026-10-27: HU-036 y HU-037 están completas
+
+**Contexto:** Con el PR #19 fusionado, el autor escribió:
+
+- "el otro modelo ya aplico los cambios que vio convenientes, valora y dime que tal, y dame
+  preguntas para saber entncose que falta para tenel las dos hu complentas que estamos haciendo y
+  que faltaria para que el repo sea autosuficiente"
+
+A la pregunta de cuándo se dan por completas, eligió:
+
+- "Ya, con HU-004 anotado (Recomendado)"
+
+Y sobre el archivo oficial de comunidades étnicas, que nadie ha encontrado:
+
+- "Buscare yo, con otro modelo en otra base de datso asi que dejala asi hasta nueva orden"
+
+**Decisión:**
+
+- HU-036 y HU-037 están completas: cada caso del "Dado" de sus escenarios tiene su test
+  (`docs/DESIGN.md`, sección 3).
+- Lo que espera el registro del paciente, cuántos pacientes usan un valor y lo que RC-11 pide de un
+  registro ya guardado, es un hueco de `docs/ARCHITECTURE.md`, sección 6, y se prueba con HU-004.
+- El archivo de comunidades lo busca el autor. Hasta que él diga otra cosa, HU-037 se prueba con
+  valores inventados y el archivo de la base no trae comunidades.
+
+**Alternativas:** Dejarlas abiertas hasta que HU-004 cuente pacientes, o hasta que el docente las
+revise.
+
+**Estado:** `vigente`
+
+## 2026-10-27: El menú dice pacientes, como las tarjetas
+
+**Contexto:** Al inactivar, el menú decía "La usan N registros", y el escenario 19 de HU-036 y el
+18 de HU-037 dicen "cuántos pacientes la usan". Lo anotó en `docs/TEMPORARY-CONTEXT.md` el modelo
+de la entrada 2026-10-27 "La terminal recibe también la salida, y un test lee lo que dice". El
+autor eligió:
+
+- "Pacientes, como las tarjetas (Recomendado)"
+
+**Decisión:** el menú dice "La usan N pacientes: la conservan, pero no se ofrece en registros
+nuevos." Hasta que exista HU-004, N es 0.
+
+**Alternativas:** "Registros" hasta HU-004, y cambiarlo cuando el paciente exista.
+
+**Estado:** `vigente`
+
+## 2026-10-27: Los nombres del código van en español
+
+**Contexto:** `docs/DESIGN.md`, sección 9, tenía pendiente el idioma de los identificadores. El
+primer código usa español, salvo lo que pide Spring. El autor eligió:
+
+- "Español, como ahora (Recomendado)"
+
+**Decisión:** paquetes, clases, métodos y variables van en español. Quedan en inglés los nombres
+que Spring Data lee para armar la consulta, como `findById` y `save`, y los métodos de Java o de
+Spring que se sobrescriben, como `run`.
+
+**Alternativas:** Inglés, renombrando las clases y los métodos de los 39 archivos de `src`.
+
+**Estado:** `vigente`
+
+## 2026-10-27: El paquete es com.ipssaludyvida y el artefacto ips
+
+**Contexto:** El paquete era `com.example.demo` y el artefacto `demo`, los que pone Spring
+Initializr. Sin PR abiertos y sin que los integrantes 1 y 2 hayan empezado, el autor eligió:
+
+- "Cambiarlo ya (Recomendado)"
+
+No escribió otro nombre, así que vale el que propuso el modelo en la pregunta.
+
+**Decisión:** el paquete raíz es `com.ipssaludyvida`, el `groupId` de `pom.xml` también, el
+`artifactId` es `ips` y `spring.application.name` es `ips`.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- `DemoApplication` pasa a `IpsApplication` y `DemoApplicationTests` a `IpsApplicationTests`, el
+  nombre que Spring Initializr da a un artefacto `ips`. El jar es `target/ips-0.0.1-SNAPSHOT.jar`.
+
+**Alternativas:** Dejar `com.example.demo`. Cambiarlo después toca cada archivo y choca con cada
+PR abierto de los integrantes.
+
+**Estado:** `vigente`
+
+## 2026-10-27: La tabla de cambios guarda la hora de Colombia
+
+**Contexto:** La fecha y la hora de cada cambio, y la de cada carga, salían de la zona horaria del
+equipo que corre el programa. Las 7 etnias de `data/ips.mv.db` se cargaron en el contenedor de la
+sesión, en UTC, a las 02:25 del 2026-10-27, cuando en Colombia eran las 21:25 del 2026-10-26
+(`docs/TEMPORARY-CONTEXT.md`, nota del 2026-10-26). El autor eligió:
+
+- "Hora de Colombia (Recomendado)"
+
+**Decisión:**
+
+- `RegistroCatalogos.ZONA` es `America/Bogota`. La hora de cada cambio, la de cada carga y la
+  fecha con que una carga se rechaza por futura salen de esa zona, corra donde corra el programa.
+- Las 8 horas de `data/ips.mv.db`, las 7 de los cambios y la de la carga, pasan a la de Colombia,
+  5 horas menos. `RegistroCatalogos.creadoPorCambioPosterior` compara la hora de un cambio con la
+  de la carga vigente (RC-10): con la carga en UTC y los cambios nuevos en hora de Colombia, un
+  cambio hecho después de la carga quedaría antes.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- Corregir las 8 horas del archivo y no solo anotarlas. La pregunta decía "se anotan o se
+  corrigen", y la regla de arriba no se cumple con las dos zonas mezcladas.
+- La fecha futura de una carga también se mide con la fecha de Colombia.
+
+Comprobado el 2026-10-27 en el contenedor de la sesión, que corre en UTC: con `LocalDateTime.now()`
+en `RegistroCatalogos`, `BaseComunTest.laTablaDeCambiosYLaCargaGuardanLaHoraDeColombia` falló con
+04:44 contra 23:44, y con la zona pasa.
+
+**Alternativas:**
+
+- La hora de cada equipo, como antes. Una carga en un equipo y un cambio en otro no se pueden
+  comparar.
+- UTC en todos lados. Las horas se comparan bien, y el historial muestra una hora que no es la de
+  la IPS.
+
+**Estado:** `vigente`

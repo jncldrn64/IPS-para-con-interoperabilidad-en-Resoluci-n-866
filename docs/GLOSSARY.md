@@ -135,7 +135,7 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   común es una clase con código, nombre, estado y versión"; 2026-10-26 "El primer código arma la
   base común con etnias y comunidades étnicas").
 - **base de prueba**: `data/prueba.mv.db`, la base donde corre el programa, para que un dato de
-  prueba no llegue al archivo de la base que va en git. `DemoApplication.main` la copia de ese
+  prueba no llegue al archivo de la base que va en git. `IpsApplication.main` la copia de ese
   archivo si no existe (2026-10-25 "Las pruebas corren sobre otra base"; 2026-10-25 "La base de
   prueba arranca como copia del archivo"; 2026-10-26 "El programa trabaja sobre una copia del
   archivo de la base").

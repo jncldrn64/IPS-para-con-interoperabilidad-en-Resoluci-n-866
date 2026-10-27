@@ -85,9 +85,3 @@ y uno grande sí.
 - 2026-10-22, modelo: el docente pidió el escenario de rol sin permisos en HU-025, HU-026, HU-028 y
   HU-030, y después dijo que el inicio de sesión no aporta valor en la primera entrega. Hoy ese
   escenario es HU-001 esc. 14. Pregunta 2 del plan de desarrollo.
-- 2026-10-26, modelo: las horas de la tabla de cambios salen en la zona horaria del equipo que corre
-  el programa. Las 7 etnias de `data/ips.mv.db` se cargaron en el contenedor de la sesión, en UTC:
-  2026-10-27 02:25, que en Bogotá era 2026-10-26 21:25. No se sabe si importa para RC-5.
-- 2026-10-27, modelo: el menú dice "La usan N registros" al inactivar, y el escenario 19 de HU-036 y
-  el 18 de HU-037 dicen "cuántos pacientes la usan". No se cambió la palabra porque el autor eligió
-  no tocar pantallas. Importa cuando HU-004 cuente pacientes.
