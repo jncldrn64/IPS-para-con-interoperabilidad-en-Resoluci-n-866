@@ -55,7 +55,7 @@ Comprobado el 2026-10-26.
 | `comun/interfaces/` | `CrudCatalogo`, el contrato común de los 8 catálogos |
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
 | `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
-| `comun/servicios/` | La base `ServicioCatalogo`, `RegistroCatalogos` y la carga desde el CSV |
+| `comun/servicios/` | La base `ServicioCatalogo`, la carga y sus resultados, como `Consulta` |
 | `comun/menu/` | `MenuPrincipal`: un `switch` principal y un submenú por catálogo |
 | `hu036/` | Etnias: `ContratoEtnias`, con la hoja 15, `Etnia`, su repositorio y su servicio |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
@@ -68,10 +68,16 @@ entidades, y `spring.main.web-application-type=none` deja sin arrancar Tomcat y 
 Con el perfil `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
 El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo: 1 abre etnias, 2
-comunidades étnicas y 0 sale. Cada catálogo lista, crea por cambio oficial, cambia el nombre o el
-código, inactiva, reactiva, muestra el historial de un código y carga un CSV, y pide confirmar antes
-de guardar. Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la
-sesión, que corre Linux sin `LANG`.
+comunidades étnicas y 0 sale. Cada catálogo tiene 11 opciones:
+
+- consultar, con el filtro de activos, inactivos o todos, cuántos hay activos y la versión vigente;
+- crear por cambio oficial, cambiar el nombre o el código, inactivar y reactivar, y cada una pide
+  confirmar antes de guardar;
+- el historial de un código y el de las versiones;
+- cargar un CSV, buscar por código o por nombre y comparar con la lista oficial.
+
+Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la sesión, que corre
+Linux sin `LANG`.
 
 La carga dice primero qué archivo espera y pide la ruta y los datos de la versión.
 `ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
@@ -101,7 +107,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 2618 líneas en 31 archivos. De
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 3169 líneas en 34 archivos. De
 Spring Initializr queda la mayor parte de `DemoApplicationTests.java`.
 
 ## 5. Sin describir todavía

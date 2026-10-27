@@ -1218,3 +1218,41 @@ entradas de este archivo y las secciones del CHANGELOG ya escritas son historia 
 **Alternativas:** Dejar "mezclar". Al autor le sonaba a una falta.
 
 **Estado:** `vigente`
+
+## 2026-10-26: La consulta, la búsqueda y la comparación entran en la base común
+
+**Contexto:** Los escenarios 13 a 18 de HU-036 no tenían test (`tests/README.md`, sección 3): la
+consulta, la búsqueda por código y por nombre, la búsqueda sin resultados, el catálogo vacío y la
+comprobación contra la hoja 15. HU-037 tiene los mismos en sus escenarios 12 a 17. Cancelar antes
+de confirmar, el 12 de HU-036, se probaba en el servicio y no en el menú. Al ordenar el trabajo, el
+autor eligió:
+
+- "Primero las carpetas, después 13 a 18 (Recomendado)"
+
+**Decisión:**
+
+- `CrudCatalogo` agrega `consultar`, `historialDeVersiones` y `buscar`, y la base los implementa
+  para los 8 catálogos. La búsqueda sigue a D-23: el código exacto, o el nombre que contiene lo
+  buscado, sin mayúsculas ni tildes.
+- La comparación con una lista oficial es de la base, y cada contrato dice contra qué lista:
+  `ContratoEtnias.comprobarContraLaHoja` usa la hoja 15, y
+  `ContratoComunidadesEtnicas.comprobarContraElArchivo`, el archivo que se sube, como pide el
+  escenario 17 de HU-037.
+- Cada escenario tiene su test, también los que pasan por el menú, como cancelar.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- El filtro de la consulta es un enum, `CrudCatalogo.Filtro`, con activos, inactivos y todos.
+- Cada contrato da el nombre de su catálogo en plural, `nombreEnPlural`, y la base arma con él
+  los mensajes de los escenarios 16 y 17.
+- "Los que sobran", en el escenario 18 de HU-036, son los activos que no están en la hoja. Es lo
+  que dice el escenario 17 de HU-037: un inactivo que no está en la lista ya coincide con ella.
+- En el historial de versiones, "cambió" cuenta los cambios de nombre y las reactivaciones de esa
+  versión.
+- Si lo buscado es un código que existe, la búsqueda devuelve solo ese, y no busca en los nombres.
+- El menú recibe la entrada por su constructor, y el test le pasa las respuestas escritas.
+
+**Alternativas:** Que cada historia escriba su consulta y su búsqueda. Serían 8 copias de lo mismo,
+y la entrada 2026-10-24 "Los catálogos comparten una base común" pidió lo contrario.
+
+**Estado:** `vigente`

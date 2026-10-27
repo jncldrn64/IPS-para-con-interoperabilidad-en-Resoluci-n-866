@@ -1,6 +1,7 @@
 package com.example.demo.hu036.interfaces;
 
 import com.example.demo.comun.interfaces.CrudCatalogo;
+import com.example.demo.comun.servicios.Comprobacion;
 import com.example.demo.hu036.modelos.Etnia;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -12,9 +13,9 @@ import java.util.Map;
  *
  * <p>Escenarios de docs/context/trello/tarjetas/HU-036.md y la operación que los cumple: 1 a 7,
  * leerCarga, confirmarCarga y escribirRechazadas; 8, cambiarCodigo; 9 y 10, crear y cambiarNombre;
- * 11, cambiarNombre e historial; 12, no confirmar; 13 a 16, listar, listarActivos y
- * buscarPorCodigo; 19 a 22, contarUsos, inactivar y reactivar; 23, historial. Los escenarios 13 a
- * 18 están incompletos (docs/ROADMAP.md, fase 0).
+ * 11, cambiarNombre e historial; 12, no confirmar, en el menú; 13, consultar e
+ * historialDeVersiones; 14 y 15, buscar; 16, buscar y sinCoincidencias; 17, consultar; 18,
+ * comprobarContraLaHoja; 19 a 22, contarUsos, inactivar y reactivar; 23, historial.
  */
 public interface ContratoEtnias extends CrudCatalogo<Etnia> {
 
@@ -23,6 +24,14 @@ public interface ContratoEtnias extends CrudCatalogo<Etnia> {
      * citando la norma (CLAUDE.md, sección 10). Si no coincide con la hoja del PDF, manda la hoja.
      */
     Map<String, String> HOJA_15 = hoja15();
+
+    /** Compara el catálogo con los 7 códigos y nombres de la hoja 15, sin cambiar nada. */
+    Comprobacion comprobarContraLaHoja();
+
+    @Override
+    default String nombreEnPlural() {
+        return "etnias";
+    }
 
     private static Map<String, String> hoja15() {
         Map<String, String> hoja = new LinkedHashMap<>();

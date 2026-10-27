@@ -40,6 +40,11 @@ public class RegistroCatalogos {
         return cambios.save(cambio);
     }
 
+    /** Cuántos cambios de un tipo hizo una versión al cargarse. */
+    public long contar(String catalogo, Long versionId, CatalogoCambio.Tipo tipo) {
+        return cambios.countByCatalogoAndVersionIdAndTipo(catalogo, versionId, tipo);
+    }
+
     public List<CatalogoCambio> historial(String catalogo, String codigo) {
         return cambios.findByCatalogoAndCodigoOrderByIdAsc(catalogo, codigo);
     }

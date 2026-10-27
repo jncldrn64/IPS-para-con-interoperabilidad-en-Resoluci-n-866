@@ -13,5 +13,8 @@ public interface CatalogoCambioRepositorio extends Repository<CatalogoCambio, Lo
     Optional<CatalogoCambio> findFirstByCatalogoAndCodigoAndTipoOrderByIdDesc(
             String catalogo, String codigo, CatalogoCambio.Tipo tipo);
 
+    long countByCatalogoAndVersionIdAndTipo(String catalogo, Long versionId,
+            CatalogoCambio.Tipo tipo);
+
     CatalogoCambio save(CatalogoCambio cambio);
 }

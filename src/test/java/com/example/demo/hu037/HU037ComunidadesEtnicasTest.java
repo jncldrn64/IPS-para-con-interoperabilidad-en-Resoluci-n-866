@@ -5,17 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.example.demo.comun.interfaces.CrudCatalogo;
+import com.example.demo.comun.menu.MenuPrincipal;
 import com.example.demo.comun.modelos.Catalogo;
 import com.example.demo.comun.modelos.CatalogoCambio;
 import com.example.demo.comun.modelos.CatalogoVersion;
 import com.example.demo.comun.modelos.Motivo;
+import com.example.demo.comun.servicios.Comprobacion;
+import com.example.demo.comun.servicios.Consulta;
 import com.example.demo.comun.servicios.DatosVersion;
 import com.example.demo.comun.servicios.RegistroCatalogos;
 import com.example.demo.comun.servicios.ResultadoCarga;
+import com.example.demo.hu036.interfaces.ContratoEtnias;
 import com.example.demo.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.example.demo.hu037.modelos.ComunidadEtnica;
 import com.example.demo.hu037.repositorios.ComunidadEtnicaRepositorio;
 import jakarta.validation.ConstraintViolationException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -52,6 +58,7 @@ class HU037ComunidadesEtnicasTest {
     @TempDir Path carpeta;
 
     @Autowired ContratoComunidadesEtnicas comunidades;
+    @Autowired ContratoEtnias etnias;
     @Autowired ComunidadEtnicaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
 
@@ -298,6 +305,98 @@ class HU037ComunidadesEtnicasTest {
     void esc11_cancelarLaCarga() {
         comunidades.leerCarga(csv(TRES), PRIMERA);
         assertTrue(comunidades.listar().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: cancelar una creación en el menú deja el catálogo igual")
+    void esc11_cancelarLaCreacion() {
+        menu("2\n2\n101\nComunidad uno\n" + REFERENCIA + "\nn\n0\n0\n");
+        assertTrue(comunidades.listar().isEmpty());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 11: cancelar una inactivación en el menú deja el catálogo igual")
+    void esc11_cancelarLaInactivacion() {
+        comunidades.crear(new ComunidadEtnica("101", "Comunidad uno"), REFERENCIA);
+        menu("2\n5\n101\n1\n" + REFERENCIA + "\nn\n0\n0\n");
+        assertEquals(Catalogo.Estado.ACTIVO, estado("101"));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 12: la consulta trae el filtro, cuántas hay activas y la versión vigente")
+    void esc12_consulta() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        comunidades.inactivar("103", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        Consulta<ComunidadEtnica> todas = comunidades.consultar(CrudCatalogo.Filtro.TODOS);
+        assertEquals(3, todas.valores().size());
+        assertEquals(2, todas.activos());
+        assertEquals("Versión de prueba 1", todas.vigente().orElseThrow().getVersion());
+        assertEquals(List.of("103"), comunidades.consultar(CrudCatalogo.Filtro.INACTIVOS).valores()
+                .stream().map(Catalogo::getCodigo).toList());
+        assertEquals(List.of(3L, 0L, 0L), List.of(comunidades.historialDeVersiones().get(0).creados(),
+                comunidades.historialDeVersiones().get(0).cambiados(),
+                comunidades.historialDeVersiones().get(0).inactivados()));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 13: la búsqueda por código trae solo la comunidad con ese código")
+    void esc13_busquedaPorCodigo() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        assertEquals(List.of("102"), codigos(comunidades.buscar("102")));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 14: la búsqueda por nombre ignora mayúsculas y tildes y ordena por nombre")
+    void esc14_busquedaPorNombre() {
+        comunidades.confirmarCarga(comunidades.leerCarga(
+                csv("código;nombre\n101;Pueblo Wayúu\n102;Comunidad Embera\n103;Pueblo Nasa\n"),
+                PRIMERA), Map.of());
+        assertEquals(List.of("103", "101"), codigos(comunidades.buscar("PUEBLO")));
+        assertEquals(List.of("101"), codigos(comunidades.buscar("wayuu")));
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 15: una búsqueda sin resultados lo dice")
+    void esc15_sinResultados() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        assertTrue(comunidades.buscar("xyz").isEmpty());
+        assertEquals("No hay comunidades étnicas que coincidan con la búsqueda",
+                comunidades.sinCoincidencias());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 16: el catálogo vacío dice que falta cargar el archivo oficial")
+    void esc16_catalogoVacio() {
+        assertEquals("El catálogo de comunidades étnicas está vacío: falta cargar el archivo oficial",
+                comunidades.consultar(CrudCatalogo.Filtro.TODOS).aviso());
+    }
+
+    @Test
+    @DisplayName("HU-037 Esc. 17: la comparación con el archivo oficial lista lo que falta, sobra o cambió")
+    void esc17_comprobacionContraElArchivo() {
+        comunidades.confirmarCarga(comunidades.leerCarga(csv(TRES), PRIMERA), Map.of());
+        comunidades.inactivar("103", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        comunidades.crear(new ComunidadEtnica("105", "Creada a mano"), REFERENCIA);
+        List<String> antes = comunidades.listar().stream()
+                .map(c -> c.getCodigo() + c.getNombre() + c.getEstado()).toList();
+        Comprobacion comprobacion = comunidades.comprobarContraElArchivo(csv(
+                "código;nombre\n101;Comunidad uno renombrada\n102;Comunidad dos\n"
+                        + "103;Comunidad tres\n104;Nueva\n"));
+        assertEquals(List.of("104"), comprobacion.faltan());
+        assertEquals(List.of("103"), comprobacion.inactivos());
+        assertEquals(List.of("105"), comprobacion.sobran());
+        assertEquals(List.of("101"), comprobacion.nombresDistintos());
+        assertEquals(antes, comunidades.listar().stream()
+                .map(c -> c.getCodigo() + c.getNombre() + c.getEstado()).toList());
+    }
+
+    private void menu(String respuestas) {
+        new MenuPrincipal(etnias, comunidades,
+                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8))).run();
+    }
+
+    private static List<String> codigos(List<ComunidadEtnica> valores) {
+        return valores.stream().map(Catalogo::getCodigo).toList();
     }
 
     private Path csv(String contenido) {

@@ -17,7 +17,9 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -491,6 +493,102 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     private int largoDelCodigo() {
         AttributeOverride largo = tipo.getAnnotation(AttributeOverride.class);
         return largo != null ? largo.column().length() : Integer.MAX_VALUE;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Consulta<T> consultar(Filtro filtro) {
+        List<T> todos = datos.findAllByOrderByCodigoAsc();
+        List<T> valores = switch (filtro) {
+            case ACTIVOS -> datos.findByEstadoOrderByCodigoAsc(Catalogo.Estado.ACTIVO);
+            case INACTIVOS -> datos.findByEstadoOrderByCodigoAsc(Catalogo.Estado.INACTIVO);
+            case TODOS -> todos;
+        };
+        long activos = todos.stream().filter(v -> v.getEstado() == Catalogo.Estado.ACTIVO).count();
+        String aviso = todos.isEmpty() ? "El catálogo de " + nombreEnPlural()
+                + " está vacío: falta cargar el archivo oficial" : null;
+        return new Consulta<>(valores, activos, versionVigente(), aviso);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ResumenVersion> historialDeVersiones() {
+        return registro.versiones(catalogo()).stream().map(v -> new ResumenVersion(v,
+                registro.contar(catalogo(), v.getId(), CatalogoCambio.Tipo.CREADO),
+                registro.contar(catalogo(), v.getId(), CatalogoCambio.Tipo.NOMBRE)
+                        + registro.contar(catalogo(), v.getId(), CatalogoCambio.Tipo.REACTIVADO),
+                registro.contar(catalogo(), v.getId(), CatalogoCambio.Tipo.INACTIVADO)))
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<T> buscar(String texto) {
+        String buscado = texto == null ? "" : texto.trim();
+        if (buscado.isEmpty()) {
+            return List.of();
+        }
+        Optional<T> porCodigo = datos.findById(buscado);
+        if (porCodigo.isPresent()) {
+            return List.of(porCodigo.get());
+        }
+        String palabra = ArchivoCsv.normalizar(buscado);
+        return datos.findAllByOrderByCodigoAsc().stream()
+                .filter(v -> ArchivoCsv.normalizar(v.getNombre()).contains(palabra))
+                .sorted(Comparator.comparing((T v) -> ArchivoCsv.normalizar(v.getNombre())))
+                .toList();
+    }
+
+    /**
+     * Compara el catálogo con su lista oficial, código y nombre, sin cambiar nada. Una historia lo
+     * usa con su lista: HU-036 con la hoja 15 y HU-037 con el archivo que se sube.
+     */
+    protected Comprobacion comprobarContra(Map<String, String> oficial) {
+        Map<String, T> catalogo = new HashMap<>();
+        datos.findAllByOrderByCodigoAsc().forEach(v -> catalogo.put(v.getCodigo(), v));
+        List<String> faltan = new ArrayList<>();
+        List<String> inactivos = new ArrayList<>();
+        List<String> nombresDistintos = new ArrayList<>();
+        oficial.forEach((codigo, nombre) -> {
+            T valor = catalogo.get(codigo);
+            if (valor == null) {
+                faltan.add(codigo);
+                return;
+            }
+            if (valor.getEstado() == Catalogo.Estado.INACTIVO) {
+                inactivos.add(codigo);
+            }
+            if (!valor.getNombre().equals(nombre)) {
+                nombresDistintos.add(codigo);
+            }
+        });
+        List<String> sobran = catalogo.values().stream()
+                .filter(v -> v.getEstado() == Catalogo.Estado.ACTIVO)
+                .map(Catalogo::getCodigo).filter(c -> !oficial.containsKey(c)).sorted().toList();
+        return new Comprobacion(faltan.stream().sorted().toList(),
+                inactivos.stream().sorted().toList(), sobran,
+                nombresDistintos.stream().sorted().toList());
+    }
+
+    /** Los códigos y nombres de un CSV de RC-8, para comparar sin cargar. */
+    protected Map<String, String> leerListaOficial(Path archivo) {
+        List<String> lineas = ArchivoCsv.lineas(archivo).stream()
+                .filter(l -> !l.isBlank()).toList();
+        if (lineas.isEmpty()) {
+            throw new IllegalArgumentException("el archivo está vacío");
+        }
+        List<String> columnas = ArchivoCsv.campos(lineas.get(0)).stream()
+                .map(ArchivoCsv::normalizar).toList();
+        int codigo = columna(columnas, "codigo", lineas.get(0));
+        int nombre = columna(columnas, "nombre", lineas.get(0));
+        Map<String, String> lista = new LinkedHashMap<>();
+        for (String linea : lineas.subList(1, lineas.size())) {
+            List<String> campos = ArchivoCsv.campos(linea);
+            if (!campo(campos, codigo).isEmpty()) {
+                lista.put(campo(campos, codigo), campo(campos, nombre));
+            }
+        }
+        return lista;
     }
 
     /** Un código está en la versión vigente si vino en su archivo (RC-10). */

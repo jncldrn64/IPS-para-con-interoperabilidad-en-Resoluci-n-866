@@ -1,5 +1,6 @@
 package com.example.demo.hu036.servicios;
 
+import com.example.demo.comun.servicios.Comprobacion;
 import com.example.demo.comun.servicios.RegistroCatalogos;
 import com.example.demo.comun.servicios.ServicioCatalogo;
 import com.example.demo.hu036.interfaces.ContratoEtnias;
@@ -29,6 +30,11 @@ public class EtniaServicio extends ServicioCatalogo<Etnia> implements ContratoEt
         avisos.add("el código " + codigo + " trae \"" + nombreDelArchivo
                 + "\"; se guarda el nombre de la hoja 15, \"" + oficial + "\"");
         return oficial;
+    }
+
+    @Override
+    public Comprobacion comprobarContraLaHoja() {
+        return comprobarContra(HOJA_15);
     }
 
     // La primera carga trae los 7 códigos de la hoja, ni uno más ni uno menos (escenario 2).
