@@ -1113,3 +1113,108 @@ rechazadas y dejar elegir entre guardar las aceptadas o cancelar, y el escenario
 los cambios antes de guardar.
 
 **Estado:** `vigente`
+
+## 2026-10-26: El código se ordena por historia, con lo común aparte
+
+**Contexto:** El autor fusionó el PR #15 del fork y escribió:
+
+- "hazme preguntas, por que learmente no se como exponerte ideas para poder que cerremos el HU 36
+  y le demos autonomia al propio repositorio, y no uses Mezclar, que suena que estoy haciendo algo
+  malo, hice algo malo? no me queda claro si debia hacer o no el PR, y no se si separar aun mas los
+  codigos, por que si recuerdas en mis 9 puntos originales, tenia la intencios de que liretalemnet
+  tubierasmos una interface coomo contrado que hiciera uso de los ecenarios (aun que creo que lo
+  dije de ottra forma) y este se implementaria en el controllador, se que pasamos muchos detalles
+  por alto de mis 9 puntos originales, pero esa mi idea de legibilida, donde estaba cada modulo y
+  el por que, por que para mi una interface debia ser un contrato, y que este en servicio,
+  dificulta la lectura, es mas, hasta que punto podemos separar en src/HU36/interfaces(con los
+  contratos)  src/HU36/services(implementacion de las interfgaces)  src/HU36/models(entidades)
+  src/HU36/repository(solo para el que permite el acceso al crud), y que hay de los otros 9
+  puntos, como resolvirtes los detalles para costruir por otro lado?... y el tema del catalogo
+  general y el cvs como son generales, imagino que pudene estar en la estrucura basica,
+  src/interfaces y sus otras respectivas...."
+
+El modelo le mostró cómo quedó cada uno de sus 9 puntos y le hizo cuatro preguntas. En la de las
+carpetas, el autor eligió:
+
+- "Por historia, como propones (Recomendado)"
+
+**Decisión:** El código de una historia vive en su carpeta, como `hu036/`, con `interfaces/`,
+`modelos/`, `repositorios/` y `servicios/`. Lo que usan varias historias, como `Catalogo`, la tabla
+de cambios y la carga desde el CSV, vive en `comun/`, con las mismas subcarpetas y el menú en
+`comun/menu/`. Las carpetas cuelgan de `src/main/java/com/example/demo/`, porque Maven compila lo
+que está bajo `src/main/java/` y Spring busca las clases bajo el paquete de `DemoApplication`. Los
+tests siguen el mismo orden bajo `src/test/java/com/example/demo/`.
+
+En la cuarta pregunta el autor eligió el orden: primero las carpetas, después los escenarios 13 a
+18 de HU-036.
+
+**Alternativas:**
+
+- Por capa, con las interfaces en su propia carpeta. Cada carpeta junta las 12 historias, y para
+  leer una historia hay que abrir cuatro carpetas.
+- Dejarla como estaba, con `CrudCatalogo` dentro de `servicio/`. Al autor le dificultaba la
+  lectura.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Cada historia tiene su contrato, y lo implementa su servicio
+
+**Contexto:** La cita del autor de la entrada anterior pedía una interfaz como contrato que usara
+los escenarios. En la segunda pregunta, sobre quién implementa ese contrato, el autor escribió:
+
+- "haber no te digo que no exista puntos comunes, pero para facilitar la lectura, lo hyper
+  especifico de la HU es su capreta, catalogo crud realmente puede y es general verdad? puede ser
+  reutilizado por otros HU; por otro lado el controlador solo es una fany word por decir algo donde
+  estaran los metodos reales de la HU y sus validacorios y toda la logica interna que pueda o no
+  traer, ya sea de sus propios contratos interfaces o no,, al final tecnicamente servicio que sera
+  expuesto por su interface de contrato sera lo que deba instanciar donde quiera llamar sus
+  acciones no?"
+
+En el repo, el controlador es el menú, que lee la opción y llama (`docs/DESIGN.md`, sección 6). Lo
+que el autor describe, los métodos de la historia con sus validaciones, es el servicio.
+
+**Decisión:** Cada historia tiene un contrato en `hu0NN/interfaces/`, que extiende `CrudCatalogo`
+y agrega lo propio de la historia: `ContratoEtnias` trae la lista de la hoja 15. Su comentario dice
+qué escenario cumple cada operación. El servicio implementa el contrato, y el menú lo pide por la
+interfaz. `CrudCatalogo`, el contrato común, queda en `comun/interfaces/`.
+
+**Alternativas:**
+
+- Que el menú implemente el contrato. Las reglas quedarían en el menú, y la web o Postman tendría
+  que copiarlas (`docs/DESIGN.md`, sección 6).
+- Solo el contrato común. La historia no tendría dónde poner lo suyo sin tocar lo de las demás.
+
+**Estado:** `vigente`
+
+## 2026-10-26: El programa trabaja sobre una copia del archivo de la base
+
+**Contexto:** Cada corrida cambiaba los bytes de `data/ips.mv.db`, aunque no guardara nada, y git
+lo veía modificado: era un hueco de `docs/ARCHITECTURE.md`, sección 6. En la tercera pregunta, el
+autor eligió:
+
+- "Trabajar sobre una copia (Recomendado)"
+
+**Decisión:** `application.properties` abre la base de prueba, `data/prueba.mv.db`, y
+`DemoApplication.main` la copia de `data/ips.mv.db` si no existe. Quien tiene el turno abre
+`data/ips` pasando su URL al arrancar. Para traer los catálogos nuevos de `main` a la base de
+prueba, se borra y la corrida siguiente la copia otra vez.
+
+**Alternativas:** Seguir abriendo `data/ips.mv.db` y deshacer el cambio con
+`git checkout data/ips.mv.db` antes de cada commit. Dependía de que cada persona y cada modelo lo
+recordara.
+
+**Estado:** `vigente`
+
+## 2026-10-26: El merge de un PR se dice fusionar
+
+**Contexto:** El modelo llamaba "mezclar" al merge de un PR. En la cita de la entrada 2026-10-26
+"El código se ordena por historia, con lo común aparte", el autor pidió no usar esa palabra, porque
+le sonaba a que hacía algo malo.
+
+**Decisión:** El modelo dice "fusionar", en el chat y en los documentos vigentes. `CLAUDE.md`,
+`docs/GLOSSARY.md`, `docs/DESIGN.md` y `tests/README.md` cambian "mezclar" por "fusionar"; las
+entradas de este archivo y las secciones del CHANGELOG ya escritas son historia y no se editan.
+
+**Alternativas:** Dejar "mezclar". Al autor le sonaba a una falta.
+
+**Estado:** `vigente`

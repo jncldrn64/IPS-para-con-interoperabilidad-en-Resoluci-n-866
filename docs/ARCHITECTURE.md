@@ -24,9 +24,9 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `.github/workflows/tests.yml` | El CI: GitHub Actions corre `./mvnw -B test` en cada PR |
 | `pom.xml` | Proyecto Maven `com.example:demo`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |
 | `mvnw`, `mvnw.cmd`, `.mvn/wrapper/` | Envoltorio de Maven: la primera corrida baja Maven 3.9.11 |
-| `src/main/java/com/example/demo/` | `DemoApplication`, que arranca Spring, y los paquetes |
+| `src/main/java/com/example/demo/` | `DemoApplication`: copia la base de prueba y arranca Spring |
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
-| `src/test/java/com/example/demo/` | `BaseComunTest` y una clase por historia (`tests/README.md`) |
+| `src/test/java/com/example/demo/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
 | `data/ips.mv.db` | El archivo de la base, con las 7 etnias cargadas (sección 3) |
@@ -50,21 +50,22 @@ Comprobado el 2026-10-26.
 | Historias de usuario | Una tarjeta por historia, más la de reglas comunes | `docs/context/trello/tarjetas/` |
 | Modelo de datos propuesto | 24 tablas en Mermaid | `docs/context/modelo-datos/modelo-entidad-relacion.md` |
 
-| Paquete, bajo `src/main/java/com/example/demo/` | Qué guarda |
+| Carpeta, bajo `src/main/java/com/example/demo/` | Qué guarda |
 |---|---|
-| `modelo/` | `Catalogo` y sus hijas, `Etnia` y `ComunidadEtnica` |
-| `modelo/` | `CatalogoVersion`, `CatalogoCambio` y el enum `Motivo`, de la tabla de cambios |
-| `repositorio/` | `CatalogoRepositorio`, uno por catálogo, versiones y cambios; ninguno borra |
-| `servicio/` | `CrudCatalogo`, que usa el menú, la base `ServicioCatalogo` y uno por catálogo |
-| `servicio/` | `RegistroCatalogos`: las versiones y la tabla de cambios de todos los catálogos |
-| `servicio/` | `ArchivoCsv`, `DatosVersion` y `ResultadoCarga`: la carga desde el CSV de RC-8 |
-| `menu/` | `MenuPrincipal`, el menú en terminal: un `switch` principal y un submenú por catálogo |
+| `comun/interfaces/` | `CrudCatalogo`, el contrato común de los 8 catálogos |
+| `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
+| `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
+| `comun/servicios/` | La base `ServicioCatalogo`, `RegistroCatalogos` y la carga desde el CSV |
+| `comun/menu/` | `MenuPrincipal`: un `switch` principal y un submenú por catálogo |
+| `hu036/` | Etnias: `ContratoEtnias`, con la hoja 15, `Etnia`, su repositorio y su servicio |
+| `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
-`application.properties` abre la base `jdbc:h2:file:./data/ips`, relativa a la carpeta donde se
-corre el programa, y el registro de arranque la muestra en la línea `Database JDBC URL`.
-`spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las entidades, y
-`spring.main.web-application-type=none` deja sin arrancar Tomcat y Spring Security. Con el perfil
-`test`, los tests abren `jdbc:h2:mem:pruebas`.
+`application.properties` abre la base de prueba, `jdbc:h2:file:./data/prueba`, relativa a la
+carpeta donde se corre el programa, y el registro de arranque la muestra en la línea
+`Database JDBC URL`. `DemoApplication.main` la copia de `data/ips.mv.db` antes de arrancar Spring,
+si no existe. `spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las
+entidades, y `spring.main.web-application-type=none` deja sin arrancar Tomcat y Spring Security.
+Con el perfil `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
 El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo: 1 abre etnias, 2
 comunidades étnicas y 0 sale. Cada catálogo lista, crea por cambio oficial, cambia el nombre o el
@@ -76,7 +77,8 @@ La carga dice primero qué archivo espera y pide la ruta y los datos de la versi
 `ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
 deja su fila en `CatalogoCambio`, la tabla de cambios común, y cada carga, la suya en
 `CatalogoVersion`. `ServicioCatalogo.contarUsos` devuelve 0 hasta que exista el registro del
-paciente (HU-004).
+paciente (HU-004). El menú pide cada catálogo por su contrato, `ContratoEtnias` o
+`ContratoComunidadesEtnicas`.
 
 ## 3. Recursos y cómo se reinicia cada uno
 
@@ -87,20 +89,20 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
   las dos últimas. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de
   2021"; ninguna comunidad étnica; y 7 filas de cambios, una por etnia creada. Se cargó con la
   opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se reinicia con
-  `git checkout data/ips.mv.db`. La consola de H2 lo abre con el usuario vacío y sin clave; con el
+  `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
+  (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
-- `data/prueba.mv.db`: la base de prueba, una copia del archivo que se abre con otro URL
-  (`docs/DESIGN.md`, sección 8). `.gitignore` la deja fuera de git, y se reinicia copiando otra vez
-  el archivo de la base.
+- `data/prueba.mv.db`: la base de prueba, donde corre el programa. `DemoApplication.main` la copia
+  del archivo de la base si no existe, y `.gitignore` la deja fuera de git. Se reinicia borrándola:
+  la corrida siguiente la copia otra vez con lo que traiga `data/ips.mv.db`.
 - `target/`: lo que compila Maven. `.gitignore` lo deja fuera, y cada build lo rehace.
 - `~/.m2/`, fuera del repo: ahí guarda el envoltorio Maven 3.9.11, en `wrapper/dists/`, y Maven las
   dependencias. La primera corrida los baja de `repo.maven.apache.org`, así que pide red.
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 2531 líneas en 29 archivos. De
-Spring Initializr quedan `DemoApplication.java` entero y la mayor parte de
-`DemoApplicationTests.java`.
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 2618 líneas en 31 archivos. De
+Spring Initializr queda la mayor parte de `DemoApplicationTests.java`.
 
 ## 5. Sin describir todavía
 
@@ -119,11 +121,6 @@ si eso cierra un hueco de esta lista.
   (HU-022), ni que exista el catálogo de comunidades étnicas (HU-037). Comando:
   `git ls-files '*.csv'` devuelve solo `src/test/resources/cargas/etnias-hoja-15.csv`, que se
   transcribió de la hoja 15 del anexo y no se descargó.
-- **2026-10-26: cada corrida cambia `data/ips.mv.db`.** H2 reescribe el archivo al abrirlo y al
-  cerrarlo, aunque no se guarde ningún dato, y git lo ve modificado. Comando, desde la raíz:
-  `printf '0\n' | sh ./mvnw -q spring-boot:run; git status --short data`, que muestra
-  `M data/ips.mv.db`. Quien no tiene el turno lo deja como estaba con `git checkout data/ips.mv.db`
-  antes de su commit (`docs/DESIGN.md`, sección 8).
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,

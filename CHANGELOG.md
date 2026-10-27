@@ -5,6 +5,37 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.11 — 2026-10-26
+
+El código se ordena por historia, con lo común aparte; cada historia tiene su contrato, y el
+programa corre sobre una copia del archivo de la base. El programa no muestra una versión.
+
+### Added
+- `hu036/interfaces/ContratoEtnias`, con la lista de la hoja 15, y
+  `hu037/interfaces/ContratoComunidadesEtnicas`: el contrato de cada historia, que implementa su
+  servicio y usa el menú.
+- `DemoApplication.copiarSiFalta`: crea la base de prueba desde `data/ips.mv.db` si no existe, y
+  su test en `BaseComunTest`.
+- `docs/DECISIONS.md`: cuatro entradas del 2026-10-26, de "El código se ordena por historia, con
+  lo común aparte" a "El merge de un PR se dice fusionar".
+- `docs/GLOSSARY.md`: "contrato" y "fusionar".
+
+### Changed
+- Las clases pasan de `modelo/`, `repositorio/`, `servicio/` y `menu/` a `comun/`, `hu036/` y
+  `hu037/`, cada una con `interfaces/`, `modelos/`, `repositorios/` y `servicios/`. Los tests
+  siguen el mismo orden.
+- `application.properties` abre `data/prueba`; quien tiene el turno abre `data/ips` con su URL.
+- "Mezclar" pasa a "fusionar" en `CLAUDE.md`, `docs/GLOSSARY.md`, `docs/DESIGN.md` y
+  `tests/README.md`.
+- `docs/DESIGN.md`, secciones 3, 6, 7 y 8, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` y
+  `tests/README.md` describen las carpetas y la base de prueba.
+- La memoria contextual anota la pregunta del autor, sus cuatro respuestas y su preferencia por
+  "fusionar".
+
+### Fixed
+- Una corrida ya no cambia `data/ips.mv.db`, y su hueco sale de `docs/ARCHITECTURE.md`,
+  sección 6.
+
 ## v0.10 — 2026-10-26
 
 La carga de un catálogo desde el CSV de RC-8, con versión nueva y recarga (RC-9), y el archivo de

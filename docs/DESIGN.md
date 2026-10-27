@@ -42,14 +42,15 @@ y "Reglas que el modelo tiene que cumplir".
 ## 3. Los tests
 
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
-(`CLAUDE.md`, sección 8). Cada historia tiene su clase de test, como `HU036EtniasTest`, y cada
-escenario sus métodos, `esc<N>_<alternativa>`: el número del escenario y el caso de su "Dado" que
-prueba. `@DisplayName` repite la historia y el escenario, como "HU-036 Esc. 10".
+(`CLAUDE.md`, sección 8). Cada historia tiene su clase de test en su carpeta, como
+`src/test/java/com/example/demo/hu036/HU036EtniasTest.java`, y cada escenario sus métodos,
+`esc<N>_<alternativa>`: el número del escenario y el caso de su "Dado" que prueba. `@DisplayName`
+repite la historia y el escenario, como "HU-036 Esc. 10".
 
 Un escenario se cumple cuando cada caso de su "Dado" tiene su método y pasa, y una historia, cuando
 se cumplen todos sus escenarios. Las reglas de este archivo que no son el escenario de una historia
 van en `BaseComunTest`, y los casos límite que pidió el autor, como cargar las 7 etnias en las dos
-entidades, en `CasosLimiteTest`.
+entidades, en `CasosLimiteTest`. Las dos están en `src/test/java/com/example/demo/comun/`.
 
 Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
 y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
@@ -107,16 +108,35 @@ Un repositorio de catálogo extiende `CatalogoRepositorio`, que extiende `Reposi
 y declara solo `findAllByOrderByCodigoAsc`, `findById` y `save`. `CrudRepository`, y con él
 `ListCrudRepository`, trae `deleteById`, `delete`, `deleteAll` y `deleteAllById`.
 
+El código de una historia vive en su carpeta, como `hu036/`, y lo que usan varias historias, en
+`comun/`. Las dos cuelgan de `src/main/java/com/example/demo/`, donde Maven y Spring buscan las
+clases, y tienen las mismas subcarpetas:
+
+- `interfaces/`: el contrato;
+- `modelos/`: las entidades;
+- `repositorios/`: el acceso a la base;
+- `servicios/`: los métodos de la historia y sus validaciones.
+
+El menú vive en `comun/menu/`. El contrato de una historia es una interfaz que extiende
+`CrudCatalogo` y agrega lo propio de la historia, como la lista de la hoja 15 en `ContratoEtnias`.
+Su comentario dice qué escenario cumple cada operación. El servicio implementa el contrato, y el
+menú lo pide por la interfaz, nunca por el servicio.
+
 **Por qué:** la guía pide una aplicación web [2] y la fase 0 corre en terminal. Si los servicios no
 tocan la terminal, la web reemplaza el menú y deja los servicios como están. Si un repositorio
 puede borrar, basta una llamada para romper "Nada se borra".
 
+Con una carpeta por historia, cada integrante trabaja en la suya, y lo que tiene una historia se
+lee sin abrir las demás. El contrato dice qué hace la historia sin leer cómo lo hace.
+
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "El código se separa en modelo, vista y
-controlador" y 2026-10-26 "El primer código arma la base común con etnias y comunidades étnicas".
+controlador", y del 2026-10-26 "El primer código arma la base común con etnias y comunidades
+étnicas", "El código se ordena por historia, con lo común aparte" y "Cada historia tiene su
+contrato, y lo implementa su servicio".
 
 **Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
-de la terminal. Que ningún repositorio de catálogo ofrezca borrar lo comprueba
-`BaseComunTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
+de la terminal. Que ningún repositorio ofrezca borrar lo comprueba
+`BaseComunTest.ningunRepositorioPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
 
 ## 7. La base común de los catálogos
 
@@ -130,14 +150,15 @@ nombre, el estado y la versión. El código es la llave y se guarda como texto (
 catálogo agrega lo suyo, como el padre de una ocupación, y el historial de los valores va en una
 tabla de cambios común.
 
-Un catálogo nuevo trae tres clases y su entrada en el menú, con `Etnia` de ejemplo
-(`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo"):
+Un catálogo nuevo trae su carpeta con cuatro clases y su entrada en el menú, con `hu036/` de
+ejemplo (`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo"):
 
+- el contrato extiende `CrudCatalogo` de su entidad, como `ContratoEtnias`;
 - la entidad extiende `Catalogo`, fija el largo del código con `@AttributeOverride` y su formato con
   `@Pattern` sobre `getCodigo`;
 - el repositorio extiende `CatalogoRepositorio`;
-- el servicio extiende `ServicioCatalogo` y le pasa la clase de su entidad, como
-  `super(Etnia.class, datos, validador, registro)`.
+- el servicio extiende `ServicioCatalogo`, implementa el contrato y le pasa a la base la clase de su
+  entidad, como `super(Etnia.class, datos, validador, registro)`.
 
 La base valida cada dato con su numeral, pide la referencia oficial para crear o cambiar un valor
 (RC-3) y aplica RC-10 al inactivar y al reactivar. Cada operación deja su fila en la tabla de
@@ -167,38 +188,39 @@ confirmar".
 y las pruebas corren sobre otra base, con otro nombre. El turno lo tiene quien tenga abierto el PR
 que cambia el archivo, y la base de prueba arranca como copia del archivo.
 
-`application.properties` abre `jdbc:h2:file:./data/ips`. H2 crea el archivo si no existe, y
-`spring.jpa.hibernate.ddl-auto=update` crea las tablas que faltan según las entidades. La ruta es
-relativa a la carpeta donde se corre, así que el programa se corre desde la raíz del repo.
+El programa corre sobre la base de prueba, `data/prueba.mv.db`. `application.properties` abre
+`jdbc:h2:file:./data/prueba`, y `DemoApplication.main` la copia de `data/ips.mv.db` si no existe.
+`.gitignore` la deja fuera de git, así que una corrida no cambia el archivo de la base. Las rutas
+son relativas a la carpeta donde se corre, y por eso el programa se corre desde la raíz del repo.
 
-La base de prueba se copia del archivo y se abre pasando su URL al arrancar, sin tocar
-`application.properties`:
+Quien tiene el turno abre el archivo de la base pasando su URL al arrancar:
 
 ```sh
-cp data/ips.mv.db data/prueba.mv.db
 sh ./mvnw spring-boot:run \
-  -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:file:./data/prueba
+  -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:file:./data/ips
 ```
 
-Se comprobó el 2026-10-26 en una copia del repo: la lista de etnias salió de `prueba`, y la de
-`ips` siguió sin el valor que se agregó en la prueba. `.gitignore` deja `data/prueba.*` fuera de
-git.
+Esa corrida cambia los bytes de `data/ips.mv.db` aunque no guarde nada, porque H2 lo reescribe al
+abrirlo y al cerrarlo. Para traer a la base de prueba los catálogos nuevos de `main`, se borra
+`data/prueba.mv.db` y la corrida siguiente la copia otra vez. `spring.jpa.hibernate.ddl-auto=update`
+crea en las dos las tablas que faltan según las entidades.
 
-Cada corrida cambia los bytes de `data/ips.mv.db`, aunque no guarde ningún dato
-(`docs/ARCHITECTURE.md`, sección 6). Quien no tiene el turno lo deja como estaba con
-`git checkout data/ips.mv.db` antes de su commit.
+Se comprobó el 2026-10-26 desde la raíz del repo. Sin `data/prueba.mv.db`, una corrida la creó con
+las 7 etnias, y `git status --short data` no mostró cambios; la corrida con el URL de `ips` dejó
+`M data/ips.mv.db`.
 
 **Por qué:** los datos quedan entre una corrida y la siguiente, y quien necesita un catálogo lo
 encuentra ya cargado en el archivo.
 
-El autor aceptó lo que cuesta. Git no mezcla dos cambios del archivo, y por eso los cambios van
-por turnos. Correr el programa también lo cambia: las pruebas usan otra base para que un paciente de
-prueba no llegue a git.
+El autor aceptó lo que cuesta. Git no fusiona dos cambios del archivo, y por eso los cambios van
+por turnos. Correr el programa sobre el archivo también lo cambia, así que el programa corre sobre
+la base de prueba, y un paciente de prueba no llega a git.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "La base es H2 en un archivo que va en
 git", 2026-10-24 "El archivo de la base trae los catálogos cargados", y del 2026-10-25 "El archivo
 de la base se cambia por turnos", "Las pruebas corren sobre otra base", "El turno del archivo de la
-base es del PR abierto" y "La base de prueba arranca como copia del archivo".
+base es del PR abierto" y "La base de prueba arranca como copia del archivo", y 2026-10-26 "El
+programa trabaja sobre una copia del archivo de la base".
 
 ## 9. Sin escribir todavía
 
