@@ -2104,8 +2104,39 @@ Lo que hizo el modelo:
 - Comprobado el 2026-10-27: 112 tests pasan. Con `LocalDateTime.now()` en `RegistroCatalogos`, el
   test de la hora falla con 04:44 contra 23:44.
 
-Hecho en el PR que sigue a 5b3f74a: las cinco entradas del 2026-10-27 de `docs/DECISIONS.md`, de
-"HU-036 y HU-037 están completas" a "La tabla de cambios guarda la hora de Colombia".
+Después, la revisión por tandas de lo que el modelo agregó sin respuesta del autor. En la primera,
+el autor eligió:
+
+- "Aceptar (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar (Recomendado)"
+
+En la segunda:
+
+- "Citar la fuente basta"
+- "Aceptar las cuatro (Recomendado)"
+- "Aceptar las tres (Recomendado)"
+- "Aceptar las cuatro (Recomendado)"
+
+En la tercera:
+
+- "Permitir datos provisionales"
+- "Darlas por reemplazadas (Recomendado)"
+- "Aceptar los seis (Recomendado)"
+
+Como el `docs/ROADMAP.md` dice que el docente no acepta datos provisionales, el modelo preguntó si
+solo en la base de prueba, y el autor eligió:
+
+- "También en el archivo de la base"
+
+El modelo midió con un test que no quedó en el repo que, después de una carga provisional fechada
+hoy, el archivo oficial publicado en 2021 se rechaza como anterior. Cómo entra un valor provisional
+quedó en `docs/DESIGN.md`, sección 9.
+
+Hecho en el PR que sigue a 5b3f74a: las ocho entradas del 2026-10-27 de `docs/DECISIONS.md`, de
+"HU-036 y HU-037 están completas" a "El archivo de la base admite valores provisionales", y
+`CLAUDE.md`, sección 10.
 
 **Estado:** `vigente`
 
@@ -2255,12 +2286,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 ## 12. Pendientes y próximo paso
 
 00000000000000000000000000. **Próximo (2026-10-27, HU completas y paquete):** que el autor revise y
-   fusione el PR del paquete, la hora de Colombia y "pacientes". Después, la revisión por tandas
-   de 4 preguntas de lo que el modelo agregó sin respuesta del autor en `docs/DECISIONS.md`,
-   empezando por lo que afecta a los integrantes, y los PR de prueba de los integrantes 1 y 2
-   (`CLAUDE.md`, sección 7). El archivo de comunidades lo busca el autor; no se toca hasta nueva
-   orden. Sin respuesta: si el docente acepta Postman; cómo corren el programa los integrantes 1
-   y 2; y D-02, D-18, D-21, D-23 y D-25, que son del equipo.
+   fusione el PR del paquete, la hora de Colombia, "pacientes" y la revisión de lo que eligió el
+   modelo, que quedó hecha. Después, los PR de prueba de los integrantes 1 y 2 (`CLAUDE.md`,
+   sección 7), y cómo entra un valor provisional cuando haga falta el primero. El archivo de
+   comunidades lo busca el autor; no se toca hasta nueva orden. Sin respuesta: si el docente acepta
+   Postman; cómo corren el programa los integrantes 1 y 2; y D-02, D-18, D-21, D-23 y D-25, que son
+   del equipo.
 0000000000000000000000000. **Anterior (2026-10-27, salida de la terminal):** que el autor revise y
    fusione el PR de la salida de la terminal: la línea de la base, la salida por `Terminal`, la
    pregunta antes de reemplazar la lista de rechazadas y el corte de la terminal, que el modelo

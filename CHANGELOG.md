@@ -13,8 +13,10 @@ la hora de Colombia y el menú dice "pacientes". El programa no muestra una vers
 ### Added
 - `RegistroCatalogos.ZONA`, `America/Bogota`, con `ahora` y `hoy`, y su test en `BaseComunTest`:
   112 tests en total.
-- `docs/DECISIONS.md`: cinco entradas del 2026-10-27, de "HU-036 y HU-037 están completas" a "La
-  tabla de cambios guarda la hora de Colombia".
+- `docs/DECISIONS.md`: ocho entradas del 2026-10-27, de "HU-036 y HU-037 están completas" a "El
+  archivo de la base admite valores provisionales". Una deja revisado por el autor lo que el modelo
+  había elegido sin su respuesta en diez entradas.
+- `docs/GLOSSARY.md`: "valor provisional".
 - `docs/ARCHITECTURE.md`, sección 6: el hueco de lo que espera a HU-004.
 
 ### Changed
@@ -25,6 +27,10 @@ la hora de Colombia y el menú dice "pacientes". El programa no muestra una vers
 - Al inactivar, el menú dice "La usan N pacientes".
 - `docs/DESIGN.md`, secciones 3, 6, 7 y 9, `docs/ARCHITECTURE.md`, `docs/GLOSSARY.md`,
   `docs/ROADMAP.md` y `tests/README.md` describen el paquete, el idioma de los nombres y la hora.
+- `CLAUDE.md`, sección 10: un catálogo que publica una entidad del Estado se copia citando la
+  entidad y la dirección de descarga, sin buscar licencia aparte.
+- `docs/ROADMAP.md`, "Principio de orden" y Backlog, y `docs/DESIGN.md`, sección 9: el archivo de
+  la base admite valores provisionales, y cómo entran sin trabar al oficial queda por decidir.
 - La memoria contextual anota las preguntas del autor, sus respuestas y lo hecho.
 
 ### Removed

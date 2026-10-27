@@ -10,9 +10,13 @@
 El docente no acepta que se desarrolle una historia que dependa directamente de otra que no esté
 desarrollada, aunque le dé valor al cliente, ni un dato provisional para crear su catálogo en otro
 sprint. Por eso los pasos de la fase 0 siguen las dependencias de las 12 historias del plan B y no
-su prioridad: primero lo que no depende de nada, después lo que depende de eso. La complejidad se
-estima de 1 a 10 y sube con las dependencias directas (`docs/context/MEMORIA-CONTEXTUAL.md`,
-entrada del 2026-10-21 "Límite de 12 historias; dependencias y el paciente").
+su prioridad: primero lo que no depende de nada, después lo que depende de eso. El archivo de la
+base sí admite valores provisionales mientras llega el archivo oficial de un catálogo ya hecho
+(`docs/DECISIONS.md`, 2026-10-27 "El archivo de la base admite valores provisionales").
+
+La complejidad se estima de 1 a 10 y sube con las dependencias directas
+(`docs/context/MEMORIA-CONTEXTUAL.md`, entrada del 2026-10-21 "Límite de 12 historias; dependencias
+y el paciente").
 
 Desde el 2026-10-24 el equipo es de 3 integrantes con 4 historias cada uno (`docs/DECISIONS.md`,
 2026-10-24 "Tres integrantes con cuatro historias cada uno"). Los integrantes van numerados del 1 al
@@ -234,9 +238,9 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   tarjeta. D-12 ya está en la escala de 1 a 10.
   **Entró:** 2026-10-22, PR de siembra.
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
-  `docs/ARCHITECTURE.md`, sección 6. Antes de subir uno que no venga de una norma, o el archivo de
-  la base que lo trae, se revisa su licencia y su atribución; una lista del anexo se copia citando
-  la norma (`CLAUDE.md`, sección 10).
+  `docs/ARCHITECTURE.md`, sección 6. El que publica una entidad del Estado se copia citando la
+  entidad y la dirección de descarga, y una lista del anexo, citando la norma (`CLAUDE.md`,
+  sección 10).
   **Entró:** 2026-10-22, PR de siembra.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a

@@ -312,6 +312,10 @@ Este archivo es una semilla mientras esta lista tenga algo.
 - Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
   que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
   `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
+- Cómo entra un valor provisional al archivo de la base sin trabar al oficial que llegue después.
+  Medido el 2026-10-27 con un test que no quedó en el repo: después de una carga provisional
+  fechada ese día, un archivo oficial publicado en 2021 se rechaza como "anterior a la de la
+  versión vigente" (`ServicioCatalogo.tipoDeCarga`).
 - De dónde sacan los catálogos los tests de HU-004. La base en memoria de los tests arranca vacía,
   y cada test crea los valores que usa.
 - Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus

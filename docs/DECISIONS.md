@@ -1556,3 +1556,96 @@ en `RegistroCatalogos`, `BaseComunTest.laTablaDeCambiosYLaCargaGuardanLaHoraDeCo
   la IPS.
 
 **Estado:** `vigente`
+
+## 2026-10-27: El autor revisa lo que eligió el modelo
+
+**Contexto:** Diez entradas tenían una lista de lo que el modelo agregó, sin respuesta del autor.
+A la pregunta de cómo revisarlas, el autor eligió:
+
+- "Preguntas por tandas (Recomendado)"
+
+El modelo las agrupó en tres tandas, empezando por lo que afecta a los integrantes 1 y 2. El autor
+eligió la opción recomendada en todas las preguntas, salvo en dos: la licencia de los catálogos y
+los datos provisionales, que tienen su propia entrada del 2026-10-27, "Un catálogo del Estado se
+copia citando su fuente" y "El archivo de la base admite valores provisionales".
+
+**Decisión:** lo que el modelo agregó queda así, por entrada:
+
+- 2026-10-24 "El archivo de la base trae los catálogos cargados": aceptado que el segundo PR que
+  carga tome el archivo de `main` y vuelva a correr su carga. Las otras dos, cambiadas por las
+  entradas de arriba.
+- 2026-10-25 "Las pruebas corren sobre otra base": reemplazado por la entrada 2026-10-26 "El
+  programa trabaja sobre una copia del archivo de la base".
+- 2026-10-26 "El primer código arma la base común con etnias y comunidades étnicas": aceptados los
+  repositorios sin borrar, el contrato genérico, la validación antes de guardar, que cambiar el
+  nombre no cambie el estado ni la versión, el arranque sin la parte web y el perfil `test`. La
+  copia con `cp`, reemplazada por `IpsApplication.copiarSiFalta`.
+- 2026-10-26 "La tabla de cambios y RC-10 entran en la base común": aceptadas las tres.
+- 2026-10-26 "La carga lee primero y guarda al confirmar": aceptadas las tres.
+- 2026-10-26 "La consulta, la búsqueda y la comparación entran en la base común": aceptados el
+  filtro como enum, `nombreEnPlural`, "los que sobran", qué cuenta "cambió" y la búsqueda por
+  código exacto. El menú que recibía la entrada por su constructor, reemplazado por `Terminal`.
+- 2026-10-26 "Cada historia tiene su controlador, y el menú común lo abre": aceptados los cuatro.
+  HU-001 y HU-004 entran al menú con su propio controlador.
+- 2026-10-27 "La terminal recibe también la salida, y un test lee lo que dice": aceptado el corte
+  de `Terminal.leer`.
+- 2026-10-27 "El paquete es com.ipssaludyvida y el artefacto ips": aceptado `IpsApplication`.
+- 2026-10-27 "La tabla de cambios guarda la hora de Colombia": aceptadas las dos.
+
+**Alternativas:** Dar todo por aceptado en una sola entrada, o que el autor las leyera solo.
+
+**Estado:** `vigente`
+
+## 2026-10-27: Un catálogo del Estado se copia citando su fuente
+
+**Contexto:** La entrada 2026-10-24 "El archivo de la base trae los catálogos cargados" proponía
+revisar la licencia de cada catálogo de terceros antes de subirlo: la DIVIPOLA del DANE (HU-026), la
+CIUO-88 A.C. (HU-022) y las tablas de SISPRO (HU-018, HU-034 y HU-038). `CLAUDE.md`, sección 10,
+pedía parar y avisar si una fuente no trae licencia. El autor eligió:
+
+- "Citar la fuente basta"
+
+**Decisión:** un catálogo que publica una entidad del Estado se copia citando la entidad y la
+dirección de donde se bajó, sin buscar licencia aparte. La carga ya guarda la fuente y la dirección
+de descarga en cada versión (RC-8). `CLAUDE.md`, sección 10, lo dice en el mismo PR. La regla de
+LICENSE sigue para el código, las plantillas y las skills de terceros.
+
+No verificado: el modelo no leyó los términos de publicación del DANE, del Ministerio de Salud ni
+de SISPRO.
+
+**Alternativas:** Revisar la licencia de cada fuente antes del primer commit que la traiga, y parar
+si no se encuentra.
+
+**Estado:** `vigente`
+
+## 2026-10-27: El archivo de la base admite valores provisionales
+
+**Contexto:** La entrada 2026-10-24 "El archivo de la base trae los catálogos cargados" proponía
+que cada catálogo entrara al archivo de la base solo con la carga de su archivo oficial. Según
+`docs/ROADMAP.md`, sección "Principio de orden", el docente no acepta "un dato provisional para
+crear su catálogo en otro sprint". El autor eligió:
+
+- "Permitir datos provisionales"
+
+Al preguntarle si solo en la base de prueba, eligió:
+
+- "También en el archivo de la base"
+
+**Decisión:** un catálogo ya hecho puede entrar al archivo de la base con valores provisionales
+mientras llega su archivo oficial, que después los reemplaza.
+
+**Hipótesis:** la regla del docente es sobre usar un dato provisional para dejar el catálogo para
+otro sprint. Aquí el catálogo está hecho y solo sus valores esperan al oficial. La base es la cita
+de `docs/ROADMAP.md`; el docente no lo ha visto.
+
+Falta decidir cómo entra un valor provisional sin trabar al oficial. Medido el 2026-10-27 con un
+test que no quedó en el repo: después de una carga provisional fechada ese día, un archivo oficial
+publicado en 2021 se rechaza como "anterior a la de la versión vigente"
+(`ServicioCatalogo.tipoDeCarga`). Queda en `docs/DESIGN.md`, sección 9.
+
+**Alternativas:**
+
+- Solo en la base de prueba y en los tests, que no van a git.
+- Ningún dato provisional, como proponía el modelo.
+
+**Estado:** `vigente`
