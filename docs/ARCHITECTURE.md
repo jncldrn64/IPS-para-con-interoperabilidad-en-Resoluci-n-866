@@ -21,11 +21,12 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `HELP.md` | Enlaces de ayuda que genera Spring Initializr |
 | `LICENSE` | GNU Affero General Public License, versión 3 |
 | `.gitignore` | Deja fuera de git `target/` y la base de prueba, `data/prueba.*` |
+| `.github/workflows/tests.yml` | El CI: GitHub Actions corre `./mvnw -B test` en cada PR |
 | `pom.xml` | Proyecto Maven `com.example:demo`, padre `spring-boot-starter-parent` 4.0.8, Java 21 |
 | `mvnw`, `mvnw.cmd`, `.mvn/wrapper/` | Envoltorio de Maven: la primera corrida baja Maven 3.9.11 |
 | `src/main/java/com/example/demo/` | `DemoApplication`, que arranca Spring, y los paquetes |
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
-| `src/test/java/com/example/demo/` | `DemoApplicationTests` y `CatalogosTest` (`tests/README.md`) |
+| `src/test/java/com/example/demo/` | `BaseComunTest` y una clase por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
@@ -81,7 +82,7 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 483 líneas en 16 archivos. De
+Comprobado el 2026-10-26 con `git ls-files 'src/*' | xargs wc -l`: 551 líneas en 18 archivos. De
 Spring Initializr quedan `DemoApplication.java` entero y la mayor parte de
 `DemoApplicationTests.java`.
 

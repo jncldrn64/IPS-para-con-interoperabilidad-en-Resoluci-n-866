@@ -883,3 +883,94 @@ Lo que el modelo agregó, sin respuesta del autor todavía:
 - Validar solo al escribir en la base. El menú recibe la excepción de la transacción sin el motivo.
 
 **Estado:** `vigente`
+
+## 2026-10-26: Un escenario se prueba con un test que lleva su número
+
+**Contexto:** El autor preguntó el 2026-10-26 qué le falta a HU-036, y si los escenarios podían ser
+interfaces o pruebas:
+
+- "que nos falta para que la historia de usario mia propuesta este hecha? el HU tiene, que sucuede
+  con los ecenario?, por que esa podrian ser tambien interfaces especificas que implementar como
+  reglas de negocio que habia dicho, pero ya veo por donde hiciste el cambio... crees que con todo
+  esto el repositoro ya es auto suficiente, que mis companeros plantean sus ideas, o siguen mis
+  lineamentros establecidos? no crees que los ecenarios tambien podrian ser pruebas en si mismo que
+  el modelo deberia correr, como intentar meter valores donde no son?"
+
+`docs/DESIGN.md`, sección 3, ya pedía una corrida por escenario, y su sección 9 dejaba sin escribir
+cómo se nombra el test. Una interfaz fija nombres y tipos; no puede exigir que un código tenga 2
+dígitos, y Java compila una implementación que lo ignore. El autor eligió:
+
+- "Uno por escenario (Recomendado)"
+
+**Decisión:** Cada historia tiene su clase de test y cada escenario sus métodos,
+`esc<N>_<alternativa>`, con un `@DisplayName` como "HU-036 Esc. 10". Un escenario se cumple cuando
+cada caso de su "Dado" tiene su método y pasa. Las reglas de `docs/DESIGN.md` que no son el
+escenario de una historia van en `BaseComunTest`, que reemplaza a `CatalogosTest`.
+
+**Alternativas:**
+
+- Una interfaz por escenario, como sugirió el autor. Serían 23 en HU-036, casi todas iguales en los
+  8 catálogos, y ninguna obliga a cumplir la regla.
+- Una clase abstracta con los escenarios de RC-8 a RC-11, que corre para los 8 catálogos. Ahorra
+  código, pero el número del escenario no queda en el nombre del test.
+
+**Estado:** `vigente`
+
+## 2026-10-26: Un CI corre los tests en cada PR
+
+**Contexto:** Hasta el 2026-10-26, los tests los corría el modelo que escribía el PR, y nadie los
+volvía a correr en GitHub. Dos integrantes ya tienen rol Write en el fork, Atervolgo y
+jorge-a-restrepo. El autor eligió:
+
+- "Sí, con GitHub Actions (Recomendado)"
+
+**Decisión:** `.github/workflows/tests.yml` corre `./mvnw -B test` con Java 21 en cada PR y en cada
+cambio de `main`. El PR muestra el check `tests` en verde o en rojo.
+
+**Alternativas:** Que cada modelo corra los tests y pegue el resultado en el PR. Nadie comprueba
+que esa corrida existió.
+
+**Estado:** `vigente`
+
+## 2026-10-26: main queda abierta a los integrantes
+
+**Contexto:** `main` no tiene protección: un integrante con rol Write puede mezclar su propio PR o
+empujar a `main` sin revisión. El modelo propuso exigir un PR con la aprobación del autor. El autor
+contestó:
+
+- "realmente el fork es para que trabajen libremente, ya lo habiamos discutiod, no quiero limitar lo
+  que puedan hacer, es mas permito que hagan cambios, de hecho quiero que hagan cambios, de igual
+  manera todo quedara cosignado en la documentacion."
+
+**Decisión:** `main` sigue sin protección. Cada integrante trabaja con libertad, y lo que cambie
+queda escrito en los documentos y en su PR, como pide `CLAUDE.md`. El CI de la entrada 2026-10-26
+"Un CI corre los tests en cada PR" informa el resultado y no bloquea la mezcla.
+
+**Alternativas:** Una regla de rama en GitHub con PR obligatorio y una aprobación. El autor la
+descartó, porque el fork es para que los integrantes trabajen libremente.
+
+**Estado:** `vigente`
+
+## 2026-10-26: La terminal dice qué archivo espera antes de pedir la ruta
+
+**Contexto:** La entrada 2026-10-25 "Un catálogo se carga desde un CSV, con la ruta en la terminal"
+dejó la carga en CSV. El modelo preguntó qué pieza de HU-036 sigue, la tabla de cambios o la carga,
+y el autor contestó:
+
+- "lo habia olvidado, realmente amabas, por que si termino encontrando el documento de comunidad
+  etnica que imagcino que sera mas de 100 valores como sueguiere le otro modelo, debo ser capaz de
+  subir o parsear el docmuento y establecer un reglamento o que la terminal me diga que tipo de
+  archivo espera, quizas en json o algo asi, an que bueno jsno no es csv, mi idea es que pueda
+  editar todo en una tabla de hoja de calculo y luego submir el archivo y sea capaz ed procesarlo y
+  ver si se puede surbir completo o genera errores..."
+
+**Decisión:** Siguen las dos piezas de HU-036: la tabla de cambios y la carga desde CSV. Antes de
+pedir la ruta, la terminal dice qué archivo espera: CSV en UTF-8, separado por punto y coma, con
+las columnas de su historia, guardado desde la hoja de cálculo con el código como texto (RC-8).
+Después de leerlo dice si se puede cargar completo, o qué filas fallan y por qué, como pide el
+escenario 3 de HU-036.
+
+**Alternativas:** JSON. El autor lo nombró y lo dejó en la misma frase: su idea es editar el
+catálogo en una hoja de cálculo, que guarda CSV.
+
+**Estado:** `vigente`

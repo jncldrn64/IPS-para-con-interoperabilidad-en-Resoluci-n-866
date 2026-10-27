@@ -42,12 +42,27 @@ y "Reglas que el modelo tiene que cumplir".
 ## 3. Los tests
 
 **Regla:** un escenario de una historia se da por cumplido solo con una corrida que lo muestra
-(`CLAUDE.md`, sección 8). Cómo se escribe y se nombra el test de un escenario está en la sección 9
-de este archivo, sin escribir todavía.
+(`CLAUDE.md`, sección 8). Cada historia tiene su clase de test, como `HU036EtniasTest`, y cada
+escenario sus métodos, `esc<N>_<alternativa>`: el número del escenario y el caso de su "Dado" que
+prueba. `@DisplayName` repite la historia y el escenario, como "HU-036 Esc. 10".
+
+Un escenario se cumple cuando cada caso de su "Dado" tiene su método y pasa, y una historia, cuando
+se cumplen todos sus escenarios. Las reglas de este archivo que no son el escenario de una historia
+van en `BaseComunTest`.
 
 Un test que arranca Spring lleva `@ActiveProfiles("test")`. Sin él, el menú arranca dentro del test
 y lo deja esperando el teclado, y el test abre el archivo de la base en vez de la base en memoria de
-`src/test/resources/application-test.properties`. Cómo se corren está en `tests/README.md`.
+`src/test/resources/application-test.properties`. El CI corre `./mvnw test` en cada PR y en cada
+cambio de `main`, con `.github/workflows/tests.yml`; cómo se corren a mano está en
+`tests/README.md`.
+
+**Por qué:** con el número del escenario en el nombre, la salida de `./mvnw test` dice qué
+escenarios de la tarjeta pasan. Un escenario que mete un valor donde no va, como el 10 de HU-036,
+falla si alguien borra la regla que lo rechaza: se comprobó el 2026-10-26 quitando el `@Pattern` de
+`Etnia`.
+
+**Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-26 "Un escenario se prueba con un test que
+lleva su número" y 2026-10-26 "Un CI corre los tests en cada PR".
 
 ## 4. Presentación y registro
 
@@ -100,7 +115,7 @@ controlador" y 2026-10-26 "El primer código arma la base común con etnias y co
 
 **Cómo se comprueba:** a mano, en cada PR de código, que ningún servicio use la entrada o la salida
 de la terminal. Que ningún repositorio de catálogo ofrezca borrar lo comprueba
-`CatalogosTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
+`BaseComunTest.ningunRepositorioDeCatalogoPuedeBorrar`, y un repositorio nuevo se agrega a su lista.
 
 ## 7. La base común de los catálogos
 
@@ -183,6 +198,5 @@ Este archivo es una semilla mientras esta lista tenga algo.
   que pide Spring Data, como `findById` y `save`, y el autor no lo ha decidido.
 - De dónde sacan los catálogos los tests de HU-004. La base en memoria de los tests arranca vacía,
   y cada test crea los valores que usa.
-- Cómo se escribe y se nombra el test de cada escenario, para que se vea qué escenario prueba.
 - Cómo comparten la pantalla los 8 catálogos del paciente, que tienen los mismos escenarios en sus
   tarjetas (`docs/context/trello/tarjetas/`). Sus reglas ya tienen lugar en la sección 7.

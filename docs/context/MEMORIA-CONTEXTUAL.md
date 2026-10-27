@@ -1727,6 +1727,63 @@ Hecho en el PR que sigue a 73d2367: el código de la base común, de etnias y de
 
 **Estado:** `vigente`
 
+## 2026-10-26: Qué le falta a HU-036, los escenarios como tests y el CI
+
+**Contexto:** el autor fusionó el PR #13 del fork (c5aa2fd) y preguntó, textual:
+
+- "que nos falta para que la historia de usario mia propuesta este hecha? el HU tiene, que sucuede
+  con los ecenario?, por que esa podrian ser tambien interfaces especificas que implementar como
+  reglas de negocio que habia dicho, pero ya veo por donde hiciste el cambio... crees que con todo
+  esto el repositoro ya es auto suficiente, que mis companeros plantean sus ideas, o siguen mis
+  lineamentros establecidos? no crees que los ecenarios tambien podrian ser pruebas en si mismo que
+  el modelo deberia correr, como intentar meter valores donde no son?"
+
+Lo que comprobó el modelo el 2026-10-26: los colaboradores del fork son jncldrn64 (admin),
+Atervolgo y jorge-a-restrepo (write); `main` no está protegida; no hay `.github/`; los cinco PR más
+nuevos del fork, del #9 al #13, son del autor.
+
+Lo que respondió el modelo:
+
+- De los 23 escenarios de HU-036 ninguno está completo: 6 a medias (9, 10, 11, 13, 14 y 19), 16 sin
+  empezar, y el 20 choca con el menú, que inactiva sin pedir motivo. El 10 rechaza el código mal
+  formado, pero toma un código que ya existe como cambio de nombre, y el escenario pide rechazarlo.
+- Faltan seis piezas: la tabla de cambios (8 a 11, 19 a 23), la carga desde CSV (1 a 7), la
+  búsqueda (14 a 16), la consulta completa (13, 17), la comparación con la hoja 15 (2, 18) y
+  confirmar o cancelar en el menú (12). Las cuatro primeras van en la base común.
+- Una interfaz fija nombres y tipos, y no obliga a cumplir una regla; el test sí, porque falla si
+  alguien la borra. Una interfaz rinde cuando una regla tiene implementaciones distintas, como la
+  comparación de HU-036 contra la hoja 15 y la de HU-037 contra un archivo.
+- El repo no es autosuficiente todavía: `main` sin protección, sin CI, la base común a medias y un
+  solo archivo de menú para los tres.
+
+El modelo hizo cuatro preguntas. El autor eligió la opción recomendada en las dos primeras:
+
+- "Uno por escenario (Recomendado)"
+- "Sí, con GitHub Actions (Recomendado)"
+
+En las otras dos escribió, textual:
+
+- "realmente el fork es para que trabajen libremente, ya lo habiamos discutiod, no quiero limitar lo
+  que puedan hacer, es mas permito que hagan cambios, de hecho quiero que hagan cambios, de igual
+  manera todo quedara cosignado en la documentacion."
+- "lo habia olvidado, realmente amabas, por que si termino encontrando el documento de comunidad
+  etnica que imagcino que sera mas de 100 valores como sueguiere le otro modelo, debo ser capaz de
+  subir o parsear el docmuento y establecer un reglamento o que la terminal me diga que tipo de
+  archivo espera, quizas en json o algo asi, an que bueno jsno no es csv, mi idea es que pueda
+  editar todo en una tabla de hoja de calculo y luego submir el archivo y sea capaz ed procesarlo y
+  ver si se puede surbir completo o genera errores..."
+
+Lo que hizo el modelo: separó los tests en `BaseComunTest`, `HU036EtniasTest` y
+`HU037ComunidadesEtnicasTest`; comprobó que el escenario 10 de HU-036 falla si se quita el
+`@Pattern` de `Etnia`; agregó `.github/workflows/tests.yml`.
+
+Hecho en el PR que sigue a c5aa2fd: las entradas 2026-10-26 "Un escenario se prueba con un test que
+lleva su número", "Un CI corre los tests en cada PR", "main queda abierta a los integrantes" y "La
+terminal dice qué archivo espera antes de pedir la ruta"; `docs/DESIGN.md`, sección 3; "CI" y
+"test de escenario" en el glosario.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -1868,7 +1925,16 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000. **Próximo (2026-10-26, primer código):** que el autor revise y fusione el PR
+0000000000000000000. **Próximo (2026-10-26, tests por escenario y CI):** que el autor revise y
+   fusione el PR de los tests por escenario y el CI, y que el check `tests` corra en el fork.
+   Después, en HU-036, las dos piezas que pidió: la tabla de cambios con motivo y referencia
+   (RC-10, RC-11) y la carga desde CSV, que dice qué archivo espera antes de pedir la ruta. Sin
+   respuesta: lo que el modelo agregó en la entrada 2026-10-26 "El primer código arma la base común
+   con etnias y comunidades étnicas"; si el docente acepta Postman; el menú y el `switch`; el
+   paquete y el idioma de los identificadores; la licencia de los datos oficiales; si las listas
+   cerradas de 5 o menos van como enum, como los 4 motivos de RC-10; y los PR de prueba de los
+   integrantes 1 y 2.
+000000000000000000. **Anterior (2026-10-26, primer código):** que el autor revise y fusione el PR
    del primer código, y conteste lo que el modelo agregó en la entrada 2026-10-26 "El primer código
    arma la base común con etnias y comunidades étnicas". Después, en HU-036: la carga desde el CSV,
    con el primer archivo de la base en git, el motivo de inactivar (RC-10), la búsqueda (D-23) y

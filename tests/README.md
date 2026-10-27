@@ -24,11 +24,32 @@ vacía, cada test crea los valores que usa y `@Transactional` los deshace al ter
 
 ## 2. Las suites
 
-Las dos están en `src/test/java/com/example/demo/`.
+Todas están en `src/test/java/com/example/demo/`. Cómo se nombra el test de un escenario está en
+`docs/DESIGN.md`, sección 3.
 
 - `DemoApplicationTests.contextLoads`: comprueba que el contexto de Spring arranca. La generó Spring
   Initializr.
-- `CatalogosTest`, con 9 tests de etnias y comunidades étnicas: el cero inicial, el largo y los
-  dígitos del código, el código y el nombre vacíos, inactivar sin borrar, que cambiar el nombre no
-  reactive un valor, que ningún repositorio de catálogo tenga un método para borrar y el largo de la
-  columna del código en cada tabla.
+- `BaseComunTest`, con 5 tests de las reglas de `docs/DESIGN.md` que no son un escenario: los ceros
+  iniciales del código, inactivar sin borrar, que cambiar el nombre no reactive un valor, que ningún
+  repositorio de catálogo tenga un método para borrar y el largo de la columna del código.
+- `HU036EtniasTest` y `HU037ComunidadesEtnicasTest`: los escenarios de cada historia. Hoy prueban el
+  escenario 10 de HU-036 y el 9 de HU-037, en los casos del código que no cumple el numeral 13 y del
+  nombre vacío.
+
+## 3. Qué escenarios tienen test
+
+Este comando lista los números de escenario de HU-036 que tienen al menos un método:
+
+```sh
+grep -ohE 'esc[0-9]+_' src/test/java/com/example/demo/HU036*.java | sort -uV
+```
+
+El 2026-10-26 imprimió `esc10_`: de los 23 escenarios de la tarjeta, uno tiene test. Que un número
+aparezca no basta, porque el escenario se completa cuando cada caso de su "Dado" tiene su método.
+
+## 4. El CI
+
+`.github/workflows/tests.yml` corre `./mvnw -B test` en GitHub Actions, con Java 21, en cada PR y en
+cada cambio de `main`. El PR muestra el check `tests` en verde o en rojo, y el registro de la
+corrida está en la pestaña Actions del fork. El check informa y no bloquea la mezcla
+(`docs/DECISIONS.md`, 2026-10-26 "main queda abierta a los integrantes").

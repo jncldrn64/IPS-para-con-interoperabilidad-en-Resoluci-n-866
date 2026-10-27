@@ -5,6 +5,28 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.8 — 2026-10-26
+
+Los tests se ordenan por historia y escenario, y un CI los corre en cada PR. El programa no muestra
+una versión.
+
+### Added
+- `.github/workflows/tests.yml`: GitHub Actions corre `./mvnw -B test` con Java 21 en cada PR y en
+  cada cambio de `main`.
+- `HU036EtniasTest` y `HU037ComunidadesEtnicasTest`, con el escenario 10 de HU-036 y el 9 de
+  HU-037 en los casos del código que no cumple el numeral 13 y del nombre vacío.
+- `docs/DECISIONS.md`: cuatro entradas del 2026-10-26, de "Un escenario se prueba con un test que
+  lleva su número" a "La terminal dice qué archivo espera antes de pedir la ruta".
+- `docs/GLOSSARY.md`: "CI" y "test de escenario".
+
+### Changed
+- `CatalogosTest` pasa a `BaseComunTest`, con las reglas de `docs/DESIGN.md` que no son un
+  escenario.
+- `docs/DESIGN.md`, sección 3: cómo se nombra el test de un escenario. Su lista "Sin escribir
+  todavía" pierde ese ítem.
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` y `tests/README.md` nombran el CI y las clases nuevas.
+- La memoria contextual anota la pregunta del autor y sus cuatro respuestas.
+
 ## v0.7 — 2026-10-26
 
 El primer código del producto: el build corre, y la base común de los catálogos arranca con etnias

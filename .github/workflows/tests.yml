@@ -1,0 +1,20 @@
+# Corre los tests en cada PR y en cada cambio de main (docs/DECISIONS.md, 2026-10-26 "Un CI corre
+# los tests en cada PR"). Sin él, un PR puede decir que los tests pasan sin que nadie los corra.
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: ./mvnw -B test

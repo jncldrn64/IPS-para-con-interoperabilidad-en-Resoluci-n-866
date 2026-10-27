@@ -190,7 +190,9 @@ al paciente.
 
   El build corre y la base común está hecha desde el 2026-10-26 (`CHANGELOG.md`, v0.7), con
   HU-036 y HU-037 empezadas. Del esqueleto quedan por decidir el paquete y el menú, que hoy es
-  provisional (`docs/DESIGN.md`, sección 9).
+  provisional (`docs/DESIGN.md`, sección 9). En HU-036 siguen la tabla de cambios y la carga desde
+  CSV (`docs/DECISIONS.md`, 2026-10-26 "La terminal dice qué archivo espera antes de pedir la
+  ruta").
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
