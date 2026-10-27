@@ -321,3 +321,7 @@ archivos de una vez y se reescribe la línea base con su fecha nueva.
   se copia desde él, nunca se escribe en él. Ante la duda, se para y se pregunta.
 - **Lo que se copia de terceros** viaja con su LICENSE y su atribución en la misma carpeta. Si la
   fuente no la trae, se para y se avisa antes del commit.
+- **Un valor que viene de una norma**, como una lista del anexo de la Resolución 866, se copia sin
+  licencia aparte, citando la norma y su hoja: la Ley 23 de 1982, artículo 41, permite reproducir
+  los actos administrativos fieles a la edición oficial (`docs/DECISIONS.md`, 2026-10-26 "Lo que
+  transcribe una norma se copia citando su fuente").

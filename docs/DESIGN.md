@@ -135,17 +135,25 @@ Un catálogo nuevo trae tres clases y su entrada en el menú, con `Etnia` de eje
 - la entidad extiende `Catalogo`, fija el largo del código con `@AttributeOverride` y su formato con
   `@Pattern` sobre `getCodigo`;
 - el repositorio extiende `CatalogoRepositorio`;
-- el servicio extiende `ServicioCatalogo`, que valida el valor antes de guardarlo y no le cambia el
-  estado ni la versión a un código que ya existe.
+- el servicio extiende `ServicioCatalogo` y le pasa la clase de su entidad, como
+  `super(Etnia.class, datos, validador, registro)`.
+
+La base valida cada dato con su numeral, pide la referencia oficial para crear o cambiar un valor
+(RC-3) y aplica RC-10 al inactivar y al reactivar. Cada operación deja su fila en la tabla de
+cambios común, `CatalogoCambio`, por medio de `RegistroCatalogos`: el tipo de cambio, el nombre
+anterior y el nuevo, el motivo, la referencia y la hora. Ninguna operación cambia un valor sin
+dejar su fila.
 
 **Por qué:** escritas en cada servicio, las mismas reglas quedan en 8 lugares, y un error se
 corrige 8 veces. La base se arma antes del paso 1, así que ningún catálogo empieza sin ella. Un
 enum no sirve para un catálogo: fija sus valores al compilar, y los del catálogo llegan de un
-archivo oficial con el programa corriendo.
+archivo oficial con el programa corriendo. Los motivos de RC-10 sí son un enum, `Motivo`, porque los
+fija la regla común y no llegan de un archivo.
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-24 "Los catálogos comparten una base común",
-2026-10-25 "La base común es una clase con código, nombre, estado y versión" y 2026-10-26 "El primer
-código arma la base común con etnias y comunidades étnicas".
+2026-10-25 "La base común es una clase con código, nombre, estado y versión", y del 2026-10-26 "El
+primer código arma la base común con etnias y comunidades étnicas", "Los motivos de RC-10 son un
+enum" y "La tabla de cambios y RC-10 entran en la base común".
 
 ## 8. La base de datos
 

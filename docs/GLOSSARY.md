@@ -149,10 +149,16 @@ Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sec
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su
   entidad, y no lee del teclado ni imprime (`docs/DESIGN.md`, sección 6).
+- **tabla de cambios**: `CatalogoCambio`, la tabla común donde cada creación, cambio de nombre,
+  inactivación o reactivación de un valor de catálogo deja su fila, con el motivo, la referencia y
+  la hora (2026-10-26 "La tabla de cambios y RC-10 entran en la base común").
 - **test de escenario**: el método de test que prueba un caso del "Dado" de un escenario. Vive en la
   clase de su historia y se llama `esc<N>_<alternativa>` (2026-10-26 "Un escenario se prueba con un
   test que lleva su número").
 - **turno**: el permiso de cambiar el archivo de la base. Lo tiene quien tenga abierto el PR que lo
   cambia (2026-10-25 "El turno del archivo de la base es del PR abierto").
+- **versión vigente**: la versión de un catálogo con la fecha de publicación más reciente. Un
+  código está en ella si su `versionId` es el de esa versión (RC-10; 2026-10-26 "La tabla de
+  cambios y RC-10 entran en la base común").
 - **vista**: en la fase 0, lo que el programa imprime en la terminal, según la lámina de la
   historia (2026-10-24 "El código se separa en modelo, vista y controlador").

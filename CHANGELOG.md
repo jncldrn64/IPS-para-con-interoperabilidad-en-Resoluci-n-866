@@ -5,6 +5,34 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.9 — 2026-10-26
+
+La tabla de cambios de los catálogos: crear, cambiar y reactivar piden la referencia oficial, e
+inactivar pide un motivo de RC-10. El programa no muestra una versión.
+
+### Added
+- `CatalogoVersion`, `CatalogoCambio`, el enum `Motivo` y `RegistroCatalogos`: las versiones y la
+  tabla de cambios común a los catálogos (RC-10, RC-11).
+- `CrudCatalogo`: `crear`, `cambiarNombre`, `cambiarCodigo`, `reactivar`, `historial`,
+  `listarActivos` y `contarUsos`.
+- Tests de los escenarios 8 a 11 y 19 a 23 de HU-036 y de sus pares en HU-037, con 39 tests en
+  total.
+- `docs/DECISIONS.md`: cuatro entradas del 2026-10-26, de "Los motivos de RC-10 son un enum" a "El
+  archivo de la base trae las 7 etnias y ninguna comunidad".
+- `docs/GLOSSARY.md`: "tabla de cambios" y "versión vigente".
+
+### Changed
+- `inactivar` pide un motivo de RC-10 y su referencia, y el menú pide confirmar antes de guardar.
+- `.gitignore` deja fuera `data/*.trace.db`.
+- `CLAUDE.md`, sección 10, y el Backlog de `docs/ROADMAP.md`: una lista de una norma se copia
+  citando su fuente.
+- `docs/DESIGN.md`, sección 7, `docs/ARCHITECTURE.md` y `tests/README.md` describen la tabla de
+  cambios.
+- La memoria contextual anota las dos respuestas del autor.
+
+### Removed
+- `CrudCatalogo.guardar`: crear un código que ya existe ya no se toma como cambio de nombre.
+
 ## v0.8 — 2026-10-26
 
 Los tests se ordenan por historia y escenario, y un CI los corre en cada PR. El programa no muestra
