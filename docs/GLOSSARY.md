@@ -119,8 +119,7 @@ que citan su fuente.
 
 ## 3. Código
 
-Ninguna de estas palabras nombra código que ya exista: el repositorio todavía no tiene código del
-producto.
+Las clases que ya existen, con su paquete, están en `docs/ARCHITECTURE.md`, sección 2.
 
 - **archivo de la base**: el archivo de H2 donde quedan los datos entre una corrida y otra. Va en
   git con los catálogos ya cargados, y como git no mezcla dos cambios suyos, se cambia por turnos
@@ -128,16 +127,21 @@ producto.
   los catálogos cargados"; 2026-10-25 "El archivo de la base se cambia por turnos").
 - **base común de catálogos**: el código con las reglas que comparten los 8 catálogos de la fase
   0, RC-1 a RC-11 y la búsqueda de D-23, y la clase de la que heredan sus 8 entidades, con código,
-  nombre, estado y versión. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los catálogos
+  nombre, estado y versión. En el código son `Catalogo`, `CatalogoRepositorio`, `CrudCatalogo` y
+  `ServicioCatalogo`. La arma el integrante 3 antes del paso 1 (2026-10-24 "Los catálogos
   comparten una base común"; 2026-10-24 "El integrante 3 arma la base común"; 2026-10-25 "La base
-  común es una clase con código, nombre, estado y versión").
+  común es una clase con código, nombre, estado y versión"; 2026-10-26 "El primer código arma la
+  base común con etnias y comunidades étnicas").
 - **base de prueba**: la base con otro nombre donde se prueba, para que un dato de prueba no llegue
-  al archivo de la base que va en git. Arranca como copia de ese archivo (2026-10-25 "Las pruebas
-  corren sobre otra base"; 2026-10-25 "La base de prueba arranca como copia del archivo").
+  al archivo de la base que va en git. Arranca como copia de ese archivo, `data/prueba.mv.db`, y se
+  abre pasando su URL al arrancar (2026-10-25 "Las pruebas corren sobre otra base"; 2026-10-25 "La
+  base de prueba arranca como copia del archivo"; 2026-10-26 "El primer código arma la base común
+  con etnias y comunidades étnicas").
 - **catálogo de ejemplo**: HU-036, etnias, con el primer CSV y la primera carga en el archivo de la
   base, que copian los otros 7 catálogos (2026-10-25 "HU-036 es el catálogo de ejemplo").
-- **controlador**: en la fase 0, el menú en terminal que lee la opción y llama al servicio. No hay
-  controladores web (2026-10-24 "El código se separa en modelo, vista y controlador").
+- **controlador**: en la fase 0, el menú en terminal, `MenuPrincipal`, que lee la opción y llama al
+  servicio. No hay controladores web (2026-10-24 "El código se separa en modelo, vista y
+  controlador").
 - **repositorio**: dos cosas. En git, el repositorio del proyecto en GitHub. En el código, la
   interfaz con que una entidad se guarda y se busca; ninguna borra (`docs/DESIGN.md`, sección 6).
 - **servicio**: el código de una historia con sus reglas de negocio. Usa el repositorio de su

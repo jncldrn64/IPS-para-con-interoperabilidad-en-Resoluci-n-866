@@ -813,3 +813,73 @@ si usa la nube, y tener git, bash y python3 si trabaja en su equipo.
   (`CLAUDE.md`, sección 3), y el pedido cabe en la sección 7.
 
 **Estado:** `vigente`
+
+## 2026-10-26: El primer código arma la base común con etnias y comunidades étnicas
+
+**Contexto:** El autor propuso el 2026-10-26 el código de su primera parte, HU-036 y HU-037, en 9
+puntos. La entidad llevaba la llave como `Integer` con `@Column(length = 99)`, el repositorio
+extendía `ListCrudRepository` y un servicio implementaba la interfaz `CrudEntidad`, con el `switch`
+en el controlador. El modelo lo probó en una copia aparte y le contestó que cuatro cosas chocaban
+con lo escrito: el código como número, una entidad sin estado, versión ni clase base, un
+repositorio que borra y las reglas en el controlador. El autor respondió:
+
+- "y no crees que choca mucho con tu catalogo "funndamental" de donde hacemos super?  entiedo el
+  concepto, y la verdad es hasta interesante, puedes usarlo, pero realmente no se hasta que puento
+  ese catalodo maestro o mas bien la entidad padre pueda cambiar o alterar los datos de los varoles
+  que obitene, por que  si el padre dice @Column(length = 2), el hijo lo .puede cambiar?... y tienes
+  razon, no es int la primaria , es strnig para almacenar codigos, que no sean 000, pero no estoy
+  seguro, supongo que la logica podria evitar eso, , asi que supongo que debe haber anotaciones
+  adicinales que impidan valores en el int, si no las encuentra,s procede con el string, y codigfica
+  tu, que la logica ya te la he puesto, realmente entraremos a  discutir de lleno el swict, por que
+  realmente una vez la base de todas la HU estes hecha, lo mas importarte a codificar grupalmente es
+  el como se presentaria la info, aun que supongco que eso no da valor a la entrega final, pero no
+  se si si literalmenet el profesor me permita hacer todo via postman, de ahi que quiera la version
+  bastardizada en terminal, y por lo que veo tienes que importar otras librerias para poder que
+  usemos la terminal...."
+
+**Decisión:**
+
+- La llave es el código como `String`. Ninguna anotación de un `Integer` guarda "01", porque 01 y 1
+  son el mismo entero, y `@Column(length = 2)` sobre un `Integer` deja la columna como `INTEGER`.
+- `Catalogo` es la clase padre, con `@MappedSuperclass`, y cada hija tiene su tabla. La hija cambia
+  el largo que hereda con `@AttributeOverride`, y su formato va con `@Pattern` sobre `getCodigo`:
+  la columna del código sale de 2 caracteres en `Etnia` y de 3 en `ComunidadEtnica`. Lo comprueba
+  `CatalogosTest.cadaCatalogoTieneSuTablaConElLargoDeSuCodigo`.
+- El 99 de la hoja 15 del anexo es la columna Formato: dos dígitos. El largo de una etnia es 2, y el
+  de una comunidad étnica, 3.
+- La terminal no pide librerías nuevas. El menú es un `CommandLineRunner` que lee con `Scanner`, y
+  los dos vienen con Spring Boot y con Java.
+- El menú en terminal va igual, por si el docente no acepta probar con Postman. El `switch` y la
+  presentación se discuten después entre los tres integrantes, así que el menú de hoy es
+  provisional.
+
+Lo que el modelo agregó, sin respuesta del autor todavía:
+
+- El repositorio extiende `Repository` y declara `findAllByOrderByCodigoAsc`, `findById` y `save`.
+  `ListCrudRepository` trae `deleteById`, y `docs/DESIGN.md`, sección 6, dice que ningún
+  repositorio borra.
+- Una sola interfaz genérica, `CrudCatalogo<T>`, en vez de una `CrudEntidad` por catálogo, y
+  `ServicioCatalogo` como la base común de los servicios. Spring entrega el servicio de etnias a
+  quien pide `CrudCatalogo<Etnia>`.
+- El servicio valida con `Validator` antes de guardar. Validado solo al escribir en la base, el
+  error llega envuelto en una excepción de la transacción, y el menú no puede mostrar el motivo.
+- Cambiar el nombre de un valor no le cambia el estado ni la versión. Sin esa regla, el nombre nuevo
+  de un código inactivo lo reactivaba, como mostró
+  `CatalogosTest.cambiarElNombreNoReactivaNiBorraLaVersion` antes del arreglo.
+- `spring.main.web-application-type=none`, para que no arranquen Tomcat en el puerto 8080 ni Spring
+  Security. `@Profile("!test")` en el menú y `@ActiveProfiles("test")` en los tests, para que un
+  test no se quede esperando el teclado.
+- La base de prueba se copia con `cp` y se abre pasando su URL al arrancar, sin tocar
+  `application.properties` (`docs/DESIGN.md`, sección 8). Las entradas 2026-10-25 "Las pruebas
+  corren sobre otra base" y "La base de prueba arranca como copia del archivo" lo dejaron para el
+  primer PR de código.
+
+**Alternativas:**
+
+- La llave `Integer` con `@Column(length = 99)`, como propuso el autor. Pierde el cero de "01" y no
+  limita el largo.
+- `ListCrudRepository`, como propuso el autor. Trae `deleteById`, `delete`, `deleteAll` y
+  `deleteAllById`.
+- Validar solo al escribir en la base. El menú recibe la excepción de la transacción sin el motivo.
+
+**Estado:** `vigente`
