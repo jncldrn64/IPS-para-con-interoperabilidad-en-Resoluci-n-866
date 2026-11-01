@@ -3,6 +3,7 @@ package com.ipssaludyvida.hu036.controladores;
 import com.ipssaludyvida.comun.controladores.ControladorCatalogo;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.comun.servicios.Comprobacion;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,9 @@ public class EtniaControlador extends ControladorCatalogo<Etnia> {
 
     private final ContratoEtnias etnias;
 
-    public EtniaControlador(ContratoEtnias etnias, Terminal terminal) {
-        super("HU-036", "Etnias", etnias, Etnia::new, terminal);
+    public EtniaControlador(ContratoEtnias etnias, Terminal terminal,
+            ContratoSesion sesion) {
+        super("HU-036", "Etnias", etnias, Etnia::new, terminal, sesion);
         this.etnias = etnias;
     }
 

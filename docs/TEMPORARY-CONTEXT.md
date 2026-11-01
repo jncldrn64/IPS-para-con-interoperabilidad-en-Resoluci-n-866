@@ -86,3 +86,6 @@ y uno grande sí.
   HU-030, y después dijo que el inicio de sesión no aporta valor en la primera entrega. Hoy ese
   escenario es HU-001 esc. 14. Pregunta 2 del plan de desarrollo.
 - 2026-10-27, Jorge (Jorge-a-Restrepo, integrante 1), con su modelo: probé el flujo de PR.
+- 2026-10-31, modelo de Jorge: el PR #23, de prueba, aparece fusionado en `git log` ("Merge pull
+  request #23"), y `CLAUDE.md`, sección 7, pide cerrarlo sin fusionar. Solo trajo la memoria de
+  Jorge y una línea aquí. No se sabe si fue a propósito.

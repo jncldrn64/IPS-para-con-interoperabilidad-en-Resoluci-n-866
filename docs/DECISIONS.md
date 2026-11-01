@@ -1742,3 +1742,53 @@ Lo que decidió el modelo:
 - Un PR abierto a la vez. Los demás esperarían.
 
 **Estado:** `vigente`
+
+## 2026-10-31: HU-001 abre la sesión en la terminal
+
+**Contexto:** HU-001 es la primera historia de Jorge, el integrante 1, y la que necesitan HU-005 y
+HU-006. `docs/DESIGN.md`, sección 9, dejaba abierto cómo pide HU-001 el usuario y la clave. Jorge
+preguntó por la interfaz y después pidió empezar:
+
+- "te pregunto si es en terminal no deveria de trabajarlo en visual y despues subir al repo y el
+  profesor como hace despues para utilizar ese repo"
+- "empesemos la primera historia"
+
+El modelo le propuso cinco respuestas y le dijo que, si no contestaba, usaría esas y las listaría
+aquí. Jorge no contestó esas cinco antes de pedir que se empezara.
+
+**Decisión:** El menú principal pide iniciar sesión antes de mostrar una historia, y muestra solo
+las que el cargo puede ver. Cada controlador declara con qué permiso se ve, y una opción que cambia
+algo pide su permiso en el controlador. La sesión guarda quién hace cada cambio y cada carga de un
+catálogo. Los servicios de los catálogos no miran la sesión, así que sus tests los llaman sin
+entrar.
+
+Lo que decidió el modelo:
+
+- Sigue en terminal, como ya aceptó el docente (2026-10-24 "El primer sprint arranca en
+  terminal"). La clave no se muestra cuando Java tiene consola, y se lee como cualquier línea cuando
+  no la tiene, como en un test o con `printf`.
+- La clave se guarda cifrada con BCrypt, de `spring-security-crypto`, que ya traía
+  `spring-boot-starter-security`. `pom.xml` no cambia.
+- Si la base no tiene usuarios, `UsuariosIniciales` crea tres de prueba al arrancar: `admision`,
+  `medico` y `estadistica`, con la clave `Clave123`. Los crea en la base de prueba, así que el
+  archivo de la base no cambia y este PR no pide su turno.
+- Los 15 minutos de D-06 se miden antes de cada acción: el número de una opción del menú principal o
+  de un catálogo. Un reloj de fondo no sirve en la terminal, que se queda esperando el teclado.
+- En un catálogo, sin el permiso de mantener catálogos, se ocultan las opciones 2 a 6 y 8, las que
+  cambian algo. Las demás consultan, y la comparación con la lista oficial queda entre ellas porque
+  no cambia nada.
+- El usuario que no existe, el inactivo y la clave equivocada dan el mismo mensaje, para que nadie
+  sepa qué usuarios existen (escenario 2).
+- El menú principal cierra la sesión con "C", y "0" sale y también la cierra.
+- `Permiso` tiene una constante por fila de la matriz de la tarjeta, y `Cargo`, la columna de cada
+  cargo. Los dos son enum, como `Motivo`, porque los fija la tarjeta y no un archivo oficial.
+
+**Alternativas:**
+
+- Una interfaz visual. Cambiaría la pantalla de los tres integrantes, y el docente aceptó terminal.
+- Guardar los usuarios en `data/ips.mv.db`. Pediría el turno del archivo, y la base de prueba de
+  quien ya la tiene no los traería.
+- Que cada servicio exija el permiso. Los 112 tests de los catálogos tendrían que entrar antes de
+  cada llamada, y la tarjeta dice que esas historias no dependen de HU-001.
+
+**Estado:** `vigente`

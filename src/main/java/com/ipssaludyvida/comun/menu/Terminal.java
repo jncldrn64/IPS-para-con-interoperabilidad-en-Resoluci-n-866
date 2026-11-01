@@ -1,5 +1,6 @@
 package com.ipssaludyvida.comun.menu;
 
+import java.io.Console;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.NoSuchElementException;
@@ -20,16 +21,24 @@ public class Terminal {
 
     private final Scanner teclado;
     private final PrintStream salida;
+    // La consola del sistema, para leer la clave sin mostrarla. Un test no tiene, y Java tampoco la
+    // da cuando la entrada no es una terminal, como con printf | mvnw.
+    private final Console consola;
     private int sinEntrada;
 
     @Autowired
     public Terminal() {
-        this(System.in, System.out);
+        this(System.in, System.out, System.console());
     }
 
     public Terminal(InputStream entrada, PrintStream salida) {
+        this(entrada, salida, null);
+    }
+
+    private Terminal(InputStream entrada, PrintStream salida, Console consola) {
         this.teclado = new Scanner(entrada);
         this.salida = salida;
+        this.consola = consola;
     }
 
     // Una línea vacía cuando se acaba la entrada, para que el menú salga en vez de fallar.
@@ -46,6 +55,15 @@ public class Terminal {
             throw new NoSuchElementException("se acabó la entrada y el menú sigue preguntando");
         }
         return "";
+    }
+
+    /** Lee la clave sin mostrarla en pantalla cuando hay consola (HU-001). */
+    public String leerClave(String pregunta) {
+        if (consola == null) {
+            return leer(pregunta);
+        }
+        char[] clave = consola.readPassword("%s", pregunta);
+        return clave == null ? "" : new String(clave);
     }
 
     public void escribir(String linea) {

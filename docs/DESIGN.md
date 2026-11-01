@@ -147,8 +147,8 @@ comentarios que tiene encima, porque ninguna herramienta los revisa.
 **Regla:** el código tiene tres partes. El modelo son las entidades, una interfaz de repositorio
 por entidad y un servicio por historia con sus reglas de negocio. La vista es lo que se imprime en
 la terminal, según la lámina de la historia, y el controlador, uno por historia, pide los datos de
-cada opción, llama al contrato e imprime. El menú principal solo elige la historia y abre su
-controlador.
+cada opción, llama al contrato e imprime. El menú principal pide iniciar sesión, elige la historia
+y abre su controlador.
 
 Un servicio no lee del teclado ni imprime: devuelve un valor o avisa el error con su mensaje, y el
 controlador lo muestra. Ningún repositorio borra. El Delete de un catálogo es inactivar, y lo hace
@@ -180,7 +180,11 @@ por el servicio.
 
 El menú principal vive en `comun/menu/`, con `Terminal`, la entrada y la salida que comparte con
 los controladores. Lista las historias por su número y abre el controlador de la elegida, que
-cumple la interfaz `Controlador`. Las 11 opciones que comparten los catálogos están en
+cumple la interfaz `Controlador`. Cada controlador declara en `permisoParaVer` con qué permiso de
+la matriz de HU-001 se ve, y el menú muestra solo los que el cargo tiene. Una opción que cambia algo
+pide su permiso en el controlador, con `ContratoSesion.exigir`, y los servicios no miran la sesión
+(`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"). Las 11 opciones que
+comparten los catálogos están en
 `comun/controladores/ControladorCatalogo`, y el controlador de cada historia pone lo suyo, como la
 comparación con la hoja 15 en `EtniaControlador`.
 
@@ -310,8 +314,8 @@ Este archivo es una semilla mientras esta lista tenga algo.
 - Qué imprime cada pantalla del esqueleto en terminal, que deciden los tres integrantes. A qué
   stream va cada cosa y qué se registra ya está en la sección 4.
 - Si la fase 0 sigue en terminal o pasa a controladores web que se prueban con Postman, según lo
-  que acepte el docente, y cómo pide HU-001 el usuario y la clave. Mientras corre en terminal,
-  `spring.main.web-application-type=none` deja sin arrancar la parte web de `pom.xml`.
+  que acepte el docente. Mientras corre en terminal, `spring.main.web-application-type=none` deja
+  sin arrancar la parte web de `pom.xml`, y HU-001 pide el usuario y la clave por la terminal.
 - Cómo entra un valor provisional al archivo de la base sin trabar al oficial que llegue después.
   Medido el 2026-10-27 con un test que no quedó en el repo: después de una carga provisional
   fechada ese día, un archivo oficial publicado en 2021 se rechaza como "anterior a la de la

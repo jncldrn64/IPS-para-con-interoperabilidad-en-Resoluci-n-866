@@ -32,4 +32,6 @@ public class CatalogoVersion {
     private int filasAceptadas;
     private int filasRechazadas;
     private LocalDateTime cargadoEn;
+    /** Quién la cargó. Lo llena el inicio de sesión (HU-001); antes queda vacío (RC-5). */
+    private Long usuarioId;
 }

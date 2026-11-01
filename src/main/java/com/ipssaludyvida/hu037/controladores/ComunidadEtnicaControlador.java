@@ -3,6 +3,7 @@ package com.ipssaludyvida.hu037.controladores;
 import com.ipssaludyvida.comun.controladores.ControladorCatalogo;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.comun.servicios.Comprobacion;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.ipssaludyvida.hu037.modelos.ComunidadEtnica;
 import java.nio.file.Path;
@@ -17,8 +18,9 @@ public class ComunidadEtnicaControlador extends ControladorCatalogo<ComunidadEtn
 
     private final ContratoComunidadesEtnicas comunidades;
 
-    public ComunidadEtnicaControlador(ContratoComunidadesEtnicas comunidades, Terminal terminal) {
-        super("HU-037", "Comunidades étnicas", comunidades, ComunidadEtnica::new, terminal);
+    public ComunidadEtnicaControlador(ContratoComunidadesEtnicas comunidades, Terminal terminal,
+            ContratoSesion sesion) {
+        super("HU-037", "Comunidades étnicas", comunidades, ComunidadEtnica::new, terminal, sesion);
         this.comunidades = comunidades;
     }
 
