@@ -60,6 +60,7 @@ las 7 claves de la configuración.
 | `comun/menu/` | `MenuPrincipal`, que pide la sesión y elige la historia, y `Terminal` |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
+| `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
@@ -78,9 +79,10 @@ menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene 
 `medico` y `estadistica`, con la clave `Clave123`.
 
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
-Con sesión, lista por su número las historias que el cargo ve, con "Etnias (HU-036)" en la opción
-1 y "Comunidades étnicas (HU-037)" en la 2. Abajo van la letra C, que cierra la sesión, y el 0, que
-sale. Pasados 15 minutos sin actividad, la opción siguiente pide entrar de nuevo.
+Con sesión, lista por su número las historias que el cargo ve: "Ocupaciones (HU-022)" en la opción
+1, "Etnias (HU-036)" en la 2 y "Comunidades étnicas (HU-037)" en la 3. Abajo van la letra C, que
+cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide
+entrar de nuevo.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -93,6 +95,13 @@ El controlador de cada catálogo tiene 11 opciones:
 El auxiliar de admisión y el médico tratante ven solo las que consultan, 1, 7, 9, 10 y 11, y si
 escriben el número de otra, el menú dice "No se pudo: su cargo no tiene ese permiso". Sin sesión,
 un catálogo no abre.
+
+El catálogo de ocupaciones agrega la opción 12, la jerarquía: cada código con una sangría de dos
+espacios por nivel, la marca "se registra al paciente" en los de 4 dígitos y "sin ocupaciones" en
+el grupo sin una de 4 activa. Antes de inactivar dice cuántos pacientes y atenciones la usan, los
+dos en 0 hasta HU-004 y HU-007. El 2026-11-01, con `LANG=C.UTF-8` y una base en memoria, una
+corrida creó 2, 22, 222, 2221 y 223, rechazó inactivar el grupo 222 con "tiene 1 ocupaciones
+activas" y mostró la jerarquía al médico tratante, que no pudo crear un valor.
 
 El 2026-10-31, con `LANG=C.UTF-8`, una corrida con la entrada desde un `printf` rechazó una clave
 equivocada, entró como `medico`, rechazó la opción 2 de etnias, cerró la sesión con "C" y entró como
@@ -133,12 +142,12 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-31 con `git ls-files 'src/*' | xargs wc -l`: 4709 líneas en 49 archivos. De
+Comprobado el 2026-11-01 con `git ls-files 'src/*' | xargs wc -l`: 5911 líneas en 56 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
 
-Nada de lo que lista `git ls-files src` el 2026-10-31. Cada archivo nuevo que aparezca ahí se
+Nada de lo que lista `git ls-files src` el 2026-11-01. Cada archivo nuevo que aparezca ahí se
 describe en el PR que lo trae.
 
 ## 6. Huecos conocidos
@@ -152,7 +161,11 @@ si eso cierra un hueco de esta lista.
   use el código numérico (D-03), que el archivo de la CIUO-88 A.C. traiga los cuatro niveles
   (HU-022), ni que exista el catálogo de comunidades étnicas (HU-037). Comando:
   `git ls-files '*.csv'` devuelve solo `src/test/resources/cargas/etnias-hoja-15.csv`, que se
-  transcribió de la hoja 15 del anexo y no se descargó.
+  transcribió de la hoja 15 del anexo y no se descargó. El 2026-11-01, el DANE publica la
+  estructura de la CIUO-88 A.C. en PDF, en
+  `https://www.dane.gov.co/files/sen/nomenclatura/ciuo/EstCIUO88AC.pdf`, y el contenedor de la
+  sesión no llega a `www.dane.gov.co`. Los tests de HU-022 usan una estructura de prueba con las
+  cantidades por nivel del DANE.
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,
@@ -173,6 +186,8 @@ si eso cierra un hueco de esta lista.
   que no tiene que verse.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
   pacientes usan un valor, en el escenario 19 de HU-036 y el 18 de HU-037: `contarUsos` devuelve 0.
+  Desde el 2026-11-01 también el escenario 22 de HU-022, que además cuenta atenciones:
+  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007.
   Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no
   tiene código porque todavía no hay registros. Comando:
   `grep -n -A2 'public long contarUsos' src/main/java/com/ipssaludyvida/comun/servicios/*.java`.

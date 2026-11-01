@@ -236,10 +236,12 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                         nombreOficial(fila.codigo(), fila.nombre(), carga.getAvisos())));
             }
         }
+        revisarFilas(carga);
         if (carga.getFilasLeidas() == 0) {
             carga.getBloqueos().add("el archivo no trae filas debajo de los nombres de columna");
         }
         compararConElCatalogo(carga);
+        revisarComparacion(carga);
         return carga;
     }
 
@@ -329,6 +331,21 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     /** El nombre que se guarda de una fila aceptada. Una historia con una lista fija lo cambia. */
     protected String nombreOficial(String codigo, String nombreDelArchivo, List<String> avisos) {
         return nombreDelArchivo;
+    }
+
+    /**
+     * Lo que una historia revisa de las filas leídas, con el archivo entero a la vista y antes de
+     * compararlas con el catálogo. Puede pasar una aceptada a rechazada o agregar un bloqueo, como
+     * el grupo de cada ocupación y la cuenta por niveles de HU-022.
+     */
+    protected void revisarFilas(ResultadoCarga carga) {
+    }
+
+    /**
+     * Lo que una historia revisa después de comparar con el catálogo. Puede sacar un código de los
+     * que ya no están, con su aviso, como un grupo con ocupaciones activas en HU-022.
+     */
+    protected void revisarComparacion(ResultadoCarga carga) {
     }
 
     /** Lo que impide guardar la primera carga. Una historia con una lista fija lo agrega. */

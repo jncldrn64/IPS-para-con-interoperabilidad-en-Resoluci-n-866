@@ -244,6 +244,14 @@ dejar su fila. La hora de la tabla de cambios y la de cada carga son las de Colo
 `RegistroCatalogos.ZONA`, corra donde corra el programa, y una fecha futura en una carga se mide
 con la fecha de Colombia.
 
+Un catálogo con reglas propias sobre la carga las pone en dos métodos de la base que no hacen nada
+por defecto. `revisarFilas` ve el archivo entero antes de comparar, y puede rechazar una fila
+aceptada o bloquear la carga. `revisarComparacion` ve lo que la carga cambiaría, y puede sacar un
+código de los que ya no están. En su controlador, `opcionesPropias` agrega opciones de consulta
+después de la 11, y `usos` cambia lo que se dice antes de inactivar. HU-022 usa los cuatro para su
+jerarquía (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo revisa con el
+archivo entero").
+
 La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guardar, y
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
 de la base, `nombreOficial` y `revisarPrimeraCarga`.

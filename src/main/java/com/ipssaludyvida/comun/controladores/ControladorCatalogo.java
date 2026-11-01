@@ -58,6 +58,22 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     /** La opción 11: cada historia compara con su lista oficial. */
     protected abstract Comprobacion comprobar();
 
+    /** Una opción propia de una historia, después de la 11, como la jerarquía de HU-022. */
+    public record OpcionPropia(String texto, Runnable accion) {}
+
+    /**
+     * Las opciones propias de la historia, por su número, en el orden en que se muestran. Solo
+     * consultan, así que las ven los tres cargos (HU-001, escenario 14).
+     */
+    protected Map<String, OpcionPropia> opcionesPropias() {
+        return Map.of();
+    }
+
+    /** Lo que se dice antes de inactivar: cuántos registros usan el valor (RC-10). */
+    protected String usos(String codigo) {
+        return "La usan " + crud.contarUsos(codigo) + " pacientes";
+    }
+
     @Override
     public String historia() {
         return historia;
@@ -100,6 +116,8 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
             escribir("9. Buscar por código o por nombre");
             escribir("10. Historial de versiones");
             escribir("11. Comparar con la lista oficial");
+            Map<String, OpcionPropia> propias = opcionesPropias();
+            propias.forEach((numero, o) -> escribir(numero + ". " + o.texto()));
             escribir("0. Volver");
             try {
                 String opcion = leer("Opción: ");
@@ -129,7 +147,13 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
                     case "0", "" -> {
                         return;
                     }
-                    default -> escribir("Opción no válida");
+                    default -> {
+                        if (propias.containsKey(opcion)) {
+                            propias.get(opcion).accion().run();
+                        } else {
+                            escribir("Opción no válida");
+                        }
+                    }
                 }
             } catch (ConstraintViolationException e) {
                 e.getConstraintViolations().stream().map(ConstraintViolation::getMessage)
@@ -150,7 +174,7 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         return terminal.leer(pregunta);
     }
 
-    private void escribir(String linea) {
+    protected void escribir(String linea) {
         terminal.escribir(linea);
     }
 
@@ -316,9 +340,8 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         String codigo = leer("Código: ");
         T valor = crud.buscarPorCodigo(codigo)
                 .orElseThrow(() -> new IllegalArgumentException("no existe el código " + codigo));
-        escribir("Inactivar " + codigo + " " + valor.getNombre() + ". La usan "
-                + crud.contarUsos(codigo) + " pacientes: la conservan, pero no se ofrece en"
-                + " registros nuevos.");
+        escribir("Inactivar " + codigo + " " + valor.getNombre() + ". " + usos(codigo)
+                + ": la conservan, pero no se ofrece en registros nuevos.");
         escribir("1. " + Motivo.RETIRADO_POR_LA_FUENTE.texto());
         escribir("2. " + Motivo.CREADO_POR_ERROR.texto());
         Motivo motivo = switch (leer("Motivo: ")) {

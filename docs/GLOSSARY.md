@@ -134,6 +134,9 @@ que citan su fuente.
   glosario define los cargos").
 - **numeral**: uno de los 49 datos del anexo, con sus valores permitidos, formato y longitud. El
   tablero también lo llama elemento.
+- **grupo de una ocupación**: el código sin su último dígito, como 222 para 2221. Lo lee el sistema,
+  así que el archivo no trae una columna de padre (D-26; 2026-11-01 "HU-022 lee el grupo del código
+  y lo revisa con el archivo entero").
 - **ocupación hija**: una ocupación de 4 dígitos, el nivel más específico de la CIUO-88 A.C. Es la
   única que se registra al paciente [2.1].
 - **plan B**: el plan de desarrollo de las 12 historias del semestre: los 8 catálogos del

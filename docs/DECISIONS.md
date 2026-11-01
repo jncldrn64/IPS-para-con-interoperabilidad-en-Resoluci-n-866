@@ -1792,3 +1792,49 @@ Lo que decidió el modelo:
   cada llamada, y la tarjeta dice que esas historias no dependen de HU-001.
 
 **Estado:** `vigente`
+
+## 2026-11-01: HU-022 lee el grupo del código y lo revisa con el archivo entero
+
+**Contexto:** HU-022 es la segunda historia de Jorge, el integrante 1. Es el primer catálogo con
+niveles, y sus reglas no cabían en la base común: el grupo de una fila puede venir después en el
+archivo, la primera carga se compara con las cantidades por nivel de la CIUO-88 A.C., y un grupo
+con ocupaciones activas no se inactiva, tampoco por una versión nueva. Jorge pidió:
+
+- "ya podriamos pasar a la historia de usaurio 2"
+
+El modelo lo leyó como su segunda historia, HU-022, porque entre las 12 no hay una HU-002.
+
+**Decisión:** El grupo de un código es el código sin su último dígito (D-26). La base común suma
+`revisarFilas`, que ve el archivo entero antes de comparar con el catálogo, y `revisarComparacion`,
+que ve lo que la carga cambiaría; ninguno de los dos hace nada si la historia no lo pide. En el
+controlador común entran `opcionesPropias` y `usos`.
+
+En `revisarFilas`, HU-022 rechaza la fila sin grupo activo, y repite hasta que nada cambia, porque
+rechazar un grupo deja sin grupo a sus filas. Ahí también bloquea la primera carga que no cuadra por
+nivel. En `revisarComparacion` saca de los que ya no están al grupo que se queda con ocupaciones
+activas, con su aviso.
+
+Lo que decidió el modelo:
+
+- La fila de más de 4 dígitos o sin código no cuenta en ningún nivel. La cuenta usa las aceptadas
+  y las rechazadas, así que una fila repetida cuenta dos veces.
+- Un grupo con ocupaciones activas tampoco cambia de código, porque el cambio lo inactiva.
+- "Ocupaciones activas" de un grupo son sus hijos directos activos, de un dígito más.
+- Un grupo que una versión nueva retira con ocupaciones activas queda activo y la carga sigue, con
+  un aviso. La tarjeta dice que no se inactiva, y bloquear la versión entera frenaría lo demás.
+- La jerarquía es la opción 12, la ven los tres cargos y muestra todos los estados. "Sin
+  ocupaciones" marca al grupo sin una ocupación de 4 dígitos activa debajo, a cualquier nivel.
+- Las atenciones que usan una ocupación se cuentan en `ContratoOcupaciones.contarAtenciones`, que
+  devuelve 0 hasta HU-007, y `contarUsos` sigue en 0 hasta HU-004.
+- Los tests arman una estructura de prueba con 10, 34, 117 y 401 códigos, porque el archivo oficial
+  no se ha descargado: el DANE lo publica en PDF y el contenedor de la sesión no llega a su sitio.
+- La rama sale de la de HU-001, porque los controladores reciben la sesión que trae ese PR.
+
+**Alternativas:**
+
+- Una columna de padre en el archivo. La tarjeta la descarta (D-26).
+- Que HU-022 copie la carga de la base con sus reglas. Serían dos copias que se corrigen aparte.
+- Cargar ahora el archivo oficial transcrito del PDF por un modelo. Sin el archivo a la vista, no
+  se puede comprobar que los 562 códigos y nombres salieron bien.
+
+**Estado:** `vigente`

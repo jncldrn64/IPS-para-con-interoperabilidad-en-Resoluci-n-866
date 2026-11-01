@@ -21,6 +21,7 @@ import com.ipssaludyvida.hu001.controladores.SesionControlador;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu001.modelos.Cargo;
 import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
+import com.ipssaludyvida.hu022.repositorios.OcupacionRepositorio;
 import com.ipssaludyvida.hu036.controladores.EtniaControlador;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
@@ -177,7 +178,8 @@ class BaseComunTest {
     void ningunRepositorioPuedeBorrar() {
         for (Class<?> repositorio : new Class<?>[] {EtniaRepositorio.class,
                 ComunidadEtnicaRepositorio.class, CatalogoVersionRepositorio.class,
-                CatalogoCambioRepositorio.class, UsuarioRepositorio.class}) {
+                CatalogoCambioRepositorio.class, UsuarioRepositorio.class,
+                OcupacionRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");
@@ -252,6 +254,7 @@ class BaseComunTest {
     void cadaCatalogoTieneSuTablaConElLargoDeSuCodigo() {
         assertEquals("CHARACTER VARYING:2", columna("ETNIA"));
         assertEquals("CHARACTER VARYING:3", columna("COMUNIDAD_ETNICA"));
+        assertEquals("CHARACTER VARYING:4", columna("OCUPACION"));
     }
 
     private Terminal terminal(String respuestas) {
