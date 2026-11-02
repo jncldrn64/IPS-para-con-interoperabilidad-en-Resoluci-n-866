@@ -15,9 +15,9 @@ el producto trae sus propias palabras.
 Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la plantilla 1.2".
 
 - **autor**: Juan Fernando, `jncldrn64` en GitHub, dueño del fork e integrante 3. Invita a cada
-  integrante como colaborador, porque en GitHub solo lo puede hacer el dueño. No revisa ni fusiona
-  los PR de los demás (2026-10-27 "Cada integrante trabaja con su modelo"; 2026-11-02 "Cada
-  integrante fusiona sus PR, también el de prueba").
+  integrante como colaborador, porque en GitHub solo lo puede hacer el dueño. Un integrante no
+  necesita que revise ni fusione sus PR (2026-10-27 "Cada integrante trabaja con su modelo";
+  2026-11-02 "Cada integrante fusiona sus PR, también el de prueba").
 - **borrador**: el estado en que se abre un PR. Lo marca listo y lo fusiona su integrante, con los
   botones "Ready for review" y "Merge pull request" (2026-10-27 "Cada integrante trabaja con su
   modelo"; 2026-11-02 "Cada integrante fusiona sus PR, también el de prueba").

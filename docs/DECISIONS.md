@@ -1794,8 +1794,9 @@ El modelo le hizo cuatro preguntas, y el autor eligió:
   sale de `main`.
 - El cuerpo del PR abre nombrando a su integrante y su usuario de GitHub. La cuenta que muestra
   GitHub queda como hueco, sin prioridad, y Jorge no tiene que resolverla.
-- El autor solo invita a cada integrante como colaborador, porque en GitHub solo lo puede hacer el
-  dueño del fork.
+- Lo único que un integrante necesita del autor es la invitación como colaborador, porque en
+  GitHub solo la puede hacer el dueño del fork. El autor puede fusionar el PR de otro, pero nadie
+  tiene que esperarlo.
 
 Lo que decidió el modelo:
 
