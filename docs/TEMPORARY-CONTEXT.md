@@ -85,3 +85,26 @@ y uno grande sí.
 - 2026-10-22, modelo: el docente pidió el escenario de rol sin permisos en HU-025, HU-026, HU-028 y
   HU-030, y después dijo que el inicio de sesión no aporta valor en la primera entrega. Hoy ese
   escenario es HU-001 esc. 14. Pregunta 2 del plan de desarrollo.
+- 2026-11-02, autor (Juan Fernando), con su modelo: lo que dijo el profesor en clase de un catálogo,
+  según el autor: "nos dijo con uno de los catalogos, que habia tanta informacion (creo que es el de
+  las ocupacione), que realmente solo le importaba si en la db estaban como minimos los 2 primeros
+  nivels, y por niveles se refiere a los que tienen 2 digitos y 3 digitos, por que el resto de
+  desprenden de ellos, como si fueran titulos de normas apa, pero su jorge los subio al completo".
+  Choca con "solo las ocupaciones hijas" de la guía [2.1], que son las de 4 dígitos, y la CIUO-88
+  A.C. tiene también un nivel de 1 dígito. Jorge cargó los 4 niveles. Mirarlo en la auditoría de
+  HU-022 y confirmarlo con el profesor.
+- 2026-11-02, autor, con su modelo: HU-004 bloquea a todos, y si el integrante 2 no la hace la toma
+  el autor al final: "realmente siento que hay una discrepancia donde todos necesitamos del
+  usurario, asi que supongo que yo tambien tendre que hacer eso al final, puesto que es lo que
+  bloquea todos". Sin decidir; si se decide, cambia el reparto de `docs/ROADMAP.md`.
+- 2026-11-02, modelo del autor: las pistas en negrita de la guía de [2.5] a [3.7] no están en ningún
+  documento canónico, solo en la memoria del autor, 2026-10-24 "La guía del docente y las
+  transcripciones llegan a Claude Code": MVP funcional, los roles de Scrum, la planificación interna
+  para la tercera semana, la sustentación individual y sucesiva, la entrega con la URL, el diagrama
+  E-R y el correo, y "framework o stack tecnológico". Sin decidir si van a `docs/REQUIREMENTS.md` o
+  al ROADMAP.
+- 2026-11-02, modelo del autor: dos commits hechos desde la web sin tipo, contra `CLAUDE.md`,
+  sección 7: 00097d7 "Fix heading formatting in README.md" y cf4350c "Actualizar README.md". Ya
+  están en `main`; sin decidir si se dice algo.
+- 2026-11-02, modelo del autor: la memoria de Jorge sigue esperando que el autor cierre su PR de
+  prueba y que Jorge fusione los PR #24 a #26. Las tres cosas ya pasaron; es de su integrante.
