@@ -16,6 +16,11 @@ import com.ipssaludyvida.comun.repositorios.CatalogoCambioRepositorio;
 import com.ipssaludyvida.comun.repositorios.CatalogoVersionRepositorio;
 import com.ipssaludyvida.comun.servicios.DatosVersion;
 import com.ipssaludyvida.comun.servicios.RegistroCatalogos;
+import com.ipssaludyvida.hu001.Usuarios;
+import com.ipssaludyvida.hu001.controladores.SesionControlador;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
+import com.ipssaludyvida.hu001.modelos.Cargo;
+import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
 import com.ipssaludyvida.hu036.controladores.EtniaControlador;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
@@ -68,6 +73,8 @@ class BaseComunTest {
     @Autowired RegistroCatalogos registro;
     @Autowired EntityManager em;
     @Autowired DataSource base;
+    @Autowired UsuarioRepositorio usuarios;
+    @Autowired ContratoSesion sesion;
     // Lo que imprimió la terminal del test.
     private final ByteArrayOutputStream impreso = new ByteArrayOutputStream();
 
@@ -170,7 +177,7 @@ class BaseComunTest {
     void ningunRepositorioPuedeBorrar() {
         for (Class<?> repositorio : new Class<?>[] {EtniaRepositorio.class,
                 ComunidadEtnicaRepositorio.class, CatalogoVersionRepositorio.class,
-                CatalogoCambioRepositorio.class}) {
+                CatalogoCambioRepositorio.class, UsuarioRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");
@@ -180,10 +187,14 @@ class BaseComunTest {
     @Test
     @Timeout(10)
     void elMenuPrincipalOrdenaLasHistoriasYAbreLaElegida() throws Exception {
-        Terminal terminal = terminal("1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\ns\n0\n0\n");
+        Usuarios.crear(usuarios, Cargo.PROFESIONAL_DE_ESTADISTICA);
+        Terminal terminal = terminal("1\nprofesional_de_estadistica\n" + Usuarios.CLAVE
+                + "\n1\n2\n07\nEtnia de prueba\n" + REFERENCIA + "\ns\n0\n0\n");
         // Llegan con HU-037 primero, y la opción 1 abre HU-036.
-        new MenuPrincipal(List.of(new ComunidadEtnicaControlador(contratoComunidades, terminal),
-                new EtniaControlador(contratoEtnias, terminal)), terminal, base).run();
+        new MenuPrincipal(List.of(
+                new ComunidadEtnicaControlador(contratoComunidades, terminal, sesion),
+                new EtniaControlador(contratoEtnias, terminal, sesion)), terminal, base, sesion,
+                new SesionControlador(sesion, terminal)).run();
         assertTrue(etnias.buscarPorCodigo("07").isPresent());
         assertTrue(comunidades.listar().isEmpty());
     }
@@ -192,8 +203,8 @@ class BaseComunTest {
     @Timeout(10)
     void elMenuPrincipalDiceQueBaseAbrio() throws Exception {
         Terminal terminal = terminal("0\n");
-        new MenuPrincipal(List.of(new EtniaControlador(contratoEtnias, terminal)), terminal, base)
-                .run();
+        new MenuPrincipal(List.of(new EtniaControlador(contratoEtnias, terminal, sesion)), terminal,
+                base, sesion, new SesionControlador(sesion, terminal)).run();
         assertTrue(salida().startsWith("Base abierta: jdbc:h2:mem:pruebas\n"), salida());
     }
 
@@ -262,8 +273,14 @@ class BaseComunTest {
     // La opción 8 con el archivo, "s" para descargar la lista, la respuesta a "Ya existe", si la
     // hay, y "n" para no guardar la carga.
     private void cargarYDescargarLaLista(Path archivo, String siYaExiste) {
-        new EtniaControlador(contratoEtnias, terminal("8\n" + archivo + "\nFuente\n\n2026-10-18\n"
-                + "Resolución 866 de 2021\n2021-06-25\ns\n" + siYaExiste + "n\n0\n")).abrir();
+        Usuarios.entrar(usuarios, sesion, Cargo.PROFESIONAL_DE_ESTADISTICA);
+        try {
+            new EtniaControlador(contratoEtnias, terminal("8\n" + archivo
+                    + "\nFuente\n\n2026-10-18\nResolución 866 de 2021\n2021-06-25\ns\n"
+                    + siYaExiste + "n\n0\n"), sesion).abrir();
+        } finally {
+            sesion.cerrar();
+        }
     }
 
     private Object columna(String tabla) {

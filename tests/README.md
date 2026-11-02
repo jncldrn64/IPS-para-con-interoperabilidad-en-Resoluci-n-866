@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-10-27 en el contenedor de la sesión, con Linux: 112 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-10-31 en el contenedor de la sesión, con Linux: 145 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -42,6 +42,11 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   resultados, el catálogo vacío y la inactivación, pasan por el controlador de la historia, con
   las respuestas escritas en el test. Esos tests leen lo que el menú imprimió y llevan
   `@Timeout(10)` (`docs/DESIGN.md`, sección 3).
+- `hu001/HU001InicioDeSesionTest`, con 33 tests: los 14 escenarios de HU-001 y la precondición de
+  un usuario de prueba por cargo. Los de la pantalla pasan por el menú principal o por el
+  controlador de un catálogo, y los del escenario 12 usan su propio `SesionServicio` con un reloj
+  que el test adelanta. `hu001/Usuarios` crea el usuario de cada cargo y abre su sesión; los tests
+  de HU-036 y HU-037 que pasan por el controlador entran como profesional de estadística.
 - `comun/CasosLimiteTest`, con 13 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.
@@ -62,6 +67,8 @@ Que un número aparezca no basta, porque el escenario se completa cuando cada ca
 tiene su método. Ese día a HU-037 le faltaban 4 casos, que trae la v0.13. Dos partes esperan el
 registro del paciente, HU-004: cuántos pacientes usan un valor, en el escenario 19 de HU-036, y lo
 que RC-11 pide de un registro ya guardado, en el 11.
+
+El 2026-10-31, con `hu001` en la ruta, imprimió los 14 números de HU-001.
 
 ## 4. El CI
 

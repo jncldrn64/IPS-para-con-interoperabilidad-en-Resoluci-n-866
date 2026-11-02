@@ -162,6 +162,9 @@ que citan su fuente.
 - **usuario**: la cuenta con que una persona inicia sesión: un nombre, una contraseña y un cargo.
   Esta fase no tiene registro de usuarios ni recuperación de clave [2.4] (2026-10-27 "El glosario
   define los cargos").
+- **usuario de prueba**: uno de los tres usuarios que crea el programa cuando la base no tiene
+  ninguno, uno por cargo, con una clave que no sirve para una instalación de verdad (2026-10-31
+  "HU-001 abre la sesión en la terminal").
 - **versión de un catálogo**: un archivo oficial cargado, con su fuente, su fecha de publicación y
   su fecha de descarga (RC-8).
 

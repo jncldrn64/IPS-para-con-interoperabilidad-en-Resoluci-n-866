@@ -4,6 +4,8 @@ import com.ipssaludyvida.comun.modelos.CatalogoCambio;
 import com.ipssaludyvida.comun.modelos.CatalogoVersion;
 import com.ipssaludyvida.comun.repositorios.CatalogoCambioRepositorio;
 import com.ipssaludyvida.comun.repositorios.CatalogoVersionRepositorio;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
+import com.ipssaludyvida.hu001.modelos.Usuario;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,11 +24,13 @@ public class RegistroCatalogos {
 
     private final CatalogoVersionRepositorio versiones;
     private final CatalogoCambioRepositorio cambios;
+    private final ContratoSesion sesion;
 
     public RegistroCatalogos(CatalogoVersionRepositorio versiones,
-            CatalogoCambioRepositorio cambios) {
+            CatalogoCambioRepositorio cambios, ContratoSesion sesion) {
         this.versiones = versiones;
         this.cambios = cambios;
+        this.sesion = sesion;
     }
 
     /** La versión de fecha de publicación más reciente, si el catálogo ya se cargó. */
@@ -39,12 +43,20 @@ public class RegistroCatalogos {
     }
 
     public CatalogoVersion guardar(CatalogoVersion version) {
+        version.setUsuarioId(quien());
         return versiones.save(version);
     }
 
     public CatalogoCambio anotar(CatalogoCambio cambio) {
         cambio.setFechaHora(ahora());
+        cambio.setUsuarioId(quien());
         return cambios.save(cambio);
+    }
+
+    // RC-5 y escenario 9 de HU-001: quién lo hizo. Sin sesión, como en un test que llama al
+    // servicio directo, queda vacío, igual que lo registrado antes de HU-001.
+    private Long quien() {
+        return sesion.actual().map(Usuario::getId).orElse(null);
     }
 
     public LocalDateTime ahora() {

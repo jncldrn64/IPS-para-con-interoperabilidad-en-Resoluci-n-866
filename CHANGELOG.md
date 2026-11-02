@@ -5,6 +5,34 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.19 — 2026-10-31
+
+HU-001 queda completa: el programa pide iniciar sesión y muestra a cada cargo solo sus opciones.
+El programa no muestra una versión.
+
+### Added
+- `hu001/`: `Usuario`, `Cargo` y `Permiso`, con la matriz de la tarjeta; `ContratoSesion`,
+  `SesionServicio`, `SesionControlador` y `UsuarioRepositorio`, que no borra.
+- `UsuariosIniciales`: si la base no tiene usuarios, crea `admision`, `medico` y `estadistica`, uno
+  por cargo, con la clave de prueba `Clave123` cifrada con BCrypt.
+- `HU001InicioDeSesionTest`, con 33 tests de los 14 escenarios y la precondición: 145 tests en
+  total.
+- `Terminal.leerClave`, que lee la clave sin mostrarla cuando hay consola.
+- `CatalogoVersion.usuarioId`: quién hizo la carga.
+- `docs/DECISIONS.md`: la entrada 2026-10-31 "HU-001 abre la sesión en la terminal".
+- `docs/GLOSSARY.md`: "usuario de prueba".
+
+### Changed
+- `MenuPrincipal` pide iniciar sesión, lista solo las historias que el cargo ve, cierra la sesión
+  con "C" y pide entrar de nuevo tras 15 minutos sin actividad.
+- `ControladorCatalogo` no abre sin sesión. Sin el permiso de mantener catálogos, oculta las
+  opciones 2 a 6 y 8 y rechaza su número con "su cargo no tiene ese permiso".
+- `Controlador` declara `permisoParaVer`. `EtniaControlador` y `ComunidadEtnicaControlador` reciben
+  la sesión, y sus tests entran como profesional de estadística.
+- `RegistroCatalogos` guarda en cada cambio y en cada carga quién la hizo (RC-5).
+- `docs/DESIGN.md`, secciones 6 y 9, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y
+  la memoria de Jorge describen la sesión.
+
 ## v0.18 — 2026-10-27
 
 Solo documentación. PR de prueba del integrante 1, que se cierra sin fusionar.

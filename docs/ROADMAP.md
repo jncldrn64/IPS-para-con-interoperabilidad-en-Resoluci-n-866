@@ -198,7 +198,9 @@ al paciente.
   completas desde la v0.15: cada caso del "Dado" tiene su test. Dos partes esperan a HU-004,
   cuántos pacientes usan un valor y lo que RC-11 pide de un registro ya guardado, y son un hueco de
   `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
-  completas"). Del integrante 3 queda HU-035.
+  completas"). Del integrante 3 queda HU-035. HU-001 está completa desde la v0.19
+  (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
+  quedan HU-022, HU-026 y HU-005.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022

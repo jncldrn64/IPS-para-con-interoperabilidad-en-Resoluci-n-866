@@ -41,7 +41,7 @@ de H2, SQL Server, MySQL y MariaDB, más sus pares de test. Para listarlas:
 
 ## 2. Dónde vive cada cosa
 
-Comprobado el 2026-10-27. `grep -c '^[a-z]' src/main/resources/application.properties` cuenta
+Comprobado el 2026-10-31. `grep -c '^[a-z]' src/main/resources/application.properties` cuenta
 las 7 claves de la configuración.
 
 | Qué | Variable o símbolo | Ruta |
@@ -57,8 +57,9 @@ las 7 claves de la configuración.
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
 | `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
 | `comun/servicios/` | La base `ServicioCatalogo`, la carga y sus resultados, como `Consulta` |
-| `comun/menu/` | `MenuPrincipal`, que elige la historia, y `Terminal`, la entrada y la salida |
+| `comun/menu/` | `MenuPrincipal`, que pide la sesión y elige la historia, y `Terminal` |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
+| `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
@@ -72,15 +73,30 @@ solo el menú.
 entidades, y `spring.main.web-application-type=none` deja sin arrancar Tomcat y Spring Security.
 Con el perfil `test`, los tests abren `jdbc:h2:mem:pruebas`.
 
-El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo. Lista las historias por
-su número, con "Etnias (HU-036)" en la opción 1 y "Comunidades étnicas (HU-037)" en la 2, y la 0
-sale. El controlador de cada catálogo tiene 11 opciones:
+El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo. Antes de abrir el
+menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene ninguno, `admision`,
+`medico` y `estadistica`, con la clave `Clave123`.
+
+Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
+Con sesión, lista por su número las historias que el cargo ve, con "Etnias (HU-036)" en la opción
+1 y "Comunidades étnicas (HU-037)" en la 2. Abajo van la letra C, que cierra la sesión, y el 0, que
+sale. Pasados 15 minutos sin actividad, la opción siguiente pide entrar de nuevo.
+
+El controlador de cada catálogo tiene 11 opciones:
 
 - consultar, con el filtro de activos, inactivos o todos, cuántos hay activos y la versión vigente;
 - crear por cambio oficial, cambiar el nombre o el código, inactivar y reactivar, y cada una pide
   confirmar antes de guardar;
 - el historial de un código y el de las versiones;
 - cargar un CSV, buscar por código o por nombre y comparar con la lista oficial.
+
+El auxiliar de admisión y el médico tratante ven solo las que consultan, 1, 7, 9, 10 y 11, y si
+escriben el número de otra, el menú dice "No se pudo: su cargo no tiene ese permiso". Sin sesión,
+un catálogo no abre.
+
+El 2026-10-31, con `LANG=C.UTF-8`, una corrida con la entrada desde un `printf` rechazó una clave
+equivocada, entró como `medico`, rechazó la opción 2 de etnias, cerró la sesión con "C" y entró como
+`estadistica`, que vio las 11 opciones. `git status --short data` no mostró cambios.
 
 Se comprobó el 2026-10-26 con la entrada desde un `printf`, en el contenedor de la sesión, que corre
 Linux sin `LANG`. El 2026-10-27, `printf '0\n' | sh ./mvnw -q spring-boot:run` imprimió la línea de
@@ -89,9 +105,10 @@ la base y el menú, sin líneas de log, y nada en stderr.
 La carga dice primero qué archivo espera y pide la ruta y los datos de la versión.
 `ServicioCatalogo.leerCarga` lee y compara sin guardar, y `confirmarCarga` guarda. Cada operación
 deja su fila en `CatalogoCambio`, la tabla de cambios común, y cada carga, la suya en
-`CatalogoVersion`. `ServicioCatalogo.contarUsos` devuelve 0 hasta que exista el registro del
-paciente (HU-004). Cada controlador pide su catálogo por el contrato, `ContratoEtnias` o
-`ContratoComunidadesEtnicas`.
+`CatalogoVersion`, y las dos guardan en `usuarioId` quién tenía la sesión, o nada si no había
+(`RegistroCatalogos.anotar` y `RegistroCatalogos.guardar`). `ServicioCatalogo.contarUsos` devuelve 0
+hasta que exista el registro del paciente (HU-004). Cada controlador pide su catálogo por el
+contrato, `ContratoEtnias` o `ContratoComunidadesEtnicas`.
 
 ## 3. Recursos y cómo se reinicia cada uno
 
@@ -116,12 +133,12 @@ Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el conten
 
 ## 4. Tamaño
 
-Comprobado el 2026-10-27 con `git ls-files 'src/*' | xargs wc -l`: 3611 líneas en 39 archivos. De
+Comprobado el 2026-10-31 con `git ls-files 'src/*' | xargs wc -l`: 4709 líneas en 49 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
 
-Nada de lo que lista `git ls-files src` el 2026-10-26. Cada archivo nuevo que aparezca ahí se
+Nada de lo que lista `git ls-files src` el 2026-10-31. Cada archivo nuevo que aparezca ahí se
 describe en el PR que lo trae.
 
 ## 6. Huecos conocidos
@@ -149,6 +166,11 @@ si eso cierra un hueco de esta lista.
 - **2026-10-26: `mvnw.cmd` no se corrió.** El contenedor de la sesión es Linux, así que el
   envoltorio solo se probó con `sh ./mvnw`. Comando, en Windows: `mvnw.cmd -v`, que tiene que
   imprimir "Apache Maven 3.9.11".
+- **2026-10-31: la clave oculta no se probó en una terminal de verdad.** `Terminal.leerClave` usa
+  `System.console()`, que con Java 21 es nulo si la entrada no es una terminal, y entonces lee la
+  clave a la vista. Las corridas de la sesión fueron con `printf`, así que la rama de la consola no
+  se corrió. Comando, en una terminal: `sh ./mvnw -q spring-boot:run`, elegir 1 y escribir la clave,
+  que no tiene que verse.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
   pacientes usan un valor, en el escenario 19 de HU-036 y el 18 de HU-037: `contarUsos` devuelve 0.
   Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no

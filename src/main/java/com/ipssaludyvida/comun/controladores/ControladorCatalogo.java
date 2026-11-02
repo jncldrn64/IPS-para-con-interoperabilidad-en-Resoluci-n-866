@@ -12,6 +12,9 @@ import com.ipssaludyvida.comun.servicios.Consulta;
 import com.ipssaludyvida.comun.servicios.DatosVersion;
 import com.ipssaludyvida.comun.servicios.ResultadoCarga;
 import com.ipssaludyvida.comun.servicios.ResumenVersion;
+import com.ipssaludyvida.hu001.controladores.SesionControlador;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
+import com.ipssaludyvida.hu001.modelos.Permiso;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.nio.file.Files;
@@ -21,6 +24,7 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 
 /**
@@ -28,6 +32,9 @@ import java.util.function.BiFunction;
  * llama al contrato e imprime por la Terminal (docs/DESIGN.md, sección 6). El controlador de cada
  * historia, como EtniaControlador, pone su número, su título, cómo se arma un valor y contra qué se
  * compara.
+ *
+ * <p>Las opciones que cambian el catálogo, 2 a 6 y 8, se muestran y se hacen solo con el permiso de
+ * mantener catálogos. Las demás consultan, y las tienen los tres cargos (HU-001, escenario 14).
  */
 public abstract class ControladorCatalogo<T extends Catalogo> implements Controlador {
 
@@ -36,14 +43,16 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     private final CrudCatalogo<T> crud;
     private final BiFunction<String, String, T> nuevo;
     private final Terminal terminal;
+    private final ContratoSesion sesion;
 
     protected ControladorCatalogo(String historia, String titulo, CrudCatalogo<T> crud,
-            BiFunction<String, String, T> nuevo, Terminal terminal) {
+            BiFunction<String, String, T> nuevo, Terminal terminal, ContratoSesion sesion) {
         this.historia = historia;
         this.titulo = titulo;
         this.crud = crud;
         this.nuevo = nuevo;
         this.terminal = terminal;
+        this.sesion = sesion;
     }
 
     /** La opción 11: cada historia compara con su lista oficial. */
@@ -59,25 +68,53 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         return titulo;
     }
 
+    /** Los tres cargos consultan los catálogos (matriz de HU-001). */
+    @Override
+    public Permiso permisoParaVer() {
+        return Permiso.CONSULTAR_CATALOGOS;
+    }
+
     @Override
     public void abrir() {
+        // HU-001, escenario 4: sin sesión no se consulta ni se cambia nada.
+        if (!sesion.abierta()) {
+            escribir("No se pudo: " + ContratoSesion.SIN_SESION);
+            return;
+        }
+        boolean mantiene = sesion.puede(Permiso.MANTENER_CATALOGOS);
         while (true) {
             escribir("");
             escribir("== " + titulo);
             escribir("1. Consultar");
-            escribir("2. Crear por cambio oficial");
-            escribir("3. Cambiar el nombre");
-            escribir("4. Cambiar el código (Reemplazado por)");
-            escribir("5. Inactivar");
-            escribir("6. Reactivar");
+            if (mantiene) {
+                escribir("2. Crear por cambio oficial");
+                escribir("3. Cambiar el nombre");
+                escribir("4. Cambiar el código (Reemplazado por)");
+                escribir("5. Inactivar");
+                escribir("6. Reactivar");
+            }
             escribir("7. Historial de un código");
-            escribir("8. Cargar desde un CSV");
+            if (mantiene) {
+                escribir("8. Cargar desde un CSV");
+            }
             escribir("9. Buscar por código o por nombre");
             escribir("10. Historial de versiones");
             escribir("11. Comparar con la lista oficial");
             escribir("0. Volver");
             try {
-                switch (leer("Opción: ")) {
+                String opcion = leer("Opción: ");
+                // HU-001, escenario 12: con 15 minutos sin actividad vuelve al menú principal,
+                // que pide entrar de nuevo.
+                if (!sesion.seguir()) {
+                    escribir(SesionControlador.VENCIDA);
+                    return;
+                }
+                // Una opción que cambia el catálogo se rechaza aunque no se haya mostrado: quien
+                // escribe su número sabe que existe (HU-001, escenarios 8 y 14).
+                if (CAMBIAN.contains(opcion)) {
+                    sesion.exigir(Permiso.MANTENER_CATALOGOS);
+                }
+                switch (opcion) {
                     case "1" -> consultar();
                     case "2" -> crear();
                     case "3" -> cambiarNombre();
@@ -105,6 +142,9 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
             }
         }
     }
+
+    // Las opciones que cambian el catálogo: piden el permiso de mantener catálogos.
+    private static final Set<String> CAMBIAN = Set.of("2", "3", "4", "5", "6", "8");
 
     protected String leer(String pregunta) {
         return terminal.leer(pregunta);

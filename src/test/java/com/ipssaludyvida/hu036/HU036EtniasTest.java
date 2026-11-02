@@ -17,6 +17,10 @@ import com.ipssaludyvida.comun.servicios.DatosVersion;
 import com.ipssaludyvida.comun.servicios.RegistroCatalogos;
 import com.ipssaludyvida.comun.servicios.ResultadoCarga;
 import com.ipssaludyvida.comun.servicios.ResumenVersion;
+import com.ipssaludyvida.hu001.Usuarios;
+import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
+import com.ipssaludyvida.hu001.modelos.Cargo;
+import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
 import com.ipssaludyvida.hu036.controladores.EtniaControlador;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
@@ -61,6 +65,8 @@ class HU036EtniasTest {
 
     @TempDir Path carpeta;
 
+    @Autowired UsuarioRepositorio usuarios;
+    @Autowired ContratoSesion sesion;
     @Autowired ContratoEtnias etnias;
     @Autowired EtniaRepositorio repositorio;
     @Autowired RegistroCatalogos registro;
@@ -550,13 +556,19 @@ class HU036EtniasTest {
         assertTrue(etnias.comprobarContraLaHoja().coincide());
     }
 
-    // Lo que el menú imprimió con esas respuestas. Un test del menú lleva @Timeout, porque un menú
-    // que no sale con la entrada vacía se queda en un bucle (docs/DESIGN.md, sección 3).
+    // Lo que el menú imprimió con esas respuestas, con la sesión del profesional de estadística,
+    // que tiene las 11 opciones. Un test del menú lleva @Timeout, porque un menú que no sale con la
+    // entrada vacía se queda en un bucle (docs/DESIGN.md, sección 3).
     private String menu(String respuestas) {
         ByteArrayOutputStream salida = new ByteArrayOutputStream();
-        new EtniaControlador(etnias, new Terminal(
-                new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)),
-                new PrintStream(salida, true, StandardCharsets.UTF_8))).abrir();
+        Usuarios.entrar(usuarios, sesion, Cargo.PROFESIONAL_DE_ESTADISTICA);
+        try {
+            new EtniaControlador(etnias, new Terminal(
+                    new ByteArrayInputStream(respuestas.getBytes(StandardCharsets.UTF_8)),
+                    new PrintStream(salida, true, StandardCharsets.UTF_8)), sesion).abrir();
+        } finally {
+            sesion.cerrar();
+        }
         return salida.toString(StandardCharsets.UTF_8);
     }
 

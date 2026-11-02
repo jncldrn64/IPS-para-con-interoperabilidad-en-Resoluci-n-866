@@ -28,8 +28,29 @@
 - El modelo lo leyó como el PR de prueba de `CLAUDE.md`, sección 7. **Hipótesis:** no pidió otro
   cambio, y ese PR es lo que toca antes de su primera historia.
 
+## 2026-10-31: HU-001
+
+- "te pregunto si es en terminal no deveria de trabajarlo en visual y despues subir al repo y el
+  profesor como hace despues para utilizar ese repo"
+- El modelo le explicó que la terminal es la interfaz del programa y no dónde se programa, que el
+  docente aceptó terminal y que cambiarla es común. Le recomendó confirmarlo con el profesor.
+- "Falta algo: el README no explica cómo correrlo. Hoy solo dice “empezá por CLAUDE.md tengamos
+  este pendiente ud me puede recordar mañana 1 d enoveimbre a las 12 pm"
+- "empesemos la primera historia"
+- El modelo le propuso cinco respuestas: terminal, BCrypt, tres usuarios de prueba, 15 minutos
+  medidos antes de cada acción y el menú con lo que ya existe. Jorge no las contestó antes de pedir
+  que se empezara, y el modelo las tomó. Están en `docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la
+  sesión en la terminal", en "Lo que decidió el modelo". **Hipótesis:** fusionar el PR las acepta.
+- Para compilar en la nube, Jorge activó en claude.ai el acceso de red saliente de la ejecución de
+  código. Maven Central contestó a veces 429 por la IP compartida, y Maven reintenta con
+  `-Daether.connector.http.retryHandler.count=8`.
+
 ## 3. Pendiente
 
-- Que el autor revise el PR de prueba y lo cierre sin fusionar.
-- Confirmar que Jorge es colaborador del fork con rol Write.
-- Después: HU-001, inicio de sesión con permisos por cargo.
+- Que el autor cierre sin fusionar el PR de prueba. **Hipótesis:** el PR #23 se fusionó el
+  2026-10-27, según `git log`, y la regla pedía cerrarlo sin fusionar.
+- Que Jorge revise el PR de HU-001, con la lista "Lo que decidió el modelo", y lo fusione.
+- Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común, y Jorge pidió
+  que se le recordara el 2026-11-01 a las 12:00.
+- Preguntar al profesor si acepta que el programa siga en terminal.
+- Después: HU-022, ocupaciones, y HU-026, municipios; HU-005 cuando esté HU-004.
