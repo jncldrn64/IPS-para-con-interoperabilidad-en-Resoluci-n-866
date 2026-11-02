@@ -21,13 +21,15 @@ Antes de tocar nada se lee, en este orden:
 6. La memoria de tu integrante, entera. Cada integrante tiene la suya en `docs/context/`
    (`docs/DECISIONS.md`, 2026-10-27 "Cada integrante trabaja con su modelo"). La del autor es
    `docs/context/MEMORIA-CONTEXTUAL.md`, con sus instrucciones en la sección 0 y lo pendiente en la
-   sección 12; la de otro integrante es
-   `docs/context/MEMORIA-<su usuario de GitHub>.md`. Si no sabes quién es tu integrante, le
-   preguntas su nombre, su usuario de GitHub y qué número de integrante es (`docs/ROADMAP.md`,
-   fase 0). Si su memoria no existe, la creas en la primera sesión, con lo que él decide y lo
-   pendiente. La memoria de otro integrante se lee solo cuando el trabajo la toca, y ninguna manda
-   sobre un documento canónico (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a
-   ser la memoria del modelo").
+   sección 12; la de otro integrante es `docs/context/MEMORIA-<su usuario de GitHub>.md`. Si no
+   sabes quién es tu integrante, le preguntas su nombre, su usuario de GitHub y qué número de
+   integrante es (`docs/ROADMAP.md`, fase 0). Si su memoria no existe, la creas en la primera
+   sesión, con lo que él decide y lo pendiente. Cada PR que abres la pone al día: lo que tu
+   integrante dijo del trabajo, con sus palabras, lo que decidió y lo pendiente
+   (`docs/DECISIONS.md`, 2026-11-02 "El modelo pone al día la memoria de su integrante en cada PR").
+   La memoria de otro integrante se lee solo cuando el trabajo la toca, y ninguna manda sobre un
+   documento canónico (`docs/DECISIONS.md`, 2026-10-24 "La memoria contextual vuelve a ser la
+   memoria del modelo").
 7. `docs/TEMPORARY-CONTEXT.md`, último: lo más volátil. Su estado normal es vacío, y se lee igual,
    porque una línea de ahí puede contradecir lo que uno estaba por proponer.
 

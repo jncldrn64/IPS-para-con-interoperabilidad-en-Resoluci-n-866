@@ -2266,6 +2266,40 @@ Lo que respondió e hizo el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-02: Las historias de Jorge, la regla de la memoria y HU-035
+
+Con el PR #29 fusionado, el autor preguntó cuántas historias hizo Jorge y si su modelo probó los
+escenarios, usó lo común y usó CSV. El modelo comprobó en `main` (e4472b4): HU-001, HU-022 y
+HU-026, con 14, 28 y 25 escenarios, todos con al menos un test (33, 48 y 35 tests); las tres sobre
+la base común; la CIUO-88 A.C. cargada desde `data/catalogos/ciuo-88-ac.csv`; la DIVIPOLA sin
+descargar. El integrante 2 no tiene nada en el repo. El autor contó que habló con él, y escribió,
+textual:
+
+- "entonces aun falta los datos de los municipios de jorge, pero al menos se que algo hizo, como
+  te digo, luego miramos lo de el, confiare en el... por lo que mientras busco la usb con el pdf
+  original del profesor, para que verifiquemos todo al final, vamos a hacer mis Hu faltantes bajo
+  todos los lineamwientos que el repo ha establecido (si, usaremol el catalogo comun, y veremos
+  todas las deciciones arquitectonicas; recuerda que actuarliez nu memoria y de hecho, ya que
+  jorge tiene explicitamente la de, debe haber una regla que el modelo actualeze su memoria
+  tambien).... retomando al integrante #2 cuando terminemos las mias, hacemol el catalogo de
+  paises."
+
+Lo que respondió e hizo el modelo:
+
+- La regla de poner al día la memoria no estaba en `CLAUDE.md`: solo en la sección 0 de esta
+  memoria. La de Jorge no la tiene en su sección 0, aunque su modelo la siguió. Va en un PR propio,
+  con la entrada 2026-11-02 "El modelo pone al día la memoria de su integrante en cada PR".
+- De las historias del autor queda HU-035. HU-006 depende de HU-004, del integrante 2, y no puede
+  empezar antes (`docs/ROADMAP.md`, principio de orden).
+- Los 8 valores de HU-035 no estaban en el repo. Salen de la hoja Validación del tablero, en
+  fa95eaf, fila V-11, cotejada contra el PDF del anexo el 2026-10-20: la hoja escribe el 05
+  "Discapacidad sicosocial (mental)", y la transcripción, "psicosocial". Manda la hoja. Falta que
+  el autor lo confirme con el PDF.
+- Con lo que dijo el profesor sobre no subir todos los catálogos: el modelo no lo encuentra en el
+  repo ni en esta memoria. El autor busca el PDF.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2415,7 +2449,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000000. **Próximo (2026-11-02, el revert del revert):** que el autor
+0000000000000000000000000000000. **Próximo (2026-11-02, HU-035):** que el autor fusione el PR de la
+   regla de la memoria. Después, HU-035 en un PR que sale de `main`, sobre la base común como
+   HU-036, con los 8 valores de la hoja. Después, del integrante 2, el catálogo de países (HU-018).
+   Pendiente: que el autor confirme el 05 "sicosocial" con el PDF, lo que dijo el profesor sobre no
+   subir todos los catálogos, y la DIVIPOLA de Jorge.
+000000000000000000000000000000. **Anterior (2026-11-02, el revert del revert):** que el autor
    fusione el PR que trae de vuelta el #27. Los #24 a #26 ya están en `main`. Pendiente sin elegir:
    los dos commits web sin tipo en `README.md`, lo que la memoria de Jorge todavía espera del autor
    y quién es el integrante 2. Del integrante 3 sigue HU-035.
