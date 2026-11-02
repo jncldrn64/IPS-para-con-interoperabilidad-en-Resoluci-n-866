@@ -1873,3 +1873,46 @@ Lo que decidió el modelo:
   deja el autor de la carga.
 
 **Estado:** `vigente`
+
+## 2026-11-01: HU-026 guarda el departamento en su tabla
+
+**Contexto:** HU-026 es la tercera historia de Jorge, el integrante 1, y el primer catálogo cuyo
+archivo trae más columnas que el código y el nombre: el código y el nombre del departamento, que
+la base común no leía. Jorge adjuntó la tarjeta, la misma del repo, y pidió:
+
+- "sigamos con esta otra historia"
+
+**Decisión:** El departamento tiene su tabla, `Departamento`, con código, nombre y versión, como en
+el modelo E-R, y cada municipio guarda el código de su departamento, que son los dos primeros
+dígitos de su código. La base común suma `columnasPropias`, que exige columnas además del código y
+el nombre, y `alConfirmar`, que guarda los departamentos en la misma transacción que los
+municipios. El controlador común suma `detalle`, que muestra el departamento al final de cada
+línea, y `escribirAyudaDeCarga`, que dice qué columnas pide el archivo.
+
+Lo que decidió el modelo:
+
+- Las columnas del departamento se llaman `codigo_departamento` y `nombre_departamento`, sin
+  tildes ni espacios, como `codigo` y `nombre`. El archivo de la DIVIPOLA no se ha visto, así que
+  su CSV tiene que llevar esos nombres.
+- El departamento de un municipio se guarda como su código en una columna de texto, y no como una
+  relación de JPA: el valor se lee del código del municipio al crearlo, sin buscar el departamento.
+- Cuando un departamento llega con dos nombres, vale el que le dan más filas, y con empate el
+  primero del archivo; las filas con el otro se rechazan con "el departamento tiene dos nombres".
+- Una fila sin nombre de departamento se rechaza con "falta el nombre del departamento".
+- Una versión nueva cambia el nombre de un departamento y lo avisa antes de guardar; una recarga no
+  lo cambia. El departamento no tiene historial propio ni estado.
+- Un código de 4 dígitos al crear o cambiar a mano da el aviso de los ceros iniciales, como en la
+  carga.
+- La comprobación cuenta como nombre distinto el de un municipio cuyo departamento tiene otro
+  nombre en el archivo.
+- La rama sale de la de HU-022, porque usa sus dos métodos de la base y la sesión de HU-001.
+
+**Alternativas:**
+
+- Guardar el nombre del departamento en cada municipio. Repetiría el nombre en cada fila, y el
+  modelo E-R ya lo tiene en su tabla.
+- Que el departamento sea un catálogo con su CRUD. Ninguna de las 30 historias lo pide, y llega
+  con los municipios.
+- Leer las columnas propias en cada servicio. La lectura del CSV quedaría en dos lugares.
+
+**Estado:** `vigente`

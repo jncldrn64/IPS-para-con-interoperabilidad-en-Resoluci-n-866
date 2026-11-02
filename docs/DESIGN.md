@@ -252,6 +252,15 @@ después de la 11, y `usos` cambia lo que se dice antes de inactivar. HU-022 usa
 jerarquía (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo revisa con el
 archivo entero").
 
+Un catálogo cuyo archivo trae más columnas las nombra en `columnasPropias`. La base las exige como
+al código y al nombre, y su valor llega en `ResultadoCarga.Fila.propia`; `leerTabla` las lee para
+comparar sin cargar. `alConfirmar` guarda lo que no es un valor del catálogo, en la misma
+transacción.
+
+En el controlador, `detalle` agrega algo al final de cada valor en la consulta y en la búsqueda, y
+`escribirAyudaDeCarga` dice qué columnas pide el archivo. HU-026 usa los cinco para el departamento
+(`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla").
+
 La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guardar, y
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
 de la base, `nombreOficial` y `revisarPrimeraCarga`.

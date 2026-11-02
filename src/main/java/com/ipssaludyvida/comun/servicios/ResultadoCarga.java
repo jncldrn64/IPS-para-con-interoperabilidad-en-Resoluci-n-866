@@ -3,6 +3,7 @@ package com.ipssaludyvida.comun.servicios;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
 
@@ -16,7 +17,21 @@ public class ResultadoCarga {
 
     public enum Tipo { PRIMERA, VERSION_NUEVA, RECARGA }
 
-    public record Fila(int numero, String codigo, String nombre) {}
+    /**
+     * Una fila del archivo. Propias trae las columnas que pide la historia además del código y el
+     * nombre, como el departamento de un municipio en HU-026, por su nombre de columna.
+     */
+    public record Fila(int numero, String codigo, String nombre, Map<String, String> propias) {
+
+        public Fila(int numero, String codigo, String nombre) {
+            this(numero, codigo, nombre, Map.of());
+        }
+
+        /** El valor de una columna propia, o vacío si la fila no la trae. */
+        public String propia(String columna) {
+            return propias.getOrDefault(columna, "");
+        }
+    }
 
     public record Rechazo(int numero, String codigo, String motivo) {}
 

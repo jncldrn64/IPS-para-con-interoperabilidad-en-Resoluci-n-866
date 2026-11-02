@@ -62,6 +62,7 @@ las 7 claves de la configuración.
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
+| `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
@@ -81,9 +82,9 @@ menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene 
 
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
 Con sesión, lista por su número las historias que el cargo ve: "Ocupaciones (HU-022)" en la opción
-1, "Etnias (HU-036)" en la 2 y "Comunidades étnicas (HU-037)" en la 3. Abajo van la letra C, que
-cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide
-entrar de nuevo.
+1, "Municipios (HU-026)" en la 2, "Etnias (HU-036)" en la 3 y "Comunidades étnicas (HU-037)" en la
+4. Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad,
+la opción siguiente pide entrar de nuevo.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -103,6 +104,12 @@ el grupo sin una de 4 activa. Antes de inactivar dice cuántos pacientes y atenc
 dos en 0 hasta HU-004 y HU-007. El 2026-11-01, con `LANG=C.UTF-8` y una base en memoria, una
 corrida creó 2, 22, 222, 2221 y 223, rechazó inactivar el grupo 222 con "tiene 1 ocupaciones
 activas" y mostró la jerarquía al médico tratante, que no pudo crear un valor.
+
+El catálogo de municipios muestra cada municipio con su departamento, como
+`05001  MEDELLÍN  ACTIVO  ANTIOQUIA (05)`, y su carga pide un CSV con cuatro columnas:
+`codigo;nombre;codigo_departamento;nombre_departamento`. El 2026-11-01, con una base en memoria,
+una corrida cargó un archivo de 4 filas, rechazó `5002` con el aviso de los ceros iniciales y
+mostró las dos Albania, cada una con su departamento.
 
 El 2026-10-31, con `LANG=C.UTF-8`, una corrida con la entrada desde un `printf` rechazó una clave
 equivocada, entró como `medico`, rechazó la opción 2 de etnias, cerró la sesión con "C" y entró como
@@ -149,7 +156,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-01 con `git ls-files 'src/*' | xargs wc -l`: 5911 líneas en 56 archivos. De
+Comprobado el 2026-11-01 con `git ls-files 'src/*' | xargs wc -l`: 6944 líneas en 64 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -165,7 +172,9 @@ en el PR que lo cierra, y el CHANGELOG guarda el rastro. Un PR que anuncia algo 
 si eso cierra un hueco de esta lista.
 
 - **2026-10-22: solo un catálogo oficial se descargó.** No se comprobó que la tabla Pais de SISPRO
-  use el código numérico (D-03), ni que exista el catálogo de comunidades étnicas (HU-037). El
+  use el código numérico (D-03), ni que exista el catálogo de comunidades étnicas (HU-037), ni
+  cómo nombra sus columnas el archivo de la DIVIPOLA (HU-026): su CSV tiene que llevar las de
+  `ContratoMunicipios`. El
   2026-11-01 entró la estructura de la CIUO-88 A.C. del DANE, con sus cuatro niveles (HU-022).
   Comando: `git ls-files '*.csv'` devuelve `data/catalogos/ciuo-88-ac.csv` y
   `src/test/resources/cargas/etnias-hoja-15.csv`, que se transcribió de la hoja 15 del anexo y no
@@ -190,7 +199,8 @@ si eso cierra un hueco de esta lista.
   que no tiene que verse.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
   pacientes usan un valor, en el escenario 19 de HU-036 y el 18 de HU-037: `contarUsos` devuelve 0.
-  Desde el 2026-11-01 también el escenario 22 de HU-022, que además cuenta atenciones:
+  Desde el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además cuenta
+  atenciones:
   `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007.
   Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no
   tiene código porque todavía no hay registros. Comando:

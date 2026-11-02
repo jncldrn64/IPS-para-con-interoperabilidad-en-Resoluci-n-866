@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-01 en el contenedor de la sesión, con Linux: 193 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-01 en el contenedor de la sesión, con Linux: 228 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -51,6 +51,9 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   estructura de prueba que arma el test, con 10 grandes grupos, 34 subgrupos principales, 117
   subgrupos y 401 grupos primarios, y que cada test cambia. `esc1_archivoOficial` carga
   `data/catalogos/ciuo-88-ac.csv`.
+- `hu026/HU026MunicipiosTest`, con 35 tests: los 25 escenarios de HU-026, con un archivo de prueba
+  de 9 municipios de 8 departamentos y Albania en tres, porque el de la DIVIPOLA no se ha
+  descargado.
 - `comun/CasosLimiteTest`, con 13 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.
@@ -73,7 +76,7 @@ registro del paciente, HU-004: cuántos pacientes usan un valor, en el escenario
 que RC-11 pide de un registro ya guardado, en el 11.
 
 El 2026-10-31, con `hu001` en la ruta, imprimió los 14 números de HU-001, y el 2026-11-01, con
-`hu022`, los 28 de HU-022.
+`hu022`, los 28 de HU-022, y con `hu026`, los 25 de HU-026.
 
 ## 4. El CI
 

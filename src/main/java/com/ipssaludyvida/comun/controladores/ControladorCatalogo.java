@@ -69,6 +69,20 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         return Map.of();
     }
 
+    /**
+     * Lo que se muestra de un valor después de su estado, en la consulta y en la búsqueda, como el
+     * departamento de un municipio en HU-026.
+     */
+    protected String detalle(T valor) {
+        return "";
+    }
+
+    /** Qué columnas pide la carga. Una historia con columnas propias, como HU-026, la cambia. */
+    protected void escribirAyudaDeCarga() {
+        escribir("La primera fila trae los nombres de las columnas: código;nombre. Las"
+                + " demás columnas se ignoran.");
+    }
+
     /** Lo que se dice antes de inactivar: cuántos registros usan el valor (RC-10). */
     protected String usos(String codigo) {
         return "La usan " + crud.contarUsos(codigo) + " pacientes";
@@ -182,8 +196,7 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     // "La terminal dice qué archivo espera antes de pedir la ruta").
     private void cargar() {
         escribir("El archivo tiene que ser CSV en UTF-8, separado por punto y coma (;).");
-        escribir("La primera fila trae los nombres de las columnas: código;nombre. Las"
-                + " demás columnas se ignoran.");
+        escribirAyudaDeCarga();
         escribir("Desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la columna"
                 + " del código en formato de texto para que no pierda los ceros.");
         Path archivo = Path.of(leer("Ruta del archivo: "));
@@ -282,8 +295,9 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         encontrados.forEach(this::imprimir);
     }
 
-    private void imprimir(Catalogo valor) {
-        escribir(valor.getCodigo() + "  " + valor.getNombre() + "  " + valor.getEstado());
+    private void imprimir(T valor) {
+        escribir(valor.getCodigo() + "  " + valor.getNombre() + "  " + valor.getEstado()
+                + detalle(valor));
     }
 
     private void imprimir(ResumenVersion resumen) {
