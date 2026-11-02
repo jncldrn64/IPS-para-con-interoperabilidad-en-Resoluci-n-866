@@ -45,6 +45,18 @@
   código. Maven Central contestó a veces 429 por la IP compartida, y Maven reintenta con
   `-Daether.connector.http.retryHandler.count=8`.
 
+## 2026-11-01: HU-022
+
+- "ya podriamos pasar a la historia de usaurio 2"
+- El modelo lo leyó como HU-022, su segunda historia. **Hipótesis:** no hay HU-002 entre las 12.
+- El PR #24 seguía en borrador, así que la rama de HU-022 sale de la de HU-001.
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código
+  y lo revisa con el archivo entero".
+
+- Jorge adjuntó `EstCIUO88AC.pdf`, la estructura de la CIUO-88 A.C. del DANE, sin texto. El modelo
+  lo pasó a CSV y lo cargó en el archivo de la base, en el mismo PR de HU-022 (`docs/DECISIONS.md`,
+  2026-11-01 "La CIUO-88 A.C. entra al archivo de la base").
+
 ## 3. Pendiente
 
 - Que el autor cierre sin fusionar el PR de prueba. **Hipótesis:** el PR #23 se fusionó el
@@ -53,4 +65,7 @@
 - Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común, y Jorge pidió
   que se le recordara el 2026-11-01 a las 12:00.
 - Preguntar al profesor si acepta que el programa siga en terminal.
-- Después: HU-022, ocupaciones, y HU-026, municipios; HU-005 cuando esté HU-004.
+- Que Jorge revise y fusione el PR de HU-022, después del de HU-001.
+- El PR de HU-022 tiene el turno del archivo de la base: avisar a los otros dos antes de que
+  cambien `data/ips.mv.db`.
+- Después: HU-026, municipios; HU-005 cuando esté HU-004.

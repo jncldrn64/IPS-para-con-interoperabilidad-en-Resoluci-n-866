@@ -5,6 +5,35 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.20 — 2026-11-01
+
+HU-022 queda completa, y el archivo de la base trae las 562 ocupaciones de la CIUO-88 A.C. El
+programa no muestra una versión.
+
+### Added
+- `hu022/`: `Ocupacion`, con códigos de 1 a 4 dígitos y el grupo leído del código (D-26);
+  `ContratoOcupaciones`, `OcupacionServicio`, `OcupacionControlador`, `OcupacionRepositorio` y
+  `Nodo`, una línea de la jerarquía.
+- La opción 12 del catálogo de ocupaciones, "Ver la jerarquía", con sangría por nivel y las marcas
+  "se registra al paciente" y "sin ocupaciones".
+- `HU022OcupacionesTest`, con 48 tests de los 28 escenarios, uno con el archivo oficial: 193 tests
+  en total.
+- `data/catalogos/ciuo-88-ac.csv`, la estructura de la CIUO-88 A.C. pasada a CSV del PDF del DANE,
+  con su fuente en `data/catalogos/README.md`.
+- `data/ips.mv.db`: las 562 ocupaciones, su versión, sus cambios y los 3 usuarios de prueba.
+- `docs/DECISIONS.md`: la entrada 2026-11-01 "La CIUO-88 A.C. entra al archivo de la base".
+- `ServicioCatalogo.revisarFilas` y `revisarComparacion`, y `ControladorCatalogo.opcionesPropias` y
+  `usos`: lo que un catálogo agrega a la base común.
+- `docs/DECISIONS.md`: la entrada 2026-11-01 "HU-022 lee el grupo del código y lo revisa con el
+  archivo entero".
+- `docs/GLOSSARY.md`: "grupo de una ocupación".
+
+### Changed
+- `ControladorCatalogo.escribir` pasa de privado a protegido, para la opción propia de un catálogo.
+- `BaseComunTest` revisa que `OcupacionRepositorio` no borre y que la columna del código tenga 4.
+- `docs/DESIGN.md`, sección 7, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la
+  memoria de Jorge describen HU-022.
+
 ## v0.19 — 2026-10-31
 
 HU-001 queda completa: el programa pide iniciar sesión y muestra a cada cargo solo sus opciones.

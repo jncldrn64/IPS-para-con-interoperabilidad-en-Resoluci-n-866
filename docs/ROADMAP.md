@@ -200,7 +200,9 @@ al paciente.
   `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
   completas"). Del integrante 3 queda HU-035. HU-001 está completa desde la v0.19
   (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
-  quedan HU-022, HU-026 y HU-005.
+  quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la v0.20, con la CIUO-88 A.C.
+  en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo
+  revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo de la base").
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
