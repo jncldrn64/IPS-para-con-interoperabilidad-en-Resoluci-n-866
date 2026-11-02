@@ -213,12 +213,18 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                 .map(ArchivoCsv::normalizar).toList();
         int codigo = columna(columnas, "codigo", lineas.get(0));
         int nombre = columna(columnas, "nombre", lineas.get(0));
+        Map<String, Integer> propias = new LinkedHashMap<>();
+        for (String propia : columnasPropias()) {
+            propias.put(propia, columna(columnas, propia, lineas.get(0)));
+        }
         List<ResultadoCarga.Fila> filas = new ArrayList<>();
         for (String linea : lineas.subList(1, lineas.size())) {
             carga.contarFila();
             List<String> campos = ArchivoCsv.campos(linea);
+            Map<String, String> valores = new LinkedHashMap<>();
+            propias.forEach((columna, indice) -> valores.put(columna, campo(campos, indice)));
             filas.add(new ResultadoCarga.Fila(carga.getFilasLeidas(), campo(campos, codigo),
-                    campo(campos, nombre)));
+                    campo(campos, nombre), valores));
         }
         Map<String, Long> repeticiones = filas.stream().filter(f -> !f.codigo().isEmpty())
                 .collect(Collectors.groupingBy(ResultadoCarga.Fila::codigo, Collectors.counting()));
@@ -233,7 +239,8 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                         new ResultadoCarga.Rechazo(fila.numero(), fila.codigo(), motivo));
             } else {
                 carga.getAceptadas().add(new ResultadoCarga.Fila(fila.numero(), fila.codigo(),
-                        nombreOficial(fila.codigo(), fila.nombre(), carga.getAvisos())));
+                        nombreOficial(fila.codigo(), fila.nombre(), carga.getAvisos()),
+                        fila.propias()));
             }
         }
         revisarFilas(carga);
@@ -312,6 +319,7 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
             cambio.setCodigoReemplazo(reemplazo);
             anotar(cambio, version);
         }
+        alConfirmar(carga, version);
         return version;
     }
 
@@ -331,6 +339,22 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     /** El nombre que se guarda de una fila aceptada. Una historia con una lista fija lo cambia. */
     protected String nombreOficial(String codigo, String nombreDelArchivo, List<String> avisos) {
         return nombreDelArchivo;
+    }
+
+    /**
+     * Las columnas que la historia pide además del código y el nombre, sin mayúsculas ni tildes,
+     * como el departamento de HU-026. Una que falta rechaza el archivo completo, y su valor llega
+     * en ResultadoCarga.Fila.propia.
+     */
+    protected List<String> columnasPropias() {
+        return List.of();
+    }
+
+    /**
+     * Lo que una historia guarda además de sus valores, al final de confirmarCarga y en la misma
+     * transacción, como los departamentos de HU-026.
+     */
+    protected void alConfirmar(ResultadoCarga carga, CatalogoVersion version) {
     }
 
     /**
@@ -588,6 +612,16 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
 
     /** Los códigos y nombres de un CSV de RC-8, para comparar sin cargar. */
     protected Map<String, String> leerListaOficial(Path archivo) {
+        Map<String, String> lista = new LinkedHashMap<>();
+        leerTabla(archivo).forEach(f -> lista.put(f.get("codigo"), f.get("nombre")));
+        return lista;
+    }
+
+    /**
+     * Las filas con código de un CSV de RC-8, con el código, el nombre y las columnas propias de la
+     * historia, por su nombre de columna, para comparar sin cargar.
+     */
+    protected List<Map<String, String>> leerTabla(Path archivo) {
         List<String> lineas = ArchivoCsv.lineas(archivo).stream()
                 .filter(l -> !l.isBlank()).toList();
         if (lineas.isEmpty()) {
@@ -595,16 +629,22 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
         }
         List<String> columnas = ArchivoCsv.campos(lineas.get(0)).stream()
                 .map(ArchivoCsv::normalizar).toList();
-        int codigo = columna(columnas, "codigo", lineas.get(0));
-        int nombre = columna(columnas, "nombre", lineas.get(0));
-        Map<String, String> lista = new LinkedHashMap<>();
+        Map<String, Integer> indices = new LinkedHashMap<>();
+        indices.put("codigo", columna(columnas, "codigo", lineas.get(0)));
+        indices.put("nombre", columna(columnas, "nombre", lineas.get(0)));
+        for (String propia : columnasPropias()) {
+            indices.put(propia, columna(columnas, propia, lineas.get(0)));
+        }
+        List<Map<String, String>> filas = new ArrayList<>();
         for (String linea : lineas.subList(1, lineas.size())) {
             List<String> campos = ArchivoCsv.campos(linea);
-            if (!campo(campos, codigo).isEmpty()) {
-                lista.put(campo(campos, codigo), campo(campos, nombre));
+            Map<String, String> fila = new LinkedHashMap<>();
+            indices.forEach((columna, indice) -> fila.put(columna, campo(campos, indice)));
+            if (!fila.get("codigo").isEmpty()) {
+                filas.add(fila);
             }
         }
-        return lista;
+        return filas;
     }
 
     /** Un código está en la versión vigente si vino en su archivo (RC-10). */

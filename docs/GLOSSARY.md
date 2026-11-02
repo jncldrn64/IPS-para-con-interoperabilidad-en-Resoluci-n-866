@@ -105,6 +105,9 @@ que citan su fuente.
   cada historia de catálogo; la línea "Operaciones por escenario" de su tarjeta dice qué escenario
   es cada una, y la versión nueva hace las cuatro (2026-10-24 "Los títulos de los catálogos nombran
   sus cuatro operaciones").
+- **departamento**: los dos primeros dígitos del código de un municipio, con su nombre. Llega en el
+  mismo archivo de la DIVIPOLA y se guarda en su tabla, sin estado (2026-11-01 "HU-026 guarda el
+  departamento en su tabla").
 - **D-n**: una decisión de la hoja Decisiones del tablero del equipo. La copia del 2026-10-24 está
   en `docs/REQUIREMENTS.md`, sección 6. La mayoría son propuestas sin confirmar; no son entradas de
   `docs/DECISIONS.md`.

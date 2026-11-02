@@ -5,6 +5,31 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.21 — 2026-11-01
+
+HU-026 queda completa, salvo la carga del archivo oficial de la DIVIPOLA, que no se ha descargado.
+El programa no muestra una versión.
+
+### Added
+- `hu026/`: `Municipio`, con código de 5 dígitos y su departamento; `Departamento`, la tabla del
+  modelo E-R; `ContratoMunicipios`, `MunicipioServicio`, `MunicipioControlador` y los dos
+  repositorios, que no borran.
+- El CSV de municipios pide además las columnas `codigo_departamento` y `nombre_departamento`, y la
+  carga guarda los departamentos con su versión.
+- `HU026MunicipiosTest`, con 35 tests de los 25 escenarios: 228 tests en total.
+- `ServicioCatalogo.columnasPropias`, `alConfirmar` y `leerTabla`, `ResultadoCarga.Fila.propia`, y
+  `ControladorCatalogo.detalle` y `escribirAyudaDeCarga`.
+- `docs/DECISIONS.md`: la entrada 2026-11-01 "HU-026 guarda el departamento en su tabla".
+- `docs/GLOSSARY.md`: "departamento".
+
+### Changed
+- La consulta y la búsqueda de un catálogo imprimen al final de cada línea lo que pone `detalle`, y
+  en municipios es el departamento.
+- `BaseComunTest` revisa que los repositorios de municipios y departamentos no borren, y el largo
+  de sus códigos.
+- `docs/DESIGN.md`, sección 7, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la
+  memoria de Jorge describen HU-026.
+
 ## v0.20 — 2026-11-01
 
 HU-022 queda completa, y el archivo de la base trae las 562 ocupaciones de la CIUO-88 A.C. El

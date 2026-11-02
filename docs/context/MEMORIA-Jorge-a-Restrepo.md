@@ -57,6 +57,15 @@
   lo pasó a CSV y lo cargó en el archivo de la base, en el mismo PR de HU-022 (`docs/DECISIONS.md`,
   2026-11-01 "La CIUO-88 A.C. entra al archivo de la base").
 
+## 2026-11-01: HU-026
+
+- "se puede decir que esa historia de usuario ya quedo?"
+- El modelo le dijo que el código de HU-022 está terminado, pero que falta fusionar los PR #24 y
+  #25, en ese orden, y que el conteo de pacientes y atenciones espera HU-004 y HU-007.
+- Jorge adjuntó la tarjeta de HU-026, igual a la del repo: "sigamos con esta otra historia".
+- La rama de HU-026 sale de la de HU-022. Lo que decidió el modelo está en `docs/DECISIONS.md`,
+  2026-11-01 "HU-026 guarda el departamento en su tabla".
+
 ## 3. Pendiente
 
 - Que el autor cierre sin fusionar el PR de prueba. **Hipótesis:** el PR #23 se fusionó el
@@ -68,4 +77,7 @@
 - Que Jorge revise y fusione el PR de HU-022, después del de HU-001.
 - El PR de HU-022 tiene el turno del archivo de la base: avisar a los otros dos antes de que
   cambien `data/ips.mv.db`.
-- Después: HU-026, municipios; HU-005 cuando esté HU-004.
+- Que Jorge revise y fusione el PR de HU-026, después de los de HU-001 y HU-022.
+- El archivo de la DIVIPOLA: si Jorge lo adjunta, el modelo lo pasa al CSV de cuatro columnas y lo
+  carga en el archivo de la base.
+- Después: HU-005, cuando esté HU-004.
