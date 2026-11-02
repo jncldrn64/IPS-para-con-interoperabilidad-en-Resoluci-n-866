@@ -5,6 +5,32 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.22 — 2026-11-02
+
+Solo documentación. Cada integrante fusiona sus PR, también el de prueba, sin esperar al autor. Toma
+la v0.22 porque los PR #24 a #26 ya usan la v0.19 a la v0.21. Llegó primero en el PR #27, que el
+PR #28 revirtió para fusionar antes los de Jorge, y vuelve revirtiendo ese revert.
+
+### Added
+- `CLAUDE.md`, sección 7: el cuerpo del PR nombra a su integrante, el modelo le dice qué botones
+  aprieta para fusionarlo y no empieza otra historia sobre un PR sin fusionar.
+- `docs/ARCHITECTURE.md`, sección 6: el hueco de los PR del modelo de Jorge que salen a nombre de
+  `jncldrn64`.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "Cada integrante fusiona sus PR, también el de
+  prueba", con el rastro de dónde quedaba esperando el autor.
+
+### Changed
+- `CLAUDE.md`, sección 7: el PR de prueba lo revisa el modelo de su integrante y lo fusiona su
+  integrante, con su memoria adentro.
+- `CLAUDE.md`, sección 3: un documento nuevo se pregunta a su integrante, y su PR lleva `común:`.
+- `docs/GLOSSARY.md`: autor, borrador y PR de prueba.
+- `docs/TEMPORARY-CONTEXT.md`: sus reglas hablan de su integrante y no del autor.
+- La memoria contextual del autor anota su pedido y sus respuestas.
+
+### Removed
+- `docs/TEMPORARY-CONTEXT.md`: las dos líneas de Jorge sobre su PR de prueba, que ya se fusionó y
+  que la entrada nueva de `docs/DECISIONS.md` responde.
+
 ## v0.21 — 2026-11-01
 
 HU-026 queda completa, salvo la carga del archivo oficial de la DIVIPOLA, que no se ha descargado.

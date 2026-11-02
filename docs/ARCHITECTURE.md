@@ -205,3 +205,12 @@ si eso cierra un hueco de esta lista.
   Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no
   tiene código porque todavía no hay registros. Comando:
   `grep -n -A2 'public long contarUsos' src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
+- **2026-11-02: los PR del modelo de Jorge salen a nombre de `jncldrn64`.** GitHub muestra como
+  autor de los PR #23 a #26 la cuenta del autor, aunque los abrieron sesiones de Claude Code que no
+  son suyas y el PR #23 lo fusionó `jorge-a-restrepo`. No se sabe por qué. **Hipótesis:** la cuenta
+  de GitHub conectada en claude.ai, o la instalación de la app de Claude en el fork. No es
+  prioritario: el cuerpo del PR nombra a su integrante (`CLAUDE.md`, sección 7). Se vio el
+  2026-11-02 en el campo `user.login` de la API de GitHub. Comando, que no se corrió en la sesión:
+  `gh api repos/jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866/pulls/24 --jq
+  .user.login`. Para comprobar la primera hipótesis, Jorge mira qué cuenta tiene conectada en
+  https://claude.ai/connect-github.
