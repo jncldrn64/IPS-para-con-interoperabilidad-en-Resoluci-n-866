@@ -71,10 +71,9 @@ Los documentos canónicos son los de la tabla de la sección 2, más `CHANGELOG.
 en `docs/<módulo>/`, con un par: un estándar normativo y una superficie descriptiva. La carpeta
 existe solo cuando hay un módulo; mientras no lo haya, no se crea.
 
-- **No se crea un documento nuevo sin preguntar a su integrante,** y el PR que lo trae lleva
-  `común:` (sección 5), para que los otros dos lo vean antes de que se fusione. Las excepciones son
-  un `README.md` de subcarpeta que solo explica esa carpeta, como `tests/README.md`, y la memoria
-  de un integrante (sección 1).
+- **No se crea un documento nuevo sin preguntar al autor.** Las excepciones son un `README.md` de
+  subcarpeta que solo explica esa carpeta, como `tests/README.md`, y la memoria de un integrante
+  (sección 1).
 - **Los nombres de archivo van en inglés** y el contenido en el idioma del repo. Los nombres son
   convención de herramientas; el idioma, del autor.
 - **Este repo no describe otros repos.** El nombre de otro puede aparecer como procedencia, nunca
@@ -157,16 +156,10 @@ entero:
 - **Título del PR:** el mismo formato y el mismo tipo que el commit.
 - **Cuerpo del PR:** la tabla de archivos se copia de `git diff --numstat origin/main...HEAD`,
   corrido como último paso antes de escribirla. Si el modelo decidió algo sin preguntar, el cuerpo
-  trae la sección "Lo que decidió el modelo" (sección 5). Abre nombrando a su integrante y su
-  usuario de GitHub, porque GitHub puede mostrar como autor del PR otra cuenta
-  (`docs/ARCHITECTURE.md`, sección 6).
-- **Se trabaja vía PR, abierto como borrador.** Lo marca listo y lo fusiona su integrante, sin
-  esperar a nadie más (`docs/DECISIONS.md`, 2026-11-02 "Cada integrante fusiona sus PR, también el
-  de prueba"). Si `push`, crear una rama o abrir el PR devuelve `403`, se para y se avisa que falta
-  permiso de escritura.
-- **Al abrir el PR, el modelo le dice a su integrante cómo fusionarlo:** en la página del PR, el
-  botón "Ready for review" y después "Merge pull request". No empieza otra historia sobre una rama
-  cuyo PR no se fusionó: primero le pide fusionarlo, y la rama nueva sale de `main`.
+  trae la sección "Lo que decidió el modelo" (sección 5).
+- **Se trabaja vía PR, abierto como borrador.** Lo marca listo y lo fusiona su integrante. Si
+  `push`, crear una rama o abrir el PR devuelve `403`, se para y se avisa que falta permiso de
+  escritura.
 - **Dos PR abiertos a la vez.** Antes de marcar listo el suyo, el modelo trae `main` a su rama con
   un merge, sin reescribir la historia. Si `main` ya tiene la versión que tomó su sección del
   CHANGELOG, toma la siguiente libre y deja su sección arriba; sus entradas de `docs/DECISIONS.md`
@@ -177,8 +170,7 @@ entero:
   "El PR va contra main del fork"). Con `gh pr create`, el destino se fija con `--repo` y
   `--base`, como muestra `gh pr create --help` en gh 2.89.0.
 - **Un integrante nuevo abre un PR de prueba antes de su primera historia** (`docs/DECISIONS.md`,
-  2026-10-26 "Un integrante nuevo abre un PR de prueba", y 2026-11-02 "Cada integrante fusiona sus
-  PR, también el de prueba"). Las condiciones:
+  2026-10-26 "Un integrante nuevo abre un PR de prueba"). Las condiciones:
   - es colaborador del fork con rol Write: el autor lo invita en Settings, Collaborators, y él
     acepta la invitación que le llega por correo;
   - si trabaja con Claude Code en la nube, conecta su cuenta en https://claude.ai/connect-github;
@@ -196,8 +188,7 @@ entero:
   secciones 6 y 7, con el piso de prosa medido.
   ```
 
-  Su modelo revisa ese PR contra esta lista y escribe en el cuerpo qué cumple. Su integrante lo
-  marca listo y lo fusiona, y así su memoria llega a `main`:
+  El autor revisa ese PR contra esta lista y lo cierra sin fusionar:
   - el destino es `main` del fork, y el PR está en borrador;
   - el título y el commit llevan tipo, y el cuerpo del commit tiene una o dos líneas y su sección
     del CHANGELOG;

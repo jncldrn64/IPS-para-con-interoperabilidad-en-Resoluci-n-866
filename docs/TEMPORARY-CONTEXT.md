@@ -13,19 +13,19 @@ Una línea: qué se observó, quién lo aportó y por qué podría importar. **S
 sin pregunta formulada, sin campos.** Si no se sabe por qué importa, se escribe igual y se dice.
 
 **El modelo escribe sin pedir permiso**, el que implementa y el que revisa, y también lo que no
-viene de su integrante. Nada de eso justifica interrumpir una conversación, y todo se pierde si no
-hay dónde ponerlo.
+viene del autor. Nada de eso justifica interrumpir una conversación, y todo se pierde si no hay
+dónde ponerlo.
 
 **Lo obligatorio es la fecha y quién anotó. Y a veces una cosa más.**
 
 ## La cita textual, y cuándo es obligatoria
 
-Toda anotación es el resumen que un modelo hizo de lo que alguien dijo. Cuando un integrante
-describe algo que todavía no sabe nombrar, su frase es ambigua, y esa ambigüedad es el estado real
-de la idea. Un resumen limpio decide qué quiso decir, y la ambigüedad desaparece junto con el rastro
-de que la hubo.
+Toda anotación es el resumen que un modelo hizo de lo que alguien dijo. Cuando el autor describe
+algo que todavía no sabe nombrar, su frase es ambigua, y esa ambigüedad es el estado real de la
+idea. Un resumen limpio decide qué quiso decir, y la ambigüedad desaparece junto con el rastro de
+que la hubo.
 
-**Por eso, cuando la anotación sale de palabras de un integrante y esas palabras están a mano, van
+**Por eso, cuando la anotación sale de palabras del autor y esas palabras están a mano, van
 textuales y sin corregir.** **Es obligatoria cuando la anotación nombra algo que todavía no tiene
 línea en `docs/GLOSSARY.md`**: estrenar vocabulario mal es lo que cuesta una sesión deshacer.
 
@@ -59,8 +59,8 @@ se sabe si se quiere.**
 ## Cuándo anotar y cuándo recoger
 
 **Primero se pregunta, después se anota.** Si el alcance se abre y lo anterior no quedó escrito, lo
-correcto es preguntarle a su integrante si conviene darle forma antes de seguir. Este archivo es la
-red para cuando esa pregunta no se hace o no se acepta.
+correcto es preguntarle al autor si conviene darle forma antes de seguir. Este archivo es la red
+para cuando esa pregunta no se hace o no se acepta.
 
 **Anotar** cuando una rama de alcance se está cerrando, a medida que aparece. **Recoger** cuando esa
 rama se cierra.
