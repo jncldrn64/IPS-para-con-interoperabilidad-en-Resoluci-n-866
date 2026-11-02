@@ -5,6 +5,26 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.25 — 2026-11-02
+
+HU-035, el catálogo de categorías de discapacidad, queda completa sobre la base común, con sus 8
+valores de las hojas 14 y 15 en el archivo de la base. El programa no muestra una versión.
+
+### Added
+- `hu035/`: `CategoriaDiscapacidad`, su contrato con la lista de las hojas 14 y 15, su
+  repositorio, su servicio y su controlador. El menú la muestra como "Categorías de discapacidad
+  (HU-035)".
+- `HU035CategoriasDiscapacidadTest`, con 44 tests, uno o más por cada caso del "Dado" de los 23
+  escenarios: 272 tests en total.
+- `src/test/resources/cargas/discapacidad-hojas-14-15.csv`, las 8 categorías en el CSV de RC-8.
+- `data/ips.mv.db`: las 8 categorías, activas, con su versión y sus 8 filas de cambios.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "HU-035 sigue el molde de HU-036".
+
+### Changed
+- `BaseComunTest.ningunRepositorioPuedeBorrar` revisa también el repositorio de HU-035.
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` y `tests/README.md` describen HU-035.
+- La memoria contextual del autor anota el trabajo de HU-035.
+
 ## v0.24 — 2026-11-02
 
 Solo documentación. Deja escrito dónde quedó el trabajo del 2026-11-02, para retomarlo.

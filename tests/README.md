@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-01 en el contenedor de la sesión, con Linux: 228 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 272 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -36,12 +36,12 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   repositorio tenga un método para borrar, que el menú principal ordene las historias, abra la
   elegida y diga qué base abrió, el corte de la terminal cuando se acaba la entrada, los tres casos
   de la lista de rechazadas que ya existe y el largo de la columna del código.
-- `hu036/HU036EtniasTest`, con 44 tests, y `hu037/HU037ComunidadesEtnicasTest`, con 38: los
-  escenarios de cada historia, de la carga a la consulta, la búsqueda y la comparación con la
-  lista oficial. Los de cancelar, y los que comprueban lo que el menú dice en la búsqueda sin
-  resultados, el catálogo vacío y la inactivación, pasan por el controlador de la historia, con
-  las respuestas escritas en el test. Esos tests leen lo que el menú imprimió y llevan
-  `@Timeout(10)` (`docs/DESIGN.md`, sección 3).
+- `hu035/HU035CategoriasDiscapacidadTest`, con 44 tests, `hu036/HU036EtniasTest`, con 44, y
+  `hu037/HU037ComunidadesEtnicasTest`, con 38: los escenarios de cada historia, de la carga a la
+  consulta, la búsqueda y la comparación con la lista oficial. Los de cancelar, y los que comprueban
+  lo que el menú dice en la búsqueda sin resultados, el catálogo vacío y la inactivación, pasan por
+  el controlador de la historia, con las respuestas escritas en el test. Esos tests leen lo que el
+  menú imprimió y llevan `@Timeout(10)` (`docs/DESIGN.md`, sección 3).
 - `hu001/HU001InicioDeSesionTest`, con 33 tests: los 14 escenarios de HU-001 y la precondición de
   un usuario de prueba por cargo. Los de la pantalla pasan por el menú principal o por el
   controlador de un catálogo, y los del escenario 12 usan su propio `SesionServicio` con un reloj
@@ -58,8 +58,9 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.
 
-Los tests de carga leen `src/test/resources/cargas/etnias-hoja-15.csv`, o escriben su CSV en una
-carpeta temporal de JUnit, así que no dependen de ningún archivo fuera del repo.
+Los tests de carga leen `src/test/resources/cargas/etnias-hoja-15.csv` o
+`src/test/resources/cargas/discapacidad-hojas-14-15.csv`, o escriben su CSV en una carpeta temporal
+de JUnit, así que no dependen de ningún archivo fuera del repo.
 
 ## 3. Qué escenarios tienen test
 
@@ -76,7 +77,9 @@ registro del paciente, HU-004: cuántos pacientes usan un valor, en el escenario
 que RC-11 pide de un registro ya guardado, en el 11.
 
 El 2026-10-31, con `hu001` en la ruta, imprimió los 14 números de HU-001, y el 2026-11-01, con
-`hu022`, los 28 de HU-022, y con `hu026`, los 25 de HU-026.
+`hu022`, los 28 de HU-022, y con `hu026`, los 25 de HU-026. El 2026-11-02, con `hu035`, imprimió los
+23 de HU-035. Su tarjeta tiene los mismos escenarios que la de HU-036, salvo la redacción, y sus
+tests copian los de HU-036, así que cada caso de su "Dado" tiene su método.
 
 ## 4. El CI
 

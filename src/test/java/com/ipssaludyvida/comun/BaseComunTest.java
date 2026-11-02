@@ -24,6 +24,7 @@ import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
 import com.ipssaludyvida.hu022.repositorios.OcupacionRepositorio;
 import com.ipssaludyvida.hu026.repositorios.DepartamentoRepositorio;
 import com.ipssaludyvida.hu026.repositorios.MunicipioRepositorio;
+import com.ipssaludyvida.hu035.repositorios.CategoriaDiscapacidadRepositorio;
 import com.ipssaludyvida.hu036.controladores.EtniaControlador;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
@@ -182,7 +183,7 @@ class BaseComunTest {
                 ComunidadEtnicaRepositorio.class, CatalogoVersionRepositorio.class,
                 CatalogoCambioRepositorio.class, UsuarioRepositorio.class,
                 OcupacionRepositorio.class, MunicipioRepositorio.class,
-                DepartamentoRepositorio.class}) {
+                DepartamentoRepositorio.class, CategoriaDiscapacidadRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");
