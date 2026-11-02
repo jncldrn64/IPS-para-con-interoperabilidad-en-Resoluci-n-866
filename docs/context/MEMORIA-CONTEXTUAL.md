@@ -2199,6 +2199,50 @@ de `docs/DECISIONS.md` y `CLAUDE.md`, secciones 1, 3, 5, 7 y 9.
 
 **Estado:** `vigente`
 
+## 2026-11-02: La autonomía de cada integrante para fusionar sus PR
+
+Sesión nueva. El autor pidió primero contexto del proyecto, textual:
+
+- "soy el integrante #3 y autor del "repo-fork", todo lo que hay en
+  IPS-para-con-interoperabilidad-en-Resoluci-n-866/docs/context/MEMORIA-CONTEXTUAL.md corresponde a
+  tu memoria, hay 3 PRs en borrador, pero ya hablaremos de ellos, primero contextualiza todo el
+  proyecto."
+
+Lo que encontró el modelo entre el 2026-10-27 y el 2026-11-02, fuera de esta memoria:
+
+- El PR #22 lo fusionó Juan José Marín Álvarez, con la cuenta Atervolgo, después de un commit web
+  sin tipo en `README.md`. **Hipótesis:** es el integrante 2; ningún documento lo dice.
+- El PR #23, de prueba, lo fusionó Jorge, con otro commit web sin tipo en `README.md`.
+- Los PR #24, #25 y #26 son HU-001, HU-022 y HU-026 de Jorge, apilados: cada rama sale de la
+  anterior. GitHub los muestra abiertos por `jncldrn64`, y sus sesiones de Claude Code no están en
+  la cuenta del autor (`get_session` no las encuentra).
+- `./mvnw test` sobre `main` (dbd5404): 112 tests, 0 fallas, el 2026-11-02.
+
+Después el autor escribió, textual:
+
+- "mi problema es que precisamente los pr estan es borrador, y no es merge, puedo hacer el merge,
+  pero quiero primero solucionar de raiz el problema de la autonomia, quiero que cada usuraio pueda
+  hacer el pr a su nombre y el merge respectivo, sin que depende de mi intervencion. de hecho ahora
+  mismo jorge tiene un error y esta abriendo los pr a mi nombre, realmente no me importa, y como no
+  es prioritario, no me importa si no es resoluble. pero quiero rastrear en donde se supone que se
+  perdio la autonomia de cada integrante, supongo que debio  ser el los 2 PRs previos a los de
+  jorge, puesto que veo referencia de solicitarme a mi el merge, pero eso contradice desiciones
+  previas.... asi que comenzaramos con un PR para arreglar el tema de la autonomia, y proceder ahi
+  si a hacer el merge de jorge y ver si traen confictos"
+
+El rastro y las cuatro respuestas del autor están en `docs/DECISIONS.md`, 2026-11-02 "Cada
+integrante fusiona sus PR, también el de prueba". En corto: el autor fusionaba desde la plantilla
+1.2, el PR #22 lo pasó a su integrante, y quedaban el PR de prueba, el documento nuevo, la línea
+"autor" del glosario y una regla de `docs/TEMPORARY-CONTEXT.md`. El modelo de Jorge ya esperaba
+que Jorge fusionara: su memoria lo tiene pendiente en las tres ramas.
+
+Hecho en el PR que sigue a dbd5404: esa entrada, `CLAUDE.md`, secciones 3 y 7, el glosario,
+`docs/TEMPORARY-CONTEXT.md`, el hueco de la cuenta en `docs/ARCHITECTURE.md` y la v0.22 del
+CHANGELOG. Conflictos esperados al fusionar después los PR de Jorge: la cabecera del CHANGELOG y
+el final de `docs/DECISIONS.md`, porque los dos agregan en el mismo lugar.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2319,6 +2363,10 @@ de `docs/DECISIONS.md` y `CLAUDE.md`, secciones 1, 3, 5, 7 y 9.
   muestra el número apenas hay un método. Comparando cada "Dado" con sus métodos, faltaban 4 casos.
   Se lo dijo al autor en el mensaje siguiente, y los trae la v0.13.
 
+- **Al autor (2026-11-02):** la autonomía no se perdió en los dos PR previos a los de Jorge. El
+  PR #22 la dio: cambió "El autor lo marca listo y lo mergea", que venía de la plantilla 1.2, por
+  "su integrante". Lo que seguía esperándolo era el PR de prueba y el documento nuevo.
+
 ## 11. Hallazgos abiertos sobre el prompt v2.1 y el backlog
 
 Prompt v2.1, en orden de gravedad:
@@ -2344,7 +2392,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000. **Próximo (2026-10-27, cada integrante con su modelo):** que el autor
+00000000000000000000000000000. **Próximo (2026-11-02, autonomía):** que el autor revise y fusione el
+   PR de la autonomía. Después, fusionar en orden los PR #24, #25 y #26 de Jorge, trayendo `main` a
+   cada rama si choca en el CHANGELOG o en `docs/DECISIONS.md`. Pendiente sin elegir: los dos
+   commits web sin tipo en `README.md`, la línea de Jorge en `docs/TEMPORARY-CONTEXT.md` y quién
+   es el integrante 2. Del integrante 3 sigue HU-035.
+0000000000000000000000000000. **Anterior (2026-10-27, cada integrante con su modelo):** que el autor
    revise y fusione el PR del trabajo por integrante. Después, los PR de prueba de los integrantes
    1 y 2, que ahora traen su memoria nueva (`CLAUDE.md`, sección 7). Desde esta decisión, el modelo
    decide lo que necesita y lo lista en el PR, sección "Lo que decidió el modelo".
