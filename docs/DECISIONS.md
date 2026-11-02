@@ -2075,3 +2075,35 @@ Lo que decidió el modelo:
   una entidad, y este transcribe una norma, como el de etnias.
 
 **Estado:** `vigente`
+
+## 2026-11-02: Los CSV de carga van en data/catalogos
+
+**Contexto:** Reemplaza a 2026-11-02 "HU-035 sigue el molde de HU-036" en dónde va su CSV. Los
+archivos que se cargan en `data/ips.mv.db` estaban en dos lugares, el de ocupaciones en
+`data/catalogos/` y los de etnias y categorías de discapacidad en `src/test/resources/cargas/`.
+Municipios y comunidades étnicas no tienen archivo. El autor escribió:
+
+- "de hecho ahora que lo pienso, donde estamos almacenando los csv? por que si bien tenemos la db,
+  si mas adelante nos piden una demostracion necesitamos recrear con los csv, para no hacer un
+  campo uno por uno, se que en mis ramas de claude deben estar, pero no se en las de jorge...."
+
+El modelo le preguntó si juntarlos, y el autor eligió:
+
+- "Todos en data/catalogos/ (Recomendado)"
+
+**Decisión:** Todo CSV que se carga en el archivo de la base va en `data/catalogos/`, sea una lista
+que transcribe una norma o un catálogo que publica una entidad. Su `README.md` dice, por archivo,
+la fuente y los datos de la versión con que se cargó, y cómo se rehace una base vacía con ellos.
+Los tests leen esos mismos archivos.
+
+Lo que decidió el modelo:
+
+- Los dos archivos se movieron con `git mv`, y los tests que los leen cambiaron su ruta, también
+  `HU001InicioDeSesionTest`, de Jorge, en una sola línea.
+- El ejemplo del `README.md` usa una base en memoria, `jdbc:h2:mem:demo`, que no deja nada en el
+  disco. El 2026-11-02 cargó así los tres archivos: 7, 8 y 562 filas, ninguna rechazada.
+
+**Alternativas:** Dejar las listas de la norma en `src/test/resources/cargas/` y los archivos de
+una entidad en `data/catalogos/`. Quien rehace la base tendría que buscar en dos lugares.
+
+**Estado:** `vigente`

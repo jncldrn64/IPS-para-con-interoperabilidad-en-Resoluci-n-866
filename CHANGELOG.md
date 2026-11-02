@@ -5,6 +5,22 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.26 — 2026-11-02
+
+Los CSV que se cargan en el archivo de la base quedan juntos en `data/catalogos/`, y su `README.md`
+dice cómo rehacer una base vacía con ellos. Solo cambian rutas: el programa no muestra una versión.
+
+### Added
+- `data/catalogos/README.md`: la fuente y los datos de la versión de cada archivo, y cómo se
+  cargan los tres en una base vacía.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "Los CSV de carga van en data/catalogos".
+
+### Changed
+- `etnias-hoja-15.csv` y `discapacidad-hojas-14-15.csv` pasan de `src/test/resources/cargas/` a
+  `data/catalogos/`, y los tests los leen de ahí.
+- `docs/ARCHITECTURE.md` y `tests/README.md` dicen las rutas nuevas.
+- La memoria contextual del autor anota la pregunta por el catálogo de países y la de los CSV.
+
 ## v0.25 — 2026-11-02
 
 HU-035, el catálogo de categorías de discapacidad, queda completa sobre la base común, con sus 8

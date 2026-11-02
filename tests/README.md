@@ -58,9 +58,9 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.
 
-Los tests de carga leen `src/test/resources/cargas/etnias-hoja-15.csv` o
-`src/test/resources/cargas/discapacidad-hojas-14-15.csv`, o escriben su CSV en una carpeta temporal
-de JUnit, así que no dependen de ningún archivo fuera del repo.
+Los tests de carga leen los archivos de `data/catalogos/`, los mismos que se cargan en el archivo de
+la base, o escriben su CSV en una carpeta temporal de JUnit. No dependen de ningún archivo fuera del
+repo.
 
 ## 3. Qué escenarios tienen test
 

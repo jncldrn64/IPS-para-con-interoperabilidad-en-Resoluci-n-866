@@ -58,7 +58,7 @@ class HU035CategoriasDiscapacidadTest {
 
     static final String REFERENCIA = "Resolución de prueba";
     static final String PRUEBA = "Categoría de prueba";
-    static final Path HOJAS = Path.of("src/test/resources/cargas/discapacidad-hojas-14-15.csv");
+    static final Path HOJAS = Path.of("data/catalogos/discapacidad-hojas-14-15.csv");
     static final DatosVersion RESOLUCION_866 = new DatosVersion(
             "Resolución 866 de 2021, anexo técnico, numeral 10, hojas 14 y 15",
             "https://www.minsalud.gov.co", LocalDate.of(2026, 11, 2), "Resolución 866 de 2021",

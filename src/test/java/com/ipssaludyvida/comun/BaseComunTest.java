@@ -93,7 +93,7 @@ class BaseComunTest {
     @Test
     void laTablaDeCambiosYLaCargaGuardanLaHoraDeColombia() {
         CatalogoVersion version = etnias.confirmarCarga(etnias.leerCarga(
-                Path.of("src/test/resources/cargas/etnias-hoja-15.csv"),
+                Path.of("data/catalogos/etnias-hoja-15.csv"),
                 new DatosVersion("Fuente", null, LocalDate.of(2026, 10, 18),
                         "Resolución 866 de 2021", LocalDate.of(2021, 6, 25))), Map.of());
         // En un equipo en UTC, como el del CI, su propia hora queda 5 horas adelante.
@@ -275,7 +275,7 @@ class BaseComunTest {
     // Las 7 etnias de la hoja 15 y una fila con un código de 3 caracteres, que se rechaza.
     private static Path conUnaFilaRechazada(Path carpeta) throws IOException {
         return Files.writeString(carpeta.resolve("carga.csv"), Files.readString(
-                Path.of("src/test/resources/cargas/etnias-hoja-15.csv"))
+                Path.of("data/catalogos/etnias-hoja-15.csv"))
                 + "100;Valor de 3 caracteres\n", StandardCharsets.UTF_8);
     }
 

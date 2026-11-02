@@ -28,10 +28,8 @@ Comprobado el 2026-11-02 contra `git ls-files`.
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
-| `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
-| `src/test/resources/cargas/discapacidad-hojas-14-15.csv` | Las 8 categorías de discapacidad de las hojas 14 y 15, en el CSV de RC-8 |
 | `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones y las 8 categorías de discapacidad (sección 3) |
-| `data/catalogos/` | Los archivos oficiales en CSV, con su fuente en su `README.md` |
+| `data/catalogos/` | Los CSV que se cargan: las etnias, las categorías de discapacidad y la CIUO-88 A.C., con su fuente y cómo se rehace la base en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
@@ -142,14 +140,15 @@ contenedor de la sesión.
   étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
   hojas 14 y 15, activas; los 3 usuarios de prueba; y 577 filas de cambios, una por valor creado.
   Las etnias se cargaron con la
-  opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se cargó en UTC, y
+  opción 8 del menú de etnias y `data/catalogos/etnias-hoja-15.csv`, que entonces estaba en
+  `src/test/resources/cargas/`. Se cargó en UTC, y
   el 2026-10-27 sus 8 horas, las 7 de los cambios y la de la carga, pasaron a la de Colombia: de las
   02:25 del 2026-10-27 a las 21:25 del 2026-10-26, con un `UPDATE` en la consola de H2. Las
   ocupaciones se cargaron el 2026-11-01 con la opción 8 de su menú y
   `data/catalogos/ciuo-88-ac.csv`, con la sesión de `estadistica`, así que su versión y sus 562
   cambios llevan su `usuarioId`. Entrar para cargar creó los usuarios de prueba. Las categorías de
   discapacidad se cargaron el 2026-11-02 con la opción 8 de su menú y
-  `src/test/resources/cargas/discapacidad-hojas-14-15.csv`, también con `estadistica`. Se reinicia
+  `data/catalogos/discapacidad-hojas-14-15.csv`, también con `estadistica`. Se reinicia
   con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
@@ -162,7 +161,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 7761 líneas en 71 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 7745 líneas en 69 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -182,9 +181,9 @@ si eso cierra un hueco de esta lista.
   cómo nombra sus columnas el archivo de la DIVIPOLA (HU-026): su CSV tiene que llevar las de
   `ContratoMunicipios`. El
   2026-11-01 entró la estructura de la CIUO-88 A.C. del DANE, con sus cuatro niveles (HU-022).
-  Comando: `git ls-files '*.csv'` devuelve `data/catalogos/ciuo-88-ac.csv` y
-  `src/test/resources/cargas/etnias-hoja-15.csv`, que se transcribió de la hoja 15 del anexo y no
-  se descargó.
+  Comando: `git ls-files '*.csv'` devuelve los tres de `data/catalogos/`: `ciuo-88-ac.csv`, y
+  `etnias-hoja-15.csv` y `discapacidad-hojas-14-15.csv`, que se transcribieron de las hojas del
+  anexo y no se descargaron.
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,
