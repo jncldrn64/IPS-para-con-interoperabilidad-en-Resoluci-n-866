@@ -14,13 +14,11 @@ el producto trae sus propias palabras.
 
 Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la plantilla 1.2".
 
-- **autor**: Juan Fernando, `jncldrn64` en GitHub, dueño del fork e integrante 3. Invita a cada
-  integrante como colaborador, porque en GitHub solo lo puede hacer el dueño. Un integrante no
-  necesita que revise ni fusione sus PR (2026-10-27 "Cada integrante trabaja con su modelo";
-  2026-11-02 "Cada integrante fusiona sus PR, también el de prueba").
-- **borrador**: el estado en que se abre un PR. Lo marca listo y lo fusiona su integrante, con los
-  botones "Ready for review" y "Merge pull request" (2026-10-27 "Cada integrante trabaja con su
-  modelo"; 2026-11-02 "Cada integrante fusiona sus PR, también el de prueba").
+- **autor**: Juan Fernando, `jncldrn64` en GitHub, dueño del fork e integrante 3. Decide lo que es
+  del repo entero, como un documento nuevo, y revisa el PR de prueba de cada integrante (2026-10-27
+  "Cada integrante trabaja con su modelo").
+- **borrador**: el estado en que se abre un PR. Lo marca listo y lo fusiona su integrante
+  (2026-10-27 "Cada integrante trabaja con su modelo").
 - **cita textual**: palabras de un integrante copiadas tal cual, en una viñeta propia que abre con
   comillas o con su etiqueta, como `**A13.**`. No se reescribe ni se resume, y no cuenta para las
   reglas 1 y 2 de prosa.
@@ -68,10 +66,9 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
   y controlador").
 - **normativo**: el documento que dice qué tiene que ser. Si el código lo contradice, el código
   está en falta.
-- **PR de prueba**: el PR con que un integrante nuevo comprueba que su modelo sigue el método. Su
-  modelo lo revisa contra la lista de `CLAUDE.md`, sección 7, y su integrante lo fusiona, con su
-  memoria adentro (2026-10-26 "Un integrante nuevo abre un PR de prueba"; 2026-11-02 "Cada
-  integrante fusiona sus PR, también el de prueba").
+- **PR de prueba**: el PR con que un integrante nuevo comprueba que su modelo sigue el método. El
+  autor lo revisa contra la lista de `CLAUDE.md`, sección 7, y lo cierra sin fusionar (2026-10-26
+  "Un integrante nuevo abre un PR de prueba").
 - **PR doc-only**: un PR que no toca código ni tests. Abre su propia sección del CHANGELOG, con la
   versión siguiente, y no toca la versión que muestra el programa (2026-10-25 "La sección de un PR
   doc-only lleva la versión siguiente").
