@@ -5,6 +5,18 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.24 — 2026-11-02
+
+Solo documentación. Deja escrito dónde quedó el trabajo del 2026-11-02, para retomarlo.
+
+### Added
+- `docs/TEMPORARY-CONTEXT.md`: lo que dijo el profesor sobre los niveles de un catálogo, HU-004 como
+  posible trabajo del autor, las pistas de proceso de la guía que ningún documento recoge, dos
+  commits web sin tipo y la memoria vieja de Jorge.
+
+### Changed
+- La memoria contextual del autor anota lo hecho el 2026-11-02 y el orden para retomar.
+
 ## v0.23 — 2026-11-02
 
 Solo documentación. El modelo pone al día la memoria de su integrante en cada PR que abre.

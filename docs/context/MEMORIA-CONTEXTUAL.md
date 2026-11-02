@@ -2311,6 +2311,56 @@ texto. El modelo comprobó:
 
 **Estado:** `vigente`
 
+## 2026-11-02: Dónde quedó el día, para retomar
+
+El autor contestó sobre HU-004, las ocupaciones y las pistas de la guía, textual:
+
+- "realmente siento que hay una discrepancia donde todos necesitamos del usurario, asi que supongo
+  que yo tambien tendre que hacer eso al final, puesto que es lo que bloquea todos y sobre que no
+  hay que subir todos los catalogos, se que en clase por ejemplo nos dijo con uno de los catalogos,
+  que habia tanta informacion (creo que es el de las ocupacione), que realmente solo le importaba
+  si en la db estaban como minimos los 2 primeros nivels, y por niveles se refiere a los que tienen
+  2 digitos y 3 digitos, por que el resto de desprenden de ellos, como si fueran titulos de normas
+  apa, pero su jorge los subio al completo, eso es algo que nos daremos cuenta cuando auditemos lo
+  suyo; de hecho tecnicamente lo que esta en negrita en el documento son pistas, pero no se que
+  tambien esten transcritas en el repo"
+- "no se que tambien jorge respetara por ejemplo el hecho de que "el tipo de dato" el formato, la
+  longitud maxima y la minima son literalmente el formato de la entidad, algo que tengo en teoria
+  bien descrito en los hu de etnias, es decir que a efectos practicos, el valor alfanumerioc
+  pringiral solo admite 2 digitos o caracteres para esta HU de discapacidades"
+
+Y después:
+
+- "ya hice el merge hace rato, quizas no te estas suscribiendo correctamente para el merge?,
+  entonces de todo esto creo que podemos hacer otro merge, en tu memoria, y otro en la memoria
+  temporal der propio repo para saber que tenemos pentiende y que hemos hecho, para asi saber que
+  retomar para cuando se comprima el contexto pro primera vez."
+
+Lo que respondió el modelo:
+
+- Las reglas de formato están en `docs/REQUIREMENTS.md`, sección 2 (RC-7), y `docs/DESIGN.md`,
+  secciones 1 y 7. Jorge las siguió: `Municipio` con `\d{5}` y columna de 5; `Ocupacion` con
+  `\d{1,4}` y columna de 4, porque guarda los grupos padre (D-26), y al paciente solo le ofrece las
+  de 4 dígitos con `Ocupacion.LARGO_HIJA`. Discapacidad irá como `Etnia`: `\d{2}`, columna de 2.
+- Lo del profesor sobre las ocupaciones choca con "solo las ocupaciones hijas" [2.1]; "como mínimo"
+  deja cargar los 4 niveles, como hizo Jorge. Queda en `docs/TEMPORARY-CONTEXT.md` para la
+  auditoría.
+- Las pistas en negrita de la guía: las del producto, de [2.1] a [2.4], están en
+  `docs/REQUIREMENTS.md`; las del proceso, de [2.5] a [3.7], solo aquí. Anotado en
+  `docs/TEMPORARY-CONTEXT.md`.
+- El modelo no estaba suscrito a los PR: miraba su estado solo cuando el autor escribía.
+
+Hecho el 2026-11-02, en `main`:
+
+- PR #27, la autonomía de cada integrante; el autor lo fusionó y lo revirtió con el #28.
+- PR #24, #25 y #26 de Jorge: HU-001, HU-022 y HU-026, fusionados por el autor en ese orden.
+- PR #29, el #27 otra vez, revirtiendo el revert, con los conflictos resueltos a mano.
+- PR #30, la regla de poner al día la memoria en cada PR, y los 8 valores de HU-035 cotejados en la
+  hoja 14 de la resolución.
+- `./mvnw test` sobre el código de `main`: 228 tests, 0 fallas.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2460,7 +2510,19 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000000. **Próximo (2026-11-02, HU-035):** que el autor fusione el PR de la
+00000000000000000000000000000000. **Próximo (2026-11-02, para retomar):** sin PR abierto del autor
+   después de este. En orden:
+   1. HU-035, discapacidad, en un PR que sale de `main`: las cinco clases en `hu035/` como `hu036/`,
+      `permisoParaVer` de HU-001, código `\d{2}` en columna de 2, los 8 valores de la hoja 14 con el
+      05 "Discapacidad sicosocial (mental)", el CSV en `src/test/resources/cargas/`, un test por
+      cada caso del "Dado" de los 23 escenarios, y la carga en `data/ips.mv.db`.
+   2. HU-018, países, del integrante 2: numeral 11, "Código a tres caracteres según estándar ISO
+      3166-1", Alfanumérico, formato 999; D-03 y la tabla Pais de SISPRO.
+   3. HU-004, si el integrante 2 no la hace: decidirlo y cambiar el reparto del ROADMAP.
+   Pendiente sin decidir, en `docs/TEMPORARY-CONTEXT.md`: lo del profesor sobre los niveles de las
+   ocupaciones, las pistas de proceso de la guía, los dos commits web sin tipo y la memoria vieja de
+   Jorge. La DIVIPOLA de Jorge es un hueco de `docs/ARCHITECTURE.md`, sección 6.
+0000000000000000000000000000000. **Anterior (2026-11-02, HU-035):** que el autor fusione el PR de la
    regla de la memoria. Después, HU-035 en un PR que sale de `main`, sobre la base común como
    HU-036, con los 8 valores de la hoja. Después, del integrante 2, el catálogo de países (HU-018).
    Pendiente: las palabras del profesor sobre no subir todos los catálogos, y la DIVIPOLA de Jorge.
