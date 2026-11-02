@@ -198,7 +198,9 @@ al paciente.
   completas desde la v0.15: cada caso del "Dado" tiene su test. Dos partes esperan a HU-004,
   cuántos pacientes usan un valor y lo que RC-11 pide de un registro ya guardado, y son un hueco de
   `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
-  completas"). Del integrante 3 queda HU-035. HU-001 está completa desde la v0.19
+  completas"). HU-035 está completa desde la v0.25, con sus 8 valores en el archivo de la base
+  (`docs/DECISIONS.md`, 2026-11-02 "HU-035 sigue el molde de HU-036"), y del integrante 3 queda
+  HU-006, que espera HU-004. HU-001 está completa desde la v0.19
   (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
   quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la v0.20, con la CIUO-88 A.C.
   en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo

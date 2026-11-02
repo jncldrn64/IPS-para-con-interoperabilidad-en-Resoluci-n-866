@@ -11,7 +11,7 @@ lista en la sección 5.
 
 ## 1. El repo, archivo por archivo
 
-Comprobado el 2026-10-26 contra `git ls-files`.
+Comprobado el 2026-11-02 contra `git ls-files`.
 
 | Archivo o carpeta | Qué es |
 |---|---|
@@ -29,7 +29,8 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
-| `data/ips.mv.db` | El archivo de la base, con las 7 etnias y las 562 ocupaciones (sección 3) |
+| `src/test/resources/cargas/discapacidad-hojas-14-15.csv` | Las 8 categorías de discapacidad de las hojas 14 y 15, en el CSV de RC-8 |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones y las 8 categorías de discapacidad (sección 3) |
 | `data/catalogos/` | Los archivos oficiales en CSV, con su fuente en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
@@ -63,6 +64,7 @@ las 7 claves de la configuración.
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
+| `hu035/` | Categorías de discapacidad: `ContratoCategoriasDiscapacidad`, `CategoriaDiscapacidad` y lo demás |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
 
@@ -82,9 +84,10 @@ menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene 
 
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
 Con sesión, lista por su número las historias que el cargo ve: "Ocupaciones (HU-022)" en la opción
-1, "Municipios (HU-026)" en la 2, "Etnias (HU-036)" en la 3 y "Comunidades étnicas (HU-037)" en la
-4. Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad,
-la opción siguiente pide entrar de nuevo.
+1, "Municipios (HU-026)" en la 2, "Categorías de discapacidad (HU-035)" en la 3, "Etnias (HU-036)"
+en la 4 y "Comunidades étnicas (HU-037)" en la 5, como lo mostró el 2026-11-02 una corrida que entró
+como `estadistica`. Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos
+sin actividad, la opción siguiente pide entrar de nuevo.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -124,26 +127,29 @@ La carga dice primero qué archivo espera y pide la ruta y los datos de la versi
 deja su fila en `CatalogoCambio`, la tabla de cambios común, y cada carga, la suya en
 `CatalogoVersion`, y las dos guardan en `usuarioId` quién tenía la sesión, o nada si no había
 (`RegistroCatalogos.anotar` y `RegistroCatalogos.guardar`). `ServicioCatalogo.contarUsos` devuelve 0
-hasta que exista el registro del paciente (HU-004). Cada controlador pide su catálogo por el
-contrato, `ContratoEtnias` o `ContratoComunidadesEtnicas`.
+hasta que exista el registro del paciente (HU-004). Cada controlador pide su catálogo por su
+contrato, como `ContratoEtnias`.
 
 ## 3. Recursos y cómo se reinicia cada uno
 
-Comprobado el 2026-11-01 con el `Shell` de H2 sobre una copia de `data/ips.mv.db`, en el
+Comprobado el 2026-11-02 con el `Shell` de H2 sobre una copia de `data/ips.mv.db`, en el
 contenedor de la sesión.
 
 - `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
-  `COMUNIDAD_ETNICA`, `OCUPACION`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`, y una
-  secuencia para los números de cada una de las tres últimas. Trae las 7 etnias de la hoja 15,
-  activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad étnica; las 562
-  ocupaciones de la CIUO-88 A.C., activas; los 3 usuarios de prueba; y 569 filas de cambios, una
-  por valor creado. Se cargó con la
+  `COMUNIDAD_ETNICA`, `OCUPACION`, `CATEGORIA_DISCAPACIDAD`, `USUARIO`, `CATALOGO_VERSION` y
+  `CATALOGO_CAMBIO`, y una secuencia para los números de cada una de las tres últimas. Trae las 7
+  etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
+  étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
+  hojas 14 y 15, activas; los 3 usuarios de prueba; y 577 filas de cambios, una por valor creado.
+  Las etnias se cargaron con la
   opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se cargó en UTC, y
   el 2026-10-27 sus 8 horas, las 7 de los cambios y la de la carga, pasaron a la de Colombia: de las
   02:25 del 2026-10-27 a las 21:25 del 2026-10-26, con un `UPDATE` en la consola de H2. Las
   ocupaciones se cargaron el 2026-11-01 con la opción 8 de su menú y
   `data/catalogos/ciuo-88-ac.csv`, con la sesión de `estadistica`, así que su versión y sus 562
-  cambios llevan su `usuarioId`. Entrar para cargar creó los usuarios de prueba. Se reinicia
+  cambios llevan su `usuarioId`. Entrar para cargar creó los usuarios de prueba. Las categorías de
+  discapacidad se cargaron el 2026-11-02 con la opción 8 de su menú y
+  `src/test/resources/cargas/discapacidad-hojas-14-15.csv`, también con `estadistica`. Se reinicia
   con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
@@ -156,12 +162,12 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-01 con `git ls-files 'src/*' | xargs wc -l`: 6944 líneas en 64 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 7761 líneas en 71 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
 
-Nada de lo que lista `git ls-files src` el 2026-11-01. Cada archivo nuevo que aparezca ahí se
+Nada de lo que lista `git ls-files src` el 2026-11-02. Cada archivo nuevo que aparezca ahí se
 describe en el PR que lo trae.
 
 ## 6. Huecos conocidos
@@ -198,12 +204,11 @@ si eso cierra un hueco de esta lista.
   se corrió. Comando, en una terminal: `sh ./mvnw -q spring-boot:run`, elegir 1 y escribir la clave,
   que no tiene que verse.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
-  pacientes usan un valor, en el escenario 19 de HU-036 y el 18 de HU-037: `contarUsos` devuelve 0.
-  Desde el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además cuenta
-  atenciones:
-  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007.
-  Y lo que RC-11 pide de un registro ya guardado, en el 11 de HU-036 y el 10 de HU-037, que no
-  tiene código porque todavía no hay registros. Comando:
+  pacientes usan un valor, en el escenario 19 de HU-035 y de HU-036 y el 18 de HU-037: `contarUsos`
+  devuelve 0. Desde el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además
+  cuenta atenciones: `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Y
+  lo que RC-11 pide de un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037,
+  que no tiene código porque todavía no hay registros. Comando:
   `grep -n -A2 'public long contarUsos' src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
 - **2026-11-02: los PR del modelo de Jorge salen a nombre de `jncldrn64`.** GitHub muestra como
   autor de los PR #23 a #26 la cuenta del autor, aunque los abrieron sesiones de Claude Code que no

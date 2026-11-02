@@ -2361,6 +2361,25 @@ Hecho el 2026-11-02, en `main`:
 
 **Estado:** `vigente`
 
+## 2026-11-02: HU-035 completa
+
+Con el PR #31 fusionado, el modelo siguió el orden de la sección 12, como el autor había pedido.
+
+- HU-035 sigue el molde de HU-036: cinco clases en `hu035/`, el código `\d{2}` en una columna de 2,
+  la lista de las hojas 14 y 15 en `ContratoCategoriasDiscapacidad.HOJAS_14_Y_15`, con el 05
+  "Discapacidad sicosocial (mental)".
+- 44 tests en `HU035CategoriasDiscapacidadTest`, que cubren los 23 escenarios: su tarjeta tiene los
+  mismos que la de HU-036, comparados con `diff`. 272 tests en total, 0 fallas, el 2026-11-02.
+- Tres mutaciones hicieron fallar sus tests: sin el `@Pattern`, los escenarios 3 y 10; sin el
+  nombre de la hoja, el 1; sin la revisión de la primera carga, los dos del 2.
+- Las 8 categorías entraron a `data/ips.mv.db` por la opción 8 del menú, con `estadistica`.
+  Comprobado con el `Shell` de H2 sobre una copia: 8 filas activas, su versión con el usuario 3 y
+  8 filas de cambios.
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-035 sigue el molde de
+  HU-036".
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2510,7 +2529,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000000000000. **Próximo (2026-11-02, para retomar):** sin PR abierto del autor
+000000000000000000000000000000000. **Próximo (2026-11-02, HU-035 hecha):** que el autor fusione el
+   PR de HU-035, que tiene el turno de `data/ips.mv.db`. Después, HU-018, países, del integrante 2:
+   numeral 11, "Código a tres caracteres según estándar ISO 3166-1", Alfanumérico, formato 999;
+   D-03 y la tabla Pais de SISPRO. Lo demás sigue como en el punto anterior.
+00000000000000000000000000000000. **Anterior (2026-11-02, para retomar):** sin PR abierto del autor
    después de este. En orden:
    1. HU-035, discapacidad, en un PR que sale de `main`: las cinco clases en `hu035/` como `hu036/`,
       `permisoParaVer` de HU-001, código `\d{2}` en columna de 2, los 8 valores de la hoja 14 con el

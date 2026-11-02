@@ -2025,3 +2025,53 @@ Lo que decidió el modelo:
 copie esa línea, y la de Jorge no la tiene.
 
 **Estado:** `vigente`
+
+## 2026-11-02: HU-035 sigue el molde de HU-036
+
+**Contexto:** HU-035, el catálogo de categorías de discapacidad, es la última historia del tramo 1
+del integrante 3. Su tarjeta tiene los mismos 23 escenarios que la de HU-036, cambiando la lista:
+8 valores del numeral 10, en las hojas 14 y 15. El autor escribió:
+
+- "vamos a hacer mis Hu faltantes bajo todos los lineamwientos que el repo ha establecido (si,
+  usaremol el catalogo comun, y veremos todas las deciciones arquitectonicas"
+- "es decir que a efectos practicos, el valor alfanumerioc pringiral solo admite 2 digitos o
+  caracteres para esta HU de discapacidades"
+
+Los 8 valores no estaban en el repo. Salen de la hoja Validación del tablero, fila V-11, en el
+commit fa95eaf, y se leyeron en la hoja 14 de la resolución que el autor subió a la sesión, como
+imagen a 300 ppp. El 05 dice "Discapacidad sicosocial", y "(mental)" sigue en la hoja 15.
+
+**Decisión:** HU-035 trae las cinco clases de `hu035/` con la forma de `hu036/`
+(`docs/DESIGN.md`, sección 7). El código es texto de 2 dígitos, `\d{2}`, en una columna de 2. La
+lista de las hojas 14 y 15 va en `ContratoCategoriasDiscapacidad.HOJAS_14_Y_15`, con el 05 como lo
+escribe la hoja. La primera carga se compara con ella, y la comparación de la opción 11 también.
+
+Cada caso del "Dado" de los 23 escenarios tiene su test, y las 8 categorías entran a
+`data/ips.mv.db` por la opción 8 del menú, con la sesión de `estadistica`. Este PR toma el turno del
+archivo de la base (`docs/DESIGN.md`, sección 8).
+
+Lo que decidió el modelo:
+
+- Los nombres: `CategoriaDiscapacidad`, que deja la tabla `CATEGORIA_DISCAPACIDAD` como la
+  `categoria_discapacidad` del modelo E-R, y `ContratoCategoriasDiscapacidad`. En el menú y en los
+  mensajes, "Categorías de discapacidad".
+- El CSV va en `src/test/resources/cargas/discapacidad-hojas-14-15.csv`, junto al de etnias, porque
+  transcribe una lista de la norma y los tests lo leen. `data/catalogos/` queda para los archivos
+  que publica una entidad, como la CIUO-88 A.C.
+- La versión cargada: fuente "Resolución 866 de 2021, anexo técnico, numeral 10, hojas 14 y 15",
+  la misma dirección de descarga que etnias, fecha de descarga 2026-11-02 y fecha de publicación
+  2021-06-25. **Hipótesis:** el PDF que subió el autor es el de esa dirección, por el nombre del
+  archivo, `resolucion-866-de-2021.pdf`; no se comparó byte por byte.
+- Los tests usan el código 09 como valor de prueba, porque las hojas no lo tienen, y el escenario 1
+  prueba el aviso con "psicosocial", la variante que traía la transcripción.
+- El test de la fecha futura usa `RegistroCatalogos.hoy`, la fecha de Colombia, como pide
+  `docs/DESIGN.md`, sección 7.
+
+**Alternativas:**
+
+- Escribir HU-035 sin la base común. Copiaría las reglas que ya están en `ServicioCatalogo`, como
+  descartó la entrada 2026-10-24 "Los catálogos comparten una base común".
+- Poner el CSV en `data/catalogos/`, como la CIUO-88 A.C. Esa carpeta guarda archivos que publica
+  una entidad, y este transcribe una norma, como el de etnias.
+
+**Estado:** `vigente`
