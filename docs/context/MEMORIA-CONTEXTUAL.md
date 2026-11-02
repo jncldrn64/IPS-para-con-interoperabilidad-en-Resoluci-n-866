@@ -2380,6 +2380,52 @@ Con el PR #31 fusionado, el modelo siguió el orden de la sección 12, como el a
 
 **Estado:** `vigente`
 
+## 2026-11-02: Los CSV juntos, y de dónde sale el catálogo de países
+
+Con el PR #32 abierto, el autor escribió, textual:
+
+- "vale, ahora bien, como hacemos con los 3 digitos en formato alfanumerico del catalogo de paises,
+  parece que hay varios serwicios que ofrecen el catalogo asi, pero encontre un repo:
+  https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes, supongo que aqui si debe aplicar
+  el tema de las licencias para poder incluirlo... de hecho ahora que lo pienso, donde estamos
+  almacenando los csv? por que si bien tenemos la db, si mas adelante nos piden una demostracion
+  necesitamos recrear con los csv, para no hacer un campo uno por uno, se que en mis ramas de
+  claude deben estar, pero no se en las de jorge...."
+
+Lo que comprobó el modelo:
+
+- El repositorio de lukes tiene licencia Creative Commons Attribution-ShareAlike 4.0, según su
+  `LICENSE.md`; sus datos salen de Wikipedia y de la ONU, y los nombres van en inglés
+  ("Germany"). Su columna `country-code` es el código numérico con los ceros: Colombia 170,
+  Afganistán 004.
+- `web.sispro.gov.co` no se pudo abrir desde la sesión: el proxy contesta 403, y el agente de
+  lectura web no resuelve el nombre. No se sabe si la tabla Pais pide cuenta.
+- Los CSV estaban en `data/catalogos/` (la CIUO-88 A.C.) y en `src/test/resources/cargas/`
+  (etnias y discapacidad). Las ramas de Jorge ya estaban en `main` y no traían otro.
+
+El autor contestó a dos preguntas:
+
+- "SISPRO requiere cuenta? entiedo que no puedas acceder tu, pero no se en que momento el modelo
+  original encontre el la web ese catalogo, si algo tendria hasta mas sentido usar la de la DIAN,
+  pero parece que es del 2009, y entinedo que yogolsavia hace rato murio"
+- "Todos en data/catalogos/ (Recomendado)"
+
+Lo que respondió e hizo el modelo:
+
+- El modelo original nunca bajó la tabla Pais: encontró su nombre en el anexo de la Resolución
+  1888 de 2025, en el texto del Diario Oficial (entrada del 2026-10-20 "Revisiones de las tandas 4
+  y 5"), y anotó que SISPRO bloqueaba la consulta automática. D-03 dice que el código numérico "se
+  confirma al descargarla".
+- Una lista de la DIAN de 2009 con Yugoslavia no sirve como versión vigente: RC-9 pide la versión
+  publicada más reciente.
+- Los CSV se juntaron en `data/catalogos/` (`docs/DECISIONS.md`, 2026-11-02 "Los CSV de carga van
+  en data/catalogos"). Iban a entrar en el PR #32, pero el autor ya lo había fusionado, así que van
+  en un PR nuevo, y la entrada de HU-035 y la v0.25 quedan como se publicaron. El `README.md` de la
+  carpeta dice cómo rehacer una base vacía, y una corrida en memoria cargó los tres archivos sin
+  rechazos.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2530,9 +2576,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 ## 12. Pendientes y próximo paso
 
 000000000000000000000000000000000. **Próximo (2026-11-02, HU-035 hecha):** que el autor fusione el
-   PR de HU-035, que tiene el turno de `data/ips.mv.db`. Después, HU-018, países, del integrante 2:
-   numeral 11, "Código a tres caracteres según estándar ISO 3166-1", Alfanumérico, formato 999;
-   D-03 y la tabla Pais de SISPRO. Lo demás sigue como en el punto anterior.
+   PR que junta los CSV en `data/catalogos/`. HU-035 ya está en `main`, con el PR #32.
+   Después, HU-018, países, del integrante 2: numeral 11, "Código a tres caracteres según estándar
+   ISO 3166-1", Alfanumérico, formato 999. Falta la fuente: la tabla Pais de SISPRO, que el autor
+   tiene que bajar en su navegador o permitir en la red del entorno, o el repositorio de lukes, con
+   su licencia CC BY-SA 4.0. Lo demás sigue como en el punto anterior.
 00000000000000000000000000000000. **Anterior (2026-11-02, para retomar):** sin PR abierto del autor
    después de este. En orden:
    1. HU-035, discapacidad, en un PR que sale de `main`: las cinco clases en `hu035/` como `hu036/`,

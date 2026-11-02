@@ -274,7 +274,7 @@ class HU001InicioDeSesionTest {
         DatosVersion datos = new DatosVersion("Resolución 866 de 2021", "", LocalDate.of(2026,
                 10, 18), "Resolución 866 de 2021", LocalDate.of(2021, 6, 25));
         etnias.confirmarCarga(etnias.leerCarga(
-                Path.of("src/test/resources/cargas/etnias-hoja-15.csv"), datos), Map.of());
+                Path.of("data/catalogos/etnias-hoja-15.csv"), datos), Map.of());
         assertEquals(u.getId(), etnias.versionVigente().orElseThrow().getUsuarioId());
         assertEquals(u.getId(), etnias.historial("01").get(0).getUsuarioId());
     }

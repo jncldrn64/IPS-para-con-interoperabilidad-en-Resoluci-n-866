@@ -56,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 class HU036EtniasTest {
 
     static final String REFERENCIA = "Resolución de prueba";
-    static final Path HOJA_15 = Path.of("src/test/resources/cargas/etnias-hoja-15.csv");
+    static final Path HOJA_15 = Path.of("data/catalogos/etnias-hoja-15.csv");
     static final DatosVersion RESOLUCION_866 = new DatosVersion(
             "Resolución 866 de 2021, anexo técnico, numeral 13, hoja 15", "https://www.minsalud.gov.co",
             LocalDate.of(2026, 10, 18), "Resolución 866 de 2021", LocalDate.of(2021, 6, 25));

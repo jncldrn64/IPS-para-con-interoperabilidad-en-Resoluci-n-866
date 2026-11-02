@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 class CasosLimiteTest {
 
     static final String REFERENCIA = "Resolución 866 de 2021, anexo técnico, hoja 15";
-    static final Path HOJA_15 = Path.of("src/test/resources/cargas/etnias-hoja-15.csv");
+    static final Path HOJA_15 = Path.of("data/catalogos/etnias-hoja-15.csv");
     static final DatosVersion RESOLUCION_866 = new DatosVersion(REFERENCIA, null,
             LocalDate.of(2026, 10, 18), "Resolución 866 de 2021", LocalDate.of(2021, 6, 25));
 
