@@ -53,6 +53,10 @@
 - Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código
   y lo revisa con el archivo entero".
 
+- Jorge adjuntó `EstCIUO88AC.pdf`, la estructura de la CIUO-88 A.C. del DANE, sin texto. El modelo
+  lo pasó a CSV y lo cargó en el archivo de la base, en el mismo PR de HU-022 (`docs/DECISIONS.md`,
+  2026-11-01 "La CIUO-88 A.C. entra al archivo de la base").
+
 ## 3. Pendiente
 
 - Que el autor cierre sin fusionar el PR de prueba. **Hipótesis:** el PR #23 se fusionó el
@@ -62,6 +66,6 @@
   que se le recordara el 2026-11-01 a las 12:00.
 - Preguntar al profesor si acepta que el programa siga en terminal.
 - Que Jorge revise y fusione el PR de HU-022, después del de HU-001.
-- Bajar la estructura de la CIUO-88 A.C. del DANE y cargarla en el archivo de la base, con su
-  turno. Jorge puede adjuntar el PDF para que el modelo lo pase a CSV.
+- El PR de HU-022 tiene el turno del archivo de la base: avisar a los otros dos antes de que
+  cambien `data/ips.mv.db`.
 - Después: HU-026, municipios; HU-005 cuando esté HU-004.

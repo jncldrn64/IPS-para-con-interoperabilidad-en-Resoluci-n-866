@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-01 en el contenedor de la sesión, con Linux: 192 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-01 en el contenedor de la sesión, con Linux: 193 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -47,9 +47,10 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   controlador de un catálogo, y los del escenario 12 usan su propio `SesionServicio` con un reloj
   que el test adelanta. `hu001/Usuarios` crea el usuario de cada cargo y abre su sesión; los tests
   de HU-036 y HU-037 que pasan por el controlador entran como profesional de estadística.
-- `hu022/HU022OcupacionesTest`, con 47 tests: los 28 escenarios de HU-022. La primera carga usa
-  una estructura de prueba que arma el test, con 10 grandes grupos, 34 subgrupos principales, 117
-  subgrupos y 401 grupos primarios, porque el archivo oficial no se ha descargado.
+- `hu022/HU022OcupacionesTest`, con 48 tests: los 28 escenarios de HU-022. Casi todos usan una
+  estructura de prueba que arma el test, con 10 grandes grupos, 34 subgrupos principales, 117
+  subgrupos y 401 grupos primarios, y que cada test cambia. `esc1_archivoOficial` carga
+  `data/catalogos/ciuo-88-ac.csv`.
 - `comun/CasosLimiteTest`, con 13 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8.

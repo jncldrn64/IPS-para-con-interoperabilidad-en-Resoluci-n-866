@@ -29,7 +29,8 @@ Comprobado el 2026-10-26 contra `git ls-files`.
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
 | `src/test/resources/cargas/etnias-hoja-15.csv` | Las 7 etnias de la hoja 15, en el CSV de RC-8 |
-| `data/ips.mv.db` | El archivo de la base, con las 7 etnias cargadas (sección 3) |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias y las 562 ocupaciones (sección 3) |
+| `data/catalogos/` | Los archivos oficiales en CSV, con su fuente en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
@@ -121,15 +122,21 @@ contrato, `ContratoEtnias` o `ContratoComunidadesEtnicas`.
 
 ## 3. Recursos y cómo se reinicia cada uno
 
-Comprobado el 2026-10-26 con corridas del menú en copias del repo, en el contenedor de la sesión.
+Comprobado el 2026-11-01 con el `Shell` de H2 sobre una copia de `data/ips.mv.db`, en el
+contenedor de la sesión.
 
 - `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
-  `COMUNIDAD_ETNICA`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO` y dos secuencias para los números de
-  las dos últimas. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de
-  2021"; ninguna comunidad étnica; y 7 filas de cambios, una por etnia creada. Se cargó con la
+  `COMUNIDAD_ETNICA`, `OCUPACION`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`, y una
+  secuencia para los números de cada una de las tres últimas. Trae las 7 etnias de la hoja 15,
+  activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad étnica; las 562
+  ocupaciones de la CIUO-88 A.C., activas; los 3 usuarios de prueba; y 569 filas de cambios, una
+  por valor creado. Se cargó con la
   opción 8 del menú de etnias y `src/test/resources/cargas/etnias-hoja-15.csv`. Se cargó en UTC, y
   el 2026-10-27 sus 8 horas, las 7 de los cambios y la de la carga, pasaron a la de Colombia: de las
-  02:25 del 2026-10-27 a las 21:25 del 2026-10-26, con un `UPDATE` en la consola de H2. Se reinicia
+  02:25 del 2026-10-27 a las 21:25 del 2026-10-26, con un `UPDATE` en la consola de H2. Las
+  ocupaciones se cargaron el 2026-11-01 con la opción 8 de su menú y
+  `data/catalogos/ciuo-88-ac.csv`, con la sesión de `estadistica`, así que su versión y sus 562
+  cambios llevan su `usuarioId`. Entrar para cargar creó los usuarios de prueba. Se reinicia
   con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
@@ -157,15 +164,12 @@ comando o la corrida que lo muestra, para que el próximo lector compruebe si si
 en el PR que lo cierra, y el CHANGELOG guarda el rastro. Un PR que anuncia algo en el CHANGELOG mira
 si eso cierra un hueco de esta lista.
 
-- **2026-10-22: ningún catálogo oficial se descargó.** No se comprobó que la tabla Pais de SISPRO
-  use el código numérico (D-03), que el archivo de la CIUO-88 A.C. traiga los cuatro niveles
-  (HU-022), ni que exista el catálogo de comunidades étnicas (HU-037). Comando:
-  `git ls-files '*.csv'` devuelve solo `src/test/resources/cargas/etnias-hoja-15.csv`, que se
-  transcribió de la hoja 15 del anexo y no se descargó. El 2026-11-01, el DANE publica la
-  estructura de la CIUO-88 A.C. en PDF, en
-  `https://www.dane.gov.co/files/sen/nomenclatura/ciuo/EstCIUO88AC.pdf`, y el contenedor de la
-  sesión no llega a `www.dane.gov.co`. Los tests de HU-022 usan una estructura de prueba con las
-  cantidades por nivel del DANE.
+- **2026-10-22: solo un catálogo oficial se descargó.** No se comprobó que la tabla Pais de SISPRO
+  use el código numérico (D-03), ni que exista el catálogo de comunidades étnicas (HU-037). El
+  2026-11-01 entró la estructura de la CIUO-88 A.C. del DANE, con sus cuatro niveles (HU-022).
+  Comando: `git ls-files '*.csv'` devuelve `data/catalogos/ciuo-88-ac.csv` y
+  `src/test/resources/cargas/etnias-hoja-15.csv`, que se transcribió de la hoja 15 del anexo y no
+  se descargó.
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,

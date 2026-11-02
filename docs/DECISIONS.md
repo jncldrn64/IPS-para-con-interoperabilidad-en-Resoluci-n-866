@@ -1838,3 +1838,38 @@ Lo que decidió el modelo:
   se puede comprobar que los 562 códigos y nombres salieron bien.
 
 **Estado:** `vigente`
+
+## 2026-11-01: La CIUO-88 A.C. entra al archivo de la base
+
+**Contexto:** La entrada 2026-11-01 "HU-022 lee el grupo del código y lo revisa con el archivo
+entero" dejó la carga oficial para cuando el archivo estuviera a la vista, y el modelo le pidió a
+Jorge el PDF del DANE. Jorge lo adjuntó a la conversación, sin texto.
+
+**Decisión:** El PDF se pasa a `data/catalogos/ciuo-88-ac.csv` con `pdftotext -layout`, y se carga
+en `data/ips.mv.db` con la opción 8 del menú de ocupaciones, con la sesión de `estadistica`. Este
+PR toma el turno del archivo de la base (`docs/DESIGN.md`, sección 8). La carga leyó 562 filas, las
+aceptó todas y cuadró con 10, 34, 117 y 401.
+
+Lo que decidió el modelo:
+
+- La fila de la 3229 se parte entre las páginas 8 y 9 del PDF, y la 9 repite al comienzo la última
+  línea de su nombre. Se miró la página: es la misma celda, así que el CSV la lleva una vez. Las
+  otras cuatro filas que cruzan una página se miraron una por una y no repiten nada.
+- Los nombres van como en el PDF, con los grupos en mayúsculas. Si el archivo no coincide con otra
+  fuente, manda el archivo oficial (D-21).
+- La fecha de publicación es el 2006-10-12, la de creación del PDF según `pdfinfo`, porque el PDF no
+  trae otra. La de descarga es el 2026-11-01, el día en que Jorge lo adjuntó.
+- El CSV va en `data/catalogos/`, junto al archivo de la base que lo usa, con su fuente en un
+  `README.md` de la carpeta.
+- Entrar para cargar crea los 3 usuarios de prueba, así que el archivo de la base los trae. La
+  entrada 2026-10-31 "HU-001 abre la sesión en la terminal" decía que no cambiaba el archivo; desde
+  este PR cambia, y la base de prueba que se copie de él ya los trae.
+
+**Alternativas:**
+
+- Dejar el archivo de la base sin ocupaciones hasta que alguien baje el archivo en su equipo. HU-004
+  necesita el catálogo cargado, y el archivo ya estaba a la vista.
+- Cargar sin iniciar sesión, con un programa aparte. Sería un camino que no pasa por las reglas ni
+  deja el autor de la carga.
+
+**Estado:** `vigente`

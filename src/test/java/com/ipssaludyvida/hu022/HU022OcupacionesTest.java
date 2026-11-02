@@ -49,10 +49,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Los 28 escenarios de HU-022 (docs/context/trello/tarjetas/HU-022.md). El archivo oficial de la
- * CIUO-88 A.C. no se ha descargado, así que la primera carga usa una estructura de prueba con las
- * cantidades por nivel del DANE: 10, 34, 117 y 401. Solo 2, 22, 222 y 2221 llevan nombres reales,
- * los de la tarjeta y la lámina.
+ * Los 28 escenarios de HU-022 (docs/context/trello/tarjetas/HU-022.md). La mayoría usa una
+ * estructura de prueba con las cantidades por nivel del DANE, 10, 34, 117 y 401, que cada test
+ * cambia a su gusto; solo 2, 22, 222 y 2221 llevan nombres reales, los de la tarjeta y la lámina.
+ * esc1_archivoOficial carga el archivo oficial, data/catalogos/ciuo-88-ac.csv.
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -67,6 +67,9 @@ class HU022OcupacionesTest {
             "https://www.dane.gov.co/", LocalDate.of(2026, 10, 31), "2026-03",
             LocalDate.of(2026, 3, 1));
 
+    /** La estructura de la CIUO-88 A.C., pasada a CSV del PDF del DANE (data/catalogos/). */
+    static final Path OFICIAL = Path.of("data/catalogos/ciuo-88-ac.csv");
+
     @Autowired ContratoOcupaciones ocupaciones;
     @Autowired UsuarioRepositorio usuarios;
     @Autowired ContratoSesion sesion;
@@ -80,6 +83,19 @@ class HU022OcupacionesTest {
         assertEquals(version.getId(),
                 ocupaciones.buscarPorCodigo("2221").orElseThrow().getVersionId());
         assertEquals("Médicos", ocupaciones.buscarPorCodigo("2221").orElseThrow().getNombre());
+    }
+
+    @Test
+    @DisplayName("HU-022 Esc. 1: el archivo oficial del DANE se carga entero y cuadra por nivel")
+    void esc1_archivoOficial() {
+        ResultadoCarga carga = ocupaciones.leerCarga(OFICIAL, CIUO);
+        assertEquals(562, carga.getFilasLeidas());
+        assertTrue(carga.getRechazadas().isEmpty(), carga.getRechazadas().toString());
+        assertTrue(carga.sePuedeGuardar(), carga.getBloqueos().toString());
+        ocupaciones.confirmarCarga(carga, Map.of());
+        assertEquals("Médicos", ocupaciones.buscarPorCodigo("2221").orElseThrow().getNombre());
+        assertEquals(401, ocupaciones.jerarquia().stream().filter(Nodo::seRegistra).count());
+        assertTrue(ocupaciones.jerarquia().stream().noneMatch(Nodo::sinOcupaciones));
     }
 
     @Test
