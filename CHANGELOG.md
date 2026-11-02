@@ -5,6 +5,20 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.23 — 2026-11-02
+
+Solo documentación. El modelo pone al día la memoria de su integrante en cada PR que abre.
+
+### Added
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "El modelo pone al día la memoria de su integrante en
+  cada PR".
+
+### Changed
+- `CLAUDE.md`, sección 1: cada PR pone al día la memoria de su integrante, con sus palabras, lo que
+  decidió y lo pendiente.
+- `docs/GLOSSARY.md`: memoria contextual.
+- La memoria contextual del autor anota su pedido.
+
 ## v0.22 — 2026-11-02
 
 Solo documentación. Cada integrante fusiona sus PR, también el de prueba, sin esperar al autor. Toma

@@ -1997,3 +1997,31 @@ Lo que decidió el modelo:
 - Dejar la cuenta que muestra GitHub sin anotar. El próximo lector no sabría que ya se vio.
 
 **Estado:** `vigente`
+
+## 2026-11-02: El modelo pone al día la memoria de su integrante en cada PR
+
+**Contexto:** `CLAUDE.md`, sección 1, pedía crear la memoria de un integrante en su primera sesión,
+y ninguna regla pedía ponerla al día después. La del autor lo dice en su sección 0, y la de Jorge
+no lo dice. Aun así, el modelo de Jorge la creó en el PR #23 y la cambió en cada PR del #24 al #26,
+copiando la costumbre de la del autor. El autor escribió:
+
+- "vamos a hacer mis Hu faltantes bajo todos los lineamwientos que el repo ha establecido (si,
+  usaremol el catalogo comun, y veremos todas las deciciones arquitectonicas; recuerda que
+  actuarliez nu memoria y de hecho, ya que jorge tiene explicitamente la de, debe haber una regla
+  que el modelo actualeze su memoria tambien)"
+
+**Decisión:** Cada PR que abre el modelo pone al día la memoria de su integrante: lo que su
+integrante dijo del trabajo en la sesión, con sus palabras, lo que decidió y lo pendiente
+(`CLAUDE.md`, sección 1).
+
+Lo que decidió el modelo:
+
+- La regla va en `CLAUDE.md`, sección 1, junto a la que crea la memoria, para que la lea todo
+  modelo antes de trabajar.
+- Dice "en cada PR" y no "en cada turno", porque la memoria llega a `main` solo por un PR, y el
+  contenedor de una sesión en la nube se borra.
+
+**Alternativas:** Escribirla en la sección 0 de cada memoria. Depende de que el modelo que la crea
+copie esa línea, y la de Jorge no la tiene.
+
+**Estado:** `vigente`

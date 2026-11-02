@@ -58,10 +58,11 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
 - **línea base**: un conteo de prosa medido en una fecha con un comando escrito. No puede subir.
 - **memoria contextual**: la memoria de trabajo del modelo de un integrante, en `docs/context/`. La
   del autor es `MEMORIA-CONTEXTUAL.md`, y la de otro integrante,
-  `MEMORIA-<su usuario de GitHub>.md`. Se lee entera antes de trabajar, se actualiza con cada
-  decisión de su integrante y no manda sobre ningún documento canónico (2026-10-24 "La memoria
-  contextual vuelve a ser la memoria del modelo"; 2026-10-27 "Cada integrante trabaja con su
-  modelo").
+  `MEMORIA-<su usuario de GitHub>.md`. Se lee entera antes de trabajar, su modelo la pone al día en
+  cada PR con las decisiones de su integrante, y no manda sobre ningún documento canónico
+  (2026-10-24 "La memoria contextual vuelve a ser la memoria del modelo"; 2026-10-27 "Cada
+  integrante trabaja con su modelo"; 2026-11-02 "El modelo pone al día la memoria de su integrante
+  en cada PR").
 - **modelo**: tres cosas distintas. El modelo de lenguaje que trabaja en el repositorio, como en
   "propuesta del modelo"; el modelo E-R de `docs/context/modelo-datos/`; y la parte del código con
   las entidades, los repositorios y los servicios (2026-10-24 "El código se separa en modelo, vista
