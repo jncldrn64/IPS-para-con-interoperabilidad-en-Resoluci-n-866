@@ -2293,10 +2293,21 @@ Lo que respondió e hizo el modelo:
   empezar antes (`docs/ROADMAP.md`, principio de orden).
 - Los 8 valores de HU-035 no estaban en el repo. Salen de la hoja Validación del tablero, en
   fa95eaf, fila V-11, cotejada contra el PDF del anexo el 2026-10-20: la hoja escribe el 05
-  "Discapacidad sicosocial (mental)", y la transcripción, "psicosocial". Manda la hoja. Falta que
-  el autor lo confirme con el PDF.
-- Con lo que dijo el profesor sobre no subir todos los catálogos: el modelo no lo encuentra en el
-  repo ni en esta memoria. El autor busca el PDF.
+  "Discapacidad sicosocial (mental)", y la transcripción, "psicosocial". Manda la hoja.
+- Lo que dijo el profesor sobre no subir todos los catálogos: el modelo no lo encuentra en el repo
+  ni en esta memoria.
+
+Después el autor subió a la sesión `Proyecto_de_Clase.pdf` y `resolucion-866-de-2021.pdf`, sin
+texto. El modelo comprobó:
+
+- En la hoja 14 de la resolución, leída como imagen a 300 ppp, el numeral 10 tiene los 8 valores,
+  Alfanumérico, formato 99, longitud 2 y 2. El 05 dice "Discapacidad sicosocial", y "(mental)"
+  sigue al comienzo de la hoja 15. Coincide con el tablero.
+- La guía es la misma que se leyó el 2026-10-24: 4 páginas y 1.482 palabras según `pdftotext`. No
+  dice que no haga falta subir todos los catálogos. **Hipótesis:** el docente lo dijo de palabra.
+- La hoja 15 escribe para el numeral 11 "Código a tres caracteres según estándar ISO 3166-1",
+  Alfanumérico, formato 999: sirve para países (D-03).
+- Ninguno de los dos PDF entra al repositorio, como se decidió el 2026-10-24.
 
 **Estado:** `vigente`
 
@@ -2452,8 +2463,7 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 0000000000000000000000000000000. **Próximo (2026-11-02, HU-035):** que el autor fusione el PR de la
    regla de la memoria. Después, HU-035 en un PR que sale de `main`, sobre la base común como
    HU-036, con los 8 valores de la hoja. Después, del integrante 2, el catálogo de países (HU-018).
-   Pendiente: que el autor confirme el 05 "sicosocial" con el PDF, lo que dijo el profesor sobre no
-   subir todos los catálogos, y la DIVIPOLA de Jorge.
+   Pendiente: las palabras del profesor sobre no subir todos los catálogos, y la DIVIPOLA de Jorge.
 000000000000000000000000000000. **Anterior (2026-11-02, el revert del revert):** que el autor
    fusione el PR que trae de vuelta el #27. Los #24 a #26 ya están en `main`. Pendiente sin elegir:
    los dos commits web sin tipo en `README.md`, lo que la memoria de Jorge todavía espera del autor
