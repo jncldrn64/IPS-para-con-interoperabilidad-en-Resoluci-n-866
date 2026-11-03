@@ -23,6 +23,7 @@ import com.ipssaludyvida.hu001.modelos.Cargo;
 import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
 import com.ipssaludyvida.hu018.repositorios.PaisRepositorio;
 import com.ipssaludyvida.hu034.repositorios.TipoDocumentoRepositorio;
+import com.ipssaludyvida.hu004.repositorios.PacienteRepositorio;
 import com.ipssaludyvida.hu022.repositorios.OcupacionRepositorio;
 import com.ipssaludyvida.hu026.repositorios.DepartamentoRepositorio;
 import com.ipssaludyvida.hu026.repositorios.MunicipioRepositorio;
@@ -188,7 +189,7 @@ class BaseComunTest {
                 OcupacionRepositorio.class, MunicipioRepositorio.class,
                 DepartamentoRepositorio.class, CategoriaDiscapacidadRepositorio.class,
                 PaisRepositorio.class, TipoDocumentoRepositorio.class,
-                EntidadPlanBeneficiosRepositorio.class}) {
+                EntidadPlanBeneficiosRepositorio.class, PacienteRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");
