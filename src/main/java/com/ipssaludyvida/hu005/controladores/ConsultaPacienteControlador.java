@@ -1,6 +1,7 @@
 package com.ipssaludyvida.hu005.controladores;
 
 import com.ipssaludyvida.comun.interfaces.Controlador;
+import com.ipssaludyvida.comun.menu.MenuPrincipal;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.hu001.controladores.SesionControlador;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
@@ -16,6 +17,7 @@ import com.ipssaludyvida.hu034.modelos.TipoDocumento;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -83,10 +85,18 @@ public class ConsultaPacienteControlador implements Controlador {
                 escribir(SesionControlador.VENCIDA);
                 return;
             }
-            if (opcion.equals("1")) {
-                buscar();
-            } else {
-                escribir("Opción no válida");
+            try {
+                if (opcion.equals("1")) {
+                    buscar();
+                } else {
+                    escribir("Opción no válida");
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                // El respaldo de docs/DESIGN.md, sección 4: el error da un mensaje y la pantalla
+                // sigue.
+                escribir(MenuPrincipal.inesperado(e));
             }
         }
     }

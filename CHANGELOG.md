@@ -5,6 +5,23 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.35 — 2026-11-03
+
+Las tildes salen bien con `mvnw spring-boot:run`, y las pantallas de pacientes atrapan también el
+error que no esperaban. El programa no muestra una versión.
+
+### Added
+- `EntradasInvalidasTest`: el recorrido al azar también con los siete catálogos cargados, que
+  registra pacientes y los consulta: 479 tests.
+- `docs/DECISIONS.md`: 2026-11-03 "Las tildes salen por Maven en UTF-8".
+
+### Changed
+- `pom.xml`: `spring-boot:run` le pasa al programa `-Dstdout.encoding=UTF-8`.
+- HU-004, HU-005 y HU-006 atrapan al final cualquier error con `MenuPrincipal.inesperado` y siguen
+  en su pantalla, como los catálogos.
+- `docs/DESIGN.md`, sección 4, y `docs/ARCHITECTURE.md`, sección 6: el hueco de las tildes queda
+  en lo que se escribe en Windows.
+
 ## v0.34 — 2026-11-02
 
 Un valor equivocado da un mensaje en cualquier menú, y un test lo comprueba recorriendo el programa

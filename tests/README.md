@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 476 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 479 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -73,11 +73,15 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   versión nueva.
 - `hu018/HU018PaisesTest`, con 42 tests: los 22 escenarios de HU-018. Los de la carga del archivo
   oficial leen `data/catalogos/pais-sispro.xlsx`, el Excel de SISPRO tal como se exportó.
-- `comun/EntradasInvalidasTest`, con 5 tests. Uno por cargo recorre el programa entero con un
-  teclado que contesta al azar, con tres semillas fijas y 1.500 respuestas cada una: letras donde
-  va un número, fechas imposibles, rutas que no existen, códigos de otro catálogo. Pide que el
-  programa no se caiga y que ningún error llegue al respaldo de `MenuPrincipal.inesperado`. Los
-  otros dos prueban ese respaldo, en el menú principal y en el de un catálogo.
+- `comun/EntradasInvalidasTest`, con 8 tests. Seis recorren el programa entero, uno por cargo con
+  los catálogos vacíos y otro por cargo con los siete archivos de `data/catalogos/` cargados, con
+  un teclado que contesta al azar, con tres semillas fijas y 1.500 respuestas cada una: letras
+  donde va un número, fechas imposibles, rutas que no existen, códigos de otro catálogo. Con los
+  catálogos cargados, el teclado llena bien cada dato del registro de un paciente siete veces de
+  cada diez y recuerda los documentos que registró, así que llega a guardar pacientes y a
+  consultarlos (HU-004 y HU-005). Piden que el programa no se caiga y que ningún error llegue al
+  respaldo de `MenuPrincipal.inesperado`. Los otros dos prueban ese respaldo, en el menú
+  principal y en el de un catálogo.
 
 Los tests de carga leen los archivos de `data/catalogos/`, los mismos que se cargan en el archivo de
 la base, o escriben su CSV en una carpeta temporal de JUnit. No dependen de ningún archivo fuera del

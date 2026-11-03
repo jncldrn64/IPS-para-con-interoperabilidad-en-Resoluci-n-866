@@ -2508,3 +2508,38 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: Las tildes salen por Maven en UTF-8
+
+**Contexto:** Modifica una parte de 2026-10-27 "Por la terminal sale solo el menú, y el menú dice
+qué base abrió": el código ya no deja la codificación al sistema. El autor corrió el programa en
+Windows, en PowerShell, con `mvnw spring-boot:run`, y mandó una captura con "Inicio de sesi?n" y
+"Pa?ses". Escribió, textual:
+
+- "captura, tendremmos que revisar espacion cada vez que estamos cambiando de opcion y las
+  tildes, una vez tengamos todo, correr esto pero lo conectare a mariadb y tratare de subir todos
+  los catalogos que tengamos y se puedan,"
+
+En el contenedor de la sesión, `printf '0\n' | sh ./mvnw -q spring-boot:run | od -c` mostró que
+el "?" lo pone el programa: con Maven en UTF-8 y el programa sin tocar, seguía el "?", y con
+`-Dstdout.encoding=UTF-8` en el programa salía la "ó" en UTF-8.
+
+**Decisión:** el `pom.xml` le pasa al programa `-Dstdout.encoding=UTF-8` y
+`-Dstderr.encoding=UTF-8` en `spring-boot:run`. Maven lee esa salida como UTF-8 y la escribe en la
+codificación de la consola.
+
+Lo que decidió el modelo:
+
+- El cambio va en el `pom.xml` y no en `Terminal`: con `java -jar` en una consola, Java ya toma
+  la codificación de la consola, y forzar UTF-8 ahí la rompería en Windows.
+- No se verificó en Windows. Lo que se escribe con tildes en Windows queda como hueco, con el
+  comando que lo muestra.
+- Lo de los espacios entre pantallas queda para cuando el autor diga qué vio.
+
+**Alternativas:**
+
+- Pedir `chcp 65001` antes de correr. Es un paso que se olvida, y no arregla el "?", que lo pone el
+  programa antes de llegar a la consola.
+- Quitar las tildes de los mensajes. Los nombres de los catálogos las llevan, como "Indígena".
+
+**Estado:** `vigente`
+

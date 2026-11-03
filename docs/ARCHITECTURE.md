@@ -225,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14081 líneas en 115 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14217 líneas en 115 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -246,14 +246,16 @@ si eso cierra un hueco de esta lista.
   HU-038), y ese mismo día la DIVIPOLA del DANE (HU-026). Comando: `git ls-files data/catalogos`
   lista `ciuo-88-ac.csv`, `pais-sispro.xlsx`, `eapb-sispro.xlsx` y `divipola-municipios.csv`, que
   salen de lo que se descargó, y los CSV que se transcribieron de las hojas del anexo.
-- **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
-  sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
-  "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,
-  la misma lista imprime "Indígena". En Windows no se probó. Este comando usa una base en memoria y
-  no toca el archivo de la base:
+- **2026-11-03: lo que se escribe con tildes en Windows no se ha probado.** El 2026-11-02 el
+  autor corrió el programa en Windows, en PowerShell, y la salida mostraba "Opci?n". Desde la
+  v0.35 el `pom.xml` le pasa al programa `-Dstdout.encoding=UTF-8`, y en el contenedor de la
+  sesión la salida llega con sus tildes; en Windows falta verlo. Falta además lo que se escribe:
+  Maven le pasa al programa lo que se teclea, y un nombre con tildes, como "Indígena", podría
+  guardarse mal. Este comando, con una base en memoria, lo muestra en cada sistema:
 
   ```sh
-  printf '1\n2\n01\nIndígena\n1\n0\n0\n' | sh ./mvnw -q spring-boot:run \
+  printf '1\nestadistica\nClave123\n6\n2\n01\nIndígena\nPrueba\ns\n1\n3\n0\n0\n' \
+    | sh ./mvnw -q spring-boot:run \
     -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:mem:tildes | grep Ind
   ```
 - **2026-10-26: `mvnw.cmd` no se corrió.** El contenedor de la sesión es Linux, así que el
