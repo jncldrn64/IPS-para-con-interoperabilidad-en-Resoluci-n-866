@@ -5,6 +5,21 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.36 — 2026-11-03
+
+Deshace el UTF-8 forzado de la v0.35, que en Windows mostraba otros símbolos, y el `README.md` dice
+cómo correr el programa. El programa no muestra una versión.
+
+### Added
+- `README.md`: cómo correrlo en Linux y en Windows, con `chcp 65001`, y los usuarios de prueba.
+- `docs/DECISIONS.md`: 2026-11-03 "La consola decide las tildes".
+
+### Removed
+- `pom.xml`: `-Dstdout.encoding=UTF-8` en `spring-boot:run`.
+
+### Changed
+- `docs/DESIGN.md`, sección 4, y el hueco de las tildes en `docs/ARCHITECTURE.md`, sección 6.
+
 ## v0.35 — 2026-11-03
 
 Las tildes salen bien con `mvnw spring-boot:run`, y las pantallas de pacientes atrapan también el

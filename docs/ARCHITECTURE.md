@@ -247,9 +247,9 @@ si eso cierra un hueco de esta lista.
   lista `ciuo-88-ac.csv`, `pais-sispro.xlsx`, `eapb-sispro.xlsx` y `divipola-municipios.csv`, que
   salen de lo que se descargó, y los CSV que se transcribieron de las hojas del anexo.
 - **2026-11-03: lo que se escribe con tildes en Windows no se ha probado.** El 2026-11-02 el
-  autor corrió el programa en Windows, en PowerShell, y la salida mostraba "Opci?n". Desde la
-  v0.35 el `pom.xml` le pasa al programa `-Dstdout.encoding=UTF-8`, y en el contenedor de la
-  sesión la salida llega con sus tildes; en Windows falta verlo. Falta además lo que se escribe:
+  autor corrió el programa en Windows, en PowerShell, y la salida mostraba "Opci?n". Con la v0.35,
+  que forzaba UTF-8, mostraba otros símbolos, y "Contrase?a", que escribe la consola misma: su
+  página de códigos no tiene la "ñ". Falta verlo con `chcp 65001`. Falta además lo que se escribe:
   Maven le pasa al programa lo que se teclea, y un nombre con tildes, como "Indígena", podría
   guardarse mal. Este comando, con una base en memoria, lo muestra en cada sistema:
 

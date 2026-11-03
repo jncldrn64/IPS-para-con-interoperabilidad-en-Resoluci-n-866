@@ -110,11 +110,13 @@ La guía pide una aplicación web, y el docente aceptó terminal: el primer spri
 esqueleto en terminal (`docs/DECISIONS.md`, 2026-10-24 "El primer sprint arranca en terminal").
 Qué imprime cada pantalla, línea por línea, está en la sección 9, sin escribir todavía.
 
-`spring-boot:run` arranca el programa en otro proceso, y Maven reenvía su salida leyéndola como
-UTF-8. Por eso el `pom.xml` le pasa al programa `-Dstdout.encoding=UTF-8`: sin eso, en Windows y en
-una terminal sin `LANG` las tildes llegaban como "Opci?n" (`docs/DECISIONS.md`, 2026-11-03 "Las
-tildes salen por Maven en UTF-8"). Lo que se escribe con tildes en Windows no se ha probado; es un
-hueco de `docs/ARCHITECTURE.md`, sección 6.
+Las tildes las decide la consola: Java escribe en la página de códigos que ella usa, y el código no
+la fuerza. Una consola cuya página no tiene la "ó", como la 932, muestra "Opci?n"; con `chcp 65001`
+antes de correr el programa, la consola pasa a UTF-8 y salen bien (`docs/DECISIONS.md`, 2026-11-03
+"La consola decide las tildes").
+
+Lo que se escribe con tildes en Windows no se ha probado; es un hueco de `docs/ARCHITECTURE.md`,
+sección 6.
 
 **Por qué:** sin terminal, `printf '0\n' | java -jar` dejaba en stdout 44 líneas, 19 de ellas de
 log, y la primera del cierre quedaba pegada a "Opción: ". Con el log en stderr, en una terminal de
