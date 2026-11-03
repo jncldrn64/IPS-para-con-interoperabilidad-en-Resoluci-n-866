@@ -28,8 +28,8 @@ Comprobado el 2026-11-02 contra `git ls-files`.
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
-| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones, las 8 categorías de discapacidad, los 249 países, los 14 tipos de documento y las 1.715 entidades del plan de beneficios (sección 3) |
-| `data/catalogos/` | Los archivos que se cargan: las etnias, las categorías de discapacidad, los tipos de documento y la CIUO-88 A.C. en CSV, y las tablas Pais y CodigoEAPByNit de SISPRO en el Excel con que se descargaron, más las de Municipio y Departamento, sin cargar, con su fuente y cómo se rehace la base en su `README.md` |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones, las 8 categorías de discapacidad, los 249 países, los 14 tipos de documento, las 1.715 entidades del plan de beneficios y los 1.122 municipios con sus 33 departamentos (sección 3) |
+| `data/catalogos/` | Los archivos que se cargan: las etnias, las categorías de discapacidad, los tipos de documento, la CIUO-88 A.C. y los municipios de la DIVIPOLA en CSV, y las tablas Pais y CodigoEAPByNit de SISPRO en el Excel con que se descargaron, más las de Municipio y Departamento, sin cargar, con su fuente y cómo se rehace la base en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
@@ -161,7 +161,9 @@ El catálogo de municipios muestra cada municipio con su departamento, como
 `05001  MEDELLÍN  ACTIVO  ANTIOQUIA (05)`, y su carga pide un CSV con cuatro columnas:
 `codigo;nombre;codigo_departamento;nombre_departamento`. El 2026-11-01, con una base en memoria,
 una corrida cargó un archivo de 4 filas, rechazó `5002` con el aviso de los ceros iniciales y
-mostró las dos Albania, cada una con su departamento.
+mostró las dos Albania, cada una con su departamento. El 2026-11-02, la carga de
+`data/catalogos/divipola-municipios.csv` en el archivo de la base leyó 1.122 filas y las aceptó
+todas.
 
 El 2026-10-31, con `LANG=C.UTF-8`, una corrida con la entrada desde un `printf` rechazó una clave
 equivocada, entró como `medico`, rechazó la opción 2 de etnias, cerró la sesión con "C" y entró como
@@ -181,19 +183,20 @@ contrato, como `ContratoEtnias`.
 
 ## 3. Recursos y cómo se reinicia cada uno
 
-Comprobado el 2026-11-02 con el `Shell` de H2 sobre una copia de `data/ips.mv.db`, en el
+Comprobado el 2026-11-02 con el driver JDBC de H2 sobre una copia de `data/ips.mv.db`, en el
 contenedor de la sesión.
 
 - `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
   `COMUNIDAD_ETNICA`, `OCUPACION`, `MUNICIPIO`, `DEPARTAMENTO`, `CATEGORIA_DISCAPACIDAD`, `PAIS`,
   `TIPO_DOCUMENTO`, `ENTIDAD_PLAN_BENEFICIOS`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`,
-  y una secuencia para los números de cada una de las tres últimas. Trae las 7
-  etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
-  étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
-  hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 14 tipos de
-  documento de la hoja 13, activos; las 1.715 entidades del plan de beneficios de la tabla
-  CodigoEAPByNit de SISPRO, 1.401 activas y 314 inactivas; ningún municipio; los 3 usuarios de
-  prueba; y 2.869 filas de cambios: una por valor creado y una por cada entidad que la fuente trae
+  vacías `PACIENTE`, `PACIENTE_NACIONALIDAD`, `PACIENTE_DISCAPACIDAD` y `HISTORIAL_CAMBIO`, y las
+  secuencias de sus números. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución
+  866 de 2021"; ninguna comunidad étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8
+  categorías de discapacidad de las hojas 14 y 15, activas; los 249 países de la tabla Pais de
+  SISPRO, activos; los 14 tipos de documento de la hoja 13, activos; las 1.715 entidades del plan de
+  beneficios de la tabla CodigoEAPByNit de SISPRO, 1.401 activas y 314 inactivas; los 1.122
+  municipios de la DIVIPOLA del DANE, activos, con sus 33 departamentos; los 3 usuarios de prueba; y
+  3.991 filas de cambios: una por valor creado y una por cada entidad que la fuente trae
   deshabilitada.
   Las etnias se cargaron con la
   opción 8 del menú de etnias y `data/catalogos/etnias-hoja-15.csv`, que entonces estaba en
@@ -222,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 13718 líneas en 114 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 13735 líneas en 114 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -239,17 +242,10 @@ si eso cierra un hueco de esta lista.
 
 - **2026-10-22: dos catálogos oficiales se descargaron.** No se comprobó que exista el catálogo de
   comunidades étnicas (HU-037). El 2026-11-01 entró la estructura de la CIUO-88 A.C. del DANE, con
-  sus cuatro niveles (HU-022), y el 2026-11-02 las tablas Pais y CodigoEAPByNit de SISPRO (HU-018 y
-  HU-038). Comando: `git ls-files data/catalogos` lista `ciuo-88-ac.csv`, `pais-sispro.xlsx` y
-  `eapb-sispro.xlsx`, que se descargaron, y los CSV que se transcribieron de las hojas del anexo.
-- **2026-11-02: la tabla Municipio de SISPRO no entra en la carga de HU-026.** El autor la exportó
-  con la tabla Departamento. Municipio trae 1.124 códigos de 5 dígitos, uno deshabilitado, y el
-  departamento en la columna `Extra_I:Departamento`, sin su nombre; Departamento trae los 33
-  nombres y una fila `00`, `NO APLICA`, deshabilitada. La carga de HU-026 pide las cuatro
-  columnas en un mismo archivo. Los dos Excel están en `data/catalogos/`, sin cargar, y cómo
-  cargarlos lo decide Jorge, el integrante 1. Comando, con openpyxl:
-  `python3 -c "import openpyxl; print(next(openpyxl.load_workbook('data/catalogos/municipio-sispro.xlsx').active.values))"`
-  imprime las columnas, sin una del nombre del departamento.
+  sus cuatro niveles (HU-022), el 2026-11-02 las tablas Pais y CodigoEAPByNit de SISPRO (HU-018 y
+  HU-038), y ese mismo día la DIVIPOLA del DANE (HU-026). Comando: `git ls-files data/catalogos`
+  lista `ciuo-88-ac.csv`, `pais-sispro.xlsx`, `eapb-sispro.xlsx` y `divipola-municipios.csv`, que
+  salen de lo que se descargó, y los CSV que se transcribieron de las hojas del anexo.
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,
@@ -283,12 +279,6 @@ si eso cierra un hueco de esta lista.
   paciente repetido se busca por tipo y número. Comando:
   `grep -n '"AS"\|"MS"\|"SI"' src/main/java/com/ipssaludyvida/hu004/servicios/*.java`, que no
   devuelve nada.
-- **2026-11-02: con el archivo de la base, nadie que viva en Colombia se puede registrar.** Su
-  catálogo de municipios está vacío, y el municipio es obligatorio para quien reside en Colombia.
-  Una corrida del 2026-11-02 sobre una copia del archivo registró a un paciente que vive en
-  Venezuela, con la entidad 05001 de la tabla de SISPRO, y para Colombia la pantalla dijo "No hay
-  municipios activos: falta cargar el catálogo.". Comando: abrir HU-004 con
-  `sh ./mvnw -q spring-boot:run`, que avisa "falta cargar el catálogo de municipios".
 - **2026-11-02: los PR del modelo de Jorge salen a nombre de `jncldrn64`.** GitHub muestra como
   autor de los PR #23 a #26 la cuenta del autor, aunque los abrieron sesiones de Claude Code que no
   son suyas y el PR #23 lo fusionó `jorge-a-restrepo`. No se sabe por qué. **Hipótesis:** la cuenta

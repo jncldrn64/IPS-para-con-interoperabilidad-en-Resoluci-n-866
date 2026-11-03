@@ -47,9 +47,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Los 25 escenarios de HU-026 (docs/context/trello/tarjetas/HU-026.md). El archivo oficial de la
- * DIVIPOLA no se ha descargado, así que los tests usan un archivo de prueba con su forma: 9
- * municipios de 8 departamentos, con Albania en tres de ellos.
+ * Los 25 escenarios de HU-026 (docs/context/trello/tarjetas/HU-026.md). Los tests usan un archivo
+ * de prueba con la forma de la DIVIPOLA: 9 municipios de 8 departamentos, con Albania en tres de
+ * ellos. esc1_archivoOficial carga el archivo oficial, data/catalogos/divipola-municipios.csv.
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -76,6 +76,9 @@ class HU026MunicipiosTest {
             "https://www.dane.gov.co/", LocalDate.of(2026, 10, 31), "2026",
             LocalDate.of(2026, 3, 1));
 
+    /** La hoja Municipios de la DIVIPOLA del DANE, pasada a CSV (data/catalogos/). */
+    static final Path OFICIAL = Path.of("data/catalogos/divipola-municipios.csv");
+
     @Autowired ContratoMunicipios municipios;
     @Autowired DepartamentoRepositorio departamentos;
     @Autowired UsuarioRepositorio usuarios;
@@ -99,6 +102,20 @@ class HU026MunicipiosTest {
         assertEquals(8, departamentos.findAllByOrderByCodigoAsc().size());
         assertEquals("ANTIOQUIA", municipios.departamento("05001").orElseThrow().getNombre());
         assertEquals(version.getId(), departamentos.findById("05").orElseThrow().getVersionId());
+    }
+
+    @Test
+    @DisplayName("HU-026 Esc. 1: el archivo oficial carga 1.122 municipios de 33 departamentos")
+    void esc1_archivoOficial() {
+        ResultadoCarga carga = municipios.leerCarga(OFICIAL, DIVIPOLA);
+        assertEquals(1122, carga.getFilasLeidas());
+        assertTrue(carga.getRechazadas().isEmpty(), carga.getRechazadas().toString());
+        assertTrue(carga.sePuedeGuardar(), carga.getBloqueos().toString());
+        municipios.confirmarCarga(carga, Map.of());
+        assertEquals(1122, municipios.listarActivos().size());
+        assertEquals(33, departamentos.findAllByOrderByCodigoAsc().size());
+        assertEquals("MEDELLÍN", municipios.buscarPorCodigo("05001").orElseThrow().getNombre());
+        assertEquals("AMAZONAS", municipios.departamento("91263").orElseThrow().getNombre());
     }
 
     @Test
