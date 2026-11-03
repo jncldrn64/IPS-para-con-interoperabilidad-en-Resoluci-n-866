@@ -225,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14547 líneas en 118 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14638 líneas en 118 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -249,9 +249,10 @@ si eso cierra un hueco de esta lista.
 - **2026-11-03: lo que se escribe con tildes en Windows no se ha probado.** El 2026-11-02 el
   autor corrió el programa en Windows, en PowerShell, y la salida mostraba "Opci?n". Con la v0.35,
   que forzaba UTF-8, mostraba otros símbolos, y "Contrase?a", que escribe la consola misma: su
-  página de códigos no tiene la "ñ". Falta verlo con `chcp 65001`. Falta además lo que se escribe:
-  Maven le pasa al programa lo que se teclea, y un nombre con tildes, como "Indígena", podría
-  guardarse mal. Este comando, con una base en memoria, lo muestra en cada sistema:
+  página de códigos no tiene la "ñ". El 2026-11-03, con `chcp 65001`, el autor escribió que
+  "funcion perfecto", sin decir si guardó un nombre con tildes. Falta eso: Maven le pasa al
+  programa lo que se teclea, y un nombre como "Indígena" podría guardarse mal. Este comando, con
+  una base en memoria, lo muestra en cada sistema:
 
   ```sh
   printf '1\nestadistica\nClave123\n6\n2\n01\nIndígena\nPrueba\ns\n1\n3\n0\n0\n' \

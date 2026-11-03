@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 482 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 483 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -29,13 +29,14 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
 
 - `IpsApplicationTests.contextLoads`: comprueba que el contexto de Spring arranca. La generó Spring
   Initializr.
-- `comun/BaseComunTest`, con 16 tests de las reglas que no son un escenario: los ceros iniciales del
+- `comun/BaseComunTest`, con 17 tests de las reglas que no son un escenario: los ceros iniciales del
   código, la hora de Colombia en la tabla de cambios y en la carga, inactivar sin borrar, que
   cambiar el nombre no reactive un valor, los motivos que pone el sistema, "Creado por error" fuera
   de la versión vigente, reactivar con otra referencia, la copia de la base de prueba, que ningún
   repositorio tenga un método para borrar, que el menú principal ordene las historias, abra la
   elegida y diga qué base abrió, el corte de la terminal cuando se acaba la entrada, los tres casos
-  de la lista de rechazadas que ya existe y el largo de la columna del código.
+  de la lista de rechazadas que ya existe y el largo de la columna del código, y que la línea de la
+  base no muestre la contraseña.
 - `hu006/HU006CambiosPacienteTest`, con 17 tests: los 13 escenarios de HU-006. Cada test registra
   a la paciente con HU-004 y la cambia con la sesión del auxiliar de admisión.
 - `hu005/HU005ConsultaPacienteTest`, con 18 tests: los 13 escenarios de HU-005. Cada test
