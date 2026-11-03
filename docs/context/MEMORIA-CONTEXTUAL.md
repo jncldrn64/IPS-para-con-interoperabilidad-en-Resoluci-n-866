@@ -2426,6 +2426,55 @@ Lo que respondió e hizo el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-02: El Excel de SISPRO y HU-018
+
+El autor exportó desde su navegador la tabla Pais de SISPRO, sin cuenta, y preguntó, textual:
+
+- "entonces de este sistema es posible que podamos sacar los catalogos que estan pendientes? como
+  el de jorge y el de comunidados etnicas?"
+
+Después mandó capturas de lo que encontró: Municipio (1.124), PSRGPERTENETNICA, CodigoEAPByNit,
+TipoDocumento y CategoriaDiscapacidad. Escribió, textual:
+
+- "vale, veo un problema, por que mi punto del csv era tener un estandar de subida para no tener que
+  subir parte por parte, pero si ya estas disponibles los catalogos de hicha forma, lo ideal seria
+  que se pudieran subir asi como estan, que solo fuera descargarlos de  sus sitios oficiales, por
+  que ahora que veo parece hasta grotesco que  fuerze csv como estandar cuando ya hay disponibilida
+  en otro formato, aun que bajo el supuesto, realmente mi csv solo tiene sentido si tienes forma de
+  transformar o la facilida un formato a otro, y esperar que el sisteuma que estamso haciendo lo
+  detecte.... pero claro si todo se puede sacar de aqui, de donde carajos salen los axexos del
+  axexo? como sabemos que el catalogo de aqui ya cumple con el axeno o si es exactamente el
+  estandar del axeno...."
+- "primero centremonos en el catalogo de paises, y que este bien hecho, y entocse vemos el formato
+  de paises, y dejamos el csv como un estandar, pero nos fijamos exactamente en el formato del excel
+  para entonces agregar un modulo de subira excel al catalogo comun para cada uno, y dejamos todo
+  esto anotado, y si nos da tiempo, vamos catalogo por catalogo viendo sus formato oficial en
+  execl, y cuando tengamos todos definidos, pasamos el csv a "!decrepeated" por lo que dejamos todo
+  anotado en el pr, y procedes a evaluar el excel"
+
+Lo que respondió el modelo:
+
+- Los "anexos del anexo": el artículo 8 de la 866 pone los catálogos en SISPRO, y el anexo de la
+  1888 nombra sus tablas. Una lista que el anexo escribe se compara con la hoja, y manda la hoja;
+  CategoriaDiscapacidad es idéntica a las hojas 14 y 15, y PSRGPERTENETNICA no es la de la hoja 15.
+  Un catálogo que el anexo solo nombra se comprueba por su formato y su fuente.
+- La 1888 pasa la ocupación a la CUOC; la guía pide la CIUO-88 A.C. Anotado en
+  `docs/TEMPORARY-CONTEXT.md`.
+
+Lo que hizo el modelo, con el detalle en las entradas 2026-11-02 "La carga lee también el Excel que
+exporta la fuente" y "HU-018 sale de la tabla Pais de SISPRO" de `docs/DECISIONS.md`:
+
+- `ArchivoExcel` en la base común, con Java y sin biblioteca aparte. Cinco tests de Excel en
+  `CasosLimiteTest`. Una mutación, ignorar la referencia de cada celda, no la detectaba ningún test;
+  el test se cambió y ahora falla con ella.
+- HU-018 con el molde de HU-037: 42 tests, y la tabla Pais cargada en `data/ips.mv.db` desde
+  `data/catalogos/pais-sispro.xlsx`. D-03 queda decidida: Colombia es 170.
+- 319 tests, 0 fallas. La base vacía se rehízo en memoria con los cuatro archivos sin rechazos.
+- El trabajo quedó a medias por un reinicio de la sesión y el límite de uso del autor, y se retomó
+  el 2026-11-03 desde el árbol de trabajo, que se conservó.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2575,7 +2624,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000000000. **Próximo (2026-11-02, HU-035 hecha):** que el autor fusione el
+0000000000000000000000000000000000. **Próximo (2026-11-02, HU-018 hecha):** que el autor fusione
+   el PR de HU-018 y del lector de Excel, que tiene el turno de `data/ips.mv.db`. Después, del
+   Backlog: bajar de SISPRO la tabla Municipio para la DIVIPOLA de Jorge y CodigoEAPByNit para
+   HU-038, y buscar "etnia". Pendiente: HU-004, la auditoría de Jorge con los niveles y la CUOC, y
+   el CSV como obsoleto cuando todos los catálogos tengan su Excel.
+000000000000000000000000000000000. **Anterior (2026-11-02, HU-035 hecha):** que el autor fusione el
    PR que junta los CSV en `data/catalogos/`. HU-035 ya está en `main`, con el PR #32.
    Después, HU-018, países, del integrante 2: numeral 11, "Código a tres caracteres según estándar
    ISO 3166-1", Alfanumérico, formato 999. Falta la fuente: la tabla Pais de SISPRO, que el autor

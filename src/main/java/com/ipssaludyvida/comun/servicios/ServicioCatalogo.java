@@ -204,23 +204,18 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     @Transactional(readOnly = true)
     public ResultadoCarga leerCarga(Path archivo, DatosVersion datosVersion) {
         ResultadoCarga carga = new ResultadoCarga(tipoDeCarga(datosVersion), datosVersion);
-        List<String> lineas = ArchivoCsv.lineas(archivo).stream()
-                .filter(l -> !l.isBlank()).toList();
-        if (lineas.isEmpty()) {
-            throw new IllegalArgumentException("el archivo está vacío");
-        }
-        List<String> columnas = ArchivoCsv.campos(lineas.get(0)).stream()
-                .map(ArchivoCsv::normalizar).toList();
-        int codigo = columna(columnas, "codigo", lineas.get(0));
-        int nombre = columna(columnas, "nombre", lineas.get(0));
+        List<List<String>> tabla = filasDelArchivo(archivo);
+        String encabezado = String.join(";", tabla.get(0));
+        List<String> columnas = tabla.get(0).stream().map(ArchivoCsv::normalizar).toList();
+        int codigo = columna(columnas, "codigo", encabezado);
+        int nombre = columna(columnas, "nombre", encabezado);
         Map<String, Integer> propias = new LinkedHashMap<>();
         for (String propia : columnasPropias()) {
-            propias.put(propia, columna(columnas, propia, lineas.get(0)));
+            propias.put(propia, columna(columnas, propia, encabezado));
         }
         List<ResultadoCarga.Fila> filas = new ArrayList<>();
-        for (String linea : lineas.subList(1, lineas.size())) {
+        for (List<String> campos : tabla.subList(1, tabla.size())) {
             carga.contarFila();
-            List<String> campos = ArchivoCsv.campos(linea);
             Map<String, String> valores = new LinkedHashMap<>();
             propias.forEach((columna, indice) -> valores.put(columna, campo(campos, indice)));
             filas.add(new ResultadoCarga.Fila(carga.getFilasLeidas(), campo(campos, codigo),
@@ -417,6 +412,22 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                             : ""));
         }
         return indice;
+    }
+
+    /**
+     * Las filas del archivo que no están vacías, la primera con los nombres de columna. Un .xlsx se
+     * lee como lo exporta la fuente, y lo demás como el CSV de RC-8 (docs/DECISIONS.md, 2026-11-02
+     * "La carga lee también el Excel que exporta la fuente").
+     */
+    private static List<List<String>> filasDelArchivo(Path archivo) {
+        List<List<String>> filas = ArchivoExcel.esExcel(archivo) ? ArchivoExcel.filas(archivo)
+                : ArchivoCsv.lineas(archivo).stream().map(ArchivoCsv::campos).toList();
+        List<List<String>> conDatos = filas.stream()
+                .filter(f -> f.stream().anyMatch(c -> !c.isBlank())).toList();
+        if (conDatos.isEmpty()) {
+            throw new IllegalArgumentException("el archivo está vacío");
+        }
+        return conDatos;
     }
 
     private static String campo(List<String> campos, int indice) {
@@ -622,22 +633,17 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
      * historia, por su nombre de columna, para comparar sin cargar.
      */
     protected List<Map<String, String>> leerTabla(Path archivo) {
-        List<String> lineas = ArchivoCsv.lineas(archivo).stream()
-                .filter(l -> !l.isBlank()).toList();
-        if (lineas.isEmpty()) {
-            throw new IllegalArgumentException("el archivo está vacío");
-        }
-        List<String> columnas = ArchivoCsv.campos(lineas.get(0)).stream()
-                .map(ArchivoCsv::normalizar).toList();
+        List<List<String>> tabla = filasDelArchivo(archivo);
+        String encabezado = String.join(";", tabla.get(0));
+        List<String> columnas = tabla.get(0).stream().map(ArchivoCsv::normalizar).toList();
         Map<String, Integer> indices = new LinkedHashMap<>();
-        indices.put("codigo", columna(columnas, "codigo", lineas.get(0)));
-        indices.put("nombre", columna(columnas, "nombre", lineas.get(0)));
+        indices.put("codigo", columna(columnas, "codigo", encabezado));
+        indices.put("nombre", columna(columnas, "nombre", encabezado));
         for (String propia : columnasPropias()) {
-            indices.put(propia, columna(columnas, propia, lineas.get(0)));
+            indices.put(propia, columna(columnas, propia, encabezado));
         }
         List<Map<String, String>> filas = new ArrayList<>();
-        for (String linea : lineas.subList(1, lineas.size())) {
-            List<String> campos = ArchivoCsv.campos(linea);
+        for (List<String> campos : tabla.subList(1, tabla.size())) {
             Map<String, String> fila = new LinkedHashMap<>();
             indices.forEach((columna, indice) -> fila.put(columna, campo(campos, indice)));
             if (!fila.get("codigo").isEmpty()) {

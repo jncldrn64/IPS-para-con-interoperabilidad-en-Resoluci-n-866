@@ -163,6 +163,12 @@ que citan su fuente.
 - **rol**: la palabra del docente para el cargo; en el repo se dice "cargo". En el bloque de cita de
   un documento, **Rol:** es otra cosa: el tipo del documento (`CLAUDE.md`, sección 2) (2026-10-27
   "El glosario define los cargos").
+- **SISPRO**: el Sistema Integral de Información de la Protección Social, del Ministerio de Salud.
+  Sus tablas de referencia son los catálogos oficiales que nombra el anexo de la Resolución 1888 de
+  2025, como Pais o Municipio (2026-11-02 "HU-018 sale de la tabla Pais de SISPRO").
+- **tabla de referencia**: un catálogo de SISPRO, que se consulta sin cuenta y se exporta a Excel
+  desde su página. La general de cada dato es la de aplicación SISPRO-TRV con "Estándar Minsalud:
+  Sí" (2026-11-02 "HU-018 sale de la tabla Pais de SISPRO").
 - **tanda**: uno de los seis archivos en que se escribió el backlog v3, con la trazabilidad de cada
   escenario. Salieron del repositorio el 2026-10-24, y las historias se leen en sus tarjetas
   (2026-10-24 "docs/context guarda solo lo que usan las historias").

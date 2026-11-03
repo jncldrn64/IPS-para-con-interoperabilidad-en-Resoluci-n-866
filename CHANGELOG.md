@@ -5,6 +5,35 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.27 — 2026-11-02
+
+HU-018, el catálogo de países, queda completa con la tabla Pais de SISPRO, y la base común carga
+también el Excel tal como lo exporta la fuente. El programa no muestra una versión.
+
+### Added
+- `comun/servicios/ArchivoExcel`: lee la primera hoja de un `.xlsx` con Java, sin biblioteca
+  aparte.
+- `hu018/`: `Pais`, su contrato, su repositorio, su servicio y su controlador. El menú la muestra
+  en la opción 1.
+- `HU018PaisesTest`, con 42 tests, y cinco tests de Excel en `CasosLimiteTest`: 319 tests en total.
+- `data/catalogos/pais-sispro.xlsx`, la tabla Pais de SISPRO tal como se exportó, con su fuente en
+  el `README.md` de la carpeta.
+- `data/ips.mv.db`: los 249 países, activos, con su versión y sus 249 filas de cambios.
+- `docs/DECISIONS.md`: las entradas 2026-11-02 "La carga lee también el Excel que exporta la
+  fuente" y "HU-018 sale de la tabla Pais de SISPRO".
+- `docs/GLOSSARY.md`: SISPRO y tabla de referencia.
+- `docs/ROADMAP.md`: en el Backlog, revisar el Excel oficial de cada catálogo y dejar el CSV como
+  obsoleto, con las tablas de SISPRO que ya se vieron.
+- `docs/ARCHITECTURE.md`, sección 6: el hueco de las filas deshabilitadas de un Excel de SISPRO.
+
+### Changed
+- `ServicioCatalogo` lee las filas del CSV o del Excel en un solo lugar, y salta las filas vacías.
+- La terminal dice que acepta el Excel antes de pedir la ruta.
+- `docs/REQUIREMENTS.md`: D-03 queda decidida, con el código numérico.
+- `docs/DESIGN.md`, sección 7, `docs/ARCHITECTURE.md`, `tests/README.md`, RC-8 y la tarjeta de
+  HU-018 dicen que la carga acepta el Excel.
+- La memoria contextual del autor anota el Excel, HU-018 y lo que falta de SISPRO.
+
 ## v0.26 — 2026-11-02
 
 Los CSV que se cargan en el archivo de la base quedan juntos en `data/catalogos/`, y su `README.md`
