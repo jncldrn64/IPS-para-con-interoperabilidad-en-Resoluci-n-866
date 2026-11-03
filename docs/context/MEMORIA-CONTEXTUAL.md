@@ -2502,6 +2502,42 @@ integrante 2 y Jorge toma HU-004" de `docs/DECISIONS.md`:
 
 **Estado:** `vigente`
 
+## 2026-11-02: Qué gana con el Excel, y la columna Habilitado
+
+El autor escribió, textual:
+
+- "vale, seamos realistas, que HU se veneficiarian realmente del excel ahora mismo"
+- "EAPByNit es terriblemente grande, si quieres te lo paso, pero tienes que tener mucho cuidado de
+  saber si es o no es, por que es muy posible que no sea lo que buscamos o no tenga sentido, y
+  explote el contexto, el resto si te los puedo pasar, y espero que no necesiten tantas
+  correciones, pero el de cobertura creo que no esta bien definido... si quieres dime los
+  numerarels, y las palabras claves nuevamente y busco si tiene o no sentido manualmente los que
+  te estoy entregando."
+- "el 12 realmente tiene dos, nombre der municipio y codigo del municipio, quizas nos estamos
+  confundiendo en algo? quizas en el catalogo de etnimas realmente no existe dicho documento
+  extenso, y solo hay que definirlo tal cual aparecen? por que no tiene sentido que ahora en
+  municipio este codigo y nombre de residenca.... quzisa me este equivocando, pero como
+  pertenencia etnica la separamos en dos HU, quizas, en municipio tambien sea asi? pero si no lo
+  es, quizas hicimos tambien mal con el tema de las etnias?"
+- "mucho ojo con el otro execel, que con ese explotara tus tokens"
+
+Lo que respondió el modelo:
+
+- El Excel solo ayuda a los catálogos vacíos cuya fuente es SISPRO: HU-038, HU-026 y quizás
+  HU-037. Los de una hoja del anexo, y la CIUO-88 A.C., no tienen Excel oficial.
+- Etnias está bien partida: el numeral 13 tiene dos componentes con lista propia. Municipio es un
+  solo catálogo; el nombre del departamento lo agregó la tarjeta por los 66 nombres repetidos.
+- CodigoEAPByNit se leyó solo con conteos, sin volcar filas. Sus códigos van de 4 a 6, y el
+  `[A-Z0-9]{6}` del PR anterior era un error del modelo, por suponer el formato sin el archivo.
+- El autor eligió "HU-038 + Habilitado".
+
+Lo que hizo el modelo, con el detalle en la entrada 2026-11-02 "La carga lee la columna
+Habilitado" de `docs/DECISIONS.md`: la base común lee `Habilitado`; HU-038 con código de 4 a 6 y
+las 1.715 entidades en `data/ips.mv.db`; Municipio y Departamento en `data/catalogos/`, sin
+cargar. 405 tests, 0 fallas, y dos mutaciones de `Habilitado` hacen fallar sus tests.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2651,7 +2687,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000000000000000. **Próximo (2026-11-02, HU-034 y HU-038 hechas):** que el autor
+000000000000000000000000000000000000. **Próximo (2026-11-02, Habilitado y EAPB):** que el autor
+   fusione el PR de la columna `Habilitado` y la tabla CodigoEAPByNit, que tiene el turno de
+   `data/ips.mv.db`. Después: avisarle a Jorge que Municipio y Departamento de SISPRO están en
+   `data/catalogos/` y que su carga pide el nombre del departamento en el mismo archivo; buscar en
+   SISPRO las comunidades étnicas (comunidad, resguardo, pueblo indígena, cabildo, consejo
+   comunitario); la auditoría de Jorge. HU-006 espera HU-004.
+00000000000000000000000000000000000. **Anterior (2026-11-02, HU-034 y HU-038 hechas):** que el autor
    fusione el PR de HU-034, HU-038 y la tabla para Jorge, que tiene el turno de `data/ips.mv.db`.
    Jorge hace HU-004 y HU-005. Del autor queda HU-006, que espera HU-004. Después, del Backlog:
    CodigoEAPByNit de SISPRO para HU-038, la tabla Municipio para la DIVIPOLA de Jorge, buscar

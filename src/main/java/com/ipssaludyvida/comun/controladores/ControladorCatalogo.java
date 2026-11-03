@@ -261,6 +261,10 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
                 + ".");
         carga.getRechazadas().forEach(r -> escribir(
                 "  Fila " + r.numero() + ", código \"" + r.codigo() + "\": " + r.motivo()));
+        if (!carga.getDeshabilitados().isEmpty()) {
+            escribir("Deshabilitadas por la fuente, entran o quedan inactivas: "
+                    + carga.getDeshabilitados().size() + ".");
+        }
         if (carga.getTipo() == ResultadoCarga.Tipo.VERSION_NUEVA) {
             escribir("Nuevos: " + carga.getNuevos());
             carga.getCambianDeNombre().forEach(c -> escribir("Cambia de nombre: "

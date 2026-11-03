@@ -264,7 +264,11 @@ En el controlador, `detalle` agrega algo al final de cada valor en la consulta y
 La base también carga el archivo de RC-8 y RC-9: un CSV, o el Excel (.xlsx) tal como lo exporta la
 fuente, que `ArchivoExcel` lee con Java, sin una biblioteca aparte. Los dos llegan a las mismas
 reglas como filas de texto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que
-exporta la fuente"). `leerCarga` lee y compara sin guardar, y
+exporta la fuente").
+
+Si el archivo trae la columna `Habilitado`, como las tablas de SISPRO, una fila con `NO` entra
+inactiva, o inactiva su valor, con el motivo "Retirado por la fuente oficial" (`docs/DECISIONS.md`,
+2026-11-02 "La carga lee la columna Habilitado"). `leerCarga` lee y compara sin guardar, y
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
 de la base, `nombreOficial` y `revisarPrimeraCarga`.
 

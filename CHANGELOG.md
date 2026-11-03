@@ -5,6 +5,28 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.29 — 2026-11-02
+
+La carga lee la columna `Habilitado`, y HU-038 trae la tabla CodigoEAPByNit de SISPRO. El programa
+no muestra una versión.
+
+### Added
+- `data/catalogos/eapb-sispro.xlsx`, la tabla CodigoEAPByNit tal como se exportó, y
+  `municipio-sispro.xlsx` y `departamento-sispro.xlsx`, sin cargar.
+- `data/ips.mv.db`: las 1.715 entidades del plan de beneficios, 1.401 activas y 314 inactivas.
+- Un test de HU-038 con el Excel real y dos de `Habilitado` en `CasosLimiteTest`: 405 tests.
+- `docs/DECISIONS.md`: 2026-11-02 "La carga lee la columna Habilitado". `docs/GLOSSARY.md`: fila
+  deshabilitada.
+- `docs/ARCHITECTURE.md`, sección 6: el hueco de la tabla Municipio, que no entra en HU-026.
+
+### Changed
+- La carga guarda inactiva una fila con `NO` en `Habilitado`, y lo dice antes de confirmar.
+- El código de HU-038 tiene de 4 a 6 mayúsculas, dígitos o guiones.
+- `docs/DESIGN.md`, sección 7, y el glosario de EAPB, con esas dos reglas.
+
+### Removed
+- `docs/ARCHITECTURE.md`, sección 6: el hueco de las filas deshabilitadas de un Excel de SISPRO.
+
 ## v0.28 — 2026-11-02
 
 HU-034, tipos de documento, y HU-038, entidades del plan de beneficios, quedan completas, y HU-004
