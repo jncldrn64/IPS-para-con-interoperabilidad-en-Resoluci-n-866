@@ -278,10 +278,6 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
 - Revisar los espacios entre pantallas del menú. El autor lo pidió al ver el programa en Windows;
   falta que diga en qué pantalla.
   **Entró:** 2026-11-03, PR de la lista de pendientes.
-- Las llaves foráneas del paciente hacia sus catálogos, como dibuja el modelo E-R, y que cada
-  catálogo cuente cuántos pacientes usan un valor (hueco 2026-10-27 de `docs/ARCHITECTURE.md`).
-  El autor pidió "agrega todo lo que necesite el paciente".
-  **Entró:** 2026-11-03, PR de la lista de pendientes.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a
   HU-042 y HU-031), la atención (HU-007, HU-009, HU-008 y HU-043) y la voluntad anticipada (HU-014

@@ -2623,6 +2623,32 @@ Lo que respondió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: Lo que falta, por escrito, y las llaves foráneas del paciente
+
+El autor escribió, textual:
+
+- "hay muchas cosas que tener presente, por que si bien tecnicamente tenemos todo, aun faltan
+  detalles, que no quiero que se pierada, si los estas anotantos en las debidas memorias,? como lo
+  que falta en los catalogos, los exicel, las pruebas, y demas?... sobre las llaves foraneas,
+  agrega todo lo que necesite el paciente, tienes acceso a los demas archivos? ten encuenta que
+  pueden haber cosas desfasadas de estro que te mostrare:"
+- "supongo que ahi esta el modelo de datos y te lo paso..... pero primero asegurate que ir
+  escribiendo todo lo que falte en las memoria para que no se olviden"
+
+Pegó el listado de su carpeta local `Fundamentos`, con `BASE/`, `FDD/`, `POST/` y `PRE/`.
+
+Lo que respondió e hizo el modelo:
+
+- El modelo no tiene acceso a esa carpeta, solo al repo. El modelo E-R del repo es el mismo que
+  el de `POST/modelo-datos/`: los tres archivos pesan igual.
+- Primero, un PR solo de documentación con la lista de lo que falta, en la sección 12.
+- Después, las llaves foráneas: 12 en la base, sin cambiar lo que guarda el paciente, y
+  `contarUsos` con pacientes de verdad (entrada 2026-11-03 "El paciente apunta a sus catálogos con
+  llaves foráneas" de `docs/DECISIONS.md`). 482 tests, 0 fallas; quitar el `distinct` del conteo
+  hace fallar su test.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2772,9 +2798,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000000000000000. **Próximo (2026-11-03, la lista de lo que falta):** que el
-   autor fusione el PR de esta lista. Después, el PR de las llaves foráneas del paciente. Lo que falta,
-   todo junto, con dónde vive cada cosa:
+00000000000000000000000000000000000000000. **Próximo (2026-11-03, llaves foráneas):** que el autor
+   fusione el PR de las llaves foráneas. De la lista del punto anterior, el 1 está hecho; siguen
+   del 2 al 9.
+0000000000000000000000000000000000000000. **Anterior (2026-11-03, la lista de lo que falta):** que
+   el autor fusione el PR de esta lista. Después, el PR de las llaves foráneas del paciente. Lo que
+   falta, todo junto, con dónde vive cada cosa:
    1. Llaves foráneas del paciente a sus catálogos y `contarUsos` en cada catálogo: Backlog de
       `docs/ROADMAP.md` y hueco 2026-10-27 de `docs/ARCHITECTURE.md`. El autor dijo "agrega todo
       lo que necesite el paciente".

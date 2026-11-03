@@ -5,6 +5,27 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.38 — 2026-11-03
+
+El paciente tiene sus llaves foráneas hacia los catálogos, y cada catálogo cuenta los pacientes que
+usan un valor. El programa no muestra una versión.
+
+### Added
+- `Paciente`: un `@ManyToOne` de solo lectura por cada catálogo y por quien lo registró, y
+  `@ManyToMany` para nacionalidades y discapacidades. La base tiene 12 llaves foráneas.
+- `comun/interfaces/UsosDeCatalogo` y `hu004/servicios/UsosEnPacientes`: `contarUsos` cuenta los
+  pacientes de verdad.
+- `LlavesDelPacienteTest`, con 3 tests: 482 tests.
+- `docs/DECISIONS.md`: 2026-11-03 "El paciente apunta a sus catálogos con llaves foráneas".
+  `docs/GLOSSARY.md`: llave foránea y tabla de intersección.
+
+### Changed
+- `data/ips.mv.db`: Hibernate le agregó las 12 llaves al abrirlo.
+- `docs/DESIGN.md`, sección 1, y el hueco de `contarUsos`, que queda en las atenciones.
+
+### Removed
+- `docs/ROADMAP.md`, Backlog: el ítem de las llaves foráneas del paciente.
+
 ## v0.37 — 2026-11-03
 
 Solo documentación. Lo que falta queda escrito en un solo lugar, y dos huecos se cierran con las
