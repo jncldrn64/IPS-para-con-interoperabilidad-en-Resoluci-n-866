@@ -2593,6 +2593,36 @@ UTF-8" de `docs/DECISIONS.md`:
 
 **Estado:** `vigente`
 
+## 2026-11-03: La consola de Windows y las relaciones del paciente
+
+El autor probó la v0.35 en su Windows: el menú salía con otros símbolos y "Contrase?a" seguía con
+"?". Preguntó, textual:
+
+- "Entiedo que estamso en la recta final, y todas las HU estas completas dentro de lo que cabe
+  verdad? es muy importente que mantenes pendiente los documentos de contexto para mantener bien
+  lo detalles que haremmos y la pusta en marcha de la db en la VM... dicho esto seguramente sea mas
+  complejo de lo que parece,, y que hay de la relacion? entiedo que ahora mismo ya podemos hacer
+  relaciones de uno a uno, uno a muchos y muchos a muchos, con las debidas anotaciones y join,
+  tanto en la entidad cliente, aun que entiendo que no hace falta que se bidireccional o mas bien
+  que las eclaremos en los otroscatalogos. ademas los registros deben tener en cuenta esto verdad?
+  por que si hay una entidad de intercepcion (algo de las normalizaciones), debemwos tambien pedir
+  eso para el registro."
+
+Lo que respondió el modelo:
+
+- La v0.35 fue un error del modelo: la prueba del contenedor no distinguía la consola. Se deshace
+  (entrada 2026-11-03 "La consola decide las tildes").
+- Las 12 historias están completas, salvo los datos de HU-037 y lo que no se probó en Windows.
+- Relaciones: el modelo E-R dibuja cada dato de catálogo del paciente como llave foránea, y dos
+  tablas de intersección, `paciente_nacionalidad` y `paciente_discapacidad`. El código de Jorge
+  guarda el código como texto y lo valida en `PacienteServicio`; las dos tablas existen y el
+  registro ya pide uno o varios valores. Lo que falta es la llave foránea en la base hacia el
+  catálogo. El código de cada catálogo es su llave primaria, así que un `@ManyToOne` y un
+  `@ManyToMany` en un solo sentido, desde `Paciente`, la crean sin cambiar lo que se guarda.
+  Queda a decisión del autor.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2742,9 +2772,14 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000000000000000000. **Próximo (2026-11-03, tildes y pantallas de pacientes):** que
-   el autor fusione el PR y pruebe en Windows las tildes de la salida y el comando del hueco de lo
-   que se escribe. Después: qué espacios entre pantallas quiere el autor, LCEResguardos para
+000000000000000000000000000000000000000. **Próximo (2026-11-03, la consola y las relaciones):** que
+   el autor fusione el PR que deshace el UTF-8 y pruebe `chcp 65001` en su VM. Pendiente de su
+   respuesta: las llaves foráneas del paciente a los catálogos (ver la entrada de este día). Para
+   la puesta en marcha en MariaDB, en la VM del autor: anotar aquí cada paso que dé y cada cambio
+   de `application.properties`. Queda LCEResguardos para HU-037 y los espacios entre pantallas.
+00000000000000000000000000000000000000. **Anterior (2026-11-03, tildes y pantallas de pacientes):**
+   que el autor fusione el PR y pruebe en Windows las tildes de la salida y el comando del hueco de
+   lo que se escribe. Después: qué espacios entre pantallas quiere el autor, LCEResguardos para
    HU-037, los niveles de la CIUO-88 A.C. y la CUOC, y MariaDB.
 0000000000000000000000000000000000000. **Anterior (2026-11-02, revisión y teclado al azar):** que el
    autor fusione el PR de la revisión y cuente cómo le fue al correr el programa en su máquina.

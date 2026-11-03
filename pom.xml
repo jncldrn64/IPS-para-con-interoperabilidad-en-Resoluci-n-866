@@ -122,13 +122,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!-- spring-boot:run arranca el programa en otro proceso y Maven reenvía su
-					     salida leyéndola como UTF-8. Sin esto, en Windows y en una terminal sin LANG
-					     el programa escribe en otra codificación y las tildes llegan como "?"
-					     (docs/DECISIONS.md, 2026-11-03 "Las tildes salen por Maven en UTF-8"). -->
-					<jvmArguments>-Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8</jvmArguments>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

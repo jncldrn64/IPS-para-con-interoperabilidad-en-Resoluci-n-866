@@ -2543,3 +2543,36 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: La consola decide las tildes
+
+**Contexto:** Reemplaza a 2026-11-03 "Las tildes salen por Maven en UTF-8". Con la v0.35 el autor
+corrió el programa otra vez en su Windows, en PowerShell, y mandó una captura: el texto del menú
+salía con otros símbolos, y "Contrase?a", que no escribe el programa sino la consola al pedir la
+clave, seguía con "?". Escribió, textual:
+
+- "Entiedo que estamso en la recta final, y todas las HU estas completas dentro de lo que cabe
+  verdad? es muy importente que mantenes pendiente los documentos de contexto para mantener bien
+  lo detalles que haremmos y la pusta en marcha de la db en la VM..."
+
+**Hipótesis:** la consola de esa máquina usa una página de códigos sin "ñ" ni "ó", como la 932.
+La base es la captura: la clave pasa por la consola y sale con "?", y los bytes de UTF-8 salen
+como otros símbolos. La prueba del contenedor que llevó a la v0.35 no lo distinguía, porque allí
+el programa no tiene consola.
+
+**Decisión:** el `pom.xml` vuelve a dejar la codificación a Java, que toma la de la consola. En
+una consola sin las letras del español, se corre `chcp 65001` antes del programa, y el `README.md`
+lo dice.
+
+Lo que decidió el modelo:
+
+- Deshacer la v0.35 y no dejarla: en un Windows en español, con la página 850, la salida forzada a
+  UTF-8 se vería peor que sin tocar nada.
+- Una sección "Cómo correrlo" en el `README.md`, que Jorge había pedido el 2026-10-31.
+
+**Alternativas:**
+
+- Dejar UTF-8 forzado y pedir `chcp 65001` siempre. Obliga un paso en todas las máquinas, también
+  en las que hoy salen bien.
+
+**Estado:** `vigente`
+
