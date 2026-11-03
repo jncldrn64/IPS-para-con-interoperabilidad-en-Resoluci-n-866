@@ -2251,3 +2251,58 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+
+## 2026-11-02: HU-004 guarda los códigos y junta todos los errores
+
+**Contexto:** El autor pasó HU-004 a Jorge, el integrante 1 (2026-11-02 "El autor termina los
+catálogos del integrante 2 y Jorge toma HU-004"), y los 8 catálogos ya tenían su clase en `main`.
+Jorge adjuntó la tarjeta, pidió revisar el repo y después escribió:
+
+- "si inicia con HU-004"
+
+El repo no traía los valores ni las longitudes de los numerales 2 a 6 y 14. Se leyeron el
+2026-11-02 en el texto del anexo que publica Supersalud en su normograma,
+https://normograma.supersalud.gov.co/compilacion/docs/resolucion_minsaludps_0866_2021.htm, porque
+en el PDF del Ministerio las celdas salen revueltas al leerlas. Lo poco que el PDF dejó leer, como
+la mujer y el femenino con el código 02, coincide con el normograma.
+
+**Decisión:** El paciente guarda el código de cada dato de catálogo, como pide el modelo E-R para
+RC-11, y sus nacionalidades y discapacidades van en `paciente_nacionalidad` y
+`paciente_discapacidad`. Sexo biológico, identidad de género y zona son listas fijas, cada una un
+enum con el código y el nombre del anexo. `PacienteServicio.validar` revisa todos los datos y
+devuelve cada uno que falta o está mal con su motivo, y `registrar` no guarda nada si hay uno. El
+controlador vuelve a pedir solo esos (escenario 11).
+
+Lo que decidió el modelo:
+
+- Número de documento: de 3 a 20 letras o dígitos (numeral 2, Alfanumérico, longitud 20 y 3). Cada
+  apellido y cada nombre, de 2 a 60 caracteres (numeral 3). La fecha, AAAA-MM-DD y no futura, y la
+  hora, HH:MM (numeral 4).
+- Sexo biológico: 01 Hombre, 02 Mujer, 03 Indeterminado/Intersexual. Identidad de género: 01
+  Masculino, 02 Femenino, 03 Transgénero, 04 Neutro, 05 No lo declara. Zona: 01 Urbana, 02 Rural.
+- Colombia es el 170 de la tabla Pais de SISPRO: con ese país de residencia el municipio es
+  obligatorio, y con otro no se acepta.
+- La comunidad étnica se pide con una etnia de la 01 a la 06 y si su catálogo tiene valores; con la
+  99 no se acepta.
+- "Sin discapacidad", el 08, no va con otra categoría.
+- Con el catálogo vacío, el motivo de un dato obligatorio es "falta cargar el catálogo de", y la
+  pantalla lo avisa al abrir (escenario 14).
+- Un catálogo de hasta 20 valores activos se lista entero; uno más largo se busca. El código exacto
+  se elige de una vez. Se cambió después de una corrida: con el código, la pantalla pedía además el
+  número 1 de una lista de un solo valor.
+- El paciente repetido se busca por tipo y número antes de guardar, y la tabla tiene además la
+  restricción de los dos juntos (D-07). Con AS, MS y SI se exige lo mismo, mientras D-19 no se
+  decida (`docs/ARCHITECTURE.md`, sección 6).
+- Solo el auxiliar de admisión ve y abre el registro (`Permiso.CAMBIAR_PACIENTE`).
+- Los catálogos no cuentan todavía cuántos pacientes usan un valor: queda en su hueco.
+
+**Alternativas:**
+
+- Guardar en el paciente el nombre de cada valor además del código. El modelo E-R lo saca de la
+  tabla de cambios, para no repetir el nombre en cada registro.
+- Validar dato por dato mientras se escribe. El escenario 10 pide decir todos los que faltan, y el
+  servicio no lee del teclado (`docs/DESIGN.md`, sección 6).
+- Una relación de JPA hacia cada catálogo. Los catálogos guardan su código como llave, y el
+  paciente guarda ese código como texto, igual que el municipio guarda su departamento.
+
+**Estado:** `vigente`

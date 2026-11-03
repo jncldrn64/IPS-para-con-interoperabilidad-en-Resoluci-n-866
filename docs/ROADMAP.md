@@ -217,7 +217,9 @@ al paciente.
   revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo de la base"). HU-026 está
   completa desde la v0.21, salvo la carga del archivo oficial, que espera su descarga
   (`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla"). Del integrante 1
-  quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004.
+  quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004. HU-004 está completa desde la
+  v0.29 (`docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y junta todos los errores"),
+  y con ella HU-005 y HU-006 pueden empezar.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022

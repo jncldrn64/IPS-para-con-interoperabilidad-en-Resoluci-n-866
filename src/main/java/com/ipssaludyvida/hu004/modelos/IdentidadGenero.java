@@ -1,0 +1,33 @@
+package com.ipssaludyvida.hu004.modelos;
+
+/**
+ * Identidad de género, numeral 6: Alfanumérico, formato 99, longitud 2. Resolución 866 de 2021,
+ * anexo técnico; se copia citando la norma (CLAUDE.md, sección 10). Los valores se leyeron el
+ * 2026-11-02 en el texto del anexo que publica Supersalud en su normograma.
+ */
+public enum IdentidadGenero implements ListaFija {
+
+    MASCULINO("01", "Masculino"),
+    FEMENINO("02", "Femenino"),
+    TRANSGENERO("03", "Transgénero"),
+    NEUTRO("04", "Neutro"),
+    NO_LO_DECLARA("05", "No lo declara");
+
+    private final String codigo;
+    private final String texto;
+
+    IdentidadGenero(String codigo, String texto) {
+        this.codigo = codigo;
+        this.texto = texto;
+    }
+
+    @Override
+    public String codigo() {
+        return codigo;
+    }
+
+    @Override
+    public String texto() {
+        return texto;
+    }
+}

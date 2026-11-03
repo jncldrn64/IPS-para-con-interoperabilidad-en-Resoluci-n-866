@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 402 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 430 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -36,6 +36,9 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   repositorio tenga un método para borrar, que el menú principal ordene las historias, abra la
   elegida y diga qué base abrió, el corte de la terminal cuando se acaba la entrada, los tres casos
   de la lista de rechazadas que ya existe y el largo de la columna del código.
+- `hu004/HU004RegistroPacienteTest`, con 28 tests: los 15 escenarios de HU-004. Cada test crea
+  por cambio oficial unos pocos valores de los 8 catálogos, y los de la pantalla contestan dato por
+  dato, con las respuestas de `RESPUESTAS`.
 - `hu034/HU034TiposDocumentoTest`, con 44 tests, como los de HU-035 con la lista de la hoja 13, y
   `hu038/HU038EntidadesPlanBeneficiosTest`, con 39, como los de HU-037 con códigos de 6 caracteres.
 - `hu035/HU035CategoriasDiscapacidadTest`, con 44 tests, `hu036/HU036EtniasTest`, con 44, y
@@ -86,10 +89,12 @@ que RC-11 pide de un registro ya guardado, en el 11.
 El 2026-10-31, con `hu001` en la ruta, imprimió los 14 números de HU-001, y el 2026-11-01, con
 `hu022`, los 28 de HU-022, y con `hu026`, los 25 de HU-026. El 2026-11-02, con `hu035`, imprimió los
 23 de HU-035. Su tarjeta tiene los mismos escenarios que la de HU-036, salvo la redacción, y sus
-tests copian los de HU-036, así que cada caso de su "Dado" tiene su método. Con `hu018`, imprimió
-los 22 de HU-018, cuya tarjeta tiene los mismos escenarios que la de HU-037, salvo el género de las
-palabras, comparados con `diff`. El 2026-11-02 imprimió también los 23 de HU-034 y los 22 de
-HU-038, cuyas tarjetas repiten las de HU-035 y HU-037, salvo la lista y la redacción.
+tests copian los de HU-036, así que cada caso de su "Dado" tiene su método.
+
+Con `hu018`, imprimió los 22 de HU-018, cuya tarjeta tiene los mismos escenarios que la de HU-037,
+salvo el género de las palabras, comparados con `diff`. El 2026-11-02 imprimió también los 23 de
+HU-034 y los 22 de HU-038, cuyas tarjetas repiten las de HU-035 y HU-037, salvo la lista y la
+redacción. Con `hu004`, imprimió los 15 de HU-004.
 
 ## 4. El CI
 
