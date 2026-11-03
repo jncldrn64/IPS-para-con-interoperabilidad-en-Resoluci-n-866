@@ -5,26 +5,48 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
-## v0.30 — 2026-11-02
+## v0.31 — 2026-11-02
 
 Un valor equivocado da un mensaje en cualquier menú, y un test lo comprueba recorriendo el programa
 con un teclado al azar. El programa no muestra una versión.
 
 ### Added
 - `EntradasInvalidasTest`: el programa entero, por cargo, con un teclado al azar, y dos tests del
-  respaldo de errores. Una carga por el menú en HU-037 y otra en HU-038: 412 tests.
+  respaldo de errores. Una carga por el menú en HU-037 y otra en HU-038: 440 tests.
 - `MenuPrincipal.inesperado`, el mensaje de un error que nadie esperaba, y `leerRuta` en
   `ControladorCatalogo`.
 - `docs/DECISIONS.md`: 2026-11-02 "Un valor equivocado da un mensaje, y el menú sigue".
-- `tests/README.md`: el comando que cuenta, para las 9 historias, los escenarios con test.
+- `tests/README.md`: el comando que cuenta, para cada historia, los escenarios con test.
 - `docs/ROADMAP.md`: las tablas de SISPRO vistas para HU-037.
 
 ### Changed
-- El menú principal y el de cada catálogo atrapan cualquier error y siguen.
+- El menú principal y el de cada catálogo atrapan cualquier error y siguen. El recorrido al azar
+  pasa también por el registro de un paciente de HU-004.
 - Una ruta con un carácter que no sirve y una carpeta en lugar de un archivo dan su mensaje en
   español.
 - La opción 8 dice "Cargar desde un archivo, CSV o Excel".
 - `docs/DESIGN.md`, sección 4, con la regla del respaldo.
+
+## v0.30 — 2026-11-02
+
+HU-004 queda completa: el auxiliar de admisión registra un paciente con los 16 atributos y los 8
+catálogos. El programa no muestra una versión.
+
+### Added
+- `hu004/`: `Paciente`, con sus nacionalidades y discapacidades en `paciente_nacionalidad` y
+  `paciente_discapacidad`; `SexoBiologico`, `IdentidadGenero` y `ZonaTerritorial`, las listas
+  fijas de los numerales 5, 6 y 14; `ContratoPacientes`, `PacienteServicio`,
+  `PacienteControlador` y `PacienteRepositorio`, que no borra.
+- La pantalla "Registro de un paciente (HU-004)", que ve solo el auxiliar de admisión: avisa qué
+  catálogo falta, busca en los catálogos largos y vuelve a pedir solo los datos marcados.
+- `HU004RegistroPacienteTest`, con 28 tests de los 15 escenarios: 433 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "HU-004 guarda los códigos y junta todos los
+  errores".
+
+### Changed
+- `BaseComunTest` revisa que `PacienteRepositorio` no pueda borrar.
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la memoria de Jorge describen
+  HU-004.
 
 ## v0.29 — 2026-11-02
 

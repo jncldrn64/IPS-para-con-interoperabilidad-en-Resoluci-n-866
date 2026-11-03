@@ -60,6 +60,7 @@ las 7 claves de la configuración.
 | `comun/menu/` | `MenuPrincipal`, que pide la sesión y elige la historia, y `Terminal` |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
+| `hu004/` | Pacientes: `ContratoPacientes`, `Paciente`, sus tres listas fijas y lo demás |
 | `hu018/` | Países: `ContratoPaises`, `Pais`, su repositorio, su servicio y `PaisControlador` |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
@@ -104,13 +105,22 @@ Los otros atributos de los 16 son valores del paciente o listas fijas de 5 o men
 (`docs/REQUIREMENTS.md`, sección 3). Un catálogo sin datos se llena creando valores a mano o con
 una carga, en la base de prueba.
 
-Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
-Con sesión, lista por su número las historias que el cargo ve, de la 1 a la 8: Países (HU-018),
-Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento (HU-034), Categorías de discapacidad
-(HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y Entidades del plan de beneficios (HU-038),
-como lo mostró una corrida que entró como `estadistica` el 2026-11-02. Abajo van la letra C, que
-cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide
-entrar de nuevo.
+Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de
+salir. Con sesión, lista por su número las historias que el cargo ve. El 2026-11-02, una corrida
+que entró como `admision` vio de la 1 a la 9: Registro de un paciente (HU-004), Países (HU-018),
+Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento (HU-034), Categorías de
+discapacidad (HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y Entidades del plan de
+beneficios (HU-038). Quien no es auxiliar de admisión no ve la primera.
+
+Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la
+opción siguiente pide entrar de nuevo.
+
+El registro de un paciente pide los datos en el orden de la tarjeta y avisa al abrir qué catálogo
+del paciente no tiene valores activos. Un catálogo de hasta 20 valores activos se lista entero, y
+uno más largo se busca: el código exacto se elige de una vez, y una parte del nombre muestra la
+lista de coincidencias, cada ciudad con su departamento. Si algo está mal, dice cada dato con su
+motivo y vuelve a pedir solo esos. El paciente guarda los códigos de los catálogos, quién lo
+registró y la hora de Colombia (`PacienteServicio.registrar`).
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -196,7 +206,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 10707 líneas en 89 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 12230 líneas en 102 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -244,11 +254,24 @@ si eso cierra un hueco de esta lista.
   que no tiene que verse.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
   pacientes usan un valor, en el escenario 19 de HU-035 y de HU-036 y el 18 de HU-037: `contarUsos`
-  devuelve 0. Desde el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además
-  cuenta atenciones: `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Y
-  lo que RC-11 pide de un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037,
-  que no tiene código porque todavía no hay registros. Comando:
-  `grep -n -A2 'public long contarUsos' src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
+  devuelve 0. Desde el 2026-11-02 el paciente existe, pero ningún catálogo lo cuenta todavía. Desde
+  el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además cuenta atenciones:
+  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Y lo que RC-11 pide
+  de un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037, que no tiene código
+  porque todavía no hay registros. Comando: `grep -n -A2 'public long contarUsos'
+  src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
+- **2026-11-02: el registro de un paciente sin documento sigue la regla general.** Con los tipos
+  AS, MS y SI de la hoja 13 la tarjeta de HU-004 dice que pueden faltar el número, los nombres, la
+  fecha o la nacionalidad, y que falta decidir qué se exige (D-19). Hoy se exigen igual, y el
+  paciente repetido se busca por tipo y número. Comando:
+  `grep -n '"AS"\|"MS"\|"SI"' src/main/java/com/ipssaludyvida/hu004/servicios/*.java`, que no
+  devuelve nada.
+- **2026-11-02: con el archivo de la base, nadie que viva en Colombia se puede registrar.** Su
+  catálogo de municipios está vacío, y el municipio es obligatorio para quien reside en Colombia.
+  Una corrida del 2026-11-02 sobre una copia del archivo registró a un paciente que vive en
+  Venezuela, con la entidad 05001 de la tabla de SISPRO, y para Colombia la pantalla dijo "No hay
+  municipios activos: falta cargar el catálogo.". Comando: abrir HU-004 con
+  `sh ./mvnw -q spring-boot:run`, que avisa "falta cargar el catálogo de municipios".
 - **2026-11-02: los PR del modelo de Jorge salen a nombre de `jncldrn64`.** GitHub muestra como
   autor de los PR #23 a #26 la cuenta del autor, aunque los abrieron sesiones de Claude Code que no
   son suyas y el PR #23 lo fusionó `jorge-a-restrepo`. No se sabe por qué. **Hipótesis:** la cuenta

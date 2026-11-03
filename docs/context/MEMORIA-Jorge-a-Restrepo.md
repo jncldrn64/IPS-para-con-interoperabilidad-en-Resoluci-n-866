@@ -66,18 +66,30 @@
 - La rama de HU-026 sale de la de HU-022. Lo que decidió el modelo está en `docs/DECISIONS.md`,
   2026-11-01 "HU-026 guarda el departamento en su tabla".
 
+## 2026-11-02: HU-004
+
+- "analisa el el repo haber si si lo an modificado los compañeros"
+- "auq ehoras actualizaron el repo"
+- El autor fusionó los PR #24 a #26 el 2026-11-02 a las 14:54, hizo HU-035, HU-018, HU-034 y
+  HU-038, y pasó HU-004 a Jorge (`docs/DECISIONS.md`, 2026-11-02 "El autor termina los catálogos
+  del integrante 2 y Jorge toma HU-004").
+- "vuelve y analiza el repo haber si ya hay avenzes d elos demasa"
+- "si inicia con HU-004"
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y
+  junta todos los errores".
+- "como se llama el anexo que necesitamos"
+- Jorge adjuntó `resolucion-866-de-2021.pdf`. Sus hojas 13 a 15, miradas como imagen, confirman los
+  valores y las longitudes de los numerales 2 a 6 y 14 que usa HU-004.
+
 ## 3. Pendiente
 
-- Que el autor cierre sin fusionar el PR de prueba. **Hipótesis:** el PR #23 se fusionó el
-  2026-10-27, según `git log`, y la regla pedía cerrarlo sin fusionar.
-- Que Jorge revise el PR de HU-001, con la lista "Lo que decidió el modelo", y lo fusione.
-- Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común, y Jorge pidió
-  que se le recordara el 2026-11-01 a las 12:00.
-- Preguntar al profesor si acepta que el programa siga en terminal.
-- Que Jorge revise y fusione el PR de HU-022, después del de HU-001.
-- El PR de HU-022 tiene el turno del archivo de la base: avisar a los otros dos antes de que
-  cambien `data/ips.mv.db`.
-- Que Jorge revise y fusione el PR de HU-026, después de los de HU-001 y HU-022.
-- El archivo de la DIVIPOLA: si Jorge lo adjunta, el modelo lo pasa al CSV de cuatro columnas y lo
-  carga en el archivo de la base.
-- Después: HU-005, cuando esté HU-004.
+- Que Jorge revise el PR de HU-004, con "Lo que decidió el modelo", y lo fusione: en la página del
+  PR, "Ready for review" y después "Merge pull request".
+- Después: HU-005, consulta de un paciente, con la rama saliendo de `main` ya fusionado.
+- Cargar la DIVIPOLA y la tabla de entidades de SISPRO: sin ellas, el archivo de la base no deja
+  registrar a nadie. Si Jorge las adjunta, el modelo las pasa a CSV.
+- Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común.
+- Preguntar al profesor si acepta que el programa siga en terminal, qué se exige con los tipos de
+  documento AS, MS y SI (D-19) y si le basta la CIUO-88 A.C. completa.
+- Revisar qué cuenta de GitHub está conectada en https://claude.ai/connect-github: los PR salen a
+  nombre de `jncldrn64`.

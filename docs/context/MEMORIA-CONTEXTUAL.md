@@ -2560,6 +2560,9 @@ un mensaje, y el menú sigue" de `docs/DECISIONS.md`:
 - `EntradasInvalidasTest` recorre el programa con un teclado al azar; no encontró caídas, y sí dos
   mensajes en inglés, que pasaron a español. El menú principal y el de cada catálogo atrapan
   cualquier error. 412 tests, 0 fallas, y dos mutaciones del respaldo hacen fallar los tests.
+- El #37 de Jorge, HU-004, se fusionó primero, como recomendó el modelo. El PR trajo `main` con
+  un merge, pasó a la v0.31 y corrió 440 tests, 0 fallas: el recorrido al azar entra también al
+  registro de un paciente. Los 217 escenarios de las 10 historias tienen test.
 - Lo de Jorge queda como dijo el autor: si no puede, el autor aplica el Excel en HU-026.
 
 **Estado:** `vigente`
