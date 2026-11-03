@@ -2387,3 +2387,44 @@ Lo que decidió el modelo:
   después del registro, saldría como el nombre del registro.
 
 **Estado:** `vigente`
+
+## 2026-11-02: Jorge hace HU-006 con el historial común
+
+**Contexto:** HU-006 es del integrante 3, el autor, en el reparto de `docs/ROADMAP.md`, y era la
+única de las 12 sin hacer. Con HU-004 y HU-005 en `main`, Jorge, el integrante 1, adjuntó su
+tarjeta. El modelo revisó el repo: no había rama, PR ni carpeta de HU-006. Jorge escribió:
+
+- "vamos a hacer esta"
+- "no la esta haciendo"
+
+**Decisión:** Jorge hace HU-006. Los cambios del paciente quedan en `HistorialCambio`, la tabla
+historial_cambio del modelo E-R, en `comun/` porque la atención, la oposición y la voluntad
+anticipada la van a usar también. `ContratoPacientes.actualizar` valida con las mismas reglas del
+registro, y el servicio de HU-006 deja una fila por dato que cambió, con el valor anterior, el
+nuevo, el tipo, quién y cuándo. Si algo falla, no cambia nada. El registro y la actualización piden
+los datos con la misma clase, `FormularioPaciente`.
+
+Lo que decidió el modelo:
+
+- Un valor que el paciente ya tenía se acepta aunque hoy esté inactivo, mientras no se cambie
+  (RC-4). En una nacionalidad o una discapacidad, vale para cada valor que ya estaba.
+- El historial guarda los códigos, y los datos con varios valores, ordenados y separados por coma.
+  Un dato vacío se guarda vacío y se muestra "Sin dato".
+- Si ningún dato cambió, no se guarda nada y se dice.
+- Cambiar el tipo y el número de documento se acepta si nadie más lo tiene; si lo tiene otro
+  paciente, se rechaza (escenario 9).
+- La pantalla pregunta primero si es una actualización o una corrección, y ese tipo vale para todos
+  los datos que se cambien en esa vez.
+- El nombre y la identificación de quien cambió salen del usuario guardado en la fila
+  (`UsuarioRepositorio.findById`).
+- La consulta de HU-005 sigue buscando el nombre del día por la fecha del registro. Un valor nuevo,
+  creado después de esa fecha, muestra su nombre vigente.
+
+**Alternativas:**
+
+- Esperar al autor. Era la última de las 12, y nada en el repo decía que la estuviera haciendo.
+- Guardar el historial dentro de `hu006/`. La atención (HU-009), la oposición (HU-012) y la
+  voluntad anticipada (HU-016) necesitan la misma tabla.
+- Copiar en HU-006 las preguntas del registro. Serían dos copias que se corrigen aparte.
+
+**Estado:** `vigente`

@@ -89,12 +89,22 @@
 - Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-005 saca el nombre del día
   de la tabla de cambios".
 
+## 2026-11-02: HU-006
+
+- "dame la direcion repositorio"
+- "pero donce tengo que aporbar la fusion"
+- Jorge fusionó el PR #39, de HU-005.
+- Jorge adjuntó la tarjeta de HU-006, del integrante 3: "vamos a hacer esta". El modelo revisó que
+  no hubiera trabajo del autor en ella, y Jorge escribió: "no la esta haciendo".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "Jorge hace HU-006 con el
+  historial común".
+
 ## 3. Pendiente
 
-- Que Jorge revise el PR de HU-005, con "Lo que decidió el modelo", y lo fusione: en la página del
-  PR, "Listo para revisión" y después "Combinar solicitud de extracción", con "Crear una
-  confirmación de fusión".
-- Con HU-005, Jorge termina sus historias de las 12. Puede ayudar a revisar los PR de los demás.
+- Que Jorge revise el PR de HU-006, con "Lo que decidió el modelo", y lo fusione: "Listo para
+  revisión" y después "Combinar solicitud de extracción", con "Crear una confirmación de fusión".
+- Avisar al autor que Jorge hizo HU-006, que era suya.
+- Con HU-006 están las 12 historias de la fase 0. Lo que sigue lo decide el equipo.
 - Cargar la DIVIPOLA: sin ella, el archivo de la base no deja registrar a nadie que viva en
   Colombia. Si Jorge la adjunta, el modelo la pasa a CSV.
 - Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común.

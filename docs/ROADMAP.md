@@ -223,7 +223,9 @@ al paciente.
   v0.30 (`docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y junta todos los errores"),
   y con ella HU-005 y HU-006 pueden empezar. HU-005 está completa desde la v0.31
   (`docs/DECISIONS.md`, 2026-11-02 "HU-005 saca el nombre del día de la tabla de cambios"), y del
-  integrante 1 no queda ninguna de las 12.
+  integrante 1 no queda ninguna de las 12. HU-006, del integrante 3, la hizo Jorge y está completa
+  desde la v0.32 (`docs/DECISIONS.md`, 2026-11-02 "Jorge hace HU-006 con el historial común"): con
+  ella, las 12 historias de la fase 0 están hechas.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022

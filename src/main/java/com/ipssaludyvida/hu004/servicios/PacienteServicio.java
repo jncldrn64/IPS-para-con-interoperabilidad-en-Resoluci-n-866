@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -87,9 +88,15 @@ public class PacienteServicio implements ContratoPacientes {
     @Override
     @Transactional(readOnly = true)
     public Map<Campo, String> validar(DatosPaciente d) {
+        return validar(d, Map.of());
+    }
+
+    // r: los códigos que el paciente ya tenía, por dato. Un valor que se inactivó en su
+    // catálogo se conserva mientras no se cambie ese dato (RC-4, escenario 10 de HU-006).
+    private Map<Campo, String> validar(DatosPaciente d, Map<Campo, Set<String>> r) {
         Map<Campo, String> errores = new LinkedHashMap<>();
-        varios(errores, Campo.NACIONALIDAD, d.getNacionalidades(), paises);
-        catalogo(errores, Campo.TIPO_DOCUMENTO, d.getTipoDocumento(), tiposDocumento, true);
+        varios(errores, r, Campo.NACIONALIDAD, d.getNacionalidades(), paises);
+        catalogo(errores, r, Campo.TIPO_DOCUMENTO, d.getTipoDocumento(), tiposDocumento, true);
         if (vacio(d.getNumeroDocumento())) {
             errores.put(Campo.NUMERO_DOCUMENTO, "falta");
         } else if (!d.getNumeroDocumento().trim().matches(DOCUMENTO)) {
@@ -106,27 +113,27 @@ public class PacienteServicio implements ContratoPacientes {
         }
         lista(errores, Campo.SEXO_BIOLOGICO, d.getSexoBiologico(), SexoBiologico.class, 5);
         lista(errores, Campo.IDENTIDAD_GENERO, d.getIdentidadGenero(), IdentidadGenero.class, 6);
-        ocupacion(errores, d.getOcupacion());
-        varios(errores, Campo.DISCAPACIDAD, d.getDiscapacidades(), discapacidades);
+        ocupacion(errores, r, d.getOcupacion());
+        varios(errores, r, Campo.DISCAPACIDAD, d.getDiscapacidades(), discapacidades);
         if (!errores.containsKey(Campo.DISCAPACIDAD) && d.getDiscapacidades().size() > 1
                 && limpios(d.getDiscapacidades()).contains(SIN_DISCAPACIDAD)) {
             errores.put(Campo.DISCAPACIDAD, "\"Sin discapacidad\" no va con otra categoría");
         }
-        catalogo(errores, Campo.PAIS_RESIDENCIA, d.getPaisResidencia(), paises, true);
+        catalogo(errores, r, Campo.PAIS_RESIDENCIA, d.getPaisResidencia(), paises, true);
         boolean enColombia = COLOMBIA.equals(limpio(d.getPaisResidencia()));
         if (enColombia) {
-            catalogo(errores, Campo.MUNICIPIO_RESIDENCIA, d.getMunicipioResidencia(), municipios,
-                    true);
+            catalogo(errores, r, Campo.MUNICIPIO_RESIDENCIA, d.getMunicipioResidencia(),
+                    municipios, true);
         } else if (!vacio(d.getMunicipioResidencia())
                 && !errores.containsKey(Campo.PAIS_RESIDENCIA)) {
             // Con un país que no sirve, el dato que hay que corregir es el país.
             errores.put(Campo.MUNICIPIO_RESIDENCIA, "solo se registra si reside en Colombia");
         }
-        catalogo(errores, Campo.ETNIA, d.getEtnia(), etnias, true);
-        comunidad(errores, d);
+        catalogo(errores, r, Campo.ETNIA, d.getEtnia(), etnias, true);
+        comunidad(errores, r, d);
         lista(errores, Campo.ZONA_TERRITORIAL, d.getZonaTerritorial(), ZonaTerritorial.class, 14);
-        catalogo(errores, Campo.ENTIDAD_PLAN_BENEFICIOS, d.getEntidadPlanBeneficios(), entidades,
-                true);
+        catalogo(errores, r, Campo.ENTIDAD_PLAN_BENEFICIOS, d.getEntidadPlanBeneficios(),
+                entidades, true);
         return errores;
     }
 
@@ -144,9 +151,19 @@ public class PacienteServicio implements ContratoPacientes {
                     + tipo + " " + numero);
         }
         Paciente p = new Paciente();
+        copiar(d, p);
+        p.setRegistradoPor(sesion.actual().map(Usuario::getId).orElse(null));
+        p.setRegistradoEn(registro.ahora());
+        return pacientes.save(p);
+    }
+
+    // Pasa los datos validados al paciente. Las listas se vacían antes, para que un valor retirado
+    // salga (escenario 5 de HU-006).
+    private static void copiar(DatosPaciente d, Paciente p) {
+        p.getNacionalidades().clear();
         p.getNacionalidades().addAll(limpios(d.getNacionalidades()));
-        p.setTipoDocumento(tipo);
-        p.setNumeroDocumento(numero);
+        p.setTipoDocumento(limpio(d.getTipoDocumento()));
+        p.setNumeroDocumento(d.getNumeroDocumento().trim());
         p.setPrimerApellido(d.getPrimerApellido().trim());
         p.setSegundoApellido(opcional(d.getSegundoApellido()));
         p.setPrimerNombre(d.getPrimerNombre().trim());
@@ -156,6 +173,7 @@ public class PacienteServicio implements ContratoPacientes {
         p.setSexoBiologico(limpio(d.getSexoBiologico()));
         p.setIdentidadGenero(limpio(d.getIdentidadGenero()));
         p.setOcupacion(opcional(d.getOcupacion()));
+        p.getDiscapacidades().clear();
         p.getDiscapacidades().addAll(limpios(d.getDiscapacidades()));
         p.setPaisResidencia(limpio(d.getPaisResidencia()));
         p.setMunicipioResidencia(opcional(d.getMunicipioResidencia()));
@@ -163,8 +181,28 @@ public class PacienteServicio implements ContratoPacientes {
         p.setComunidadEtnica(opcional(d.getComunidadEtnica()));
         p.setZonaTerritorial(limpio(d.getZonaTerritorial()));
         p.setEntidadPlanBeneficios(limpio(d.getEntidadPlanBeneficios()));
-        p.setRegistradoPor(sesion.actual().map(Usuario::getId).orElse(null));
-        p.setRegistradoEn(registro.ahora());
+    }
+
+    @Override
+    @Transactional
+    public Paciente actualizar(Paciente p, DatosPaciente d) {
+        Map<Campo, Set<String>> registrados = new EnumMap<>(Campo.class);
+        registrados.put(Campo.NACIONALIDAD, Set.copyOf(p.getNacionalidades()));
+        registrados.put(Campo.DISCAPACIDAD, Set.copyOf(p.getDiscapacidades()));
+        DatosPaciente.de(p).valores().forEach((campo, valor) ->
+                registrados.putIfAbsent(campo, Set.of(valor)));
+        Map<Campo, String> errores = validar(d, registrados);
+        if (!errores.isEmpty()) {
+            throw new RegistroInvalido(errores);
+        }
+        String tipo = limpio(d.getTipoDocumento());
+        String numero = d.getNumeroDocumento().trim();
+        Optional<Paciente> otro = buscar(tipo, numero);
+        if (otro.isPresent() && !otro.get().getId().equals(p.getId())) {
+            throw new IllegalStateException("ese documento ya está registrado: hay otro paciente"
+                    + " con " + tipo + " " + numero);
+        }
+        copiar(d, p);
         return pacientes.save(p);
     }
 
@@ -192,8 +230,9 @@ public class PacienteServicio implements ContratoPacientes {
 
     // Un dato de catálogo: que esté, si se pide, y que sea un valor activo (RC-2). Con el catálogo
     // vacío no se puede elegir nada, y el motivo dice qué falta cargar (escenario 14).
-    private void catalogo(Map<Campo, String> errores, Campo campo, String codigo,
-            CrudCatalogo<? extends Catalogo> crud, boolean obligatorio) {
+    private void catalogo(Map<Campo, String> errores, Map<Campo, Set<String>> registrados,
+            Campo campo, String codigo, CrudCatalogo<? extends Catalogo> crud,
+            boolean obligatorio) {
         if (vacio(codigo)) {
             if (obligatorio) {
                 errores.put(campo, crud.listarActivos().isEmpty()
@@ -201,21 +240,22 @@ public class PacienteServicio implements ContratoPacientes {
             }
             return;
         }
-        if (!activo(crud, limpio(codigo))) {
+        if (!activo(crud, limpio(codigo)) && !registrado(registrados, campo, limpio(codigo))) {
             errores.put(campo, "\"" + codigo.trim() + "\" no es un valor activo del catálogo de "
                     + crud.nombreEnPlural());
         }
     }
 
     // Uno o varios valores del mismo catálogo: hace falta al menos uno, y todos activos.
-    private void varios(Map<Campo, String> errores, Campo campo, List<String> codigos,
-            CrudCatalogo<? extends Catalogo> crud) {
+    private void varios(Map<Campo, String> errores, Map<Campo, Set<String>> registrados,
+            Campo campo, List<String> codigos, CrudCatalogo<? extends Catalogo> crud) {
         Set<String> elegidos = limpios(codigos);
         if (elegidos.isEmpty()) {
-            catalogo(errores, campo, "", crud, true);
+            catalogo(errores, registrados, campo, "", crud, true);
             return;
         }
-        List<String> malos = elegidos.stream().filter(c -> !activo(crud, c)).toList();
+        List<String> malos = elegidos.stream()
+                .filter(c -> !activo(crud, c) && !registrado(registrados, campo, c)).toList();
         if (!malos.isEmpty()) {
             errores.put(campo, String.join(", ", malos) + (malos.size() == 1 ? " no es un valor"
                     + " activo" : " no son valores activos") + " del catálogo de "
@@ -224,8 +264,9 @@ public class PacienteServicio implements ContratoPacientes {
     }
 
     // Numeral 7: la ocupación es opcional, pero si se da, tiene que ser una hija activa [2.1].
-    private void ocupacion(Map<Campo, String> errores, String codigo) {
-        catalogo(errores, Campo.OCUPACION, codigo, ocupaciones, false);
+    private void ocupacion(Map<Campo, String> errores, Map<Campo, Set<String>> registrados,
+            String codigo) {
+        catalogo(errores, registrados, Campo.OCUPACION, codigo, ocupaciones, false);
         if (!errores.containsKey(Campo.OCUPACION) && !vacio(codigo)
                 && limpio(codigo).length() != Ocupacion.LARGO_HIJA) {
             errores.put(Campo.OCUPACION, "agrupa otras ocupaciones; elija una del nivel más"
@@ -235,7 +276,8 @@ public class PacienteServicio implements ContratoPacientes {
 
     // Numeral 13: la comunidad se pide solo con una etnia de la 01 a la 06 y si su catálogo tiene
     // valores; mientras esté vacío, el registro sigue sin ella (D-19).
-    private void comunidad(Map<Campo, String> errores, DatosPaciente d) {
+    private void comunidad(Map<Campo, String> errores, Map<Campo, Set<String>> registrados,
+            DatosPaciente d) {
         boolean conComunidad = ETNIAS_CON_COMUNIDAD.contains(limpio(d.getEtnia()));
         if (!conComunidad) {
             if (!vacio(d.getComunidadEtnica())) {
@@ -244,7 +286,7 @@ public class PacienteServicio implements ContratoPacientes {
             }
             return;
         }
-        catalogo(errores, Campo.COMUNIDAD_ETNICA, d.getComunidadEtnica(), comunidades,
+        catalogo(errores, registrados, Campo.COMUNIDAD_ETNICA, d.getComunidadEtnica(), comunidades,
                 !comunidades.listarActivos().isEmpty());
     }
 
@@ -301,6 +343,11 @@ public class PacienteServicio implements ContratoPacientes {
         if (crud.listarActivos().isEmpty()) {
             faltan.add("falta cargar el catálogo de " + crud.nombreEnPlural() + ": " + cuando);
         }
+    }
+
+    private static boolean registrado(Map<Campo, Set<String>> registrados, Campo campo,
+            String codigo) {
+        return registrados.getOrDefault(campo, Set.of()).contains(codigo);
     }
 
     private static boolean activo(CrudCatalogo<? extends Catalogo> crud, String codigo) {
