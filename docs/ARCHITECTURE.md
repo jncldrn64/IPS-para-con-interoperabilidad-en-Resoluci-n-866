@@ -258,14 +258,10 @@ si eso cierra un hueco de esta lista.
     | sh ./mvnw -q spring-boot:run \
     -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:mem:tildes | grep Ind
   ```
-- **2026-10-26: `mvnw.cmd` no se corrió.** El contenedor de la sesión es Linux, así que el
-  envoltorio solo se probó con `sh ./mvnw`. Comando, en Windows: `mvnw.cmd -v`, que tiene que
-  imprimir "Apache Maven 3.9.11".
-- **2026-10-31: la clave oculta no se probó en una terminal de verdad.** `Terminal.leerClave` usa
-  `System.console()`, que con Java 21 es nulo si la entrada no es una terminal, y entonces lee la
-  clave a la vista. Las corridas de la sesión fueron con `printf`, así que la rama de la consola no
-  se corrió. Comando, en una terminal: `sh ./mvnw -q spring-boot:run`, elegir 1 y escribir la clave,
-  que no tiene que verse.
+- **2026-10-26: `mvnw.cmd test` no se corrió.** El contenedor de la sesión es Linux. El
+  2026-11-02 el autor corrió `.\mvnw.cmd spring-boot:run` en su Windows, en PowerShell, y el
+  programa arrancó y pidió entrar, según su captura; los tests no se corrieron allí. Comando, en
+  Windows: `.\mvnw.cmd test`, que tiene que terminar con `BUILD SUCCESS`.
 - **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
   pacientes usan un valor, en el escenario 19 de HU-035 y de HU-036 y el 18 de HU-037: `contarUsos`
   devuelve 0. Desde el 2026-11-02 el paciente existe, pero ningún catálogo lo cuenta todavía. Desde

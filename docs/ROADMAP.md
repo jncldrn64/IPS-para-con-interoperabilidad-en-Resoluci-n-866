@@ -268,8 +268,20 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
 - Descargar los catálogos oficiales para la primera carga y cerrar el hueco de
   `docs/ARCHITECTURE.md`, sección 6. El que publica una entidad del Estado se copia citando la
   entidad y la dirección de descarga, y una lista del anexo, citando la norma (`CLAUDE.md`,
-  sección 10).
+  sección 10). Desde el 2026-11-02 falta solo el de comunidades étnicas, HU-037; la candidata es la
+  tabla LCEResguardos de SISPRO, que el autor pasa en otra ronda.
   **Entró:** 2026-10-22, PR de siembra.
+- Poner la base en MariaDB, en la máquina virtual del autor, y cargar ahí todos los catálogos que
+  se puedan. Antes, revisar qué del esquema y de `application.properties` funciona solo en H2.
+  Cada paso que el autor dé se anota en su memoria, sección 12.
+  **Entró:** 2026-11-03, PR de la lista de pendientes.
+- Revisar los espacios entre pantallas del menú. El autor lo pidió al ver el programa en Windows;
+  falta que diga en qué pantalla.
+  **Entró:** 2026-11-03, PR de la lista de pendientes.
+- Las llaves foráneas del paciente hacia sus catálogos, como dibuja el modelo E-R, y que cada
+  catálogo cuente cuántos pacientes usan un valor (hueco 2026-10-27 de `docs/ARCHITECTURE.md`).
+  El autor pidió "agrega todo lo que necesite el paciente".
+  **Entró:** 2026-11-03, PR de la lista de pendientes.
 - Las 18 historias que no entran en las 12, en el orden de la sección "Orden de las 30 historias":
   la oposición (HU-010 a HU-013), los catálogos de la atención con el CIE-10 (HU-030, HU-039 a
   HU-042 y HU-031), la atención (HU-007, HU-009, HU-008 y HU-043) y la voluntad anticipada (HU-014

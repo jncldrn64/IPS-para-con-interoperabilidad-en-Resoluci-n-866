@@ -2772,7 +2772,30 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000000000000000. **Próximo (2026-11-03, la consola y las relaciones):** que
+0000000000000000000000000000000000000000. **Próximo (2026-11-03, la lista de lo que falta):** que el
+   autor fusione el PR de esta lista. Después, el PR de las llaves foráneas del paciente. Lo que falta,
+   todo junto, con dónde vive cada cosa:
+   1. Llaves foráneas del paciente a sus catálogos y `contarUsos` en cada catálogo: Backlog de
+      `docs/ROADMAP.md` y hueco 2026-10-27 de `docs/ARCHITECTURE.md`. El autor dijo "agrega todo
+      lo que necesite el paciente".
+   2. HU-037 sin datos: la tabla LCEResguardos de SISPRO, 117 resguardos con código de 3 dígitos;
+      el autor la pasa en otra ronda. Backlog de `docs/ROADMAP.md`.
+   3. Excel por catálogo: Pais y CodigoEAPByNit entran como Excel; tipos de documento,
+      discapacidad y etnias salen de las hojas del anexo, sin Excel oficial; la CIUO-88 A.C. sale
+      de un PDF del DANE y la DIVIPOLA de un CSV del DANE. El CSV no pasa a obsoleto mientras sea
+      el único formato de cinco catálogos. Backlog de `docs/ROADMAP.md`.
+   4. Windows: probar `chcp 65001`, escribir con tildes y `.\mvnw.cmd test`. Huecos de
+      `docs/ARCHITECTURE.md`, sección 6.
+   5. Espacios entre pantallas: falta que el autor diga en cuál. Backlog.
+   6. MariaDB en la VM del autor: anotar aquí cada paso y cada cambio de configuración. Backlog.
+   7. Auditoría de Jorge: los niveles de la CIUO-88 A.C. que pidió el profesor y la CUOC de la
+      1888. Notas en `docs/TEMPORARY-CONTEXT.md`.
+   8. D-19, el registro sin documento (AS, MS, SI): hueco de `docs/ARCHITECTURE.md`.
+   9. Lo que el autor tiene en su equipo y el repo no: `PRE/comentarios-profesor-por-HU.md`,
+      `PRE/transcripciones/`, `POST/trello/respuestas-al-docente.md`,
+      `POST/preguntas-docente.md` y las revisiones de las tandas. El modelo E-R del repo es el
+      mismo que el suyo: los tres archivos pesan igual.
+000000000000000000000000000000000000000. **Anterior (2026-11-03, la consola y las relaciones):** que
    el autor fusione el PR que deshace el UTF-8 y pruebe `chcp 65001` en su VM. Pendiente de su
    respuesta: las llaves foráneas del paciente a los catálogos (ver la entrada de este día). Para
    la puesta en marcha en MariaDB, en la VM del autor: anotar aquí cada paso que dé y cada cambio
