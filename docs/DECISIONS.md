@@ -2664,3 +2664,58 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: Las llaves foráneas que faltaban
+
+**Contexto:** El autor abrió el archivo de la base en DBeaver y exportó su diagrama. Las 12 llaves
+del paciente estaban (2026-11-03 "El paciente apunta a sus catálogos con llaves foráneas"), pero
+el modelo E-R dibuja otras que la base no tenía: `version_id` de cada catálogo hacia
+`catalogo_version`, el departamento de un municipio y el `usuario_id` de `catalogo_cambio` y de
+`historial_cambio`. El autor escribió, textual:
+
+- "EL DIAGRAMA no hace falta, agrega las llaves que falten, y de lo que tenemos pendiente ejecuta
+  la tarea que cueste menos"
+
+**Decisión:** la base tiene 26 llaves foráneas. Las 14 nuevas siguen el método del paciente: un
+`@ManyToOne` de solo lectura sobre la columna que ya existe. La de `version_id` va en `Catalogo`, y
+con eso la tienen los ocho catálogos. Solo `historial_cambio.registro_id` queda sin llave, porque
+apunta a filas de tablas distintas, como dice el modelo E-R.
+
+Lo que decidió el modelo:
+
+- `catalogo_version.usuario_id` también lleva llave hacia `usuario`, aunque el modelo E-R no la
+  dibuja: guarda quién cargó el archivo, igual que las otras dos.
+- La llave del municipio mostró que la carga de HU-026 guardaba los municipios antes que sus
+  departamentos. `alConfirmar` corre ahora antes de los valores, y la base acepta la carga.
+- `BaseComunTest.cambiarElNombreNoReactivaNiBorraLaVersion` usaba una versión 7 que no existía;
+  ahora la crea.
+- `data/ips.mv.db` se abrió una vez para que Hibernate le agregara las 14 llaves, y la base
+  MariaDB de la demostración también las tiene.
+
+**Estado:** `vigente`
+
+## 2026-11-03: El CSV sigue al lado del Excel
+
+**Contexto:** Reemplaza en parte a 2026-11-02 "La carga lee también el Excel que exporta la
+fuente": el CSV ya no pasa a obsoleto. El autor había dicho que, cuando cada catálogo tuviera
+revisado su formato oficial, el CSV quedaría obsoleto. Ya están revisados los ocho:
+
+| Catálogo | Archivo oficial |
+|---|---|
+| Países, entidades del plan de beneficios | Excel de una tabla de SISPRO |
+| Tipos de documento, discapacidad, etnias | Una hoja del anexo, en el PDF de la resolución |
+| Ocupaciones | La estructura de la CIUO-88 A.C., en un PDF del DANE |
+| Municipios | El Excel de la DIVIPOLA del DANE, con más hojas que la que se carga |
+| Comunidades étnicas | Sin archivo; la candidata es LCEResguardos de SISPRO |
+
+**Decisión:** la carga sigue leyendo los dos formatos. Un catálogo con un Excel oficial que tiene
+`Codigo` y `Nombre` se carga tal como se descargó; los demás, con su CSV de `data/catalogos/`. El
+ítem del Backlog que revisaba el Excel de cada catálogo sale, y lo que decía de HU-037 pasa al ítem
+de los catálogos oficiales.
+
+Lo que decidió el modelo:
+
+- Es la tarea de menos costo de la lista de pendientes, porque no espera nada del autor ni del
+  equipo.
+
+**Estado:** `vigente`
+

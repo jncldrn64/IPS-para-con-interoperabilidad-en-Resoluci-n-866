@@ -3,10 +3,14 @@ package com.ipssaludyvida.comun.modelos;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,4 +47,11 @@ public abstract class Catalogo {
         this.codigo = codigo;
         this.nombre = nombre;
     }
+
+    // La llave foránea de versionId hacia la versión que trajo el código; solo lectura.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "versionId", insertable = false, updatable = false)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private CatalogoVersion version;
 }

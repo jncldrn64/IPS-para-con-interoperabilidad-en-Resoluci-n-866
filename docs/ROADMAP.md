@@ -269,7 +269,10 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   `docs/ARCHITECTURE.md`, sección 6. El que publica una entidad del Estado se copia citando la
   entidad y la dirección de descarga, y una lista del anexo, citando la norma (`CLAUDE.md`,
   sección 10). Desde el 2026-11-02 falta solo el de comunidades étnicas, HU-037; la candidata es la
-  tabla LCEResguardos de SISPRO, que el autor pasa en otra ronda.
+  tabla LCEResguardos de SISPRO, que el autor pasa en otra ronda: 117 resguardos por población
+  indígena con código de 3 dígitos, como 010 ACHAGUA. Las otras tablas que vio el 2026-11-02 no
+  sirven: PueblosIndigenas usa códigos de 1 a 3 cifras sin ceros, ResguardoNit el NIT, y
+  APSTerritorializacionIndigena es de atención primaria.
   **Entró:** 2026-10-22, PR de siembra.
 - Poner la base en MariaDB, en la máquina virtual del autor, y cargar ahí todos los catálogos que
   se puedan, como dice `docs/MARIADB-GUIDE.md`. En el contenedor de la sesión ya se hizo, con
@@ -288,21 +291,3 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   Code y a los colaboradores: un PR del `main` del fork al `main` de Atervolgo (`docs/DECISIONS.md`,
   2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo habilite").
   **Entró:** 2026-10-24, PR #3 del fork.
-- Revisar, catálogo por catálogo, el Excel oficial de su tabla de SISPRO y cargarlo tal como se
-  descarga, con el lector de Excel de la base común. Cuando todos estén definidos, el CSV pasa a
-  obsoleto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que exporta la fuente").
-  Lo visto el 2026-11-02 en el buscador de SISPRO:
-  - Municipio, para HU-026: 1.124 municipios con su código de 5 dígitos, y el código del
-    departamento sin su nombre, que trae la tabla Departamento. Las dos están bajadas y sin cargar:
-    HU-026 se cargó con la DIVIPOLA del DANE, que trae el departamento con su nombre.
-  - CodigoEAPByNit, para HU-038: cargada en la v0.29.
-  - CategoriaDiscapacidad: la misma lista de las hojas 14 y 15, sin bajar.
-  - PSRGPERTENETNICA no sirve para HU-036: es de RUAF, con códigos 1 a 6 y Z. Falta buscar "etnia".
-  - Para HU-037, vistas el 2026-11-02 en capturas del autor: LCEResguardos, 117 resguardos por
-    población indígena con código de 3 dígitos, como 010 ACHAGUA, la candidata; PueblosIndigenas,
-    226 con códigos de 1 a 3 cifras sin ceros; ResguardoNit, 13 con el NIT; y
-    APSTerritorializacionIndigena, 1.009, de atención primaria. Ninguna bajada.
-  - CoberturaPlanBeneficios no es el numeral 15: trae 15 tipos de cobertura, como SOAT o ARL, y
-    no la entidad que responde por el paciente.
-  - Comunidades étnicas y tipos de documento: sin una tabla clara.
-  **Entró:** 2026-11-02, PR que trae HU-018.

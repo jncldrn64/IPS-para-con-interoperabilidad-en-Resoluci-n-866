@@ -67,7 +67,7 @@ ventana, o con otro nombre.
 
 Con la base vacía, Hibernate crea las tablas (`spring.jpa.hibernate.ddl-auto=update`) y el
 programa crea los tres usuarios de prueba, con la clave `Clave123`. En la demostración quedaron 21
-tablas, contando las secuencias, y las 12 llaves foráneas del paciente. Los catálogos quedan
+tablas, contando las secuencias, y las 26 llaves foráneas del modelo E-R. Los catálogos quedan
 vacíos: se llenan como dicen las secciones 5 y 6.
 
 El programa también copia `data/ips.mv.db` a `data/prueba.mv.db` si falta, aunque abra MariaDB.
