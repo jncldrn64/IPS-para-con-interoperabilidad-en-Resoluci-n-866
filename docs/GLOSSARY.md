@@ -115,6 +115,9 @@ que citan su fuente.
 - **D-n**: una decisión de la hoja Decisiones del tablero del equipo. La copia del 2026-10-24 está
   en `docs/REQUIREMENTS.md`, sección 6. La mayoría son propuestas sin confirmar; no son entradas de
   `docs/DECISIONS.md`.
+- **EAPB** o **entidad del plan de beneficios**: la entidad que responde por el plan de beneficios
+  del paciente, numeral 15. Su código tiene 6 caracteres, letras mayúsculas o dígitos, como EPS037
+  (2026-11-02 "El autor termina los catálogos del integrante 2 y Jorge toma HU-004").
 - **equipo técnico**: quien deja creados los usuarios y sus cargos al instalar el sistema. No es un
   cargo ni entra al sistema. Que los cree al instalar es supuesto del equipo: la guía solo dice que
   esta fase no tiene registro de usuarios [2.4] (2026-10-27 "El glosario define los cargos").

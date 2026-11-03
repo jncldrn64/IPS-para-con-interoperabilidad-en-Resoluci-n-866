@@ -44,7 +44,7 @@ qué tramo de la fase 0 cae cada historia.
 | 3 | HU-026 Catálogo de municipios | 1 | ninguna | 25 | 1 |
 | 3 | HU-038 Catálogo de entidades que responden por el plan de beneficios | 2 | ninguna | 22 | 1 |
 | 3 | HU-035 Catálogo de categorías de discapacidad | 3 | ninguna | 23 | 1 |
-| 4 | HU-004 Registro de un paciente | 2 | los 8 catálogos | 15 | 2 |
+| 4 | HU-004 Registro de un paciente | 1 | los 8 catálogos | 15 | 2 |
 | 5 | HU-005 Consulta de un paciente | 1 | HU-001 y HU-004 | 13 | 3 |
 | 5 | HU-006 Actualización y corrección de los datos de un paciente | 3 | HU-001 y HU-004 | 13 | 3 |
 
@@ -76,6 +76,12 @@ Quien espera puede revisar los PR de los demás, porque la memoria ya pide que q
 quien analizó (`docs/context/MEMORIA-CONTEXTUAL.md`, sección 12). Cuánto dura cada espera depende
 de qué quiere decir "desarrollada" para el docente: terminada antes de empezar la siguiente, o antes
 de entregarla.
+
+El 2026-11-02 el reparto cambió, porque el integrante 2 no tiene nada en el repo: el autor hizo sus
+tres catálogos, HU-018, HU-034 y HU-038, y HU-004 pasó a Jorge, el integrante 1, que la hace antes
+de HU-005. Los 8 catálogos que pide HU-004, con su clase y su contrato, están en
+`docs/ARCHITECTURE.md`, sección 2 (`docs/DECISIONS.md`, 2026-11-02 "El autor termina los catálogos
+del integrante 2 y Jorge toma HU-004").
 
 **Las 18 que no entran en el semestre**, sin fecha ni integrante. El orden es una propuesta del
 modelo del 2026-10-24, que pone primero lo que solo depende de historias ya desarrolladas. Los
@@ -202,14 +208,16 @@ al paciente.
   (`docs/DECISIONS.md`, 2026-11-02 "HU-035 sigue el molde de HU-036"), y del integrante 3 queda
   HU-006, que espera HU-004. HU-018, del integrante 2, la hizo el autor y está completa desde la
   v0.27, con la tabla Pais de SISPRO en el archivo de la base (`docs/DECISIONS.md`, 2026-11-02
-  "HU-018 sale de la tabla Pais de SISPRO"). HU-001 está completa desde la v0.19
-  (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
+  "HU-018 sale de la tabla Pais de SISPRO"). HU-034 y HU-038, también del integrante 2, las hizo
+  el autor y están completas desde la v0.28: HU-034 con los 14 tipos de documento de la hoja 13 en
+  el archivo de la base, y HU-038 sin datos, porque su archivo oficial no se ha bajado. HU-001
+  está completa desde la v0.19 (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
   quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la v0.20, con la CIUO-88 A.C.
   en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo
   revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo de la base"). HU-026 está
   completa desde la v0.21, salvo la carga del archivo oficial, que espera su descarga
   (`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla"). Del integrante 1
-  queda HU-005, que espera HU-004.
+  quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
   - Integrante 1: HU-001 inicio de sesión con permisos por cargo (14 escenarios), HU-022
@@ -221,8 +229,8 @@ al paciente.
     archivo se cambia por turnos (`docs/DESIGN.md`, sección 8).
   - HU-036 va primero: es el catálogo de ejemplo, con el primer CSV y la primera carga en el
     archivo de la base (`docs/DECISIONS.md`, 2026-10-25 "HU-036 es el catálogo de ejemplo").
-- Tramo 2, paso 4, el registro del paciente con sus 16 atributos: el integrante 2 con HU-004 (15
-  escenarios, 8 dependencias directas).
+- Tramo 2, paso 4, el registro del paciente con sus 16 atributos: el integrante 1 con HU-004 (15
+  escenarios, 8 dependencias directas), desde el 2026-11-02.
 - Tramo 3, paso 5, consultar y corregir al paciente, con quien hizo cada cambio: el integrante 1
   con HU-005 (13) y el 3 con HU-006 (13), a la vez. Las dos dependen de HU-001 y HU-004.
 

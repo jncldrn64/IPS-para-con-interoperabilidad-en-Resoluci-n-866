@@ -5,6 +5,31 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.28 — 2026-11-02
+
+HU-034, tipos de documento, y HU-038, entidades del plan de beneficios, quedan completas, y HU-004
+pasa a Jorge con la tabla de sus 8 catálogos. El programa no muestra una versión.
+
+### Added
+- `hu034/`: `TipoDocumento`, su contrato con la lista de la hoja 13, su repositorio, su servicio y
+  su controlador. El menú la muestra en la opción 4.
+- `hu038/`: `EntidadPlanBeneficios`, con código de 6 letras mayúsculas o dígitos, su contrato, su
+  repositorio, su servicio y su controlador. El menú la muestra en la opción 8.
+- `HU034TiposDocumentoTest`, con 44 tests, y `HU038EntidadesPlanBeneficiosTest`, con 39: 402 tests
+  en total.
+- `data/catalogos/tipos-documento-hoja-13.csv`, con los 14 tipos de documento de la hoja 13.
+- `data/ips.mv.db`: los 14 tipos de documento, activos, con su versión y sus 14 filas de cambios.
+- `docs/ARCHITECTURE.md`, sección 2: la tabla de los 8 catálogos que pide HU-004, con su numeral,
+  su clase, su tabla y su contrato.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "El autor termina los catálogos del integrante 2 y
+  Jorge toma HU-004".
+- `docs/GLOSSARY.md`: EAPB.
+
+### Changed
+- `docs/ROADMAP.md`: HU-004 pasa al integrante 1, y el avance dice que HU-034 y HU-038 están
+  completas.
+- `BaseComunTest` revisa que los repositorios de HU-034 y HU-038 no puedan borrar.
+
 ## v0.27 — 2026-11-02
 
 HU-018, el catálogo de países, queda completa con la tabla Pais de SISPRO, y la base común carga
