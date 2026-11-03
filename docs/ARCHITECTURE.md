@@ -61,6 +61,7 @@ las 7 claves de la configuración.
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
 | `hu004/` | Pacientes: `ContratoPacientes`, `Paciente`, sus tres listas fijas y lo demás |
+| `hu005/` | Consulta: `ContratoConsultaPacientes`, `Ficha`, `ValorRegistrado` y lo demás |
 | `hu018/` | Países: `ContratoPaises`, `Pais`, su repositorio, su servicio y `PaisControlador` |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
@@ -107,10 +108,11 @@ una carga, en la base de prueba.
 
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de
 salir. Con sesión, lista por su número las historias que el cargo ve. El 2026-11-02, una corrida
-que entró como `admision` vio de la 1 a la 9: Registro de un paciente (HU-004), Países (HU-018),
-Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento (HU-034), Categorías de
-discapacidad (HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y Entidades del plan de
-beneficios (HU-038). Quien no es auxiliar de admisión no ve la primera.
+que entró como `admision` vio de la 1 a la 10: Registro de un paciente (HU-004), Consulta de un
+paciente (HU-005), Países (HU-018), Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento
+(HU-034), Categorías de discapacidad (HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y
+Entidades del plan de beneficios (HU-038). El médico tratante vio la consulta y no el registro, y
+el profesional de estadística no vio ninguno de los dos.
 
 Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la
 opción siguiente pide entrar de nuevo.
@@ -121,6 +123,12 @@ uno más largo se busca: el código exacto se elige de una vez, y una parte del 
 lista de coincidencias, cada ciudad con su departamento. Si algo está mal, dice cada dato con su
 motivo y vuelve a pedir solo esos. El paciente guarda los códigos de los catálogos, quién lo
 registró y la hora de Colombia (`PacienteServicio.registrar`).
+
+La consulta de un paciente pide el tipo, de la lista o por su código, y el número, y muestra cada
+dato en su línea, con "Sin dato" en un opcional vacío. Cada valor de catálogo sale con el nombre que
+tenía el día del registro: `ConsultaPacienteServicio.valor` lo saca del último cambio de creación
+o de nombre anotado hasta `registradoEn`. Si el nombre cambió después, sale también el vigente, y
+un valor inactivo hoy lleva la marca "[inactivo en el catálogo]".
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -206,7 +214,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 11884 líneas en 101 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 12656 líneas en 107 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -256,9 +264,10 @@ si eso cierra un hueco de esta lista.
   pacientes usan un valor, en el escenario 19 de HU-035 y de HU-036 y el 18 de HU-037: `contarUsos`
   devuelve 0. Desde el 2026-11-02 el paciente existe, pero ningún catálogo lo cuenta todavía. Desde
   el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además cuenta atenciones:
-  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Y lo que RC-11 pide
-  de un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037, que no tiene código
-  porque todavía no hay registros. Comando: `grep -n -A2 'public long contarUsos'
+  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Lo que RC-11 pide de
+  un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037, lo cumple desde el
+  2026-11-02 la consulta de HU-005, con `HU005ConsultaPacienteTest.esc13_nombreQueCambio`, sin un
+  test en cada catálogo. Comando: `grep -n -A2 'public long contarUsos'
   src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
 - **2026-11-02: el registro de un paciente sin documento sigue la regla general.** Con los tipos
   AS, MS y SI de la hoja 13 la tarjeta de HU-004 dice que pueden faltar el número, los nombres, la
