@@ -2,8 +2,8 @@ package com.ipssaludyvida.hu004.modelos;
 
 /**
  * Identidad de género, numeral 6: Alfanumérico, formato 99, longitud 2. Resolución 866 de 2021,
- * anexo técnico; se copia citando la norma (CLAUDE.md, sección 10). Los valores se leyeron el
- * 2026-11-02 en el texto del anexo que publica Supersalud en su normograma.
+ * anexo técnico, hoja 14; se copia citando la norma (CLAUDE.md, sección 10). Los valores se
+ * comprobaron el 2026-11-02 contra la hoja 14 del PDF de la resolución.
  */
 public enum IdentidadGenero implements ListaFija {
 

@@ -2306,11 +2306,10 @@ Jorge adjuntó la tarjeta, pidió revisar el repo y después escribió:
 
 - "si inicia con HU-004"
 
-El repo no traía los valores ni las longitudes de los numerales 2 a 6 y 14. Se leyeron el
-2026-11-02 en el texto del anexo que publica Supersalud en su normograma,
-https://normograma.supersalud.gov.co/compilacion/docs/resolucion_minsaludps_0866_2021.htm, porque
-en el PDF del Ministerio las celdas salen revueltas al leerlas. Lo poco que el PDF dejó leer, como
-la mujer y el femenino con el código 02, coincide con el normograma.
+El repo no traía los valores ni las longitudes de los numerales 2 a 6 y 14. Se leyeron primero en
+el texto del anexo que publica Supersalud en su normograma, porque el texto del PDF del Ministerio
+sale revuelto. Después Jorge adjuntó el PDF de la resolución, y sus hojas 13 a 15, miradas como
+imagen, dicen lo mismo, con la tilde de "Transgénero".
 
 **Decisión:** El paciente guarda el código de cada dato de catálogo, como pide el modelo E-R para
 RC-11, y sus nacionalidades y discapacidades van en `paciente_nacionalidad` y

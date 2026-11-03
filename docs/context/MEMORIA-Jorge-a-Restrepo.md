@@ -77,6 +77,9 @@
 - "si inicia con HU-004"
 - Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y
   junta todos los errores".
+- "como se llama el anexo que necesitamos"
+- Jorge adjuntó `resolucion-866-de-2021.pdf`. Sus hojas 13 a 15, miradas como imagen, confirman los
+  valores y las longitudes de los numerales 2 a 6 y 14 que usa HU-004.
 
 ## 3. Pendiente
 
