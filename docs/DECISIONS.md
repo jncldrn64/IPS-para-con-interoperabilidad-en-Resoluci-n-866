@@ -2351,3 +2351,39 @@ Lo que decidió el modelo:
   paciente guarda ese código como texto, igual que el municipio guarda su departamento.
 
 **Estado:** `vigente`
+
+## 2026-11-02: HU-005 saca el nombre del día de la tabla de cambios
+
+**Contexto:** HU-005 es la última de las 12 que le tocan a Jorge, el integrante 1, y depende de
+HU-001 y HU-004, ya en `main`. Su escenario 13 pide el nombre con que se registró cada valor y,
+si cambió después, el vigente (RC-11). HU-004 guarda solo los códigos (2026-11-02 "HU-004 guarda
+los códigos y junta todos los errores"). Jorge adjuntó la tarjeta, fusionó el PR #37 y escribió:
+
+- "ahora podemos seguir con la otra historia o que ?"
+- "listo"
+
+**Decisión:** `ConsultaPacienteServicio.valor` busca en la tabla de cambios del catálogo el último
+cambio de creación o de nombre anotado hasta la hora del registro, y toma su nombre nuevo. Si el
+nombre de hoy es otro, lo da como vigente, y si el valor está inactivo hoy, lo marca. La pantalla
+es la misma para el auxiliar de admisión y el médico tratante, y no ofrece cambiar nada.
+
+Lo que decidió el modelo:
+
+- Un valor sin cambios anotados hasta ese día, como un departamento o un valor creado en la base a
+  mano, toma el nombre vigente.
+- El tipo de documento se elige de la lista, por su número o su código. Sin el tipo, o sin el
+  número, no se busca y se dice cuál falta (escenario 3).
+- Cada dato va en su línea, con "Sin dato" en un opcional vacío. La ciudad dice "No aplica: reside
+  fuera de Colombia" si el país no es Colombia, y la comunidad étnica, "No aplica" con la etnia 99.
+- La ciudad lleva el nombre vigente de su departamento, que no tiene historial.
+- La ficha termina con la fecha y la hora del registro, sin el nombre de quien lo hizo.
+- La pantalla no tiene la opción de actualizar: llega con HU-006, que es del integrante 3.
+
+**Alternativas:**
+
+- Guardar en el paciente el nombre de cada valor al registrarlo. El modelo E-R lo descarta, y HU-004
+  ya guarda solo el código.
+- Buscar el nombre por la fecha del registro, sin la hora. Un cambio de nombre hecho el mismo día,
+  después del registro, saldría como el nombre del registro.
+
+**Estado:** `vigente`

@@ -5,6 +5,26 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.31 — 2026-11-02
+
+HU-005 queda completa: el auxiliar de admisión y el médico tratante consultan un paciente por su
+documento, con el nombre de cada valor. El programa no muestra una versión.
+
+### Added
+- `hu005/`: `ContratoConsultaPacientes`, `ConsultaPacienteServicio`, `ConsultaPacienteControlador`,
+  `Ficha` y `ValorRegistrado`, un valor de catálogo con el nombre del día del registro.
+- La pantalla "Consulta de un paciente (HU-005)", que ven el auxiliar y el médico: muestra cada
+  dato, "Sin dato" en un opcional vacío y la marca de un valor inactivo.
+- El nombre del día del registro sale de la tabla de cambios del catálogo, y si cambió después,
+  la consulta muestra también el vigente (RC-11).
+- `HU005ConsultaPacienteTest`, con 18 tests de los 13 escenarios: 451 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "HU-005 saca el nombre del día de la tabla de
+  cambios".
+
+### Changed
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la memoria de Jorge describen
+  HU-005.
+
 ## v0.30 — 2026-11-02
 
 HU-004 queda completa: el auxiliar de admisión registra un paciente con los 16 atributos y los 8

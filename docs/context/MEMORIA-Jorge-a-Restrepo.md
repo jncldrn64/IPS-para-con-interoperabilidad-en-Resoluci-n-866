@@ -81,13 +81,22 @@
 - Jorge adjuntó `resolucion-866-de-2021.pdf`. Sus hojas 13 a 15, miradas como imagen, confirman los
   valores y las longitudes de los numerales 2 a 6 y 14 que usa HU-004.
 
+## 2026-11-02: HU-005
+
+- "ahora podemos seguir con la otra historia o que ?"
+- El modelo le pidió fusionar antes el PR #37, por la regla del profesor y la de `CLAUDE.md`,
+  sección 7. Jorge lo fusionó desde la web, con "Crear una confirmación de fusión": "listo".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-005 saca el nombre del día
+  de la tabla de cambios".
+
 ## 3. Pendiente
 
-- Que Jorge revise el PR de HU-004, con "Lo que decidió el modelo", y lo fusione: en la página del
-  PR, "Ready for review" y después "Merge pull request".
-- Después: HU-005, consulta de un paciente, con la rama saliendo de `main` ya fusionado.
-- Cargar la DIVIPOLA y la tabla de entidades de SISPRO: sin ellas, el archivo de la base no deja
-  registrar a nadie. Si Jorge las adjunta, el modelo las pasa a CSV.
+- Que Jorge revise el PR de HU-005, con "Lo que decidió el modelo", y lo fusione: en la página del
+  PR, "Listo para revisión" y después "Combinar solicitud de extracción", con "Crear una
+  confirmación de fusión".
+- Con HU-005, Jorge termina sus historias de las 12. Puede ayudar a revisar los PR de los demás.
+- Cargar la DIVIPOLA: sin ella, el archivo de la base no deja registrar a nadie que viva en
+  Colombia. Si Jorge la adjunta, el modelo la pasa a CSV.
 - Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común.
 - Preguntar al profesor si acepta que el programa siga en terminal, qué se exige con los tipos de
   documento AS, MS y SI (D-19) y si le basta la CIUO-88 A.C. completa.
