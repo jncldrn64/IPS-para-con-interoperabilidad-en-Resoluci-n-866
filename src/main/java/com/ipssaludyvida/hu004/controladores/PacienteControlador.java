@@ -1,6 +1,7 @@
 package com.ipssaludyvida.hu004.controladores;
 
 import com.ipssaludyvida.comun.interfaces.Controlador;
+import com.ipssaludyvida.comun.menu.MenuPrincipal;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.hu001.controladores.SesionControlador;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
@@ -18,6 +19,7 @@ import com.ipssaludyvida.hu035.interfaces.ContratoCategoriasDiscapacidad;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.ipssaludyvida.hu038.interfaces.ContratoEntidadesPlanBeneficios;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -85,10 +87,18 @@ public class PacienteControlador implements Controlador {
                 escribir(SesionControlador.VENCIDA);
                 return;
             }
-            if (opcion.equals("1")) {
-                registrar();
-            } else {
-                escribir("Opción no válida");
+            try {
+                if (opcion.equals("1")) {
+                    registrar();
+                } else {
+                    escribir("Opción no válida");
+                }
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                // El respaldo de docs/DESIGN.md, sección 4: el error da un mensaje y la pantalla
+                // sigue.
+                escribir(MenuPrincipal.inesperado(e));
             }
         }
     }

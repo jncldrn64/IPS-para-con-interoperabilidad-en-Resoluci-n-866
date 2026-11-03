@@ -1,6 +1,7 @@
 package com.ipssaludyvida.hu006.controladores;
 
 import com.ipssaludyvida.comun.interfaces.Controlador;
+import com.ipssaludyvida.comun.menu.MenuPrincipal;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.comun.modelos.HistorialCambio;
 import com.ipssaludyvida.hu001.controladores.SesionControlador;
@@ -25,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 
@@ -103,6 +105,12 @@ public class CambiosPacienteControlador implements Controlador {
             } catch (IllegalArgumentException e) {
                 // Escenario 12: sin paciente con ese documento no se cambia nada.
                 escribir("No se pudo: " + e.getMessage() + ".");
+            } catch (NoSuchElementException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                // El respaldo de docs/DESIGN.md, sección 4: el error da un mensaje y la pantalla
+                // sigue.
+                escribir(MenuPrincipal.inesperado(e));
             }
         }
     }

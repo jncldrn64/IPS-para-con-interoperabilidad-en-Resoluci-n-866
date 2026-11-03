@@ -2568,6 +2568,31 @@ un mensaje, y el menú sigue" de `docs/DECISIONS.md`:
 
 **Estado:** `vigente`
 
+## 2026-11-03: Windows, las tildes y los PR de Jorge
+
+El autor corrió el programa en Windows y mandó una captura con "Inicio de sesi?n". Escribió,
+textual:
+
+- "1 el hu 37 ya te lo paso en otra ronda, 2. si revisa lo de jorge,, de hecho a sus ultimos pr,
+  corrobora tambien el tema de los nuevos manejos de errores extras, y 3. captura, tendremmos que
+  revisar espacion cada vez que estamos cambiando de opcion y las tildes, una vez tengamos todo,
+  correr esto pero lo conectare a mariadb y tratare de subir todos los catalogos que tengamos y
+  se puedan,"
+
+Lo que hizo el modelo, con el detalle en la entrada 2026-11-03 "Las tildes salen por Maven en
+UTF-8" de `docs/DECISIONS.md`:
+
+- El "?" lo pone el programa cuando corre bajo Maven; el `pom.xml` le pasa UTF-8. No verificado
+  en Windows.
+- Los PR #37, #39, #40 y #41 de Jorge: sus 41 escenarios tienen test, sus mensajes están en
+  español, y la DIVIPOLA quedó con 1.122 municipios y 33 departamentos. Sus tres pantallas no
+  atrapaban el error que no esperaban; ahora sí.
+- El recorrido al azar, con los catálogos cargados, registró y consultó pacientes sin caídas.
+- Los espacios entre pantallas quedan para cuando el autor diga qué vio. La captura no muestra
+  dónde faltan.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2717,7 +2742,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000000000000. **Próximo (2026-11-02, revisión y teclado al azar):** que el
+00000000000000000000000000000000000000. **Próximo (2026-11-03, tildes y pantallas de pacientes):** que
+   el autor fusione el PR y pruebe en Windows las tildes de la salida y el comando del hueco de lo
+   que se escribe. Después: qué espacios entre pantallas quiere el autor, LCEResguardos para
+   HU-037, los niveles de la CIUO-88 A.C. y la CUOC, y MariaDB.
+0000000000000000000000000000000000000. **Anterior (2026-11-02, revisión y teclado al azar):** que el
    autor fusione el PR de la revisión y cuente cómo le fue al correr el programa en su máquina.
    Las 12 historias del semestre están en `main`: Jorge hizo HU-004, HU-005, HU-006 y la carga de
    la DIVIPOLA. Queda LCEResguardos para HU-037 y la auditoría de Jorge.
