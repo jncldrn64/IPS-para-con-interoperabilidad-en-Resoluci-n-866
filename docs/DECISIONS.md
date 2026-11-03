@@ -2466,3 +2466,45 @@ Lo que decidió el modelo:
   municipio que elegir.
 
 **Estado:** `vigente`
+
+## 2026-11-02: Un valor equivocado da un mensaje, y el menú sigue
+
+**Contexto:** El autor pidió revisar las historias hechas antes de seguir. Escribió, textual:
+
+- "entonces antes de continuar, quiero que hagas un recorridio por todas nuestras historias de
+  usuario actuales,, si todos los ecenarios estan con sus debidas pruebas, si cada catalogo sube
+  manulamente y todo eso; a poder ser tratar de implementar test de us HU a otro, no por que sea
+  secesario, si no por que no me quiero encontra luego con que cuando ponga un valor que no es, el
+  programa falle, como minimo debe hacer chat error."
+
+La revisión dio esto: los 202 escenarios de las 9 historias tienen su test; todos los catálogos se
+crean por el menú, y todos menos HU-037 y HU-038 tenían una carga por el menú que llega a guardar.
+El menú de un catálogo atrapaba cuatro tipos de error; cualquier otro cerraba el programa, y el
+menú principal no atrapaba nada.
+
+**Decisión:** el menú de cada catálogo y el menú principal atrapan, después de los errores que
+esperan, cualquier otro, y lo muestran con `MenuPrincipal.inesperado`. Un test recorre el programa
+entero con un teclado al azar, por cargo, y pide que no se caiga y que nada llegue a ese respaldo.
+HU-037 y HU-038 suman su carga por el menú.
+
+Lo que decidió el modelo:
+
+- El teclado al azar tiene tres semillas fijas por cargo y 1.500 respuestas, para que una falla se
+  repita igual; tarda unos 20 segundos.
+- El respaldo deja pasar `NoSuchElementException`, el corte de `Terminal`; sin eso, un test sin
+  entrada no termina.
+- Los dos mensajes que el recorrido mostró en inglés pasan a español: una ruta con un carácter que
+  el sistema no acepta, con `leerRuta`, y una carpeta en lugar de un archivo.
+- La opción 8 dice "Cargar desde un archivo, CSV o Excel", porque la carga lee Excel desde la
+  v0.27.
+
+**Alternativas:**
+
+- Un test por opción y por historia con entradas escritas a mano. Cubre menos casos, y cada
+  historia nueva tendría que escribir los suyos; el recorrido al azar toma los controladores que
+  haya.
+- Atrapar todo solo en el menú principal. Un error en una opción sacaría a la persona del catálogo
+  en que estaba.
+
+**Estado:** `vigente`
+

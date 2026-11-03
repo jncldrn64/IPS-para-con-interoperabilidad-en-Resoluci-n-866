@@ -7,7 +7,6 @@ import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu022.interfaces.ContratoOcupaciones;
 import com.ipssaludyvida.hu022.modelos.Ocupacion;
 import com.ipssaludyvida.hu022.servicios.Nodo;
-import java.nio.file.Path;
 import java.util.Map;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +28,7 @@ public class OcupacionControlador extends ControladorCatalogo<Ocupacion> {
 
     @Override
     protected Comprobacion comprobar() {
-        return ocupaciones.comprobarContraElArchivo(Path.of(leer("Ruta del archivo oficial: ")));
+        return ocupaciones.comprobarContraElArchivo(leerRuta("Ruta del archivo oficial: "));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.ipssaludyvida.comun.controladores;
 
 import com.ipssaludyvida.comun.interfaces.Controlador;
 import com.ipssaludyvida.comun.interfaces.CrudCatalogo;
+import com.ipssaludyvida.comun.menu.MenuPrincipal;
 import com.ipssaludyvida.comun.menu.Terminal;
 import com.ipssaludyvida.comun.modelos.Catalogo;
 import com.ipssaludyvida.comun.modelos.CatalogoCambio;
@@ -18,12 +19,14 @@ import com.ipssaludyvida.hu001.modelos.Permiso;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.function.BiFunction;
 
@@ -125,7 +128,7 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
             }
             escribir("7. Historial de un código");
             if (mantiene) {
-                escribir("8. Cargar desde un CSV");
+                escribir("8. Cargar desde un archivo, CSV o Excel");
             }
             escribir("9. Buscar por código o por nombre");
             escribir("10. Historial de versiones");
@@ -177,12 +180,28 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
             } catch (DateTimeParseException e) {
                 escribir("No se pudo: la fecha \"" + e.getParsedString()
                         + "\" no sirve; escríbala como AAAA-MM-DD");
+            } catch (NoSuchElementException e) {
+                // El corte de Terminal cuando se acaba la entrada: tiene que salir del menú.
+                throw e;
+            } catch (RuntimeException e) {
+                escribir(MenuPrincipal.inesperado(e));
             }
         }
     }
 
     // Las opciones que cambian el catálogo: piden el permiso de mantener catálogos.
     private static final Set<String> CAMBIAN = Set.of("2", "3", "4", "5", "6", "8");
+
+    /** Una ruta escrita en la terminal. Una que el sistema no acepta da un mensaje, no un error. */
+    protected Path leerRuta(String pregunta) {
+        String ruta = leer(pregunta);
+        try {
+            return Path.of(ruta);
+        } catch (InvalidPathException e) {
+            throw new IllegalArgumentException("la ruta \"" + ruta.replace("\0", "")
+                    + "\" tiene un carácter que no puede ir en una ruta");
+        }
+    }
 
     protected String leer(String pregunta) {
         return terminal.leer(pregunta);
@@ -201,7 +220,7 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         escribirAyudaDeCarga();
         escribir("Si es CSV, desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la"
                 + " columna del código en formato de texto para que no pierda los ceros.");
-        Path archivo = Path.of(leer("Ruta del archivo: "));
+        Path archivo = leerRuta("Ruta del archivo: ");
         String fuente = leer("Fuente: ");
         String direccion = leer("Dirección de descarga: ");
         LocalDate descarga = LocalDate.parse(leer("Fecha de descarga (AAAA-MM-DD): "));

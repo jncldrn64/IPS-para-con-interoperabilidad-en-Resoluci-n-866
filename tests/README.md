@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 469 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 476 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -44,10 +44,10 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   por cambio oficial unos pocos valores de los 8 catálogos, y los de la pantalla contestan dato por
   dato, con las respuestas de `RESPUESTAS`.
 - `hu034/HU034TiposDocumentoTest`, con 44 tests, como los de HU-035 con la lista de la hoja 13, y
-  `hu038/HU038EntidadesPlanBeneficiosTest`, con 40, como los de HU-037 con códigos de 4 a 6
+  `hu038/HU038EntidadesPlanBeneficiosTest`, con 41, como los de HU-037 con códigos de 4 a 6
   caracteres. Uno carga `data/catalogos/eapb-sispro.xlsx`, la tabla de SISPRO tal como se exportó.
 - `hu035/HU035CategoriasDiscapacidadTest`, con 44 tests, `hu036/HU036EtniasTest`, con 44, y
-  `hu037/HU037ComunidadesEtnicasTest`, con 38: los escenarios de cada historia, de la carga a la
+  `hu037/HU037ComunidadesEtnicasTest`, con 39: los escenarios de cada historia, de la carga a la
   consulta, la búsqueda y la comparación con la lista oficial. Los de cancelar, y los que comprueban
   lo que el menú dice en la búsqueda sin resultados, el catálogo vacío y la inactivación, pasan por
   el controlador de la historia, con las respuestas escritas en el test. Esos tests leen lo que el
@@ -73,6 +73,11 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   versión nueva.
 - `hu018/HU018PaisesTest`, con 42 tests: los 22 escenarios de HU-018. Los de la carga del archivo
   oficial leen `data/catalogos/pais-sispro.xlsx`, el Excel de SISPRO tal como se exportó.
+- `comun/EntradasInvalidasTest`, con 5 tests. Uno por cargo recorre el programa entero con un
+  teclado que contesta al azar, con tres semillas fijas y 1.500 respuestas cada una: letras donde
+  va un número, fechas imposibles, rutas que no existen, códigos de otro catálogo. Pide que el
+  programa no se caiga y que ningún error llegue al respaldo de `MenuPrincipal.inesperado`. Los
+  otros dos prueban ese respaldo, en el menú principal y en el de un catálogo.
 
 Los tests de carga leen los archivos de `data/catalogos/`, los mismos que se cargan en el archivo de
 la base, o escriben su CSV en una carpeta temporal de JUnit. No dependen de ningún archivo fuera del
@@ -102,6 +107,23 @@ salvo el género de las palabras, comparados con `diff`. El 2026-11-02 imprimió
 HU-034 y los 22 de HU-038, cuyas tarjetas repiten las de HU-035 y HU-037, salvo la lista y la
 redacción. Con `hu004`, imprimió los 15 de HU-004, y con `hu005`, los 13 de HU-005. Con `hu006`,
 imprimió los 13 de HU-006.
+
+Para todas las historias a la vez, este comando cuenta los escenarios de cada tarjeta que tienen un
+test con su `@DisplayName`:
+
+```sh
+python3 -c "
+import re,glob
+fs=glob.glob('src/test/java/**/*.java',recursive=True)
+t=set(re.findall(r'\"(HU-\d{3}) Esc\. (\d+)',''.join(open(f).read() for f in fs)))
+for f in sorted(glob.glob('docs/context/trello/tarjetas/HU-0*.md')):
+    hu=f[-9:-3]; e=set(re.findall(r'(?m)^#+ *Escenario (\d+)',open(f).read()))
+    n={n for h,n in t if h==hu}
+    if n: print(hu, len(e), 'escenarios,', len(n & e), 'con test')"
+```
+
+El 2026-11-02 imprimió, para las 12 historias del semestre, tantos con test como escenarios: 243
+de 243.
 
 ## 4. El CI
 

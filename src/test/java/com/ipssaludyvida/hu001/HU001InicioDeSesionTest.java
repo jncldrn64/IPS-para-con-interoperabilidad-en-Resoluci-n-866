@@ -233,7 +233,7 @@ class HU001InicioDeSesionTest {
         String salida = opcionesDelCatalogo();
         for (String opcion : List.of("1. Consultar", "2. Crear por cambio oficial",
                 "3. Cambiar el nombre", "4. Cambiar el código", "5. Inactivar", "6. Reactivar",
-                "7. Historial de un código", "8. Cargar desde un CSV", "9. Buscar",
+                "7. Historial de un código", "8. Cargar desde un archivo, CSV o Excel", "9. Buscar",
                 "10. Historial de versiones", "11. Comparar con la lista oficial")) {
             assertTrue(salida.contains(opcion), opcion + " no está en\n" + salida);
         }

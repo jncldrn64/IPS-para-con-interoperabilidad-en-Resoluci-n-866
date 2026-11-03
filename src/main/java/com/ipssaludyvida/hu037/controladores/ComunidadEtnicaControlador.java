@@ -6,7 +6,6 @@ import com.ipssaludyvida.comun.servicios.Comprobacion;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.ipssaludyvida.hu037.modelos.ComunidadEtnica;
-import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +25,6 @@ public class ComunidadEtnicaControlador extends ControladorCatalogo<ComunidadEtn
 
     @Override
     protected Comprobacion comprobar() {
-        return comunidades.comprobarContraElArchivo(Path.of(leer("Ruta del archivo oficial: ")));
+        return comunidades.comprobarContraElArchivo(leerRuta("Ruta del archivo oficial: "));
     }
 }

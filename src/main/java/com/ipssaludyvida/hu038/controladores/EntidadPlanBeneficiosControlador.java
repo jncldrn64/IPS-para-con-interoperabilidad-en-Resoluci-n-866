@@ -6,7 +6,6 @@ import com.ipssaludyvida.comun.servicios.Comprobacion;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu038.interfaces.ContratoEntidadesPlanBeneficios;
 import com.ipssaludyvida.hu038.modelos.EntidadPlanBeneficios;
-import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +27,6 @@ public class EntidadPlanBeneficiosControlador
 
     @Override
     protected Comprobacion comprobar() {
-        return entidades.comprobarContraElArchivo(Path.of(leer("Ruta del archivo oficial: ")));
+        return entidades.comprobarContraElArchivo(leerRuta("Ruta del archivo oficial: "));
     }
 }

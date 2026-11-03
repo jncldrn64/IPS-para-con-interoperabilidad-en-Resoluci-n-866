@@ -225,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 13735 líneas en 114 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14081 líneas en 115 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
