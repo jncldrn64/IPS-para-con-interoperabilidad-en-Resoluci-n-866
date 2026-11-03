@@ -13,7 +13,7 @@ tests leen estos mismos archivos.
 
 ## 1. Cómo se rehace la base con estos archivos
 
-`data/ips.mv.db` ya trae los seis catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
+`data/ips.mv.db` ya trae los siete catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
 cargarlos en una base vacía, como en una demostración:
 
 1. Se arranca el programa desde la raíz del repo con una base vacía. En memoria, como abajo, no
@@ -112,5 +112,23 @@ cargarlos en una base vacía, como en una demostración:
 - **Recibido:** el 2026-11-02, exportadas por el autor sin cuenta. Van tal como se descargaron.
 - **Filas:** Municipio, 1.124 códigos de 5 dígitos, uno deshabilitado, con el departamento en
   `Extra_I:Departamento`. Departamento, 33 nombres y la fila `00`, `NO APLICA`, deshabilitada.
-- **Sin cargar:** la carga de HU-026 pide el nombre del departamento en el mismo archivo
-  (`docs/ARCHITECTURE.md`, sección 6).
+- **Sin cargar:** la carga de HU-026 pide el nombre del departamento en el mismo archivo. Los
+  municipios se cargaron de la DIVIPOLA del DANE (sección 9).
+
+## 9. divipola-municipios.csv
+
+- **Entidad:** DANE, Codificación de la División Político Administrativa de Colombia, DIVIPOLA,
+  archivo `Listados_DIVIPOLA.xlsx`, hoja Municipios, "Actualizado al 30 de septiembre de 2026".
+- **Dirección:** https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/?cod=112
+  con el filtro "Todos los grupos", opción "Listado completos de Codificación Divipola". Es el
+  camino que da el DANE en su respuesta https://www.dane.gov.co/files/pqr/Respuesta-202510034970.pdf.
+- **Recibido:** el 2026-11-02, adjunto por Jorge.
+- **Filas:** 1.122, de 33 departamentos: 1.103 de tipo Municipio, 18 Área no municipalizada y 1
+  Isla, San Andrés. Entran las tres.
+- **Cómo se pasó a CSV:** con openpyxl, de la hoja Municipios, las columnas del código y el nombre
+  del municipio y del departamento. El Excel guarda como número algunos códigos, como el 27493;
+  el CSV los lleva como texto de 5 dígitos. Los nombres quedan como en el Excel, sin el espacio de
+  sobra de "SOTARÁ ". El nombre de cada departamento coincide con el de la hoja Departamentos.
+- **Versión con que se cargó:** fuente "DANE, Codificación de la División Político Administrativa
+  de Colombia, DIVIPOLA"; la dirección de arriba; descarga 2026-11-02; versión "DIVIPOLA
+  septiembre 2026"; publicación 2026-09-30.

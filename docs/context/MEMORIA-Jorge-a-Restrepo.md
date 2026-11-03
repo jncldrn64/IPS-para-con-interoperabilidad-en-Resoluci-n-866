@@ -99,14 +99,22 @@
 - Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "Jorge hace HU-006 con el
   historial común".
 
+## 2026-11-02: la DIVIPOLA
+
+- Jorge fusionó el PR #40, de HU-006.
+- "explicame mas esto para comunicarlo con los otrsomiembros"
+- "eso a quien le tocaria a mi cuando hice la hu 26?" El modelo le dijo que sí: la carga del
+  archivo oficial es parte de HU-026.
+- "dime como la busco". Jorge adjuntó `Listados_DIVIPOLA.xlsx`: "si esta".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "La DIVIPOLA entra al archivo
+  de la base".
+
 ## 3. Pendiente
 
-- Que Jorge revise el PR de HU-006, con "Lo que decidió el modelo", y lo fusione: "Listo para
-  revisión" y después "Combinar solicitud de extracción", con "Crear una confirmación de fusión".
+- Que Jorge revise el PR de la DIVIPOLA, con "Lo que decidió el modelo", y lo fusione. Mientras
+  esté abierto tiene el turno de `data/ips.mv.db`: avisar al grupo.
 - Avisar al autor que Jorge hizo HU-006, que era suya.
 - Con HU-006 están las 12 historias de la fase 0. Lo que sigue lo decide el equipo.
-- Cargar la DIVIPOLA: sin ella, el archivo de la base no deja registrar a nadie que viva en
-  Colombia. Si Jorge la adjunta, el modelo la pasa a CSV.
 - Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común.
 - Preguntar al profesor si acepta que el programa siga en terminal, qué se exige con los tipos de
   documento AS, MS y SI (D-19) y si le basta la CIUO-88 A.C. completa.

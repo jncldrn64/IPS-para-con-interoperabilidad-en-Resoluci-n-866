@@ -216,11 +216,12 @@ al paciente.
   terminal"), y del integrante 1 quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la
   v0.20, con la CIUO-88 A.C. en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022
   lee el grupo del código y lo revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo
-  de la base"). HU-026 está completa desde la v0.21, salvo la carga del archivo oficial: la tabla
-  Municipio de SISPRO no trae el nombre del departamento (`docs/ARCHITECTURE.md`, sección 6;
-  `docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla"). Del integrante 1
-  quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004. HU-004 está completa desde la
-  v0.30 (`docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y junta todos los errores"),
+  de la base"). HU-026 está completa desde la v0.21, y desde la v0.33 el archivo de la base trae
+  los municipios de la DIVIPOLA del DANE (`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el
+  departamento en su tabla", y 2026-11-02 "La DIVIPOLA entra al archivo de la base"). Del
+  integrante 1 quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004. HU-004 está
+  completa desde la v0.30 (`docs/DECISIONS.md`, 2026-11-02 "HU-004 guarda los códigos y junta
+  todos los errores"),
   y con ella HU-005 y HU-006 pueden empezar. HU-005 está completa desde la v0.31
   (`docs/DECISIONS.md`, 2026-11-02 "HU-005 saca el nombre del día de la tabla de cambios"), y del
   integrante 1 no queda ninguna de las 12. HU-006, del integrante 3, la hizo Jorge y está completa
@@ -283,8 +284,8 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   obsoleto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que exporta la fuente").
   Lo visto el 2026-11-02 en el buscador de SISPRO:
   - Municipio, para HU-026: 1.124 municipios con su código de 5 dígitos, y el código del
-    departamento sin su nombre, que trae la tabla Departamento. Las dos están bajadas y sin cargar
-    (`docs/ARCHITECTURE.md`, sección 6).
+    departamento sin su nombre, que trae la tabla Departamento. Las dos están bajadas y sin cargar:
+    HU-026 se cargó con la DIVIPOLA del DANE, que trae el departamento con su nombre.
   - CodigoEAPByNit, para HU-038: cargada en la v0.29.
   - CategoriaDiscapacidad: la misma lista de las hojas 14 y 15, sin bajar.
   - PSRGPERTENETNICA no sirve para HU-036: es de RUAF, con códigos 1 a 6 y Z. Falta buscar "etnia".

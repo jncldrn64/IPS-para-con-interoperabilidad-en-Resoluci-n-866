@@ -2428,3 +2428,41 @@ Lo que decidió el modelo:
 - Copiar en HU-006 las preguntas del registro. Serían dos copias que se corrigen aparte.
 
 **Estado:** `vigente`
+
+## 2026-11-02: La DIVIPOLA entra al archivo de la base
+
+**Contexto:** HU-026 quedó completa en la v0.21 sin el archivo oficial, y la tabla Municipio de
+SISPRO no traía el nombre del departamento. Sin municipios, nadie que viva en Colombia se podía
+registrar. El modelo le explicó a Jorge que la carga es parte de su historia y le dio el camino de
+descarga que publica el DANE. Jorge preguntó y después adjuntó el archivo:
+
+- "eso a quien le tocaria a mi cuando hice la hu 26?"
+- "dime como la busco"
+- "si esta"
+
+**Decisión:** La hoja Municipios del `Listados_DIVIPOLA.xlsx` del DANE, actualizado al 30 de
+septiembre de 2026, se pasa a `data/catalogos/divipola-municipios.csv` y se carga en
+`data/ips.mv.db` con la opción 8 del menú de municipios y la sesión de `estadistica`. Este PR toma
+el turno del archivo de la base (`docs/DESIGN.md`, sección 8): el PR #38, el único abierto, no lo
+cambia. La carga leyó 1.122 filas, las aceptó todas y guardó 33 departamentos.
+
+Lo que decidió el modelo:
+
+- Entran las 18 áreas no municipalizadas y la isla de San Andrés, porque el DANE las codifica en
+  la misma lista y alguien puede vivir en ellas.
+- El CSV va con las cuatro columnas que pide la carga. El Excel no va al repo: pesa 1,2 MB y trae
+  además 8.560 cabeceras y centros poblados que ninguna historia usa.
+- La fecha de publicación es el 2026-09-30, la que dice la hoja Departamentos. La de descarga es
+  el 2026-11-02, el día en que Jorge lo adjuntó.
+- SISPRO trae dos códigos que el DANE ya no tiene, 27086 y 94663. No entran.
+- Antes de cargar en el archivo, la carga se ensayó sobre una copia. Abrir el archivo con el
+  programa creó las tablas vacías del paciente y del historial.
+
+**Alternativas:**
+
+- Cargar la tabla Municipio de SISPRO y sacar el nombre del departamento de su tabla Departamento.
+  Serían dos archivos para una carga que pide uno, y el DANE es la fuente de la DIVIPOLA.
+- Dejar fuera las áreas no municipalizadas. Una persona que vive en La Chorrera no tendría
+  municipio que elegir.
+
+**Estado:** `vigente`

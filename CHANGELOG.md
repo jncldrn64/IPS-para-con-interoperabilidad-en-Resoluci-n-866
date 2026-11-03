@@ -5,6 +5,23 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.33 — 2026-11-02
+
+El archivo de la base trae los 1.122 municipios de la DIVIPOLA del DANE, con sus 33 departamentos,
+y ya se puede registrar a un paciente que vive en Colombia. El programa no muestra una versión.
+
+### Added
+- `data/catalogos/divipola-municipios.csv`, de la hoja Municipios del `Listados_DIVIPOLA.xlsx` del
+  DANE, con su fuente en `data/catalogos/README.md`.
+- `HU026MunicipiosTest.esc1_archivoOficial`, que carga ese archivo: 469 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "La DIVIPOLA entra al archivo de la base".
+
+### Changed
+- `data/ips.mv.db` trae los municipios, cargados con la opción 8 de su menú y la sesión de
+  `estadistica`.
+- `docs/ARCHITECTURE.md` cierra los huecos de los municipios, y `docs/ROADMAP.md`, `tests/README.md`
+  y la memoria de Jorge lo describen.
+
 ## v0.32 — 2026-11-02
 
 HU-006 queda completa: el auxiliar de admisión actualiza o corrige los datos de un paciente, y el
