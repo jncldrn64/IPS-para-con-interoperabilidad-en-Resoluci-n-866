@@ -1,6 +1,7 @@
 package com.ipssaludyvida.comun.servicios;
 
 import com.ipssaludyvida.comun.interfaces.CrudCatalogo;
+import com.ipssaludyvida.comun.interfaces.UsosDeCatalogo;
 import com.ipssaludyvida.comun.modelos.Catalogo;
 import com.ipssaludyvida.comun.modelos.CatalogoCambio;
 import com.ipssaludyvida.comun.modelos.CatalogoVersion;
@@ -26,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /** La base común de los catálogos: la lógica que comparten los 8 (docs/DESIGN.md, sección 7). */
@@ -35,6 +37,8 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     private final CatalogoRepositorio<T> datos;
     private final Validator validador;
     private final RegistroCatalogos registro;
+
+    private List<UsosDeCatalogo> usos = List.of();
 
     protected ServicioCatalogo(Class<T> tipo, CatalogoRepositorio<T> datos, Validator validador,
             RegistroCatalogos registro) {
@@ -124,10 +128,15 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
         desactivar(anterior, Motivo.REEMPLAZADO_POR, referencia, nuevo.getCodigo());
     }
 
-    // Hasta que exista el registro del paciente (HU-004) ningún registro usa un valor de catálogo.
+    /** Las historias que guardan códigos de catálogo, como el paciente de HU-004. */
+    @Autowired(required = false)
+    void setUsos(List<UsosDeCatalogo> usos) {
+        this.usos = usos;
+    }
+
     @Override
     public long contarUsos(String codigo) {
-        return 0;
+        return usos.stream().mapToLong(u -> u.contar(tipo, codigo)).sum();
     }
 
     @Override

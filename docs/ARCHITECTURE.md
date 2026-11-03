@@ -190,14 +190,14 @@ contenedor de la sesión.
   `COMUNIDAD_ETNICA`, `OCUPACION`, `MUNICIPIO`, `DEPARTAMENTO`, `CATEGORIA_DISCAPACIDAD`, `PAIS`,
   `TIPO_DOCUMENTO`, `ENTIDAD_PLAN_BENEFICIOS`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`,
   vacías `PACIENTE`, `PACIENTE_NACIONALIDAD`, `PACIENTE_DISCAPACIDAD` y `HISTORIAL_CAMBIO`, y las
-  secuencias de sus números. Trae las 7 etnias de la hoja 15, activas, con la versión 1, "Resolución
-  866 de 2021"; ninguna comunidad étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8
-  categorías de discapacidad de las hojas 14 y 15, activas; los 249 países de la tabla Pais de
-  SISPRO, activos; los 14 tipos de documento de la hoja 13, activos; las 1.715 entidades del plan de
-  beneficios de la tabla CodigoEAPByNit de SISPRO, 1.401 activas y 314 inactivas; los 1.122
-  municipios de la DIVIPOLA del DANE, activos, con sus 33 departamentos; los 3 usuarios de prueba; y
-  3.991 filas de cambios: una por valor creado y una por cada entidad que la fuente trae
-  deshabilitada.
+  secuencias de sus números. Desde la v0.38 trae las 12 llaves foráneas del paciente. Trae las 7
+  etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
+  étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
+  hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 14 tipos de
+  documento de la hoja 13, activos; las 1.715 entidades del plan de beneficios de la tabla
+  CodigoEAPByNit de SISPRO, 1.401 activas y 314 inactivas; los 1.122 municipios de la DIVIPOLA del
+  DANE, activos, con sus 33 departamentos; los 3 usuarios de prueba; y 3.991 filas de cambios: una
+  por valor creado y una por cada entidad que la fuente trae deshabilitada.
   Las etnias se cargaron con la
   opción 8 del menú de etnias y `data/catalogos/etnias-hoja-15.csv`, que entonces estaba en
   `src/test/resources/cargas/`. Se cargó en UTC, y
@@ -225,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14217 líneas en 115 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14547 líneas en 118 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -258,23 +258,17 @@ si eso cierra un hueco de esta lista.
     | sh ./mvnw -q spring-boot:run \
     -Dspring-boot.run.arguments=--spring.datasource.url=jdbc:h2:mem:tildes | grep Ind
   ```
-- **2026-10-26: `mvnw.cmd` no se corrió.** El contenedor de la sesión es Linux, así que el
-  envoltorio solo se probó con `sh ./mvnw`. Comando, en Windows: `mvnw.cmd -v`, que tiene que
-  imprimir "Apache Maven 3.9.11".
-- **2026-10-31: la clave oculta no se probó en una terminal de verdad.** `Terminal.leerClave` usa
-  `System.console()`, que con Java 21 es nulo si la entrada no es una terminal, y entonces lee la
-  clave a la vista. Las corridas de la sesión fueron con `printf`, así que la rama de la consola no
-  se corrió. Comando, en una terminal: `sh ./mvnw -q spring-boot:run`, elegir 1 y escribir la clave,
-  que no tiene que verse.
-- **2026-10-27: dos partes de HU-036 y HU-037 esperan el registro del paciente, HU-004.** Cuántos
-  pacientes usan un valor, en el escenario 19 de HU-035 y de HU-036 y el 18 de HU-037: `contarUsos`
-  devuelve 0. Desde el 2026-11-02 el paciente existe, pero ningún catálogo lo cuenta todavía. Desde
-  el 2026-11-01 también el escenario 21 de HU-026 y el 22 de HU-022, que además cuenta atenciones:
-  `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta la atención, HU-007. Lo que RC-11 pide de
-  un registro ya guardado, en el 11 de HU-035 y de HU-036 y el 10 de HU-037, lo cumple desde el
-  2026-11-02 la consulta de HU-005, con `HU005ConsultaPacienteTest.esc13_nombreQueCambio`, sin un
-  test en cada catálogo. Comando: `grep -n -A2 'public long contarUsos'
-  src/main/java/com/ipssaludyvida/comun/servicios/*.java`.
+- **2026-10-26: `mvnw.cmd test` no se corrió.** El contenedor de la sesión es Linux. El
+  2026-11-02 el autor corrió `.\mvnw.cmd spring-boot:run` en su Windows, en PowerShell, y el
+  programa arrancó y pidió entrar, según su captura; los tests no se corrieron allí. Comando, en
+  Windows: `.\mvnw.cmd test`, que tiene que terminar con `BUILD SUCCESS`.
+- **2026-10-27: las ocupaciones no cuentan las atenciones.** El escenario 22 de HU-022 pide
+  cuántos pacientes y cuántas atenciones usan una ocupación. Los pacientes los cuenta
+  `UsosEnPacientes` desde la v0.38; `ContratoOcupaciones.contarAtenciones` devuelve 0 hasta que
+  exista la atención, HU-007. Lo que RC-11 pide de un registro ya guardado lo cumple la consulta de
+  HU-005, con `HU005ConsultaPacienteTest.esc13_nombreQueCambio`, sin un test en cada catálogo.
+  Comando: `grep -n -A2 'default long contarAtenciones'
+  src/main/java/com/ipssaludyvida/hu022/interfaces/ContratoOcupaciones.java`.
 - **2026-11-02: el registro de un paciente sin documento sigue la regla general.** Con los tipos
   AS, MS y SI de la hoja 13 la tarjeta de HU-004 dice que pueden faltar el número, los nombres, la
   fecha o la nacionalidad, y que falta decidir qué se exige (D-19). Hoy se exigen igual, y el

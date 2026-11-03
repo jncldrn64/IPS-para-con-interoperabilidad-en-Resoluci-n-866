@@ -2576,3 +2576,51 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: El paciente apunta a sus catálogos con llaves foráneas
+
+**Contexto:** El modelo E-R dibuja cada dato de catálogo del paciente como llave foránea, y dos
+tablas de intersección, `paciente_nacionalidad` y `paciente_discapacidad`. HU-004 guardaba el
+código como texto y lo validaba en `PacienteServicio`, sin la llave en la base (2026-11-02 "HU-004
+guarda los códigos y junta todos los errores"). Las tablas de intersección existían y el registro
+ya pedía uno o varios valores. Además, ningún catálogo contaba cuántos pacientes usan un valor.
+El autor preguntó, y después pidió, textual:
+
+- "y que hay de la relacion? entiedo que ahora mismo ya podemos hacer relaciones de uno a uno, uno
+  a muchos y muchos a muchos, con las debidas anotaciones y join, tanto en la entidad cliente, aun
+  que entiendo que no hace falta que se bidireccional o mas bien que las eclaremos en los
+  otroscatalogos."
+- "sobre las llaves foraneas, agrega todo lo que necesite el paciente, tienes acceso a los demas
+  archivos?"
+
+**Decisión:** el paciente tiene una llave foránea hacia cada catálogo que usa y hacia el usuario
+que lo registró, 12 en total. Los datos de un solo valor conservan su columna de texto, y un
+`@ManyToOne` de solo lectura sobre la misma columna crea la llave y el join. Nacionalidades y
+discapacidades pasan de `@ElementCollection` a `@ManyToMany` hacia `Pais` y
+`CategoriaDiscapacidad`, con las mismas tablas y columnas, todo en un solo sentido, desde el
+paciente.
+
+Para contar los pacientes que usan un valor, la base común declara `UsosDeCatalogo`, y HU-004 la
+implementa con `UsosEnPacientes`.
+
+Lo que decidió el modelo:
+
+- Conservar las columnas de texto y los métodos que devuelven códigos, para no cambiar el código
+  de HU-004 a HU-006 que los lee. Solo cambia `PacienteServicio.copiar`, que busca el país y la
+  categoría de cada código.
+- El nombre de cada `@JoinColumn` es el del campo, porque Hibernate no acepta dos nombres para
+  una misma columna.
+- `UsosDeCatalogo` vive en `comun/interfaces`, para que la base común no dependa de HU-004.
+- Un paciente cuenta una vez aunque use el valor en dos datos, como un país de nacionalidad y de
+  residencia.
+- `data/ips.mv.db` se abrió una vez para que Hibernate le agregara las 12 llaves.
+- No hay relación de uno a uno: ningún dato del paciente la pide.
+
+**Alternativas:**
+
+- Cambiar los campos del paciente de código a entidad. `grep` contó 155 usos de esos métodos en
+  HU-004 a HU-006 y sus tests, para la misma llave en la base.
+- Dejar la validación solo en el servicio. La base no protegería el dato cuando se cargue desde
+  MariaDB o desde otra herramienta.
+
+**Estado:** `vigente`
+

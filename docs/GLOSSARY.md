@@ -146,6 +146,10 @@ que citan su fuente.
   Los catálogos y el registro del paciente no dependen de ella: cuando se desarrolla, sus escenarios
   9 y 14 se aplican a lo que ya existe, y lo registrado antes queda sin autor. El docente dijo que
   no aporta valor en la primera entrega (2026-10-27 "El glosario define los cargos").
+- **llave foránea**: la columna de una tabla que apunta a la llave primaria de otra, y que la base
+  no deja apuntar a un valor que no existe. El paciente tiene una hacia cada catálogo que usa y
+  otra hacia quien lo registró (2026-11-03 "El paciente apunta a sus catálogos con llaves
+  foráneas").
 - **lámina**: la imagen del mockup de una historia, en `docs/context/trello/mockups/`.
 - **matriz de permisos**: la tabla de qué puede hacer cada cargo, en
   `docs/context/trello/tarjetas/RC-reglas-comunes.md`, sección "Matriz de permisos", copiada igual
@@ -184,6 +188,9 @@ que citan su fuente.
 - **tabla de referencia**: un catálogo de SISPRO, que se consulta sin cuenta y se exporta a Excel
   desde su página. La general de cada dato es la de aplicación SISPRO-TRV con "Estándar Minsalud:
   Sí" (2026-11-02 "HU-018 sale de la tabla Pais de SISPRO").
+- **tabla de intersección**: la tabla que guarda una relación de muchos a muchos, una fila por
+  par: `paciente_nacionalidad`, con el paciente y cada país de su nacionalidad, y
+  `paciente_discapacidad`, con cada categoría (numerales 1 y 10, [2.1]).
 - **tanda**: uno de los seis archivos en que se escribió el backlog v3, con la trazabilidad de cada
   escenario. Salieron del repositorio el 2026-10-24, y las historias se leen en sus tarjetas
   (2026-10-24 "docs/context guarda solo lo que usan las historias").

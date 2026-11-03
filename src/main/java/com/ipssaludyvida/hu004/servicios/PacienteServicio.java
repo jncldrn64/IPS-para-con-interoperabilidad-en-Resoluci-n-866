@@ -159,9 +159,9 @@ public class PacienteServicio implements ContratoPacientes {
 
     // Pasa los datos validados al paciente. Las listas se vacían antes, para que un valor retirado
     // salga (escenario 5 de HU-006).
-    private static void copiar(DatosPaciente d, Paciente p) {
-        p.getNacionalidades().clear();
-        p.getNacionalidades().addAll(limpios(d.getNacionalidades()));
+    private void copiar(DatosPaciente d, Paciente p) {
+        p.setNacionalidades(limpios(d.getNacionalidades()).stream()
+                .map(c -> valor(paises, c)).toList());
         p.setTipoDocumento(limpio(d.getTipoDocumento()));
         p.setNumeroDocumento(d.getNumeroDocumento().trim());
         p.setPrimerApellido(d.getPrimerApellido().trim());
@@ -173,8 +173,8 @@ public class PacienteServicio implements ContratoPacientes {
         p.setSexoBiologico(limpio(d.getSexoBiologico()));
         p.setIdentidadGenero(limpio(d.getIdentidadGenero()));
         p.setOcupacion(opcional(d.getOcupacion()));
-        p.getDiscapacidades().clear();
-        p.getDiscapacidades().addAll(limpios(d.getDiscapacidades()));
+        p.setDiscapacidades(limpios(d.getDiscapacidades()).stream()
+                .map(c -> valor(discapacidades, c)).toList());
         p.setPaisResidencia(limpio(d.getPaisResidencia()));
         p.setMunicipioResidencia(opcional(d.getMunicipioResidencia()));
         p.setEtnia(limpio(d.getEtnia()));
@@ -353,6 +353,13 @@ public class PacienteServicio implements ContratoPacientes {
     private static boolean activo(CrudCatalogo<? extends Catalogo> crud, String codigo) {
         return crud.buscarPorCodigo(codigo)
                 .map(v -> v.getEstado() == Catalogo.Estado.ACTIVO).orElse(false);
+    }
+
+    // El valor de un código que validar ya revisó; si no está, es un error del programa.
+    private static <T extends Catalogo> T valor(CrudCatalogo<T> catalogo, String codigo) {
+        return catalogo.buscarPorCodigo(codigo).orElseThrow(() -> new IllegalStateException(
+                "el código " + codigo + " pasó la validación y no está en "
+                        + catalogo.nombreEnPlural()));
     }
 
     private static Set<String> limpios(List<String> codigos) {
