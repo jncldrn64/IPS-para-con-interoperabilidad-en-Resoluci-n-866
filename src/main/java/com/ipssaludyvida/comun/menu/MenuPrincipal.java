@@ -46,7 +46,7 @@ public class MenuPrincipal implements CommandLineRunner {
         // del archivo de la base la necesita para saber si abrió data/ips o data/prueba
         // (docs/DESIGN.md, sección 4).
         try (Connection conexion = base.getConnection()) {
-            terminal.escribir("Base abierta: " + conexion.getMetaData().getURL());
+            terminal.escribir("Base abierta: " + sinClave(conexion.getMetaData().getURL()));
         }
         while (true) {
             // HU-001, escenario 4: sin sesión no hay menú.
@@ -97,6 +97,14 @@ public class MenuPrincipal implements CommandLineRunner {
         } catch (RuntimeException e) {
             terminal.escribir(inesperado(e));
         }
+    }
+
+    /**
+     * La URL de la base sin su contraseña. El driver de MariaDB la pone en la URL que devuelve, y
+     * la terminal la mostraría a quien esté mirando la pantalla.
+     */
+    public static String sinClave(String url) {
+        return url.replaceAll("(?i)(password=)[^&;]*", "$1***");
     }
 
     /** El mensaje de un error que nadie esperaba: dice qué pasó y que el programa sigue. */

@@ -18,6 +18,8 @@ import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu001.modelos.Permiso;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -220,6 +222,19 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         escribirAyudaDeCarga();
         escribir("Si es CSV, desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la"
                 + " columna del código en formato de texto para que no pierda los ceros.");
+        describir("Ruta del archivo: la ruta completa, con el nombre y la extensión, como"
+                        + " data/catalogos/etnias-hoja-15.csv; no una carpeta",
+                "Fuente: la norma o la entidad que publica la lista, como \"Resolución 866 de 2021,"
+                        + " anexo técnico, numeral 13, hoja 15\" o \"Ministerio de Salud y"
+                        + " Protección Social, SISPRO, tabla de referencia Pais\"",
+                "Dirección de descarga: la página web de donde se bajó el archivo, o Enter si la"
+                        + " lista se transcribió de la norma",
+                "Fecha de descarga: el día en que se bajó, como 2026-11-02; no puede ser futura",
+                "Versión: el nombre de la versión como lo da la fuente, como \"Resolución 866 de"
+                        + " 2021\" o \"Tabla Pais de SISPRO\"",
+                "Fecha de publicación: la de la versión, como 2021-06-25. Si es la misma de la"
+                        + " versión vigente, la carga solo agrega los códigos nuevos; si es"
+                        + " anterior, se rechaza");
         Path archivo = leerRuta("Ruta del archivo: ");
         String fuente = leer("Fuente: ");
         String direccion = leer("Dirección de descarga: ");
@@ -344,7 +359,51 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
         escribir("Nombres distintos: " + comprobacion.nombresDistintos());
     }
 
+    // Lo que pide cada dato antes de preguntarlo: el autor quiere la descripción aunque la
+    // validación ya rechace lo que no sirve (docs/DECISIONS.md, 2026-11-03 "Cada dato dice qué
+    // espera antes de pedirlo").
+    private static final Validator REGLAS =
+            Validation.buildDefaultValidatorFactory().getValidator();
+    private static final String REFERENCIA = "Referencia oficial: el documento que respalda el"
+            + " cambio, con su número y su fecha, como \"Resolución 866 de 2021, anexo técnico,"
+            + " hoja 15\". No puede quedar vacía";
+
+    private void describir(String... lineas) {
+        escribir("Lo que pide cada dato:");
+        for (String linea : lineas) {
+            escribir("  - " + linea + ".");
+        }
+    }
+
+    /** Las reglas del código o del nombre, como las escribe la validación de la entidad. */
+    private String reglas(String propiedad) {
+        Class<?> clase = nuevo.apply("", "").getClass();
+        List<String> mensajes = REGLAS.getConstraintsForClass(clase)
+                .getConstraintsForProperty(propiedad) == null ? List.of()
+                : REGLAS.getConstraintsForClass(clase).getConstraintsForProperty(propiedad)
+                        .getConstraintDescriptors().stream()
+                        .map(d -> d.getMessageTemplate())
+                        .filter(m -> !m.contains("vacío") && !m.startsWith("{"))
+                        .sorted().toList();
+        return String.join("; ", mensajes);
+    }
+
+    private String ayudaDelCodigo(String rotulo) {
+        String ejemplo = crud.listarActivos().stream().findFirst()
+                .map(v -> " Ejemplo de este catálogo: " + v.getCodigo() + " (" + v.getNombre()
+                        + ")")
+                .orElse("");
+        return rotulo + ": " + reglas("codigo") + ". Solo el código, sin el nombre ni espacios, y"
+                + " con sus ceros a la izquierda." + ejemplo;
+    }
+
+    private String ayudaDelNombre(String rotulo) {
+        return rotulo + ": " + reglas("nombre") + ". Escríbalo como la fuente oficial, con sus"
+                + " tildes; no agregue el código ni comentarios";
+    }
+
     private void crear() {
+        describir(ayudaDelCodigo("Código"), ayudaDelNombre("Nombre"), REFERENCIA);
         String codigo = leer("Código: ");
         String nombre = leer("Nombre: ");
         String referencia = leer("Referencia oficial: ");
@@ -355,6 +414,8 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     }
 
     private void cambiarNombre() {
+        describir("Código: el de un valor que ya existe; el código no cambia",
+                ayudaDelNombre("Nombre nuevo"), REFERENCIA);
         String codigo = leer("Código: ");
         String nombre = leer("Nombre nuevo: ");
         String referencia = leer("Referencia oficial: ");
@@ -365,6 +426,10 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     }
 
     private void cambiarCodigo() {
+        describir("Código viejo: el que la fuente reemplaza; queda inactivo, con \"Reemplazado"
+                        + " por\" y el código nuevo", ayudaDelCodigo("Código nuevo"),
+                "Nombre del código nuevo: " + reglas("nombre") + ". Si el código nuevo ya existe,"
+                        + " deje Enter", REFERENCIA);
         String viejo = leer("Código viejo: ");
         String codigo = leer("Código nuevo: ");
         String nombre = leer("Nombre del código nuevo, si no existe: ");
@@ -376,6 +441,11 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     }
 
     private void inactivar() {
+        describir("Código: el de un valor activo. Inactivar no lo borra: los registros que lo"
+                        + " usan lo conservan, y no se ofrece en registros nuevos",
+                "Motivo: 1 si la fuente oficial lo retiró, 2 si se creó por error. \"Creado por"
+                        + " error\" no pide referencia, y no sirve para un código de la versión"
+                        + " vigente", REFERENCIA);
         String codigo = leer("Código: ");
         T valor = crud.buscarPorCodigo(codigo)
                 .orElseThrow(() -> new IllegalArgumentException("no existe el código " + codigo));
@@ -396,6 +466,10 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     }
 
     private void reactivar() {
+        describir("Código: el de un valor inactivo",
+                "Referencia oficial: el documento que lo vuelve a habilitar, o Enter si no hay",
+                "Por qué se reactiva: una frase con el motivo, como \"la referencia retiraba"
+                        + " otro código\". Hace falta la referencia, el porqué o los dos");
         String codigo = leer("Código: ");
         String referencia = leer("Referencia oficial, o Enter si no hay otra: ");
         String justificacion = leer("Por qué se reactiva: ");

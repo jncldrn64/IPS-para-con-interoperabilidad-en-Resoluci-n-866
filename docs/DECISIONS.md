@@ -2624,3 +2624,43 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: Cada dato dice qué espera antes de pedirlo
+
+**Contexto:** El autor confirmó que `chcp 65001` arregla las tildes en su Windows y pidió tres
+cosas. Escribió, textual:
+
+- "quiero descripciones en cada valor que subire a un catalogo, por ejemplo limites, valores
+  esperados o que poner y que no poner, aun si ya hay safeguardo para evitar eso... chcp 65001
+  funcion perfecto.... genera un documento con demostracion donde detalles las insturcciones para
+  yo cambiar la conexion a mariadb y subir catalogo por catalago, o valor por valor.... amplia
+  tambien el readme, pero con instrucciones de uso generales, no solo de ejecucion, y enlaceus de
+  documentacion externa, como los propios anexos, pero en web.."
+
+**Decisión:** antes de pedir los datos de crear, cambiar el nombre, cambiar el código, inactivar,
+reactivar y cargar, el menú de cada catálogo dice qué pide cada uno. Las reglas del código y del
+nombre salen de la validación de la entidad, como "el código de un país tiene 3 dígitos (numerales
+1 y 11)", con un ejemplo tomado del catálogo y lo que no se debe escribir. El repo suma
+`docs/MARIADB-GUIDE.md`, con la demostración, y un `README.md` con el uso y los enlaces.
+
+Lo que decidió el modelo:
+
+- Leer las reglas de las anotaciones de la entidad, con la API de Bean Validation, y no escribir
+  el texto aparte: así la ayuda no puede contradecir a la validación.
+- Instalar MariaDB 10.11.14 en el contenedor de la sesión y correr ahí la demostración: las siete
+  cargas por el menú, un valor creado a mano, un paciente registrado y la llave foránea que rechaza
+  un código. Las cifras de la guía salen de esa corrida.
+- La línea "Base abierta" tapa la contraseña: con MariaDB, el driver la pone en la URL.
+- El documento nuevo es descriptivo y entra en la tabla de `CLAUDE.md`, sección 2. El autor lo
+  pidió, así que no hizo falta preguntar (`CLAUDE.md`, sección 3).
+- Las variables de entorno de PowerShell que da la guía no se probaron; las de Linux, sí.
+- En el README, solo enlaces que el repo ya citaba, más el normograma de Supersalud que usó Jorge.
+
+**Alternativas:**
+
+- Un texto de ayuda escrito a mano en cada catálogo. Son ocho catálogos y dos lugares por regla
+  que pueden quedar distintos.
+- Cambiar `application.properties` para MariaDB. Es común y lo usan los tests y los otros dos
+  integrantes; la URL se pasa al arrancar.
+
+**Estado:** `vigente`
+

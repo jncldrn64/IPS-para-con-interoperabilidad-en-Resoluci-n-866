@@ -223,6 +223,14 @@ class BaseComunTest {
     }
 
     @Test
+    void laLineaDeLaBaseNoMuestraLaContrasena() {
+        assertEquals("jdbc:mariadb://localhost/ips?user=ips&password=***", MenuPrincipal
+                .sinClave("jdbc:mariadb://localhost/ips?user=ips&password=ClaveIps123"));
+        assertEquals("jdbc:h2:file:./data/prueba",
+                MenuPrincipal.sinClave("jdbc:h2:file:./data/prueba"));
+    }
+
+    @Test
     @Timeout(10)
     void laTerminalCortaUnMenuQueNoSaleCuandoSeAcabaLaEntrada() {
         Terminal terminal = terminal("");

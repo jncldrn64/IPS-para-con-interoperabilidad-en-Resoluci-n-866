@@ -41,7 +41,7 @@ documento. El tipo va en la primera línea del bloque de cita de cada archivo, d
 | Tipo | Archivos | Contra el código |
 |---|---|---|
 | Normativo | `REQUIREMENTS.md`, `DESIGN.md`, `CLAUDE.md`, el estándar de un módulo | El código está en falta |
-| Descriptivo | `ARCHITECTURE.md`, `GLOSSARY.md`, la superficie de un módulo | Gana el código |
+| Descriptivo | `ARCHITECTURE.md`, `GLOSSARY.md`, `MARIADB-GUIDE.md`, la superficie de un módulo | Gana el código |
 | Historia | `DECISIONS.md`, `CHANGELOG.md` | No compite: registra. Una decisión vigente sí gana sobre un normativo viejo |
 | Plan | `ROADMAP.md` | No compite: ordena el trabajo |
 | Tránsito | `TEMPORARY-CONTEXT.md` | Nunca manda |

@@ -2649,6 +2649,29 @@ Lo que respondió e hizo el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-03: La ayuda de cada dato, MariaDB y el README
+
+El autor escribió, textual:
+
+- "quiero descripciones en cada valor que subire a un catalogo, por ejemplo limites, valores
+  esperados o que poner y que no poner, aun si ya hay safeguardo para evitar eso... chcp 65001
+  funcion perfecto.... genera un documento con demostracion donde detalles las insturcciones para
+  yo cambiar la conexion a mariadb y subir catalogo por catalago, o valor por valor.... amplia
+  tambien el readme, pero con instrucciones de uso generales, no solo de ejecucion, y enlaceus de
+  documentacion externa, como los propios anexos, pero en web.."
+
+Lo que hizo el modelo, con el detalle en la entrada 2026-11-03 "Cada dato dice qué espera antes
+de pedirlo" de `docs/DECISIONS.md`:
+
+- La ayuda sale de las reglas de cada entidad, con un ejemplo del catálogo.
+- MariaDB 10.11.14 en el contenedor: las siete cargas dieron las mismas cifras que en H2, el
+  paciente se registró y la llave foránea rechazó un código. Se vio que la línea de la base
+  mostraba la contraseña; ahora sale con asteriscos.
+- `docs/MARIADB-GUIDE.md` y el README con el uso y los enlaces.
+- 483 tests, 0 fallas.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2798,7 +2821,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-00000000000000000000000000000000000000000. **Próximo (2026-11-03, llaves foráneas):** que el autor
+000000000000000000000000000000000000000000. **Próximo (2026-11-03, ayuda y MariaDB):** que el autor
+   fusione el PR de la ayuda de cada dato, la guía de MariaDB y el README. Después, el autor sigue
+   `docs/MARIADB-GUIDE.md` en su VM y cuenta cada paso, que se anota aquí. Siguen de la lista:
+   HU-037, el Excel, escribir con tildes y `.\mvnw.cmd test` en Windows, los espacios, la CIUO-88
+   A.C. y la CUOC, D-19.
+00000000000000000000000000000000000000000. **Anterior (2026-11-03, llaves foráneas):** que el autor
    fusione el PR de las llaves foráneas. De la lista del punto anterior, el 1 está hecho; siguen
    del 2 al 9.
 0000000000000000000000000000000000000000. **Anterior (2026-11-03, la lista de lo que falta):** que

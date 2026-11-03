@@ -272,8 +272,9 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   tabla LCEResguardos de SISPRO, que el autor pasa en otra ronda.
   **Entró:** 2026-10-22, PR de siembra.
 - Poner la base en MariaDB, en la máquina virtual del autor, y cargar ahí todos los catálogos que
-  se puedan. Antes, revisar qué del esquema y de `application.properties` funciona solo en H2.
-  Cada paso que el autor dé se anota en su memoria, sección 12.
+  se puedan, como dice `docs/MARIADB-GUIDE.md`. En el contenedor de la sesión ya se hizo, con
+  MariaDB 10.11.14; falta en la VM, con Windows. Cada paso que el autor dé se anota en su memoria,
+  sección 12.
   **Entró:** 2026-11-03, PR de la lista de pendientes.
 - Revisar los espacios entre pantallas del menú. El autor lo pidió al ver el programa en Windows;
   falta que diga en qué pantalla.

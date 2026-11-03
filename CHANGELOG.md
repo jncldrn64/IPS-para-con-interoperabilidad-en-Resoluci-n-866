@@ -5,6 +5,25 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.39 — 2026-11-03
+
+Cada catálogo dice qué espera de cada dato antes de pedirlo, y hay una guía para pasar la base a
+MariaDB. El programa no muestra una versión.
+
+### Added
+- `ControladorCatalogo`: la descripción de cada dato en crear, cambiar el nombre, cambiar el
+  código, inactivar, reactivar y cargar, con las reglas de la entidad y un ejemplo del catálogo.
+- `docs/MARIADB-GUIDE.md`: crear la base, cambiar la conexión y cargar catálogo por catálogo o
+  valor por valor, con la demostración en MariaDB 10.11.14.
+- `README.md`: cómo se usa, los cargos, las opciones de los catálogos y los enlaces a las fuentes.
+- `BaseComunTest.laLineaDeLaBaseNoMuestraLaContrasena`: 483 tests.
+- `docs/DECISIONS.md`: 2026-11-03 "Cada dato dice qué espera antes de pedirlo".
+
+### Changed
+- "Base abierta" muestra la contraseña de la base con asteriscos.
+- `CLAUDE.md`, sección 2: `MARIADB-GUIDE.md` entra en la tabla de tipos, como descriptivo.
+- `docs/ARCHITECTURE.md`, sección 6: con `chcp 65001` la salida sale bien en Windows.
+
 ## v0.38 — 2026-11-03
 
 El paciente tiene sus llaves foráneas hacia los catálogos, y cada catálogo cuenta los pacientes que
