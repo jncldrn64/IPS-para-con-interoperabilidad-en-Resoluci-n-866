@@ -116,8 +116,8 @@ que citan su fuente.
   en `docs/REQUIREMENTS.md`, sección 6. La mayoría son propuestas sin confirmar; no son entradas de
   `docs/DECISIONS.md`.
 - **EAPB** o **entidad del plan de beneficios**: la entidad que responde por el plan de beneficios
-  del paciente, numeral 15. Su código tiene 6 caracteres, letras mayúsculas o dígitos, como EPS037
-  (2026-11-02 "El autor termina los catálogos del integrante 2 y Jorge toma HU-004").
+  del paciente, numeral 15. Su código tiene de 4 a 6 caracteres: 05001 una dirección de salud,
+  EPS037 una EPS y 13-5 una aseguradora (2026-11-02 "La carga lee la columna Habilitado").
 - **equipo técnico**: quien deja creados los usuarios y sus cargos al instalar el sistema. No es un
   cargo ni entra al sistema. Que los cree al instalar es supuesto del equipo: la guía solo dice que
   esta fase no tiene registro de usuarios [2.4] (2026-10-27 "El glosario define los cargos").
@@ -126,6 +126,9 @@ que citan su fuente.
 - **estimación**: la complejidad de una historia, de 1 a 10, donde 10 es la más difícil. Sube con
   las dependencias directas y no depende de la prioridad. La vota el equipo en clase [2.5]; la del
   modelo es una propuesta (2026-10-24 "La complejidad se estima de 1 a 10").
+- **fila deshabilitada**: una fila que la fuente marca con `NO` en su columna `Habilitado`, como
+  una EPS liquidada en una tabla de SISPRO. La carga la guarda inactiva (2026-11-02 "La carga lee
+  la columna Habilitado").
 - **historia de usuario** o **HU**: un pedido con formato Como, Quiero, Para y sus escenarios. El
   backlog tiene 30, con ID de HU-001 a HU-043; los números que faltan son tarjetas archivadas.
 - **inactivar**: dejar de ofrecer un valor de catálogo en registros nuevos sin borrarlo; los

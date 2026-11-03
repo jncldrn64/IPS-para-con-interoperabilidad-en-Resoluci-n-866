@@ -10,9 +10,9 @@ import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
 
 /**
- * Numeral 15, entidad que responde por el plan de beneficios: el código es Alfanumérico, 6 y 6, y
- * el nombre, de 3 a 200 caracteres (hojas 15 y 16). El catálogo es del Ministerio de Salud y no se
- * ha cargado (D-21).
+ * Numeral 15, entidad que responde por el plan de beneficios: el código es Alfanumérico, de hasta 6,
+ * y el nombre, de 3 a 200 caracteres (hojas 15 y 16). El catálogo es la tabla CodigoEAPByNit de
+ * SISPRO (D-21).
  */
 @Entity
 @NoArgsConstructor
@@ -24,11 +24,13 @@ public class EntidadPlanBeneficios extends Catalogo {
     }
 
     // Igual que en Etnia: sin esta regla entra un código de cualquier largo. La hoja pone formato
-    // 999999, pero el tipo es Alfanumérico, y los códigos de las EAPB llevan letras, como EPS037.
+    // 999999, pero los códigos de CodigoEAPByNit van de 4 a 6: 05001 una dirección de salud, EPS037
+    // una EPS y 13-5 una aseguradora (docs/DECISIONS.md, 2026-11-02 "La carga lee la columna
+    // Habilitado").
     @Override
     @NotBlank(message = "el código no puede quedar vacío")
-    @Pattern(regexp = "[A-Z0-9]{6}", message = "el código de una entidad del plan de beneficios"
-            + " tiene 6 letras mayúsculas o dígitos (numeral 15)")
+    @Pattern(regexp = "[A-Z0-9-]{4,6}", message = "el código de una entidad del plan de beneficios"
+            + " tiene de 4 a 6 letras mayúsculas, dígitos o guiones (numeral 15)")
     public String getCodigo() {
         return super.getCodigo();
     }

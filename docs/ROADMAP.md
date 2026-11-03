@@ -210,13 +210,15 @@ al paciente.
   v0.27, con la tabla Pais de SISPRO en el archivo de la base (`docs/DECISIONS.md`, 2026-11-02
   "HU-018 sale de la tabla Pais de SISPRO"). HU-034 y HU-038, también del integrante 2, las hizo
   el autor y están completas desde la v0.28: HU-034 con los 14 tipos de documento de la hoja 13 en
-  el archivo de la base, y HU-038 sin datos, porque su archivo oficial no se ha bajado. HU-001
-  está completa desde la v0.19 (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
-  quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la v0.20, con la CIUO-88 A.C.
-  en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo
-  revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo de la base"). HU-026 está
-  completa desde la v0.21, salvo la carga del archivo oficial, que espera su descarga
-  (`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla"). Del integrante 1
+  el archivo de la base, y HU-038 sin datos, que desde la v0.29 trae la tabla CodigoEAPByNit de
+  SISPRO (`docs/DECISIONS.md`, 2026-11-02 "La carga lee la columna Habilitado"). HU-001 está
+  completa desde la v0.19 (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la
+  terminal"), y del integrante 1 quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la
+  v0.20, con la CIUO-88 A.C. en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022
+  lee el grupo del código y lo revisa con el archivo entero" y "La CIUO-88 A.C. entra al archivo
+  de la base"). HU-026 está completa desde la v0.21, salvo la carga del archivo oficial: la tabla
+  Municipio de SISPRO no trae el nombre del departamento (`docs/ARCHITECTURE.md`, sección 6;
+  `docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla"). Del integrante 1
   quedan HU-004, que tomó el 2026-11-02, y HU-005, que espera HU-004.
 - Antes de su primera historia, cada integrante abre su PR de prueba (`CLAUDE.md`, sección 7).
 - Tramo 1, pasos 1 a 3, lo que no depende de nada, en paralelo:
@@ -274,10 +276,13 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   descarga, con el lector de Excel de la base común. Cuando todos estén definidos, el CSV pasa a
   obsoleto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que exporta la fuente").
   Lo visto el 2026-11-02 en el buscador de SISPRO:
-  - Municipio, para HU-026: 1.124 municipios con su código de 5 dígitos. Falta ver si trae el
-    departamento.
-  - CodigoEAPByNit, para HU-038: candidata, sin bajar.
+  - Municipio, para HU-026: 1.124 municipios con su código de 5 dígitos, y el código del
+    departamento sin su nombre, que trae la tabla Departamento. Las dos están bajadas y sin cargar
+    (`docs/ARCHITECTURE.md`, sección 6).
+  - CodigoEAPByNit, para HU-038: cargada en la v0.29.
   - CategoriaDiscapacidad: la misma lista de las hojas 14 y 15, sin bajar.
   - PSRGPERTENETNICA no sirve para HU-036: es de RUAF, con códigos 1 a 6 y Z. Falta buscar "etnia".
+  - CoberturaPlanBeneficios no es el numeral 15: trae 15 tipos de cobertura, como SOAT o ARL, y
+    no la entidad que responde por el paciente.
   - Comunidades étnicas y tipos de documento: sin una tabla clara.
   **Entró:** 2026-11-02, PR que trae HU-018.

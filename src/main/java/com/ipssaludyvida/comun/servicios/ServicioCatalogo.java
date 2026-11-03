@@ -209,13 +209,20 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
         List<String> columnas = tabla.get(0).stream().map(ArchivoCsv::normalizar).toList();
         int codigo = columna(columnas, "codigo", encabezado);
         int nombre = columna(columnas, "nombre", encabezado);
+        // Opcional: la traen las tablas de SISPRO (docs/DECISIONS.md, 2026-11-02 "La carga lee la
+        // columna Habilitado").
+        int habilitado = columnas.indexOf("habilitado");
         Map<String, Integer> propias = new LinkedHashMap<>();
         for (String propia : columnasPropias()) {
             propias.put(propia, columna(columnas, propia, encabezado));
         }
         List<ResultadoCarga.Fila> filas = new ArrayList<>();
+        Set<String> marcadosNo = new java.util.HashSet<>();
         for (List<String> campos : tabla.subList(1, tabla.size())) {
             carga.contarFila();
+            if (habilitado >= 0 && ArchivoCsv.normalizar(campo(campos, habilitado)).equals("no")) {
+                marcadosNo.add(campo(campos, codigo));
+            }
             Map<String, String> valores = new LinkedHashMap<>();
             propias.forEach((columna, indice) -> valores.put(columna, campo(campos, indice)));
             filas.add(new ResultadoCarga.Fila(carga.getFilasLeidas(), campo(campos, codigo),
@@ -239,6 +246,8 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
             }
         }
         revisarFilas(carga);
+        carga.getAceptadas().stream().map(ResultadoCarga.Fila::codigo).filter(marcadosNo::contains)
+                .forEach(carga.getDeshabilitados()::add);
         if (carga.getFilasLeidas() == 0) {
             carga.getBloqueos().add("el archivo no trae filas debajo de los nombres de columna");
         }
@@ -274,8 +283,12 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                 CatalogoCambio cambio = cambio(fila.codigo(), CatalogoCambio.Tipo.CREADO);
                 cambio.setValorNuevo(fila.nombre());
                 anotar(cambio, version);
+                if (carga.getDeshabilitados().contains(fila.codigo())) {
+                    inactivarPorLaFuente(valor, version);
+                }
                 continue;
             }
+            boolean deshabilitado = carga.getDeshabilitados().contains(fila.codigo());
             if (carga.getTipo() == ResultadoCarga.Tipo.VERSION_NUEVA) {
                 if (!valor.getNombre().equals(fila.nombre())) {
                     CatalogoCambio cambio = cambio(fila.codigo(), CatalogoCambio.Tipo.NOMBRE);
@@ -284,7 +297,9 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                     anotar(cambio, version);
                     valor.setNombre(fila.nombre());
                 }
-                if (valor.getEstado() == Catalogo.Estado.INACTIVO) {
+                if (deshabilitado && valor.getEstado() == Catalogo.Estado.ACTIVO) {
+                    inactivarPorLaFuente(valor, version);
+                } else if (!deshabilitado && valor.getEstado() == Catalogo.Estado.INACTIVO) {
                     valor.setEstado(Catalogo.Estado.ACTIVO);
                     CatalogoCambio cambio = cambio(fila.codigo(), CatalogoCambio.Tipo.REACTIVADO);
                     cambio.setMotivo(Motivo.VUELVE_EN_LA_VERSION);
@@ -316,6 +331,14 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
         }
         alConfirmar(carga, version);
         return version;
+    }
+
+    private void inactivarPorLaFuente(T valor, CatalogoVersion version) {
+        valor.setEstado(Catalogo.Estado.INACTIVO);
+        datos.save(valor);
+        CatalogoCambio cambio = cambio(valor.getCodigo(), CatalogoCambio.Tipo.INACTIVADO);
+        cambio.setMotivo(Motivo.RETIRADO_POR_LA_FUENTE);
+        anotar(cambio, version);
     }
 
     @Override
@@ -476,7 +499,8 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
                     carga.getCambianDeNombre().add(new ResultadoCarga.CambioDeNombre(
                             fila.codigo(), valor.getNombre(), fila.nombre()));
                 }
-                if (valor.getEstado() == Catalogo.Estado.INACTIVO) {
+                if (valor.getEstado() == Catalogo.Estado.INACTIVO
+                        && !carga.getDeshabilitados().contains(fila.codigo())) {
                     carga.getVuelven().add(fila.codigo());
                 }
             }

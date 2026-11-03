@@ -55,7 +55,13 @@ import org.springframework.transaction.annotation.Transactional;
 class HU038EntidadesPlanBeneficiosTest {
 
     static final String REFERENCIA = "Resolución de prueba";
-    // Valores inventados: el catálogo del Ministerio no se ha cargado (D-21).
+    // Valores inventados para los casos cortos; el de SISPRO es data/catalogos/eapb-sispro.xlsx.
+    static final Path SISPRO = Path.of("data/catalogos/eapb-sispro.xlsx");
+    static final DatosVersion TABLA_EAPB = new DatosVersion(
+            "Ministerio de Salud y Protección Social, SISPRO, tabla de referencia CodigoEAPByNit",
+            "https://web.sispro.gov.co/WebPublico/Consultas/ConsultarDetalleReferenciaBasica.aspx"
+                    + "?Code=CodigoEAPByNit", LocalDate.of(2026, 11, 2),
+            "Tabla CodigoEAPByNit de SISPRO", LocalDate.of(2026, 1, 30));
     static final String TRES = "código;nombre\nENT101;Entidad uno\nENT102;Entidad dos\nENT103;Entidad tres\n";
     static final DatosVersion PRIMERA = new DatosVersion("Fuente de prueba", null,
             LocalDate.of(2026, 10, 18), "Versión de prueba 1", LocalDate.of(2025, 1, 1));
@@ -117,7 +123,7 @@ class HU038EntidadesPlanBeneficiosTest {
     @Test
     @DisplayName("HU-038 Esc. 9: un código que no cumple el numeral 15 no se guarda")
     void esc9_datoQueNoCumpleSuNumeral() {
-        for (String codigo : new String[] {"ENT01", "ENT0001", "ent101", "ENT-01", null}) {
+        for (String codigo : new String[] {"ENT", "ENT0001", "ent101", "UT001_", null}) {
             assertThrows(ConstraintViolationException.class,
                     () -> entidades.crear(new EntidadPlanBeneficios(codigo, "Entidad de prueba"),
                             REFERENCIA),
@@ -262,10 +268,29 @@ class HU038EntidadesPlanBeneficiosTest {
     }
 
     @Test
+    @DisplayName("HU-038 Esc. 1: el Excel de SISPRO deja activas las 1401 habilitadas")
+    void esc1_primeraCargaDelExcelDeSispro() {
+        ResultadoCarga carga = entidades.leerCarga(SISPRO, TABLA_EAPB);
+        assertEquals(1717, carga.getFilasLeidas());
+        assertEquals(List.of("UT001_", "UT004_"),
+                carga.getRechazadas().stream().map(ResultadoCarga.Rechazo::codigo).sorted().toList());
+        assertEquals(314, carga.getDeshabilitados().size());
+        entidades.confirmarCarga(carga, Map.of());
+        assertEquals(1401, entidades.listarActivos().size());
+        assertEquals(1715, entidades.listar().size());
+        for (String codigo : List.of("05001", "EPS037", "13-5")) {
+            assertEquals(Catalogo.Estado.ACTIVO, estado(codigo), codigo);
+        }
+        String inactivo = carga.getDeshabilitados().iterator().next();
+        assertEquals(Catalogo.Estado.INACTIVO, estado(inactivo));
+        assertEquals(Motivo.RETIRADO_POR_LA_FUENTE, ultimoCambio(inactivo).getMotivo());
+    }
+
+    @Test
     @DisplayName("HU-038 Esc. 2: las filas con errores se rechazan, y una recarga completa sin inactivar")
     void esc2_filasConErroresYRecarga() {
         ResultadoCarga carga = entidades.leerCarga(
-                csv("código;nombre\nENT101;Entidad uno\nENT12;Cinco caracteres\nENT103;\n"), PRIMERA);
+                csv("código;nombre\nENT101;Entidad uno\nENT_12;Guion bajo\nENT103;\n"), PRIMERA);
         assertEquals(3, carga.getFilasLeidas());
         assertEquals(List.of(2, 3), carga.getRechazadas().stream().map(ResultadoCarga.Rechazo::numero).toList());
         entidades.confirmarCarga(carga, Map.of());

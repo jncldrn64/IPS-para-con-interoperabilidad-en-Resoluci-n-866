@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.ipssaludyvida.comun.interfaces.CrudCatalogo;
 import com.ipssaludyvida.comun.modelos.Catalogo;
 import com.ipssaludyvida.comun.modelos.CatalogoCambio;
+import com.ipssaludyvida.comun.modelos.Motivo;
 import com.ipssaludyvida.comun.servicios.DatosVersion;
 import com.ipssaludyvida.comun.servicios.ResultadoCarga;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
@@ -44,6 +45,11 @@ class CasosLimiteTest {
     static final Path HOJA_15 = Path.of("data/catalogos/etnias-hoja-15.csv");
     static final DatosVersion RESOLUCION_866 = new DatosVersion(REFERENCIA, null,
             LocalDate.of(2026, 10, 18), "Resolución 866 de 2021", LocalDate.of(2021, 6, 25));
+
+    static final DatosVersion PRUEBA_1 = new DatosVersion("Fuente de prueba", null,
+            LocalDate.of(2026, 10, 18), "Versión de prueba 1", LocalDate.of(2025, 1, 1));
+    static final DatosVersion PRUEBA_2 = new DatosVersion("Fuente de prueba", null,
+            LocalDate.of(2026, 10, 18), "Versión de prueba 2", LocalDate.of(2026, 1, 1));
 
     @Autowired CrudCatalogo<Etnia> etnias;
     @Autowired CrudCatalogo<ComunidadEtnica> comunidades;
@@ -228,6 +234,43 @@ class CasosLimiteTest {
         IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
                 () -> etnias.leerCarga(archivo, RESOLUCION_866));
         assertTrue(error.getMessage().contains("como Excel"), error.getMessage());
+    }
+
+    @Test
+    void laColumnaHabilitadoEnLaPrimeraCarga() throws IOException {
+        Path archivo = Files.writeString(carpeta.resolve("habilitado.csv"),
+                "código;nombre;Habilitado\n001;Uno;SI\n002;Dos;NO\n003;Tres;\n",
+                StandardCharsets.UTF_8);
+        ResultadoCarga carga = comunidades.leerCarga(archivo, PRUEBA_1);
+        assertEquals(List.of("002"), List.copyOf(carga.getDeshabilitados()));
+        comunidades.confirmarCarga(carga, Map.of());
+        assertEquals(List.of("001", "003"), activas());
+        List<CatalogoCambio> historial = comunidades.historial("002");
+        assertEquals(List.of(CatalogoCambio.Tipo.CREADO, CatalogoCambio.Tipo.INACTIVADO),
+                historial.stream().map(CatalogoCambio::getTipo).toList());
+        assertEquals(Motivo.RETIRADO_POR_LA_FUENTE, historial.get(1).getMotivo());
+    }
+
+    @Test
+    void laColumnaHabilitadoEnUnaVersionNueva() throws IOException {
+        comunidades.confirmarCarga(comunidades.leerCarga(Files.writeString(
+                carpeta.resolve("v1.csv"), "código;nombre\n001;Uno\n002;Dos\n003;Tres\n",
+                StandardCharsets.UTF_8), PRUEBA_1), Map.of());
+        comunidades.inactivar("002", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        comunidades.inactivar("003", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
+        ResultadoCarga carga = comunidades.leerCarga(Files.writeString(carpeta.resolve("v2.csv"),
+                "código;nombre;habilitado\n001;Uno;NO\n002;Dos;NO\n003;Tres;SI\n",
+                StandardCharsets.UTF_8), PRUEBA_2);
+        assertEquals(List.of("003"), carga.getVuelven());
+        comunidades.confirmarCarga(carga, Map.of());
+        assertEquals(List.of("003"), activas());
+        List<CatalogoCambio> historial = comunidades.historial("001");
+        assertEquals(Motivo.RETIRADO_POR_LA_FUENTE, historial.get(historial.size() - 1).getMotivo());
+        assertEquals(2, comunidades.historial("002").size());
+    }
+
+    private List<String> activas() {
+        return comunidades.listarActivos().stream().map(Catalogo::getCodigo).toList();
     }
 
     private static String fila(int numero, String... celdas) {
