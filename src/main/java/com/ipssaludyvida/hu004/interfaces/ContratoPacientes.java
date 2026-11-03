@@ -35,6 +35,14 @@ public interface ContratoPacientes {
      */
     Paciente registrar(DatosPaciente datos);
 
+    /**
+     * Cambia los datos de un paciente con las mismas reglas del registro (HU-006). Un valor que el
+     * paciente ya tenía se acepta aunque hoy esté inactivo, mientras no se cambie (RC-4). Lanza
+     * RegistroInvalido si un dato falta o está mal, e IllegalStateException si el documento nuevo
+     * ya lo tiene otro paciente. No guarda el historial: eso es de quien lo llama.
+     */
+    Paciente actualizar(Paciente paciente, DatosPaciente datos);
+
     Optional<Paciente> buscar(String tipoDocumento, String numeroDocumento);
 
     /**

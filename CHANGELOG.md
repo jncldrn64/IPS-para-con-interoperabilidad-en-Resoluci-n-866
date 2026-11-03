@@ -5,6 +5,31 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.32 — 2026-11-02
+
+HU-006 queda completa: el auxiliar de admisión actualiza o corrige los datos de un paciente, y el
+dato anterior queda en el historial. Con ella están hechas las 12 historias de la fase 0. El
+programa no muestra una versión.
+
+### Added
+- `comun/modelos/HistorialCambio`, la tabla historial_cambio del modelo E-R, con su repositorio,
+  que no borra.
+- `hu006/`: `ContratoCambiosPaciente`, `CambiosPacienteServicio` y
+  `CambiosPacienteControlador`, con las opciones de cambiar datos y ver el historial.
+- `hu004/controladores/FormularioPaciente`: cómo pide la terminal cada dato, compartido por el
+  registro y la actualización.
+- `ContratoPacientes.actualizar`, con las reglas del registro y RC-4, y `DatosPaciente.de` y
+  `valores`, para comparar un paciente antes y después.
+- `UsuarioRepositorio.findById`, para el nombre y la identificación de quien cambió.
+- `HU006CambiosPacienteTest`, con 17 tests de los 13 escenarios: 468 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "Jorge hace HU-006 con el historial común".
+
+### Changed
+- `PacienteControlador` pide los datos con `FormularioPaciente`, sin cambiar lo que pregunta.
+- `BaseComunTest` revisa que `HistorialCambioRepositorio` no pueda borrar.
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la memoria de Jorge describen
+  HU-006.
+
 ## v0.31 — 2026-11-02
 
 HU-005 queda completa: el auxiliar de admisión y el médico tratante consultan un paciente por su

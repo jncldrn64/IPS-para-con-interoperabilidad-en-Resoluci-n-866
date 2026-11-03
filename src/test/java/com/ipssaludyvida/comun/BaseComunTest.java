@@ -14,6 +14,7 @@ import com.ipssaludyvida.comun.modelos.CatalogoVersion;
 import com.ipssaludyvida.comun.modelos.Motivo;
 import com.ipssaludyvida.comun.repositorios.CatalogoCambioRepositorio;
 import com.ipssaludyvida.comun.repositorios.CatalogoVersionRepositorio;
+import com.ipssaludyvida.comun.repositorios.HistorialCambioRepositorio;
 import com.ipssaludyvida.comun.servicios.DatosVersion;
 import com.ipssaludyvida.comun.servicios.RegistroCatalogos;
 import com.ipssaludyvida.hu001.Usuarios;
@@ -189,7 +190,8 @@ class BaseComunTest {
                 OcupacionRepositorio.class, MunicipioRepositorio.class,
                 DepartamentoRepositorio.class, CategoriaDiscapacidadRepositorio.class,
                 PaisRepositorio.class, TipoDocumentoRepositorio.class,
-                EntidadPlanBeneficiosRepositorio.class, PacienteRepositorio.class}) {
+                EntidadPlanBeneficiosRepositorio.class, PacienteRepositorio.class,
+                HistorialCambioRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");

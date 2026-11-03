@@ -54,14 +54,15 @@ las 7 claves de la configuración.
 | Carpeta, bajo `src/main/java/com/ipssaludyvida/` | Qué guarda |
 |---|---|
 | `comun/interfaces/` | `CrudCatalogo`, el contrato de los 8 catálogos, y `Controlador` |
-| `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
-| `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
+| `comun/modelos/` | `Catalogo`, `CatalogoVersion`, `CatalogoCambio`, `Motivo` y `HistorialCambio` |
+| `comun/repositorios/` | `CatalogoRepositorio`, los de versiones y cambios y el del historial |
 | `comun/servicios/` | La base `ServicioCatalogo`, la carga desde un CSV (`ArchivoCsv`) o un Excel (`ArchivoExcel`) y sus resultados, como `Consulta` |
 | `comun/menu/` | `MenuPrincipal`, que pide la sesión y elige la historia, y `Terminal` |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
 | `hu004/` | Pacientes: `ContratoPacientes`, `Paciente`, sus tres listas fijas y lo demás |
 | `hu005/` | Consulta: `ContratoConsultaPacientes`, `Ficha`, `ValorRegistrado` y lo demás |
+| `hu006/` | Cambios: `ContratoCambiosPaciente`, su servicio y su controlador |
 | `hu018/` | Países: `ContratoPaises`, `Pais`, su repositorio, su servicio y `PaisControlador` |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
@@ -106,13 +107,12 @@ Los otros atributos de los 16 son valores del paciente o listas fijas de 5 o men
 (`docs/REQUIREMENTS.md`, sección 3). Un catálogo sin datos se llena creando valores a mano o con
 una carga, en la base de prueba.
 
-Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de
-salir. Con sesión, lista por su número las historias que el cargo ve. El 2026-11-02, una corrida
-que entró como `admision` vio de la 1 a la 10: Registro de un paciente (HU-004), Consulta de un
-paciente (HU-005), Países (HU-018), Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento
-(HU-034), Categorías de discapacidad (HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y
-Entidades del plan de beneficios (HU-038). El médico tratante vio la consulta y no el registro, y
-el profesional de estadística no vio ninguno de los dos.
+Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
+Con sesión, lista por su número las historias que el cargo ve. El 2026-11-02, una corrida que entró
+como `admision` vio primero Registro de un paciente (HU-004), Consulta de un paciente (HU-005) y
+Actualización y corrección de un paciente (HU-006), y después los ocho catálogos, de Países (HU-018)
+a Entidades del plan de beneficios (HU-038). El médico tratante vio solo la consulta de las tres, y
+el profesional de estadística ninguna.
 
 Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la
 opción siguiente pide entrar de nuevo.
@@ -129,6 +129,14 @@ dato en su línea, con "Sin dato" en un opcional vacío. Cada valor de catálogo
 tenía el día del registro: `ConsultaPacienteServicio.valor` lo saca del último cambio de creación
 o de nombre anotado hasta `registradoEn`. Si el nombre cambió después, sale también el vigente, y
 un valor inactivo hoy lleva la marca "[inactivo en el catálogo]".
+
+La actualización y corrección de un paciente busca al paciente, pregunta si es una actualización o
+una corrección y lista los 19 datos con su valor. Se elige por número el que cambia y se pide con
+las mismas preguntas del registro, que viven en `FormularioPaciente`. Antes de guardar muestra cada
+dato con su valor anterior y el nuevo, y pide confirmar. `CambiosPacienteServicio.cambiar` valida
+con `ContratoPacientes.actualizar` y deja una fila de `HistorialCambio` por dato que cambió. La
+opción del historial muestra, por dato, el valor vigente y cada cambio con su autor y su
+identificación.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -214,7 +222,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 12656 líneas en 107 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 13718 líneas en 114 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía

@@ -85,6 +85,9 @@ Fuente de las líneas de este grupo que no citan otra: 2026-10-22 "Se adopta la 
 Todas las líneas salen de la primera sección del CHANGELOG, la v0.1 del 2026-10-22, salvo las
 que citan su fuente.
 
+- **actualización**: el cambio de un dato del paciente que cambió en la realidad, como una
+  mudanza. El dato anterior queda en el historial de cambios (2026-11-02 "Jorge hace HU-006 con el
+  historial común").
 - **anexo técnico**: el anexo de la Resolución 866 de 2021, con 49 datos en cuatro grupos. Este
   backlog cubre los numerales 1 a 23 (D-16, pregunta abierta al docente).
 - **anular**: marcar como no válido un registro hecho por error, sin borrarlo. Aplica a la
@@ -103,6 +106,9 @@ que citan su fuente.
   ([2.3]; 2026-10-22 "El umbral de catálogo es más de 5 valores").
 - **componente**: una parte de un numeral con su propio tipo, formato y longitud. El triage tiene
   dos.
+- **corrección**: el cambio de un dato del paciente que se registró mal. Como la actualización,
+  deja el dato anterior en el historial de cambios, con el nombre y la identificación de quien
+  corrigió (RC-6; 2026-11-02 "Jorge hace HU-006 con el historial común").
 - **CRUD de catálogo**: carga (crear: el archivo oficial o un valor por cambio oficial), consulta
   (leer: consulta, búsqueda, comprobación e historial), actualización (cambio oficial de código o de
   nombre) e inactivación y reactivación, que es el Delete. Son las cuatro palabras del título de
@@ -131,6 +137,9 @@ que citan su fuente.
   la columna Habilitado").
 - **historia de usuario** o **HU**: un pedido con formato Como, Quiero, Para y sus escenarios. El
   backlog tiene 30, con ID de HU-001 a HU-043; los números que faltan son tarjetas archivadas.
+- **historial de cambios**: la tabla común historial_cambio, con el valor anterior y el nuevo de
+  cada dato que se actualizó o se corrigió, quién y cuándo. Hoy la usa el paciente (2026-11-02
+  "Jorge hace HU-006 con el historial común").
 - **inactivar**: dejar de ofrecer un valor de catálogo en registros nuevos sin borrarlo; los
   registros que lo usan lo conservan (RC-4, D-20).
 - **inicio de sesión**: HU-001. Identifica a la persona y le muestra solo las opciones de su cargo.
