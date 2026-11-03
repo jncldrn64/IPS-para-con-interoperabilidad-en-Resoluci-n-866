@@ -81,13 +81,40 @@
 - Jorge adjuntó `resolucion-866-de-2021.pdf`. Sus hojas 13 a 15, miradas como imagen, confirman los
   valores y las longitudes de los numerales 2 a 6 y 14 que usa HU-004.
 
+## 2026-11-02: HU-005
+
+- "ahora podemos seguir con la otra historia o que ?"
+- El modelo le pidió fusionar antes el PR #37, por la regla del profesor y la de `CLAUDE.md`,
+  sección 7. Jorge lo fusionó desde la web, con "Crear una confirmación de fusión": "listo".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "HU-005 saca el nombre del día
+  de la tabla de cambios".
+
+## 2026-11-02: HU-006
+
+- "dame la direcion repositorio"
+- "pero donce tengo que aporbar la fusion"
+- Jorge fusionó el PR #39, de HU-005.
+- Jorge adjuntó la tarjeta de HU-006, del integrante 3: "vamos a hacer esta". El modelo revisó que
+  no hubiera trabajo del autor en ella, y Jorge escribió: "no la esta haciendo".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "Jorge hace HU-006 con el
+  historial común".
+
+## 2026-11-02: la DIVIPOLA
+
+- Jorge fusionó el PR #40, de HU-006.
+- "explicame mas esto para comunicarlo con los otrsomiembros"
+- "eso a quien le tocaria a mi cuando hice la hu 26?" El modelo le dijo que sí: la carga del
+  archivo oficial es parte de HU-026.
+- "dime como la busco". Jorge adjuntó `Listados_DIVIPOLA.xlsx`: "si esta".
+- Lo que decidió el modelo está en `docs/DECISIONS.md`, 2026-11-02 "La DIVIPOLA entra al archivo
+  de la base".
+
 ## 3. Pendiente
 
-- Que Jorge revise el PR de HU-004, con "Lo que decidió el modelo", y lo fusione: en la página del
-  PR, "Ready for review" y después "Merge pull request".
-- Después: HU-005, consulta de un paciente, con la rama saliendo de `main` ya fusionado.
-- Cargar la DIVIPOLA y la tabla de entidades de SISPRO: sin ellas, el archivo de la base no deja
-  registrar a nadie. Si Jorge las adjunta, el modelo las pasa a CSV.
+- Que Jorge revise el PR de la DIVIPOLA, con "Lo que decidió el modelo", y lo fusione. Mientras
+  esté abierto tiene el turno de `data/ips.mv.db`: avisar al grupo.
+- Avisar al autor que Jorge hizo HU-006, que era suya.
+- Con HU-006 están las 12 historias de la fase 0. Lo que sigue lo decide el equipo.
 - Una sección "Cómo correr el programa" en `README.md`, para el profesor. Es común.
 - Preguntar al profesor si acepta que el programa siga en terminal, qué se exige con los tipos de
   documento AS, MS y SI (D-19) y si le basta la CIUO-88 A.C. completa.

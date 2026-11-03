@@ -2560,9 +2560,10 @@ un mensaje, y el menú sigue" de `docs/DECISIONS.md`:
 - `EntradasInvalidasTest` recorre el programa con un teclado al azar; no encontró caídas, y sí dos
   mensajes en inglés, que pasaron a español. El menú principal y el de cada catálogo atrapan
   cualquier error. 412 tests, 0 fallas, y dos mutaciones del respaldo hacen fallar los tests.
-- El #37 de Jorge, HU-004, se fusionó primero, como recomendó el modelo. El PR trajo `main` con
-  un merge, pasó a la v0.31 y corrió 440 tests, 0 fallas: el recorrido al azar entra también al
-  registro de un paciente. Los 217 escenarios de las 10 historias tienen test.
+- Antes que este PR se fusionaron los #37, #39, #40 y #41: HU-004, HU-005, HU-006 y la DIVIPOLA.
+  El PR trajo `main` dos veces con un merge, pasó a la v0.34 y corrió 476 tests, 0 fallas: el
+  recorrido al azar entra también al registro, la consulta y la corrección de un paciente. Los
+  243 escenarios de las 12 historias del semestre tienen test.
 - Lo de Jorge queda como dijo el autor: si no puede, el autor aplica el Excel en HU-026.
 
 **Estado:** `vigente`
@@ -2717,9 +2718,9 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 ## 12. Pendientes y próximo paso
 
 0000000000000000000000000000000000000. **Próximo (2026-11-02, revisión y teclado al azar):** que el
-   autor fusione el PR de la revisión y cuente cómo le fue al correr el programa en su máquina. Después:
-   LCEResguardos para HU-037, que el autor vio en SISPRO; avisarle a Jorge de Municipio y
-   Departamento; la auditoría de Jorge. HU-006 espera HU-004.
+   autor fusione el PR de la revisión y cuente cómo le fue al correr el programa en su máquina.
+   Las 12 historias del semestre están en `main`: Jorge hizo HU-004, HU-005, HU-006 y la carga de
+   la DIVIPOLA. Queda LCEResguardos para HU-037 y la auditoría de Jorge.
 000000000000000000000000000000000000. **Anterior (2026-11-02, Habilitado y EAPB):** que el autor
    fusione el PR de la columna `Habilitado` y la tabla CodigoEAPByNit, que tiene el turno de
    `data/ips.mv.db`. Después: avisarle a Jorge que Municipio y Departamento de SISPRO están en

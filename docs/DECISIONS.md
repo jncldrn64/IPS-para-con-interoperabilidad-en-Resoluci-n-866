@@ -2352,6 +2352,121 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-02: HU-005 saca el nombre del día de la tabla de cambios
+
+**Contexto:** HU-005 es la última de las 12 que le tocan a Jorge, el integrante 1, y depende de
+HU-001 y HU-004, ya en `main`. Su escenario 13 pide el nombre con que se registró cada valor y,
+si cambió después, el vigente (RC-11). HU-004 guarda solo los códigos (2026-11-02 "HU-004 guarda
+los códigos y junta todos los errores"). Jorge adjuntó la tarjeta, fusionó el PR #37 y escribió:
+
+- "ahora podemos seguir con la otra historia o que ?"
+- "listo"
+
+**Decisión:** `ConsultaPacienteServicio.valor` busca en la tabla de cambios del catálogo el último
+cambio de creación o de nombre anotado hasta la hora del registro, y toma su nombre nuevo. Si el
+nombre de hoy es otro, lo da como vigente, y si el valor está inactivo hoy, lo marca. La pantalla
+es la misma para el auxiliar de admisión y el médico tratante, y no ofrece cambiar nada.
+
+Lo que decidió el modelo:
+
+- Un valor sin cambios anotados hasta ese día, como un departamento o un valor creado en la base a
+  mano, toma el nombre vigente.
+- El tipo de documento se elige de la lista, por su número o su código. Sin el tipo, o sin el
+  número, no se busca y se dice cuál falta (escenario 3).
+- Cada dato va en su línea, con "Sin dato" en un opcional vacío. La ciudad dice "No aplica: reside
+  fuera de Colombia" si el país no es Colombia, y la comunidad étnica, "No aplica" con la etnia 99.
+- La ciudad lleva el nombre vigente de su departamento, que no tiene historial.
+- La ficha termina con la fecha y la hora del registro, sin el nombre de quien lo hizo.
+- La pantalla no tiene la opción de actualizar: llega con HU-006, que es del integrante 3.
+
+**Alternativas:**
+
+- Guardar en el paciente el nombre de cada valor al registrarlo. El modelo E-R lo descarta, y HU-004
+  ya guarda solo el código.
+- Buscar el nombre por la fecha del registro, sin la hora. Un cambio de nombre hecho el mismo día,
+  después del registro, saldría como el nombre del registro.
+
+**Estado:** `vigente`
+
+## 2026-11-02: Jorge hace HU-006 con el historial común
+
+**Contexto:** HU-006 es del integrante 3, el autor, en el reparto de `docs/ROADMAP.md`, y era la
+única de las 12 sin hacer. Con HU-004 y HU-005 en `main`, Jorge, el integrante 1, adjuntó su
+tarjeta. El modelo revisó el repo: no había rama, PR ni carpeta de HU-006. Jorge escribió:
+
+- "vamos a hacer esta"
+- "no la esta haciendo"
+
+**Decisión:** Jorge hace HU-006. Los cambios del paciente quedan en `HistorialCambio`, la tabla
+historial_cambio del modelo E-R, en `comun/` porque la atención, la oposición y la voluntad
+anticipada la van a usar también. `ContratoPacientes.actualizar` valida con las mismas reglas del
+registro, y el servicio de HU-006 deja una fila por dato que cambió, con el valor anterior, el
+nuevo, el tipo, quién y cuándo. Si algo falla, no cambia nada. El registro y la actualización piden
+los datos con la misma clase, `FormularioPaciente`.
+
+Lo que decidió el modelo:
+
+- Un valor que el paciente ya tenía se acepta aunque hoy esté inactivo, mientras no se cambie
+  (RC-4). En una nacionalidad o una discapacidad, vale para cada valor que ya estaba.
+- El historial guarda los códigos, y los datos con varios valores, ordenados y separados por coma.
+  Un dato vacío se guarda vacío y se muestra "Sin dato".
+- Si ningún dato cambió, no se guarda nada y se dice.
+- Cambiar el tipo y el número de documento se acepta si nadie más lo tiene; si lo tiene otro
+  paciente, se rechaza (escenario 9).
+- La pantalla pregunta primero si es una actualización o una corrección, y ese tipo vale para todos
+  los datos que se cambien en esa vez.
+- El nombre y la identificación de quien cambió salen del usuario guardado en la fila
+  (`UsuarioRepositorio.findById`).
+- La consulta de HU-005 sigue buscando el nombre del día por la fecha del registro. Un valor nuevo,
+  creado después de esa fecha, muestra su nombre vigente.
+
+**Alternativas:**
+
+- Esperar al autor. Era la última de las 12, y nada en el repo decía que la estuviera haciendo.
+- Guardar el historial dentro de `hu006/`. La atención (HU-009), la oposición (HU-012) y la
+  voluntad anticipada (HU-016) necesitan la misma tabla.
+- Copiar en HU-006 las preguntas del registro. Serían dos copias que se corrigen aparte.
+
+**Estado:** `vigente`
+
+## 2026-11-02: La DIVIPOLA entra al archivo de la base
+
+**Contexto:** HU-026 quedó completa en la v0.21 sin el archivo oficial, y la tabla Municipio de
+SISPRO no traía el nombre del departamento. Sin municipios, nadie que viva en Colombia se podía
+registrar. El modelo le explicó a Jorge que la carga es parte de su historia y le dio el camino de
+descarga que publica el DANE. Jorge preguntó y después adjuntó el archivo:
+
+- "eso a quien le tocaria a mi cuando hice la hu 26?"
+- "dime como la busco"
+- "si esta"
+
+**Decisión:** La hoja Municipios del `Listados_DIVIPOLA.xlsx` del DANE, actualizado al 30 de
+septiembre de 2026, se pasa a `data/catalogos/divipola-municipios.csv` y se carga en
+`data/ips.mv.db` con la opción 8 del menú de municipios y la sesión de `estadistica`. Este PR toma
+el turno del archivo de la base (`docs/DESIGN.md`, sección 8): el PR #38, el único abierto, no lo
+cambia. La carga leyó 1.122 filas, las aceptó todas y guardó 33 departamentos.
+
+Lo que decidió el modelo:
+
+- Entran las 18 áreas no municipalizadas y la isla de San Andrés, porque el DANE las codifica en
+  la misma lista y alguien puede vivir en ellas.
+- El CSV va con las cuatro columnas que pide la carga. El Excel no va al repo: pesa 1,2 MB y trae
+  además 8.560 cabeceras y centros poblados que ninguna historia usa.
+- La fecha de publicación es el 2026-09-30, la que dice la hoja Departamentos. La de descarga es
+  el 2026-11-02, el día en que Jorge lo adjuntó.
+- SISPRO trae dos códigos que el DANE ya no tiene, 27086 y 94663. No entran.
+- Antes de cargar en el archivo, la carga se ensayó sobre una copia. Abrir el archivo con el
+  programa creó las tablas vacías del paciente y del historial.
+
+**Alternativas:**
+
+- Cargar la tabla Municipio de SISPRO y sacar el nombre del departamento de su tabla Departamento.
+  Serían dos archivos para una carga que pide uno, y el DANE es la fuente de la DIVIPOLA.
+- Dejar fuera las áreas no municipalizadas. Una persona que vive en La Chorrera no tendría
+  municipio que elegir.
+
+**Estado:** `vigente`
+
 ## 2026-11-02: Un valor equivocado da un mensaje, y el menú sigue
 
 **Contexto:** El autor pidió revisar las historias hechas antes de seguir. Escribió, textual:

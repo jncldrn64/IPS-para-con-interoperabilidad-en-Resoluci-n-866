@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 440 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 476 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -36,6 +36,10 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   repositorio tenga un método para borrar, que el menú principal ordene las historias, abra la
   elegida y diga qué base abrió, el corte de la terminal cuando se acaba la entrada, los tres casos
   de la lista de rechazadas que ya existe y el largo de la columna del código.
+- `hu006/HU006CambiosPacienteTest`, con 17 tests: los 13 escenarios de HU-006. Cada test registra
+  a la paciente con HU-004 y la cambia con la sesión del auxiliar de admisión.
+- `hu005/HU005ConsultaPacienteTest`, con 18 tests: los 13 escenarios de HU-005. Cada test
+  registra al paciente con HU-004 y lo consulta, por el servicio o por la pantalla.
 - `hu004/HU004RegistroPacienteTest`, con 28 tests: los 15 escenarios de HU-004. Cada test crea
   por cambio oficial unos pocos valores de los 8 catálogos, y los de la pantalla contestan dato por
   dato, con las respuestas de `RESPUESTAS`.
@@ -57,9 +61,9 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   estructura de prueba que arma el test, con 10 grandes grupos, 34 subgrupos principales, 117
   subgrupos y 401 grupos primarios, y que cada test cambia. `esc1_archivoOficial` carga
   `data/catalogos/ciuo-88-ac.csv`.
-- `hu026/HU026MunicipiosTest`, con 35 tests: los 25 escenarios de HU-026, con un archivo de prueba
-  de 9 municipios de 8 departamentos y Albania en tres, porque el de la DIVIPOLA no se ha
-  descargado.
+- `hu026/HU026MunicipiosTest`, con 36 tests: los 25 escenarios de HU-026. Casi todos usan un
+  archivo de prueba de 9 municipios de 8 departamentos, con Albania en tres. `esc1_archivoOficial`
+  carga `data/catalogos/divipola-municipios.csv`.
 - `comun/CasosLimiteTest`, con 20 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8. Cinco son de
@@ -101,7 +105,8 @@ tests copian los de HU-036, así que cada caso de su "Dado" tiene su método.
 Con `hu018`, imprimió los 22 de HU-018, cuya tarjeta tiene los mismos escenarios que la de HU-037,
 salvo el género de las palabras, comparados con `diff`. El 2026-11-02 imprimió también los 23 de
 HU-034 y los 22 de HU-038, cuyas tarjetas repiten las de HU-035 y HU-037, salvo la lista y la
-redacción. Con `hu004`, imprimió los 15 de HU-004.
+redacción. Con `hu004`, imprimió los 15 de HU-004, y con `hu005`, los 13 de HU-005. Con `hu006`,
+imprimió los 13 de HU-006.
 
 Para todas las historias a la vez, este comando cuenta los escenarios de cada tarjeta que tienen un
 test con su `@DisplayName`:
@@ -117,8 +122,8 @@ for f in sorted(glob.glob('docs/context/trello/tarjetas/HU-0*.md')):
     if n: print(hu, len(e), 'escenarios,', len(n & e), 'con test')"
 ```
 
-El 2026-11-02 imprimió, para HU-001, HU-004, HU-018, HU-022, HU-026 y HU-034 a HU-038, tantos
-con test como escenarios: 217 de 217.
+El 2026-11-02 imprimió, para las 12 historias del semestre, tantos con test como escenarios: 243
+de 243.
 
 ## 4. El CI
 

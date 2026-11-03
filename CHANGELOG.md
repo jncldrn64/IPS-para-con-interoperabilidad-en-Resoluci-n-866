@@ -5,14 +5,14 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
-## v0.31 — 2026-11-02
+## v0.34 — 2026-11-02
 
 Un valor equivocado da un mensaje en cualquier menú, y un test lo comprueba recorriendo el programa
 con un teclado al azar. El programa no muestra una versión.
 
 ### Added
 - `EntradasInvalidasTest`: el programa entero, por cargo, con un teclado al azar, y dos tests del
-  respaldo de errores. Una carga por el menú en HU-037 y otra en HU-038: 440 tests.
+  respaldo de errores. Una carga por el menú en HU-037 y otra en HU-038: 476 tests.
 - `MenuPrincipal.inesperado`, el mensaje de un error que nadie esperaba, y `leerRuta` en
   `ControladorCatalogo`.
 - `docs/DECISIONS.md`: 2026-11-02 "Un valor equivocado da un mensaje, y el menú sigue".
@@ -21,11 +21,73 @@ con un teclado al azar. El programa no muestra una versión.
 
 ### Changed
 - El menú principal y el de cada catálogo atrapan cualquier error y siguen. El recorrido al azar
-  pasa también por el registro de un paciente de HU-004.
+  pasa también por el registro, la consulta y la corrección de un paciente, de HU-004 a HU-006.
 - Una ruta con un carácter que no sirve y una carpeta en lugar de un archivo dan su mensaje en
   español.
 - La opción 8 dice "Cargar desde un archivo, CSV o Excel".
 - `docs/DESIGN.md`, sección 4, con la regla del respaldo.
+
+## v0.33 — 2026-11-02
+
+El archivo de la base trae los 1.122 municipios de la DIVIPOLA del DANE, con sus 33 departamentos,
+y ya se puede registrar a un paciente que vive en Colombia. El programa no muestra una versión.
+
+### Added
+- `data/catalogos/divipola-municipios.csv`, de la hoja Municipios del `Listados_DIVIPOLA.xlsx` del
+  DANE, con su fuente en `data/catalogos/README.md`.
+- `HU026MunicipiosTest.esc1_archivoOficial`, que carga ese archivo: 469 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "La DIVIPOLA entra al archivo de la base".
+
+### Changed
+- `data/ips.mv.db` trae los municipios, cargados con la opción 8 de su menú y la sesión de
+  `estadistica`.
+- `docs/ARCHITECTURE.md` cierra los huecos de los municipios, y `docs/ROADMAP.md`, `tests/README.md`
+  y la memoria de Jorge lo describen.
+
+## v0.32 — 2026-11-02
+
+HU-006 queda completa: el auxiliar de admisión actualiza o corrige los datos de un paciente, y el
+dato anterior queda en el historial. Con ella están hechas las 12 historias de la fase 0. El
+programa no muestra una versión.
+
+### Added
+- `comun/modelos/HistorialCambio`, la tabla historial_cambio del modelo E-R, con su repositorio,
+  que no borra.
+- `hu006/`: `ContratoCambiosPaciente`, `CambiosPacienteServicio` y
+  `CambiosPacienteControlador`, con las opciones de cambiar datos y ver el historial.
+- `hu004/controladores/FormularioPaciente`: cómo pide la terminal cada dato, compartido por el
+  registro y la actualización.
+- `ContratoPacientes.actualizar`, con las reglas del registro y RC-4, y `DatosPaciente.de` y
+  `valores`, para comparar un paciente antes y después.
+- `UsuarioRepositorio.findById`, para el nombre y la identificación de quien cambió.
+- `HU006CambiosPacienteTest`, con 17 tests de los 13 escenarios: 468 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "Jorge hace HU-006 con el historial común".
+
+### Changed
+- `PacienteControlador` pide los datos con `FormularioPaciente`, sin cambiar lo que pregunta.
+- `BaseComunTest` revisa que `HistorialCambioRepositorio` no pueda borrar.
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la memoria de Jorge describen
+  HU-006.
+
+## v0.31 — 2026-11-02
+
+HU-005 queda completa: el auxiliar de admisión y el médico tratante consultan un paciente por su
+documento, con el nombre de cada valor. El programa no muestra una versión.
+
+### Added
+- `hu005/`: `ContratoConsultaPacientes`, `ConsultaPacienteServicio`, `ConsultaPacienteControlador`,
+  `Ficha` y `ValorRegistrado`, un valor de catálogo con el nombre del día del registro.
+- La pantalla "Consulta de un paciente (HU-005)", que ven el auxiliar y el médico: muestra cada
+  dato, "Sin dato" en un opcional vacío y la marca de un valor inactivo.
+- El nombre del día del registro sale de la tabla de cambios del catálogo, y si cambió después,
+  la consulta muestra también el vigente (RC-11).
+- `HU005ConsultaPacienteTest`, con 18 tests de los 13 escenarios: 451 tests en total.
+- `docs/DECISIONS.md`: la entrada 2026-11-02 "HU-005 saca el nombre del día de la tabla de
+  cambios".
+
+### Changed
+- `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, `tests/README.md` y la memoria de Jorge describen
+  HU-005.
 
 ## v0.30 — 2026-11-02
 
