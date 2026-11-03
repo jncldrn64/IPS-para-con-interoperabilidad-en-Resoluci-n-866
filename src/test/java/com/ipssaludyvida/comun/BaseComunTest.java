@@ -124,8 +124,13 @@ class BaseComunTest {
 
     @Test
     void cambiarElNombreNoReactivaNiBorraLaVersion() {
+        // La versión existe: desde la v0.40 version_id es una llave foránea.
+        CatalogoVersion version = new CatalogoVersion();
+        version.setCatalogo("Etnia");
+        version.setVersion("Versión de prueba");
+        long id = registro.guardar(version).getId();
         Etnia rom = new Etnia("02", "ROM");
-        rom.setVersionId(7L);
+        rom.setVersionId(id);
         repositorio.save(rom);
         etnias.inactivar("02", Motivo.RETIRADO_POR_LA_FUENTE, REFERENCIA);
         em.flush();
@@ -134,7 +139,7 @@ class BaseComunTest {
         Etnia guardada = etnias.buscarPorCodigo("02").orElseThrow();
         assertEquals("ROM (Gitanos)", guardada.getNombre());
         assertEquals(Catalogo.Estado.INACTIVO, guardada.getEstado());
-        assertEquals(7L, guardada.getVersionId());
+        assertEquals(id, guardada.getVersionId());
     }
 
     @Test

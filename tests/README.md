@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 483 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 484 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -41,6 +41,8 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   a la paciente con HU-004 y la cambia con la sesión del auxiliar de admisión.
 - `hu005/HU005ConsultaPacienteTest`, con 18 tests: los 13 escenarios de HU-005. Cada test
   registra al paciente con HU-004 y lo consulta, por el servicio o por la pantalla.
+- `comun/LlavesDeLaBaseTest`, con 1 test: las 26 llaves foráneas de toda la base, leídas de
+  `INFORMATION_SCHEMA`.
 - `hu004/LlavesDelPacienteTest`, con 3 tests: las 12 llaves foráneas del paciente leídas de
   `INFORMATION_SCHEMA`, la base que rechaza un código que no está en su catálogo, y cuántos
   pacientes usan un valor de cada uno de los 8 catálogos.

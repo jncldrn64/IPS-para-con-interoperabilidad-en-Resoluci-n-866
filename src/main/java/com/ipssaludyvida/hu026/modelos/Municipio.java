@@ -4,11 +4,16 @@ import com.ipssaludyvida.comun.modelos.Catalogo;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Numeral 12, municipio de residencia: un código de 5 caracteres y un nombre de 3 a 200 (hoja 15).
@@ -51,4 +56,12 @@ public class Municipio extends Catalogo {
     public static String departamentoDe(String codigo) {
         return codigo == null || codigo.length() < 2 ? null : codigo.substring(0, 2);
     }
+
+    // La llave foránea del departamento hacia su tabla; solo lectura. Lo que se guarda sigue
+    // siendo el código.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departamento", insertable = false, updatable = false)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Departamento valorDepartamento;
 }

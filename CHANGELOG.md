@@ -5,6 +5,27 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.40 — 2026-11-03
+
+La base tiene las 26 llaves foráneas del modelo E-R, y el CSV sigue al lado del Excel. El programa
+no muestra una versión.
+
+### Added
+- Llaves foráneas de `version_id` en los catálogos y en `departamento`, del departamento de un
+  municipio, y de `usuario_id` en `catalogo_cambio`, `catalogo_version` y `historial_cambio`.
+- `LlavesDeLaBaseTest`, que lee las 26 de la base: 484 tests.
+- `docs/DECISIONS.md`: 2026-11-03 "Las llaves foráneas que faltaban" y "El CSV sigue al lado del
+  Excel".
+
+### Changed
+- `ServicioCatalogo.alConfirmar` corre antes de guardar los valores, para que los departamentos
+  existan cuando entran sus municipios.
+- `data/ips.mv.db`: Hibernate le agregó las 14 llaves nuevas.
+
+### Removed
+- `docs/ROADMAP.md`, Backlog: el ítem del Excel de cada catálogo. Lo de HU-037 pasa al de los
+  catálogos oficiales.
+
 ## v0.39 — 2026-11-03
 
 Cada catálogo dice qué espera de cada dato antes de pedirlo, y hay una guía para pasar la base a

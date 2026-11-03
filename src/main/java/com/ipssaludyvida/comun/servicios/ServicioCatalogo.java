@@ -281,6 +281,9 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
         CatalogoVersion version = carga.getTipo() == ResultadoCarga.Tipo.RECARGA
                 ? registro.versionVigente(catalogo()).orElseThrow()
                 : registro.guardar(nuevaVersion(carga));
+        // Antes de los valores: un municipio apunta a su departamento con una llave foránea, así
+        // que el departamento tiene que estar guardado primero.
+        alConfirmar(carga, version);
         Map<String, T> existentes = datos.findAllByOrderByCodigoAsc().stream()
                 .collect(Collectors.toMap(Catalogo::getCodigo, Function.identity()));
         for (ResultadoCarga.Fila fila : carga.getAceptadas()) {
@@ -338,7 +341,6 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
             cambio.setCodigoReemplazo(reemplazo);
             anotar(cambio, version);
         }
-        alConfirmar(carga, version);
         return version;
     }
 
@@ -378,8 +380,9 @@ public abstract class ServicioCatalogo<T extends Catalogo> implements CrudCatalo
     }
 
     /**
-     * Lo que una historia guarda además de sus valores, al final de confirmarCarga y en la misma
-     * transacción, como los departamentos de HU-026.
+     * Lo que una historia guarda además de sus valores, en la misma transacción de
+     * confirmarCarga y antes de los valores, como los departamentos de HU-026, a los que apunta
+     * cada municipio con una llave foránea.
      */
     protected void alConfirmar(ResultadoCarga carga, CatalogoVersion version) {
     }

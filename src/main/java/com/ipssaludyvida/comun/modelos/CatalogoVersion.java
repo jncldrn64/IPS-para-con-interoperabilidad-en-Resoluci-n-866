@@ -1,10 +1,15 @@
 package com.ipssaludyvida.comun.modelos;
 
+import com.ipssaludyvida.hu001.modelos.Usuario;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,4 +39,11 @@ public class CatalogoVersion {
     private LocalDateTime cargadoEn;
     /** Quién la cargó. Lo llena el inicio de sesión (HU-001); antes queda vacío (RC-5). */
     private Long usuarioId;
+
+    // La llave foránea de usuarioId hacia quien cargó el archivo; solo lectura.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuarioId", insertable = false, updatable = false)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Usuario usuario;
 }

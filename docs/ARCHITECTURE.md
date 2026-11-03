@@ -190,7 +190,7 @@ contenedor de la sesión.
   `COMUNIDAD_ETNICA`, `OCUPACION`, `MUNICIPIO`, `DEPARTAMENTO`, `CATEGORIA_DISCAPACIDAD`, `PAIS`,
   `TIPO_DOCUMENTO`, `ENTIDAD_PLAN_BENEFICIOS`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`,
   vacías `PACIENTE`, `PACIENTE_NACIONALIDAD`, `PACIENTE_DISCAPACIDAD` y `HISTORIAL_CAMBIO`, y las
-  secuencias de sus números. Desde la v0.38 trae las 12 llaves foráneas del paciente. Trae las 7
+  secuencias de sus números. Desde la v0.40 trae las 26 llaves foráneas del modelo E-R. Trae las 7
   etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
   étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
   hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 14 tipos de
@@ -225,7 +225,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14638 líneas en 118 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 14790 líneas en 119 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía

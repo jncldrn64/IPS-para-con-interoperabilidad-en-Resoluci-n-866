@@ -2672,6 +2672,27 @@ de pedirlo" de `docs/DECISIONS.md`:
 
 **Estado:** `vigente`
 
+## 2026-11-03: El diagrama de DBeaver, las llaves que faltaban y el CSV
+
+El autor abrió el archivo de la base en DBeaver, mandó el diagrama exportado y preguntó qué
+controlador de H2 elegir. Después escribió, textual:
+
+- "EL DIAGRAMA no hace falta, agrega las llaves que falten, y de lo que tenemos pendiente ejecuta
+  la tarea que cueste menos"
+
+Lo que respondió e hizo el modelo, con el detalle en las entradas 2026-11-03 "Las llaves foráneas
+que faltaban" y "El CSV sigue al lado del Excel" de `docs/DECISIONS.md`:
+
+- El controlador es H2 Embedded 2.4+, con usuario y clave vacíos y la ruta sin `.mv.db`. El error
+  "Workbench Auto-Save Job" es de DBeaver.
+- 14 llaves nuevas, 26 en total, en H2 y en la MariaDB del contenedor. La del municipio destapó
+  que la carga de HU-026 guardaba los municipios antes que sus departamentos; se corrigió.
+- La tarea más barata de la lista era el Excel: los ocho catálogos ya tienen revisado su formato
+  oficial, y solo dos son Excel. El ítem sale del Backlog.
+- 484 tests, 0 fallas.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2821,7 +2842,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000000000000000000. **Próximo (2026-11-03, ayuda y MariaDB):** que el autor
+0000000000000000000000000000000000000000000. **Próximo (2026-11-03, las 26 llaves):** que el autor
+   fusione el PR de las llaves que faltaban y del CSV. De la lista quedan: HU-037 con
+   LCEResguardos, escribir con tildes y `.\mvnw.cmd test` en Windows, los espacios entre
+   pantallas, MariaDB en la VM, la CIUO-88 A.C. y la CUOC, y D-19. El Excel por catálogo quedó
+   cerrado: el CSV sigue al lado del Excel.
+000000000000000000000000000000000000000000. **Anterior (2026-11-03, ayuda y MariaDB):** que el autor
    fusione el PR de la ayuda de cada dato, la guía de MariaDB y el README. Después, el autor sigue
    `docs/MARIADB-GUIDE.md` en su VM y cuenta cada paso, que se anota aquí. Siguen de la lista:
    HU-037, el Excel, escribir con tildes y `.\mvnw.cmd test` en Windows, los espacios, la CIUO-88

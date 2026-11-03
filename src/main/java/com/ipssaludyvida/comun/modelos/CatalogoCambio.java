@@ -1,11 +1,16 @@
 package com.ipssaludyvida.comun.modelos;
 
+import com.ipssaludyvida.hu001.modelos.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,4 +52,17 @@ public class CatalogoCambio {
     /** Quién lo hizo. Lo llena el inicio de sesión (HU-001); antes queda vacío (RC-5). */
     private Long usuarioId;
     private LocalDateTime fechaHora;
+
+    // Llaves foráneas de versionId y usuarioId; solo lectura.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "versionId", insertable = false, updatable = false)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private CatalogoVersion version;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuarioId", insertable = false, updatable = false)
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Usuario usuario;
 }

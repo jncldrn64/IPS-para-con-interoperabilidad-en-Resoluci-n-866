@@ -17,10 +17,13 @@ principios 6 a 8, de lo que el autor decidió para la fase 0. Qué código los c
 
 **Regla:** un componente que el anexo tipa Alfanumérico se guarda como texto, con su longitud y sus
 ceros iniciales; uno tipado Numérico se guarda como número. La atención y el paciente guardan el
-código, y el nombre para mostrar vive en la tabla del catálogo. Ese código es además una llave
-foránea hacia el catálogo: en el paciente, un `@ManyToOne` de solo lectura sobre la columna del
-código, y las tablas de intersección como `@ManyToMany`, en un solo sentido (`docs/DECISIONS.md`,
-2026-11-03 "El paciente apunta a sus catálogos con llaves foráneas").
+código, y el nombre para mostrar vive en la tabla del catálogo.
+
+Ese código es además una llave foránea hacia el catálogo: en el paciente, un `@ManyToOne` de solo
+lectura sobre la columna del código, y las tablas de intersección como `@ManyToMany`, en un solo
+sentido (`docs/DECISIONS.md`, 2026-11-03 "El paciente apunta a sus catálogos con llaves foráneas").
+Lo mismo vale para `version_id` de cada catálogo, el departamento de un municipio y el `usuario_id`
+de las tablas de cambios (`docs/DECISIONS.md`, 2026-11-03 "Las llaves foráneas que faltaban").
 
 **Por qué:** como número, el municipio 05001 pasa a 5001 y el código de vía de ingreso "01" pasa a
 1, y ninguno de los dos se puede entregar con la forma del anexo. El autor aceptó la regla el
