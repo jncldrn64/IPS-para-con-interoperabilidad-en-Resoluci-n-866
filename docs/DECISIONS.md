@@ -2205,3 +2205,49 @@ Lo que decidió el modelo:
 - Esperar al integrante 2. HU-004 depende de este catálogo y de otros siete.
 
 **Estado:** `vigente`
+
+## 2026-11-02: El autor termina los catálogos del integrante 2 y Jorge toma HU-004
+
+**Contexto:** El integrante 2 no tiene nada en el repo, y HU-004 depende de sus tres catálogos. El
+autor ya había hecho HU-018 (2026-11-02 "HU-018 sale de la tabla Pais de SISPRO"). Escribió:
+
+- "jorge se encargara de HU-004 y HU-005 para aligerar la carga, asi que hagamos el pr minimo, y nos
+  encargamos del resto de HU del integrante 2 en pocas pasadas, entiendo que de estos no hay un
+  axeno externo, o si?"
+- "de hecho no estoy seguro y si  es prudente cuando finalizes esto, hacer un pr para que jorge
+  tenga en cuenta los atributos que haremos, por que entiendo que a el ahora mismo hacer relaciones
+  con entiedades que no exinten, so es posibel, pero puede  su modelo tenerlo en cuenta."
+
+Los tipos de documento están en la hoja 13. Las entidades del plan de beneficios, numeral 15, no
+tienen lista en la norma: el archivo oficial es una tabla de SISPRO que la red de la sesión no
+alcanza.
+
+**Decisión:** HU-034 sigue el molde de HU-035, con la lista de la hoja 13 escrita en su contrato y
+los 14 tipos de documento en el archivo de la base. HU-038 sigue el molde de HU-037, que compara
+contra el archivo que se sube, y queda sin datos hasta que alguien baje su tabla. HU-004 pasa a
+Jorge, el integrante 1, que la hace antes de HU-005. Este mismo PR deja en `docs/ARCHITECTURE.md`,
+sección 2, una tabla de los 8 catálogos que pide HU-004, con su numeral, su clase, su tabla y su
+contrato, para que el modelo de Jorge los use con los nombres que ya tienen.
+
+Lo que decidió el modelo:
+
+- La tabla para Jorge va en este PR y no en otro: los dos cambian el mismo reparto.
+- `TipoDocumento` pide el código con `[A-Z]{2}`, como los 14 de la hoja 13.
+- `EntidadPlanBeneficios` pide el código con `[A-Z0-9]{6}`. El numeral 15 pone 999999 como
+  formato, pero su tipo es Alfanumérico y los códigos de las EAPB llevan letras, como EPS037.
+- Los nombres de clase son los del modelo E-R: `TipoDocumento` y `EntidadPlanBeneficios`.
+- Los 14 tipos se cargaron con la fecha de descarga del 2026-11-02, la de Colombia. A esa hora en
+  UTC ya era el 3, y la carga lo habría rechazado como una fecha futura.
+- 44 tests para HU-034 y 39 para HU-038, con los escenarios de HU-035 y de HU-037. Las tarjetas
+  repiten las de esas historias salvo la lista y la redacción.
+
+**Alternativas:**
+
+- Un PR aparte con la tabla para Jorge. Abría dos PR sobre el mismo reparto, con dos secciones del
+  CHANGELOG.
+- Inventar entidades del plan de beneficios para el archivo de la base. RC-9 pide la versión
+  vigente de la fuente, y un valor inventado no tiene fuente.
+- Pedir `\d{6}` en HU-038, como el formato de la hoja. Rechaza los códigos reales de las EAPB.
+
+**Estado:** `vigente`
+

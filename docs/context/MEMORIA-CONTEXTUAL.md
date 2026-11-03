@@ -2475,6 +2475,33 @@ exporta la fuente" y "HU-018 sale de la tabla Pais de SISPRO" de `docs/DECISIONS
 
 **Estado:** `vigente`
 
+## 2026-11-02: HU-034, HU-038 y HU-004 para Jorge
+
+El autor escribió, textual:
+
+- "jorge se encargara de HU-004 y HU-005 para aligerar la carga, asi que hagamos el pr minimo, y nos
+  encargamos del resto de HU del integrante 2 en pocas pasadas, entiendo que de estos no hay un
+  axeno externo, o si?"
+- "de hecho no estoy seguro y si  es prudente cuando finalizes esto, hacer un pr para que jorge
+  tenga en cuenta los atributos que haremos, por que entiendo que a el ahora mismo hacer relaciones
+  con entiedades que no exinten, so es posibel, pero puede  su modelo tenerlo en cuenta."
+
+Lo que respondió el modelo: los tipos de documento están en la hoja 13 del anexo, y las entidades
+del plan de beneficios no tienen lista en la norma, así que HU-038 queda sin datos. La tabla para
+Jorge va en el mismo PR, y no en otro.
+
+Lo que hizo el modelo, con el detalle en la entrada 2026-11-02 "El autor termina los catálogos del
+integrante 2 y Jorge toma HU-004" de `docs/DECISIONS.md`:
+
+- HU-034 con el molde de HU-035, 44 tests y los 14 tipos cargados en `data/ips.mv.db`.
+- HU-038 con el molde de HU-037, 39 tests y sin datos.
+- La tabla de los 8 catálogos de HU-004 en `docs/ARCHITECTURE.md`, sección 2, y el reparto nuevo
+  en `docs/ROADMAP.md`.
+- 402 tests, 0 fallas. Tres mutaciones, los dos patrones del código y el largo del nombre de
+  HU-038, hacen fallar sus tests.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2624,7 +2651,12 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000000000. **Próximo (2026-11-02, HU-018 hecha):** que el autor fusione
+00000000000000000000000000000000000. **Próximo (2026-11-02, HU-034 y HU-038 hechas):** que el autor
+   fusione el PR de HU-034, HU-038 y la tabla para Jorge, que tiene el turno de `data/ips.mv.db`.
+   Jorge hace HU-004 y HU-005. Del autor queda HU-006, que espera HU-004. Después, del Backlog:
+   CodigoEAPByNit de SISPRO para HU-038, la tabla Municipio para la DIVIPOLA de Jorge, buscar
+   "etnia", la auditoría de Jorge con los niveles y la CUOC, y el Excel de cada catálogo al final.
+0000000000000000000000000000000000. **Anterior (2026-11-02, HU-018 hecha):** que el autor fusione
    el PR de HU-018 y del lector de Excel, que tiene el turno de `data/ips.mv.db`. Después, del
    Backlog: bajar de SISPRO la tabla Municipio para la DIVIPOLA de Jorge y CodigoEAPByNit para
    HU-038, y buscar "etnia". Pendiente: HU-004, la auditoría de Jorge con los niveles y la CUOC, y

@@ -12,7 +12,7 @@ fuente en su versión, y los tests leen estos mismos archivos.
 
 ## 1. Cómo se rehace la base con estos archivos
 
-`data/ips.mv.db` ya trae los cuatro catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
+`data/ips.mv.db` ya trae los cinco catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
 cargarlos en una base vacía, como en una demostración:
 
 1. Se arranca el programa desde la raíz del repo con una base vacía. En memoria, como abajo, no
@@ -78,3 +78,12 @@ cargarlos en una base vacía, como en una demostración:
   referencia Pais"; la dirección de arriba; descarga 2026-11-02; versión "Tabla Pais de SISPRO";
   publicación 2024-02-26, la fecha de actualización de la tabla en el buscador de SISPRO. Cada
   fila dice 2018-10-03 en `Fecha_Actualizacion`.
+
+## 6. tipos-documento-hoja-13.csv
+
+- **Norma:** Resolución 866 de 2021, anexo técnico, numeral 2, hoja 13.
+- **Filas:** 14, de CC a SI, en el orden de la hoja. Los nombres van como los escribe la hoja, con
+  "Cédula ciudadanía" sin "de".
+- **Versión con que se cargó:** fuente "Resolución 866 de 2021, anexo técnico, numeral 2, hoja
+  13"; la misma dirección que etnias; descarga 2026-11-02; versión "Resolución 866 de 2021";
+  publicación 2021-06-25.

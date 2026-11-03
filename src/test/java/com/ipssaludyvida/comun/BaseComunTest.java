@@ -22,6 +22,7 @@ import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu001.modelos.Cargo;
 import com.ipssaludyvida.hu001.repositorios.UsuarioRepositorio;
 import com.ipssaludyvida.hu018.repositorios.PaisRepositorio;
+import com.ipssaludyvida.hu034.repositorios.TipoDocumentoRepositorio;
 import com.ipssaludyvida.hu022.repositorios.OcupacionRepositorio;
 import com.ipssaludyvida.hu026.repositorios.DepartamentoRepositorio;
 import com.ipssaludyvida.hu026.repositorios.MunicipioRepositorio;
@@ -30,6 +31,7 @@ import com.ipssaludyvida.hu036.controladores.EtniaControlador;
 import com.ipssaludyvida.hu036.interfaces.ContratoEtnias;
 import com.ipssaludyvida.hu036.modelos.Etnia;
 import com.ipssaludyvida.hu036.repositorios.EtniaRepositorio;
+import com.ipssaludyvida.hu038.repositorios.EntidadPlanBeneficiosRepositorio;
 import com.ipssaludyvida.hu037.controladores.ComunidadEtnicaControlador;
 import com.ipssaludyvida.hu037.interfaces.ContratoComunidadesEtnicas;
 import com.ipssaludyvida.hu037.modelos.ComunidadEtnica;
@@ -185,7 +187,8 @@ class BaseComunTest {
                 CatalogoCambioRepositorio.class, UsuarioRepositorio.class,
                 OcupacionRepositorio.class, MunicipioRepositorio.class,
                 DepartamentoRepositorio.class, CategoriaDiscapacidadRepositorio.class,
-                PaisRepositorio.class}) {
+                PaisRepositorio.class, TipoDocumentoRepositorio.class,
+                EntidadPlanBeneficiosRepositorio.class}) {
             assertTrue(Arrays.stream(repositorio.getMethods())
                             .noneMatch(m -> m.getName().startsWith("delete")),
                     repositorio.getSimpleName() + " tiene un método para borrar");

@@ -28,8 +28,8 @@ Comprobado el 2026-11-02 contra `git ls-files`.
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
-| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones, las 8 categorías de discapacidad y los 249 países (sección 3) |
-| `data/catalogos/` | Los archivos que se cargan: las etnias, las categorías de discapacidad y la CIUO-88 A.C. en CSV, y la tabla Pais de SISPRO en el Excel con que se descargó, con su fuente y cómo se rehace la base en su `README.md` |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones, las 8 categorías de discapacidad, los 249 países y los 14 tipos de documento (sección 3) |
+| `data/catalogos/` | Los archivos que se cargan: las etnias, las categorías de discapacidad, los tipos de documento y la CIUO-88 A.C. en CSV, y la tabla Pais de SISPRO en el Excel con que se descargó, con su fuente y cómo se rehace la base en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
@@ -64,8 +64,10 @@ las 7 claves de la configuración.
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
 | `hu035/` | Categorías de discapacidad: `ContratoCategoriasDiscapacidad`, `CategoriaDiscapacidad` y lo demás |
+| `hu034/` | Tipos de documento: `ContratoTiposDocumento`, `TipoDocumento` y lo demás |
 | `hu036/` | Etnias: `ContratoEtnias`, `Etnia`, su repositorio, su servicio y `EtniaControlador` |
 | `hu037/` | Comunidades étnicas: `ContratoComunidadesEtnicas`, `ComunidadEtnica` y lo demás |
+| `hu038/` | Entidades del plan de beneficios: `ContratoEntidadesPlanBeneficios`, `EntidadPlanBeneficios` y lo demás |
 
 `application.properties` abre la base de prueba, `jdbc:h2:file:./data/prueba`, relativa a la
 carpeta donde se corre el programa, y el menú principal la muestra en su primera línea, la de
@@ -81,12 +83,31 @@ El menú arranca con `sh ./mvnw spring-boot:run` desde la raíz del repo. Antes 
 menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene ninguno, `admision`,
 `medico` y `estadistica`, con la clave `Clave123`.
 
+Los 8 catálogos que pide el registro del paciente (HU-004) ya tienen su clase. El paciente guarda
+el código de cada uno, como texto (`docs/DESIGN.md`, sección 1), y los pide por su contrato:
+
+| Numeral | Atributo del paciente | Entidad y tabla | Contrato | Datos en el archivo de la base |
+|---|---|---|---|---|
+| 1 y 11 | Nacionalidad, una o varias, y país de residencia | `Pais`, `PAIS` | `ContratoPaises` | 249 |
+| 2 | Tipo de documento | `TipoDocumento`, `TIPO_DOCUMENTO` | `ContratoTiposDocumento` | 14 |
+| 7 | Ocupación, solo las de 4 dígitos | `Ocupacion`, `OCUPACION` | `ContratoOcupaciones` | 562 |
+| 10 | Discapacidad, una o varias | `CategoriaDiscapacidad`, `CATEGORIA_DISCAPACIDAD` | `ContratoCategoriasDiscapacidad` | 8 |
+| 12 | Municipio de residencia | `Municipio`, `MUNICIPIO` | `ContratoMunicipios` | ninguno |
+| 13 | Etnia | `Etnia`, `ETNIA` | `ContratoEtnias` | 7 |
+| 13 | Comunidad étnica, si la etnia es de la 01 a la 06 | `ComunidadEtnica`, `COMUNIDAD_ETNICA` | `ContratoComunidadesEtnicas` | ninguna |
+| 15 | Entidad del plan de beneficios | `EntidadPlanBeneficios`, `ENTIDAD_PLAN_BENEFICIOS` | `ContratoEntidadesPlanBeneficios` | ninguna |
+
+Los otros atributos de los 16 son valores del paciente o listas fijas de 5 o menos
+(`docs/REQUIREMENTS.md`, sección 3). Un catálogo sin datos se llena creando valores a mano o con
+una carga, en la base de prueba.
+
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
-Con sesión, lista por su número las historias que el cargo ve: "Países (HU-018)" en la opción 1,
-"Ocupaciones (HU-022)" en la 2, "Municipios (HU-026)" en la 3, "Categorías de discapacidad (HU-035)"
-en la 4, "Etnias (HU-036)" en la 5 y "Comunidades étnicas (HU-037)" en la 6, como lo mostró una
-corrida que entró como `estadistica` el 2026-11-02. Abajo van la letra C, que cierra la sesión, y el
-0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide entrar de nuevo.
+Con sesión, lista por su número las historias que el cargo ve, de la 1 a la 8: Países (HU-018),
+Ocupaciones (HU-022), Municipios (HU-026), Tipos de documento (HU-034), Categorías de discapacidad
+(HU-035), Etnias (HU-036), Comunidades étnicas (HU-037) y Entidades del plan de beneficios (HU-038),
+como lo mostró una corrida que entró como `estadistica` el 2026-11-02. Abajo van la letra C, que
+cierra la sesión, y el 0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide
+entrar de nuevo.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -135,12 +156,14 @@ Comprobado el 2026-11-02 con el `Shell` de H2 sobre una copia de `data/ips.mv.db
 contenedor de la sesión.
 
 - `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
-  `COMUNIDAD_ETNICA`, `OCUPACION`, `CATEGORIA_DISCAPACIDAD`, `PAIS`, `USUARIO`, `CATALOGO_VERSION`
-  y `CATALOGO_CAMBIO`, y una secuencia para los números de cada una de las tres últimas. Trae las 7
+  `COMUNIDAD_ETNICA`, `OCUPACION`, `MUNICIPIO`, `DEPARTAMENTO`, `CATEGORIA_DISCAPACIDAD`, `PAIS`,
+  `TIPO_DOCUMENTO`, `ENTIDAD_PLAN_BENEFICIOS`, `USUARIO`, `CATALOGO_VERSION` y `CATALOGO_CAMBIO`,
+  y una secuencia para los números de cada una de las tres últimas. Trae las 7
   etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
   étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
-  hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 3 usuarios de
-  prueba; y 826 filas de cambios, una por valor creado.
+  hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 14 tipos de
+  documento de la hoja 13, activos; ningún municipio ni entidad del plan de beneficios; los 3
+  usuarios de prueba; y 840 filas de cambios, una por valor creado.
   Las etnias se cargaron con la
   opción 8 del menú de etnias y `data/catalogos/etnias-hoja-15.csv`, que entonces estaba en
   `src/test/resources/cargas/`. Se cargó en UTC, y
@@ -152,7 +175,8 @@ contenedor de la sesión.
   discapacidad se cargaron el 2026-11-02 con la opción 8 de su menú y
   `data/catalogos/discapacidad-hojas-14-15.csv`, también con `estadistica`. Los países, el mismo
   día, con la opción 8 de su menú y `data/catalogos/pais-sispro.xlsx`, el Excel tal como se exportó
-  de SISPRO, también con `estadistica`. Se reinicia
+  de SISPRO, también con `estadistica`. Los tipos de documento, el mismo día en hora de Colombia,
+  con la opción 8 de su menú y `data/catalogos/tipos-documento-hoja-13.csv`. Se reinicia
   con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
@@ -165,7 +189,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 8766 líneas en 76 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 10258 líneas en 88 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
