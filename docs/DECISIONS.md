@@ -2107,3 +2107,101 @@ Lo que decidió el modelo:
 una entidad en `data/catalogos/`. Quien rehace la base tendría que buscar en dos lugares.
 
 **Estado:** `vigente`
+
+## 2026-11-02: La carga lee también el Excel que exporta la fuente
+
+**Contexto:** Reemplaza en parte a 2026-10-25 "Un catálogo se carga desde un CSV, con la ruta en la
+terminal": el archivo puede ser también el Excel de la fuente. Las tablas de referencia de SISPRO
+se exportan a Excel, y RC-8 pedía guardarlas como "CSV UTF-8" antes de subirlas. El autor escribió:
+
+- "vale, veo un problema, por que mi punto del csv era tener un estandar de subida para no tener que
+  subir parte por parte, pero si ya estas disponibles los catalogos de hicha forma, lo ideal seria
+  que se pudieran subir asi como estan, que solo fuera descargarlos de  sus sitios oficiales, por
+  que ahora que veo parece hasta grotesco que  fuerze csv como estandar cuando ya hay disponibilida
+  en otro formato, aun que bajo el supuesto, realmente mi csv solo tiene sentido si tienes forma de
+  transformar o la facilida un formato a otro, y esperar que el sisteuma que estamso haciendo lo
+  detecte...."
+- "primero centremonos en el catalogo de paises, y que este bien hecho, y entocse vemos el formato
+  de paises, y dejamos el csv como un estandar, pero nos fijamos exactamente en el formato del excel
+  para entonces agregar un modulo de subira excel al catalogo comun para cada uno, y dejamos todo
+  esto anotado, y si nos da tiempo, vamos catalogo por catalogo viendo sus formato oficial en
+  execl, y cuando tengamos todos definidos, pasamos el csv a "!decrepeated" por lo que dejamos todo
+  anotado en el pr, y procedes a evaluar el excel"
+
+El Excel de la tabla Pais, evaluado el 2026-11-02, es un `.xlsx` con una sola hoja, `Table`. La
+primera fila trae los nombres de columna, entre ellos `Codigo` y `Nombre`. Cada celda es un texto
+compartido, con el código como texto y sus ceros, y las celdas vacías no se escriben. El XML usa el
+prefijo `x:`.
+
+**Decisión:** La base común carga un `.xlsx` tal como lo exporta la fuente, además del CSV de RC-8.
+`ServicioCatalogo` lee las filas de un solo lugar, y desde ahí las reglas de RC-8 a RC-11 son las
+mismas para los dos formatos. El CSV sigue como estándar mientras se revisa, catálogo por catálogo,
+el Excel oficial de cada uno. Cuando todos estén definidos, el CSV pasa a obsoleto (Backlog de
+`docs/ROADMAP.md`).
+
+Lo que decidió el modelo:
+
+- El lector, `ArchivoExcel`, usa solo Java: un `.xlsx` es un zip con XML. No agrega Apache POI a
+  `pom.xml`, y no lee el `.xls` viejo de Excel 97 a 2003.
+- Lee la primera hoja del libro, la que dicen el libro y sus relaciones, y busca cada celda por su
+  referencia, porque las vacías no se escriben. Junta los textos con formato y deja fuera la guía
+  fonética.
+- Apaga las entidades externas del XML, para que un archivo armado a propósito no haga que el lector
+  abra otros archivos o direcciones de red.
+- El archivo se reconoce por su extensión, `.xlsx`.
+- Una fila con todas las celdas vacías se salta, en Excel y en CSV. Una línea de CSV con solo punto
+  y coma ya no cuenta como fila leída.
+- La columna `Habilitado` de SISPRO se ignora, como toda columna que no pide la historia. Queda como
+  hueco de `docs/ARCHITECTURE.md`, sección 6, porque una fila con `NO` entraría activa.
+- La terminal dice que acepta el Excel antes de pedir la ruta.
+- RC-8, en la tarjeta de reglas comunes, dice que el Excel se sube tal como se descargó. La lámina
+  no se rehízo.
+
+**Alternativas:**
+
+- Apache POI en `pom.xml`. Lee más formatos, incluido el `.xls`, y suma varias bibliotecas al
+  proyecto. Las tablas de SISPRO salen en `.xlsx`.
+- Dejar solo el CSV y convertir cada Excel a mano. Era el paso donde se perdían los ceros, y el
+  autor lo descartó.
+
+**Estado:** `vigente`
+
+## 2026-11-02: HU-018 sale de la tabla Pais de SISPRO
+
+**Contexto:** HU-018, el catálogo de países, es del integrante 2, que no tiene nada en el repo. El
+autor escribió que la tomaba cuando terminara las suyas:
+
+- "retomando al integrante #2 cuando terminemos las mias, hacemol el catalogo de paises."
+
+La red de la sesión no llega a `web.sispro.gov.co`, y el autor exportó la tabla desde su navegador.
+El buscador de SISPRO trajo cuatro tablas con "pais": Pais (SISPRO-TRV, Estándar Minsalud: Sí, 249
+países), DMESPais (dispositivos médicos, códigos sin ceros), Pais1 (población migrante) y
+PaisReferencia (precios de medicamentos, 9 países).
+
+**Decisión:** HU-018 la hace el autor, y su archivo oficial es la tabla Pais de SISPRO, cargada
+desde el Excel tal como se exportó. Su código es el numérico de la ISO 3166-1, de 3 dígitos y como
+texto: Colombia es 170 y Afganistán 004. Así D-03 queda decidida. HU-018 sigue el molde de HU-037,
+que también compara contra el archivo que se sube, y su tarjeta tiene los mismos 22 escenarios.
+
+Lo que decidió el modelo:
+
+- La tabla Pais y no las otras tres: es la general de SISPRO, de SISPRO-TRV y marcada GEL, y la que
+  nombra el anexo de la Resolución 1888 de 2025. Pais1 es para la población migrante, DMESPais
+  pierde los ceros y PaisReferencia trae 9 países.
+- El Excel va en `data/catalogos/pais-sispro.xlsx` sin convertirlo, y la carga de `data/ips.mv.db`
+  y los tests lo leen así.
+- La fecha de publicación es el 2024-02-26, la de actualización de la tabla en el buscador; cada
+  fila del Excel dice 2018-10-03. La de descarga es el 2026-11-02.
+- Los nombres van en mayúsculas, como los trae SISPRO (D-21).
+- `Pais` pide el código con `\d{3}` y el nombre de 3 a 200 caracteres, como los numerales 1 y 11.
+- 42 tests: los de HU-037 con países, más la carga del Excel real, una fila con "COL" que se
+  rechaza y la comparación contra el mismo Excel.
+
+**Alternativas:**
+
+- El repositorio de lukes en GitHub, con licencia CC BY-SA 4.0 y nombres en inglés. Pide llevar su
+  licencia y deja los nombres distintos de los de SISPRO.
+- Una lista de la DIAN de 2009, que todavía trae Yugoslavia. RC-9 pide la versión vigente.
+- Esperar al integrante 2. HU-004 depende de este catálogo y de otros siete.
+
+**Estado:** `vigente`

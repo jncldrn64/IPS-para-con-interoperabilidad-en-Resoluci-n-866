@@ -28,8 +28,8 @@ Comprobado el 2026-11-02 contra `git ls-files`.
 | `src/main/resources/application.properties` | La base en archivo y el arranque sin servidor web |
 | `src/test/java/com/ipssaludyvida/` | `comun/` y una carpeta por historia (`tests/README.md`) |
 | `src/test/resources/application-test.properties` | La base de los tests, en memoria |
-| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones y las 8 categorías de discapacidad (sección 3) |
-| `data/catalogos/` | Los CSV que se cargan: las etnias, las categorías de discapacidad y la CIUO-88 A.C., con su fuente y cómo se rehace la base en su `README.md` |
+| `data/ips.mv.db` | El archivo de la base, con las 7 etnias, las 562 ocupaciones, las 8 categorías de discapacidad y los 249 países (sección 3) |
+| `data/catalogos/` | Los archivos que se cargan: las etnias, las categorías de discapacidad y la CIUO-88 A.C. en CSV, y la tabla Pais de SISPRO en el Excel con que se descargó, con su fuente y cómo se rehace la base en su `README.md` |
 | `tests/README.md` | Cómo se corren los tests |
 | `docs/*.md` | Los siete documentos canónicos de `docs/` |
 | `docs/context/` | Las tarjetas y las láminas, el modelo E-R y la memoria de cada integrante |
@@ -56,10 +56,11 @@ las 7 claves de la configuración.
 | `comun/interfaces/` | `CrudCatalogo`, el contrato de los 8 catálogos, y `Controlador` |
 | `comun/modelos/` | `Catalogo`, la clase base, y `CatalogoVersion`, `CatalogoCambio` y `Motivo` |
 | `comun/repositorios/` | `CatalogoRepositorio` y los de versiones y cambios; ninguno borra |
-| `comun/servicios/` | La base `ServicioCatalogo`, la carga y sus resultados, como `Consulta` |
+| `comun/servicios/` | La base `ServicioCatalogo`, la carga desde un CSV (`ArchivoCsv`) o un Excel (`ArchivoExcel`) y sus resultados, como `Consulta` |
 | `comun/menu/` | `MenuPrincipal`, que pide la sesión y elige la historia, y `Terminal` |
 | `comun/controladores/` | `ControladorCatalogo`: las 11 opciones que comparten los catálogos |
 | `hu001/` | Sesión: `ContratoSesion`, `SesionServicio`, `Usuario`, `Cargo`, `Permiso` y lo demás |
+| `hu018/` | Países: `ContratoPaises`, `Pais`, su repositorio, su servicio y `PaisControlador` |
 | `hu022/` | Ocupaciones: `ContratoOcupaciones`, `Ocupacion`, su servicio, su controlador y `Nodo` |
 | `hu026/` | Municipios: `ContratoMunicipios`, `Municipio`, `Departamento` y lo demás |
 | `hu035/` | Categorías de discapacidad: `ContratoCategoriasDiscapacidad`, `CategoriaDiscapacidad` y lo demás |
@@ -81,11 +82,11 @@ menú, `UsuariosIniciales` crea los tres usuarios de prueba si la base no tiene 
 `medico` y `estadistica`, con la clave `Clave123`.
 
 Sin sesión, el menú muestra la pantalla de inicio de sesión, con las opciones de entrar y de salir.
-Con sesión, lista por su número las historias que el cargo ve: "Ocupaciones (HU-022)" en la opción
-1, "Municipios (HU-026)" en la 2, "Categorías de discapacidad (HU-035)" en la 3, "Etnias (HU-036)"
-en la 4 y "Comunidades étnicas (HU-037)" en la 5, como lo mostró el 2026-11-02 una corrida que entró
-como `estadistica`. Abajo van la letra C, que cierra la sesión, y el 0, que sale. Pasados 15 minutos
-sin actividad, la opción siguiente pide entrar de nuevo.
+Con sesión, lista por su número las historias que el cargo ve: "Países (HU-018)" en la opción 1,
+"Ocupaciones (HU-022)" en la 2, "Municipios (HU-026)" en la 3, "Categorías de discapacidad (HU-035)"
+en la 4, "Etnias (HU-036)" en la 5 y "Comunidades étnicas (HU-037)" en la 6, como lo mostró una
+corrida que entró como `estadistica` el 2026-11-02. Abajo van la letra C, que cierra la sesión, y el
+0, que sale. Pasados 15 minutos sin actividad, la opción siguiente pide entrar de nuevo.
 
 El controlador de cada catálogo tiene 11 opciones:
 
@@ -134,11 +135,12 @@ Comprobado el 2026-11-02 con el `Shell` de H2 sobre una copia de `data/ips.mv.db
 contenedor de la sesión.
 
 - `data/ips.mv.db`: el archivo de la base, en git desde la v0.10. Tiene las tablas `ETNIA`,
-  `COMUNIDAD_ETNICA`, `OCUPACION`, `CATEGORIA_DISCAPACIDAD`, `USUARIO`, `CATALOGO_VERSION` y
-  `CATALOGO_CAMBIO`, y una secuencia para los números de cada una de las tres últimas. Trae las 7
+  `COMUNIDAD_ETNICA`, `OCUPACION`, `CATEGORIA_DISCAPACIDAD`, `PAIS`, `USUARIO`, `CATALOGO_VERSION`
+  y `CATALOGO_CAMBIO`, y una secuencia para los números de cada una de las tres últimas. Trae las 7
   etnias de la hoja 15, activas, con la versión 1, "Resolución 866 de 2021"; ninguna comunidad
   étnica; las 562 ocupaciones de la CIUO-88 A.C., activas; las 8 categorías de discapacidad de las
-  hojas 14 y 15, activas; los 3 usuarios de prueba; y 577 filas de cambios, una por valor creado.
+  hojas 14 y 15, activas; los 249 países de la tabla Pais de SISPRO, activos; los 3 usuarios de
+  prueba; y 826 filas de cambios, una por valor creado.
   Las etnias se cargaron con la
   opción 8 del menú de etnias y `data/catalogos/etnias-hoja-15.csv`, que entonces estaba en
   `src/test/resources/cargas/`. Se cargó en UTC, y
@@ -148,7 +150,9 @@ contenedor de la sesión.
   `data/catalogos/ciuo-88-ac.csv`, con la sesión de `estadistica`, así que su versión y sus 562
   cambios llevan su `usuarioId`. Entrar para cargar creó los usuarios de prueba. Las categorías de
   discapacidad se cargaron el 2026-11-02 con la opción 8 de su menú y
-  `data/catalogos/discapacidad-hojas-14-15.csv`, también con `estadistica`. Se reinicia
+  `data/catalogos/discapacidad-hojas-14-15.csv`, también con `estadistica`. Los países, el mismo
+  día, con la opción 8 de su menú y `data/catalogos/pais-sispro.xlsx`, el Excel tal como se exportó
+  de SISPRO, también con `estadistica`. Se reinicia
   con `git checkout data/ips.mv.db`. Solo lo abre quien tiene el turno, con su URL al arrancar
   (`docs/DESIGN.md`, sección 8). La consola de H2 lo abre con el usuario vacío y sin clave; con el
   usuario `sa` falla y deja `data/ips.trace.db`, que `.gitignore` deja fuera.
@@ -161,7 +165,7 @@ contenedor de la sesión.
 
 ## 4. Tamaño
 
-Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 7745 líneas en 69 archivos. De
+Comprobado el 2026-11-02 con `git ls-files 'src/*' | xargs wc -l`: 8766 líneas en 76 archivos. De
 Spring Initializr queda la mayor parte de `IpsApplicationTests.java`.
 
 ## 5. Sin describir todavía
@@ -176,14 +180,14 @@ comando o la corrida que lo muestra, para que el próximo lector compruebe si si
 en el PR que lo cierra, y el CHANGELOG guarda el rastro. Un PR que anuncia algo en el CHANGELOG mira
 si eso cierra un hueco de esta lista.
 
-- **2026-10-22: solo un catálogo oficial se descargó.** No se comprobó que la tabla Pais de SISPRO
-  use el código numérico (D-03), ni que exista el catálogo de comunidades étnicas (HU-037), ni
-  cómo nombra sus columnas el archivo de la DIVIPOLA (HU-026): su CSV tiene que llevar las de
-  `ContratoMunicipios`. El
-  2026-11-01 entró la estructura de la CIUO-88 A.C. del DANE, con sus cuatro niveles (HU-022).
-  Comando: `git ls-files '*.csv'` devuelve los tres de `data/catalogos/`: `ciuo-88-ac.csv`, y
+- **2026-10-22: dos catálogos oficiales se descargaron.** No se comprobó que exista el catálogo de
+  comunidades étnicas (HU-037), ni cómo nombra sus columnas la tabla Municipio de SISPRO, que tiene
+  la DIVIPOLA (HU-026): su archivo tiene que llevar las de `ContratoMunicipios`. El 2026-11-01
+  entró la estructura de la CIUO-88 A.C. del DANE, con sus cuatro niveles (HU-022), y el 2026-11-02
+  la tabla Pais de SISPRO, que confirmó el código numérico de D-03 (HU-018). Comando:
+  `git ls-files data/catalogos` lista `ciuo-88-ac.csv` y `pais-sispro.xlsx`, que se descargaron, y
   `etnias-hoja-15.csv` y `discapacidad-hojas-14-15.csv`, que se transcribieron de las hojas del
-  anexo y no se descargaron.
+  anexo.
 - **2026-10-26: las tildes salen como "?" en una terminal sin UTF-8.** En el contenedor de la
   sesión, sin `LANG`, Java toma `ANSI_X3.4-1968` para la salida, y el menú imprime "Opci?n" e
   "Ind?gena". El dato se guarda bien: con `-Dspring-boot.run.jvmArguments=-Dstdout.encoding=UTF-8`,
@@ -218,3 +222,8 @@ si eso cierra un hueco de esta lista.
   `gh api repos/jncldrn64/IPS-para-con-interoperabilidad-en-Resoluci-n-866/pulls/24 --jq
   .user.login`. Para comprobar la primera hipótesis, Jorge mira qué cuenta tiene conectada en
   https://claude.ai/connect-github.
+- **2026-11-02: un Excel con filas deshabilitadas no se ha visto.** Las tablas de SISPRO traen la
+  columna `Habilitado`, y la carga la ignora, como a toda columna que no pide la historia: una fila
+  con `NO` entraría activa. En la tabla Pais las 249 filas dicen `SI`. Comando, con openpyxl:
+  `python3 -c "import openpyxl,collections; ws=openpyxl.load_workbook('data/catalogos/pais-sispro.xlsx').active; print(collections.Counter(r[4] for r in ws.iter_rows(min_row=2, values_only=True)))"`
+  imprime `Counter({'SI': 249})`.

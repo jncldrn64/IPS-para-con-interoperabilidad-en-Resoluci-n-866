@@ -108,3 +108,6 @@ y uno grande sí.
   están en `main`; sin decidir si se dice algo.
 - 2026-11-02, modelo del autor: la memoria de Jorge sigue esperando que el autor cierre su PR de
   prueba y que Jorge fusione los PR #24 a #26. Las tres cosas ya pasaron; es de su integrante.
+- 2026-11-02, modelo del autor: el anexo de la Resolución 1888 de 2025 pasa la ocupación a la CUOC
+  (tabla PSRGOCUPACION de SISPRO), y la guía pide en negrita la CIUO-88 A.C. [2.1], que es la que
+  cargó Jorge. Mirarlo en la auditoría de HU-022 junto con lo de los niveles.

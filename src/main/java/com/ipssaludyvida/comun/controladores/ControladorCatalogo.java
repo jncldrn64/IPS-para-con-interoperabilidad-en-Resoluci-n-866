@@ -195,10 +195,12 @@ public abstract class ControladorCatalogo<T extends Catalogo> implements Control
     // La terminal dice qué archivo espera antes de pedir la ruta (docs/DECISIONS.md, 2026-10-26
     // "La terminal dice qué archivo espera antes de pedir la ruta").
     private void cargar() {
-        escribir("El archivo tiene que ser CSV en UTF-8, separado por punto y coma (;).");
+        escribir("El archivo puede ser el Excel (.xlsx) tal como lo exporta la fuente, como una"
+                + " tabla de referencia de SISPRO, o un CSV en UTF-8 separado por punto y coma"
+                + " (;).");
         escribirAyudaDeCarga();
-        escribir("Desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la columna"
-                + " del código en formato de texto para que no pierda los ceros.");
+        escribir("Si es CSV, desde la hoja de cálculo: Guardar como, \"CSV UTF-8\", con la"
+                + " columna del código en formato de texto para que no pierda los ceros.");
         Path archivo = Path.of(leer("Ruta del archivo: "));
         String fuente = leer("Fuente: ");
         String direccion = leer("Dirección de descarga: ");

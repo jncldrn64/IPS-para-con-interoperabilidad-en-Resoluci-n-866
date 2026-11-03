@@ -21,6 +21,8 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,5 +166,101 @@ class CasosLimiteTest {
         comunidades.confirmarCarga(comunidades.leerCarga(archivo, datos), Map.of());
         assertEquals("Comunidad; con punto y coma",
                 comunidades.buscarPorCodigo("101").map(Catalogo::getNombre).orElseThrow());
+    }
+
+    // Los Excel de estos tests se arman a mano, sin el prefijo x: ni la forma del de SISPRO, para
+    // probar que el lector no depende de cómo lo escribió cada programa. El de SISPRO lo carga
+    // HU018PaisesTest (docs/DECISIONS.md, 2026-11-02 "La carga lee también el Excel que exporta la
+    // fuente").
+
+    @Test
+    void unExcelConElTextoEnLaCeldaYUnaCeldaVaciaEnMedio() {
+        // El encabezado tiene tres columnas y los datos dejan vacía la del medio, que el Excel no
+        // escribe: sin leer la referencia de cada celda, el nombre caería en la columna B.
+        StringBuilder filas = new StringBuilder(fila(1, celda("A1", "código"),
+                celda("B1", "observaciones"), celda("C1", "nombre")));
+        int numero = 2;
+        for (Map.Entry<String, String> etnia : ContratoEtnias.HOJA_15.entrySet()) {
+            filas.append(fila(numero, celda("A" + numero, etnia.getKey()),
+                    celda("C" + numero, etnia.getValue())));
+            numero++;
+        }
+        ResultadoCarga carga = etnias.leerCarga(excel(filas.toString(), null), RESOLUCION_866);
+        assertEquals(7, carga.getAceptadas().size());
+        assertEquals("Indígena", carga.getAceptadas().get(0).nombre());
+    }
+
+    @Test
+    void unExcelConElCodigoGuardadoComoNumero() {
+        String filas = fila(1, celda("A1", "código"), celda("B1", "nombre"))
+                + fila(2, "<c r=\"A2\"><v>1</v></c>", celda("B2", "Indígena"));
+        ResultadoCarga carga = etnias.leerCarga(excel(filas, null), RESOLUCION_866);
+        assertTrue(carga.getRechazadas().get(0).motivo().contains("ceros iniciales"),
+                carga.getRechazadas().get(0).motivo());
+    }
+
+    @Test
+    void unExcelConTextoConFormatoYGuiaFonetica() {
+        String textos = "<sst><si><t>código</t></si><si><t>nombre</t></si><si><t>101</t></si>"
+                + "<si><r><t>Comunidad </t></r><r><t>con formato</t></r>"
+                + "<rPh><t>LECTURA</t></rPh></si></sst>";
+        String filas = "<row r=\"1\"><c r=\"A1\" t=\"s\"><v>0</v></c>"
+                + "<c r=\"B1\" t=\"s\"><v>1</v></c></row>"
+                + "<row r=\"2\"><c r=\"A2\" t=\"s\"><v>2</v></c>"
+                + "<c r=\"B2\" t=\"s\"><v>3</v></c></row>";
+        ResultadoCarga carga = comunidades.leerCarga(excel(filas, textos), new DatosVersion(
+                "Fuente de prueba", null, LocalDate.of(2026, 11, 2), "Versión de prueba",
+                LocalDate.of(2025, 1, 1)));
+        assertEquals("Comunidad con formato", carga.getAceptadas().get(0).nombre());
+    }
+
+    @Test
+    void unExcelSinLaColumnaDelNombre() {
+        String filas = fila(1, celda("A1", "código")) + fila(2, celda("A2", "01"));
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> etnias.leerCarga(excel(filas, null), RESOLUCION_866));
+        assertTrue(error.getMessage().contains("columna nombre"), error.getMessage());
+    }
+
+    @Test
+    void unArchivoXlsxQueNoEsUnExcel() throws IOException {
+        Path archivo = Files.writeString(carpeta.resolve("falso.xlsx"), "código;nombre\n01;X\n");
+        IllegalArgumentException error = assertThrows(IllegalArgumentException.class,
+                () -> etnias.leerCarga(archivo, RESOLUCION_866));
+        assertTrue(error.getMessage().contains("como Excel"), error.getMessage());
+    }
+
+    private static String fila(int numero, String... celdas) {
+        return "<row r=\"" + numero + "\">" + String.join("", celdas) + "</row>";
+    }
+
+    // Una celda con el texto escrito en ella misma, sin pasar por la tabla de textos.
+    private static String celda(String referencia, String texto) {
+        return "<c r=\"" + referencia + "\" t=\"inlineStr\"><is><t>" + texto + "</t></is></c>";
+    }
+
+    // Un .xlsx mínimo: el libro, su relación con la hoja, la hoja y, si hay, los textos.
+    private Path excel(String filas, String textos) {
+        Path archivo = carpeta.resolve("prueba-" + System.nanoTime() + ".xlsx");
+        try (ZipOutputStream zip = new ZipOutputStream(Files.newOutputStream(archivo))) {
+            entrada(zip, "xl/workbook.xml", "<workbook xmlns:r=\"r\"><sheets>"
+                    + "<sheet name=\"Hoja1\" sheetId=\"1\" r:id=\"rId1\"/></sheets></workbook>");
+            entrada(zip, "xl/_rels/workbook.xml.rels", "<Relationships><Relationship Id=\"rId1\""
+                    + " Target=\"worksheets/hoja.xml\"/></Relationships>");
+            entrada(zip, "xl/worksheets/hoja.xml",
+                    "<worksheet><sheetData>" + filas + "</sheetData></worksheet>");
+            if (textos != null) {
+                entrada(zip, "xl/sharedStrings.xml", textos);
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        return archivo;
+    }
+
+    private static void entrada(ZipOutputStream zip, String nombre, String xml) throws IOException {
+        zip.putNextEntry(new ZipEntry(nombre));
+        zip.write(xml.getBytes(StandardCharsets.UTF_8));
+        zip.closeEntry();
     }
 }

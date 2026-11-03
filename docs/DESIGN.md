@@ -261,7 +261,10 @@ En el controlador, `detalle` agrega algo al final de cada valor en la consulta y
 `escribirAyudaDeCarga` dice qué columnas pide el archivo. HU-026 usa los cinco para el departamento
 (`docs/DECISIONS.md`, 2026-11-01 "HU-026 guarda el departamento en su tabla").
 
-La base también carga el CSV de RC-8 y RC-9. `leerCarga` lee y compara sin guardar, y
+La base también carga el archivo de RC-8 y RC-9: un CSV, o el Excel (.xlsx) tal como lo exporta la
+fuente, que `ArchivoExcel` lee con Java, sin una biblioteca aparte. Los dos llegan a las mismas
+reglas como filas de texto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que
+exporta la fuente"). `leerCarga` lee y compara sin guardar, y
 `confirmarCarga` guarda. Una historia con una lista fija del anexo, como HU-036, cambia dos métodos
 de la base, `nombreOficial` y `revisarPrimeraCarga`.
 

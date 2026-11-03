@@ -200,7 +200,9 @@ al paciente.
   `docs/ARCHITECTURE.md`, sección 6 (`docs/DECISIONS.md`, 2026-10-27 "HU-036 y HU-037 están
   completas"). HU-035 está completa desde la v0.25, con sus 8 valores en el archivo de la base
   (`docs/DECISIONS.md`, 2026-11-02 "HU-035 sigue el molde de HU-036"), y del integrante 3 queda
-  HU-006, que espera HU-004. HU-001 está completa desde la v0.19
+  HU-006, que espera HU-004. HU-018, del integrante 2, la hizo el autor y está completa desde la
+  v0.27, con la tabla Pais de SISPRO en el archivo de la base (`docs/DECISIONS.md`, 2026-11-02
+  "HU-018 sale de la tabla Pais de SISPRO"). HU-001 está completa desde la v0.19
   (`docs/DECISIONS.md`, 2026-10-31 "HU-001 abre la sesión en la terminal"), y del integrante 1
   quedan HU-022, HU-026 y HU-005. HU-022 está completa desde la v0.20, con la CIUO-88 A.C.
   en el archivo de la base (`docs/DECISIONS.md`, 2026-11-01 "HU-022 lee el grupo del código y lo
@@ -260,3 +262,14 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   Code y a los colaboradores: un PR del `main` del fork al `main` de Atervolgo (`docs/DECISIONS.md`,
   2026-10-24 "Se trabaja en el fork del autor hasta que Atervolgo lo habilite").
   **Entró:** 2026-10-24, PR #3 del fork.
+- Revisar, catálogo por catálogo, el Excel oficial de su tabla de SISPRO y cargarlo tal como se
+  descarga, con el lector de Excel de la base común. Cuando todos estén definidos, el CSV pasa a
+  obsoleto (`docs/DECISIONS.md`, 2026-11-02 "La carga lee también el Excel que exporta la fuente").
+  Lo visto el 2026-11-02 en el buscador de SISPRO:
+  - Municipio, para HU-026: 1.124 municipios con su código de 5 dígitos. Falta ver si trae el
+    departamento.
+  - CodigoEAPByNit, para HU-038: candidata, sin bajar.
+  - CategoriaDiscapacidad: la misma lista de las hojas 14 y 15, sin bajar.
+  - PSRGPERTENETNICA no sirve para HU-036: es de RUAF, con códigos 1 a 6 y Z. Falta buscar "etnia".
+  - Comunidades étnicas y tipos de documento: sin una tabla clara.
+  **Entró:** 2026-11-02, PR que trae HU-018.
