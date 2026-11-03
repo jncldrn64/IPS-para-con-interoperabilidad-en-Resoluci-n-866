@@ -244,6 +244,16 @@ class HU037ComunidadesEtnicasTest {
     }
 
     @Test
+    @DisplayName("HU-037 Esc. 1: la carga por el menú guarda un CSV, como lo haría la persona")
+    void esc1_cargaPorElMenu() {
+        Path archivo = csv("código;nombre\n001;Comunidad uno\n002;Comunidad dos\n");
+        String salida = menu("8\n" + archivo + "\nFuente de prueba\n\n2026-10-18\nVersión 1\n"
+                + "2025-01-01\ns\n0\n");
+        assertTrue(salida.contains("Guardada la versión Versión 1"), salida);
+        assertEquals(List.of("001", "002"), activos());
+    }
+
+    @Test
     @DisplayName("HU-037 Esc. 1: la primera carga crea una comunidad activa por fila aceptada")
     void esc1_primeraCarga() {
         CatalogoVersion version = comunidades.confirmarCarga(

@@ -6,7 +6,6 @@ import com.ipssaludyvida.comun.servicios.Comprobacion;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu026.interfaces.ContratoMunicipios;
 import com.ipssaludyvida.hu026.modelos.Municipio;
-import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,7 +26,7 @@ public class MunicipioControlador extends ControladorCatalogo<Municipio> {
 
     @Override
     protected Comprobacion comprobar() {
-        return municipios.comprobarContraElArchivo(Path.of(leer("Ruta del archivo oficial: ")));
+        return municipios.comprobarContraElArchivo(leerRuta("Ruta del archivo oficial: "));
     }
 
     @Override

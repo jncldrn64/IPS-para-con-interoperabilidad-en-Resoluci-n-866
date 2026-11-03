@@ -2538,6 +2538,32 @@ cargar. 405 tests, 0 fallas, y dos mutaciones de `Habilitado` hacen fallar sus t
 
 **Estado:** `vigente`
 
+## 2026-11-02: La revisión de las historias hechas
+
+El autor mandó capturas de cuatro tablas de SISPRO para las comunidades étnicas y escribió, textual:
+
+- "1. de lo que queda, supongo que comunidades etnicas sera mas cromplejo de lo que aparente
+  agregar los datos.... 2. con lo de jorge, si hace falta y no puede, nosotros luego nos
+  encargamos de aplicar las reglas de excel en su HU.... 3. entonces antes de continuar, quiero
+  que hagas un recorridio por todas nuestras historias de usuario actuales,, si todos los
+  ecenarios estan con sus debidas pruebas, si cada catalogo sube manulamente y todo eso; a poder
+  ser tratar de implementar test de us HU a otro, no por que sea secesario, si no por que no me
+  quiero encontra luego con que cuando ponga un valor que no es, el programa falle, como minimo
+  debe hacer chat error. mientras bajare el programa yo y lo iniciare, por que hay algo que no
+  hemos hecho, y es ejecutarlo en mi maquina"
+
+Lo que respondió e hizo el modelo, con el detalle en la entrada 2026-11-02 "Un valor equivocado da
+un mensaje, y el menú sigue" de `docs/DECISIONS.md`:
+
+- LCEResguardos es la candidata para HU-037: código de 3 dígitos, como pide el numeral 13.
+- Los 202 escenarios tienen test. HU-037 y HU-038 suman una carga por el menú.
+- `EntradasInvalidasTest` recorre el programa con un teclado al azar; no encontró caídas, y sí dos
+  mensajes en inglés, que pasaron a español. El menú principal y el de cada catálogo atrapan
+  cualquier error. 412 tests, 0 fallas, y dos mutaciones del respaldo hacen fallar los tests.
+- Lo de Jorge queda como dijo el autor: si no puede, el autor aplica el Excel en HU-026.
+
+**Estado:** `vigente`
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2687,7 +2713,11 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-000000000000000000000000000000000000. **Próximo (2026-11-02, Habilitado y EAPB):** que el autor
+0000000000000000000000000000000000000. **Próximo (2026-11-02, revisión y teclado al azar):** que el
+   autor fusione el PR de la revisión y cuente cómo le fue al correr el programa en su máquina. Después:
+   LCEResguardos para HU-037, que el autor vio en SISPRO; avisarle a Jorge de Municipio y
+   Departamento; la auditoría de Jorge. HU-006 espera HU-004.
+000000000000000000000000000000000000. **Anterior (2026-11-02, Habilitado y EAPB):** que el autor
    fusione el PR de la columna `Habilitado` y la tabla CodigoEAPByNit, que tiene el turno de
    `data/ips.mv.db`. Después: avisarle a Jorge que Municipio y Departamento de SISPRO están en
    `data/catalogos/` y que su carga pide el nombre del departamento en el mismo archivo; buscar en

@@ -94,6 +94,13 @@ etiqueta "Esc. N" dice qué escenario muestra cada panel. Por la terminal sale s
 menú. El log de Spring muestra los avisos y los errores, nada del arranque, y el menú principal abre
 con la base que quedó abierta, como `Base abierta: jdbc:h2:file:./data/prueba`.
 
+Un valor equivocado da un mensaje y el menú sigue. Cada menú atrapa los errores que espera, con un
+mensaje propio, y al final cualquier otro, con el de `MenuPrincipal.inesperado`, que nombra el
+error y dice que lo demás sigue igual. Solo deja pasar el corte de `Terminal` cuando se acaba la
+entrada (sección 3). El menú principal pone el mismo respaldo alrededor de cada historia, así que
+una nueva, como HU-004, no cierra el programa aunque olvide atrapar algo; el respaldo es la red, y
+el mensaje propio sigue siendo de la historia.
+
 El menú y los controladores imprimen con `Terminal.escribir`, y ninguno escribe en `System.out`. Un
 archivo que el programa escribe y que ya existe se reemplaza solo si quien usa la terminal lo
 confirma. La lista de rechazadas de una carga, por ejemplo, pregunta "Ya existe <ruta>.
@@ -117,12 +124,13 @@ archivo de la base necesita verla (sección 8). La pregunta antes de reemplazar 
 
 **Dónde está escrito:** `docs/DECISIONS.md`, 2026-10-27 "Por la terminal sale solo el menú, y el
 menú dice qué base abrió" y 2026-10-27 "La lista de rechazadas no reemplaza un archivo sin
-preguntar".
+preguntar", y 2026-11-02 "Un valor equivocado da un mensaje, y el menú sigue".
 
 **Cómo se comprueba:** `printf '0\n' | sh ./mvnw -q spring-boot:run`, desde la raíz del repo,
 imprime la línea de la base y el menú, sin una línea de log; `grep -rn System.out src/main` devuelve
 solo el constructor de `Terminal`. Los tests son `BaseComunTest.elMenuPrincipalDiceQueBaseAbrio` y
-los tres de `BaseComunTest` que empiezan con `laListaDeRechazadas`.
+los tres de `BaseComunTest` que empiezan con `laListaDeRechazadas`. El respaldo lo prueba
+`EntradasInvalidasTest`, que además recorre el programa entero con un teclado que contesta al azar.
 
 ## 5. Los comentarios
 

@@ -6,7 +6,6 @@ import com.ipssaludyvida.comun.servicios.Comprobacion;
 import com.ipssaludyvida.hu001.interfaces.ContratoSesion;
 import com.ipssaludyvida.hu018.interfaces.ContratoPaises;
 import com.ipssaludyvida.hu018.modelos.Pais;
-import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,6 +24,6 @@ public class PaisControlador extends ControladorCatalogo<Pais> {
 
     @Override
     protected Comprobacion comprobar() {
-        return paises.comprobarContraElArchivo(Path.of(leer("Ruta del archivo oficial: ")));
+        return paises.comprobarContraElArchivo(leerRuta("Ruta del archivo oficial: "));
     }
 }

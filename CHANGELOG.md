@@ -5,6 +5,27 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.30 — 2026-11-02
+
+Un valor equivocado da un mensaje en cualquier menú, y un test lo comprueba recorriendo el programa
+con un teclado al azar. El programa no muestra una versión.
+
+### Added
+- `EntradasInvalidasTest`: el programa entero, por cargo, con un teclado al azar, y dos tests del
+  respaldo de errores. Una carga por el menú en HU-037 y otra en HU-038: 412 tests.
+- `MenuPrincipal.inesperado`, el mensaje de un error que nadie esperaba, y `leerRuta` en
+  `ControladorCatalogo`.
+- `docs/DECISIONS.md`: 2026-11-02 "Un valor equivocado da un mensaje, y el menú sigue".
+- `tests/README.md`: el comando que cuenta, para las 9 historias, los escenarios con test.
+- `docs/ROADMAP.md`: las tablas de SISPRO vistas para HU-037.
+
+### Changed
+- El menú principal y el de cada catálogo atrapan cualquier error y siguen.
+- Una ruta con un carácter que no sirve y una carpeta en lugar de un archivo dan su mensaje en
+  español.
+- La opción 8 dice "Cargar desde un archivo, CSV o Excel".
+- `docs/DESIGN.md`, sección 4, con la regla del respaldo.
+
 ## v0.29 — 2026-11-02
 
 La carga lee la columna `Habilitado`, y HU-038 trae la tabla CodigoEAPByNit de SISPRO. El programa

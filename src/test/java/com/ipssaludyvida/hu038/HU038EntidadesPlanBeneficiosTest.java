@@ -268,6 +268,17 @@ class HU038EntidadesPlanBeneficiosTest {
     }
 
     @Test
+    @DisplayName("HU-038 Esc. 1: la carga por el menú guarda el Excel de SISPRO")
+    void esc1_cargaPorElMenu() {
+        String salida = menu("8\n" + SISPRO + "\nFuente\n\n2026-11-02\nTabla CodigoEAPByNit\n"
+                + "2026-01-30\nn\ns\n0\n");
+        assertTrue(salida.contains("Deshabilitadas por la fuente, entran o quedan inactivas: 314."),
+                salida);
+        assertTrue(salida.contains("Guardada la versión Tabla CodigoEAPByNit"), salida);
+        assertEquals(1401, entidades.listarActivos().size());
+    }
+
+    @Test
     @DisplayName("HU-038 Esc. 1: el Excel de SISPRO deja activas las 1401 habilitadas")
     void esc1_primeraCargaDelExcelDeSispro() {
         ResultadoCarga carga = entidades.leerCarga(SISPRO, TABLA_EAPB);

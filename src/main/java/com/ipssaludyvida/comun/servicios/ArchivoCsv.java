@@ -32,6 +32,10 @@ final class ArchivoCsv {
         } catch (NoSuchFileException e) {
             throw new IllegalArgumentException("no existe el archivo " + ruta);
         } catch (IOException e) {
+            if (Files.isDirectory(ruta)) {
+                throw new IllegalArgumentException(ruta + " es una carpeta: escriba la ruta del"
+                        + " archivo, con su nombre");
+            }
             throw new IllegalArgumentException("no se pudo leer " + ruta + ": " + e.getMessage());
         }
     }

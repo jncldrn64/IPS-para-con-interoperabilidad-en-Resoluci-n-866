@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.boot.CommandLineRunner;
@@ -81,9 +82,29 @@ public class MenuPrincipal implements CommandLineRunner {
                 terminal.escribir("Sesión cerrada.");
                 continue;
             }
-            elegido(visibles, opcion).ifPresentOrElse(Controlador::abrir,
+            elegido(visibles, opcion).ifPresentOrElse(this::abrir,
                     () -> terminal.escribir("Opción no válida"));
         }
+    }
+
+    // Un error que nadie esperaba en una historia da un mensaje y vuelve a este menú, en vez de
+    // cerrar el programa (docs/DESIGN.md, sección 4).
+    private void abrir(Controlador controlador) {
+        try {
+            controlador.abrir();
+        } catch (NoSuchElementException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            terminal.escribir(inesperado(e));
+        }
+    }
+
+    /** El mensaje de un error que nadie esperaba: dice qué pasó y que el programa sigue. */
+    public static String inesperado(RuntimeException e) {
+        return "No se pudo, por un error que el programa no esperaba ("
+                + e.getClass().getSimpleName()
+                + (e.getMessage() == null ? "" : ": " + e.getMessage())
+                + "). Lo demás sigue igual.";
     }
 
     private Optional<Controlador> elegido(List<Controlador> visibles, String opcion) {

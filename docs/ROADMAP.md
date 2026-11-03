@@ -282,6 +282,10 @@ Lo que ya se sabe que se quiere y todavía no tiene fase. Cada ítem nace con su
   - CodigoEAPByNit, para HU-038: cargada en la v0.29.
   - CategoriaDiscapacidad: la misma lista de las hojas 14 y 15, sin bajar.
   - PSRGPERTENETNICA no sirve para HU-036: es de RUAF, con códigos 1 a 6 y Z. Falta buscar "etnia".
+  - Para HU-037, vistas el 2026-11-02 en capturas del autor: LCEResguardos, 117 resguardos por
+    población indígena con código de 3 dígitos, como 010 ACHAGUA, la candidata; PueblosIndigenas,
+    226 con códigos de 1 a 3 cifras sin ceros; ResguardoNit, 13 con el NIT; y
+    APSTerritorializacionIndigena, 1.009, de atención primaria. Ninguna bajada.
   - CoberturaPlanBeneficios no es el numeral 15: trae 15 tipos de cobertura, como SOAT o ARL, y
     no la entidad que responde por el paciente.
   - Comunidades étnicas y tipos de documento: sin una tabla clara.
