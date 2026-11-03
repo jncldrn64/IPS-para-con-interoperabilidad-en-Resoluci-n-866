@@ -5,14 +5,15 @@ se carga un archivo está en `docs/DESIGN.md`, secciones 7 y 8, y por qué todos
 `docs/DECISIONS.md`, 2026-11-02 "Los CSV de carga van en data/catalogos".
 
 Cada archivo es un CSV de RC-8, en UTF-8, separado por punto y coma y con las columnas `codigo` y
-`nombre`, o el Excel (.xlsx) tal como lo exporta la fuente, con esas mismas columnas. Una lista que
-transcribe una norma se copia citando la norma y su hoja, y un catálogo que publica una entidad del
-Estado, citando la entidad y la dirección de descarga (`CLAUDE.md`, sección 10). La carga guarda la
-fuente en su versión, y los tests leen estos mismos archivos.
+`nombre`, o el Excel (.xlsx) tal como lo exporta la fuente, con esas mismas columnas. Si trae la
+columna `Habilitado`, una fila con `NO` entra inactiva. Una lista que transcribe una norma se copia
+citando la norma y su hoja, y un catálogo que publica una entidad del Estado, citando la entidad y
+la dirección de descarga (`CLAUDE.md`, sección 10). La carga guarda la fuente en su versión, y los
+tests leen estos mismos archivos.
 
 ## 1. Cómo se rehace la base con estos archivos
 
-`data/ips.mv.db` ya trae los cinco catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
+`data/ips.mv.db` ya trae los seis catálogos cargados (`docs/ARCHITECTURE.md`, sección 3). Para
 cargarlos en una base vacía, como en una demostración:
 
 1. Se arranca el programa desde la raíz del repo con una base vacía. En memoria, como abajo, no
@@ -87,3 +88,29 @@ cargarlos en una base vacía, como en una demostración:
 - **Versión con que se cargó:** fuente "Resolución 866 de 2021, anexo técnico, numeral 2, hoja
   13"; la misma dirección que etnias; descarga 2026-11-02; versión "Resolución 866 de 2021";
   publicación 2021-06-25.
+
+## 7. eapb-sispro.xlsx
+
+- **Entidad:** Ministerio de Salud y Protección Social, SISPRO, tabla de referencia CodigoEAPByNit.
+- **Dirección:** https://web.sispro.gov.co/WebPublico/Consultas/ConsultarDetalleReferenciaBasica.aspx?Code=CodigoEAPByNit
+- **Recibido:** el 2026-11-02, exportado por el autor sin cuenta. Va tal como se descargó.
+- **Filas:** 1.717, 1.401 habilitadas y 316 no. Los códigos van de 4 a 6 caracteres: 1.175 de 5
+  dígitos, las direcciones de salud; las EPS y cajas como EPS037 o CCFC07; y las aseguradoras con
+  guion, como 13-5. La carga rechaza 2, `UT001_` y `UT004_`, deshabilitadas, por el guion bajo.
+- **Columnas:** `Codigo`, `Nombre` y `Habilitado`, más 19 que la carga no usa, como el régimen y
+  el NIT.
+- **Versión con que se cargó:** fuente "Ministerio de Salud y Protección Social, SISPRO, tabla de
+  referencia CodigoEAPByNit"; la dirección de arriba; descarga 2026-11-02; versión "Tabla
+  CodigoEAPByNit de SISPRO"; publicación 2026-01-30, la fecha de actualización de todas sus filas.
+
+## 8. municipio-sispro.xlsx y departamento-sispro.xlsx
+
+- **Entidad:** Ministerio de Salud y Protección Social, SISPRO, tablas de referencia Municipio y
+  Departamento.
+- **Dirección:** https://web.sispro.gov.co/WebPublico/Consultas/ConsultarDetalleReferenciaBasica.aspx?Code=Municipio
+  y la misma con `Code=Departamento`.
+- **Recibido:** el 2026-11-02, exportadas por el autor sin cuenta. Van tal como se descargaron.
+- **Filas:** Municipio, 1.124 códigos de 5 dígitos, uno deshabilitado, con el departamento en
+  `Extra_I:Departamento`. Departamento, 33 nombres y la fila `00`, `NO APLICA`, deshabilitada.
+- **Sin cargar:** la carga de HU-026 pide el nombre del departamento en el mismo archivo
+  (`docs/ARCHITECTURE.md`, sección 6).

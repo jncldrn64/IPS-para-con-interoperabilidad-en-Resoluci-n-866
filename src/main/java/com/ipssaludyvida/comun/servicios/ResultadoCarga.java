@@ -44,6 +44,11 @@ public class ResultadoCarga {
     private final List<Rechazo> rechazadas = new ArrayList<>();
     /** Los códigos de todas las filas, aceptadas o no: con ellos están en la versión (RC-10). */
     private final Set<String> codigosDelArchivo = new LinkedHashSet<>();
+    /**
+     * Los códigos aceptados que la fuente marca con NO en su columna Habilitado, como una EPS
+     * liquidada en la tabla de SISPRO: entran inactivos, o se inactivan si estaban activos.
+     */
+    private final Set<String> deshabilitados = new LinkedHashSet<>();
     private final List<String> nuevos = new ArrayList<>();
     private final List<CambioDeNombre> cambianDeNombre = new ArrayList<>();
     private final List<String> vuelven = new ArrayList<>();

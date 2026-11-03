@@ -15,7 +15,7 @@ Las condiciones: Java 21 en el `PATH`, y red la primera vez, para que el envolto
 3.9.11 y las dependencias a `~/.m2/`. Si `./mvnw` responde "Permission denied", `sh ./mvnw test`
 hace lo mismo.
 
-Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 430 tests, y `BUILD SUCCESS`.
+Se comprobó el 2026-11-02 en el contenedor de la sesión, con Linux: 433 tests, y `BUILD SUCCESS`.
 En Windows va `mvnw.cmd test`, que no se corrió (`docs/ARCHITECTURE.md`, sección 6).
 
 Los tests no tocan el archivo de la base: con `@ActiveProfiles("test")` leen
@@ -40,7 +40,8 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
   por cambio oficial unos pocos valores de los 8 catálogos, y los de la pantalla contestan dato por
   dato, con las respuestas de `RESPUESTAS`.
 - `hu034/HU034TiposDocumentoTest`, con 44 tests, como los de HU-035 con la lista de la hoja 13, y
-  `hu038/HU038EntidadesPlanBeneficiosTest`, con 39, como los de HU-037 con códigos de 6 caracteres.
+  `hu038/HU038EntidadesPlanBeneficiosTest`, con 40, como los de HU-037 con códigos de 4 a 6
+  caracteres. Uno carga `data/catalogos/eapb-sispro.xlsx`, la tabla de SISPRO tal como se exportó.
 - `hu035/HU035CategoriasDiscapacidadTest`, con 44 tests, `hu036/HU036EtniasTest`, con 44, y
   `hu037/HU037ComunidadesEtnicasTest`, con 38: los escenarios de cada historia, de la carga a la
   consulta, la búsqueda y la comparación con la lista oficial. Los de cancelar, y los que comprueban
@@ -59,12 +60,13 @@ nombra el test de un escenario está en `docs/DESIGN.md`, sección 3.
 - `hu026/HU026MunicipiosTest`, con 35 tests: los 25 escenarios de HU-026, con un archivo de prueba
   de 9 municipios de 8 departamentos y Albania en tres, porque el de la DIVIPOLA no se ha
   descargado.
-- `comun/CasosLimiteTest`, con 18 tests: las 7 etnias en las dos entidades, por el menú y por el
+- `comun/CasosLimiteTest`, con 20 tests: las 7 etnias en las dos entidades, por el menú y por el
   CSV, con y sin valores previos, y los archivos que una hoja de cálculo guarda distinto, como el
   que trae la marca del "CSV UTF-8", el separado por comas o el que no está en UTF-8. Cinco son de
   Excel armados en el test: con el texto en la celda y una celda vacía en medio, con el código
   guardado como número, con texto con formato y guía fonética, sin la columna del nombre, y un
-  `.xlsx` que no es un Excel.
+  `.xlsx` que no es un Excel. Dos prueban la columna `Habilitado`, en una primera carga y en una
+  versión nueva.
 - `hu018/HU018PaisesTest`, con 42 tests: los 22 escenarios de HU-018. Los de la carga del archivo
   oficial leen `data/catalogos/pais-sispro.xlsx`, el Excel de SISPRO tal como se exportó.
 

@@ -2251,6 +2251,52 @@ Lo que decidió el modelo:
 
 **Estado:** `vigente`
 
+## 2026-11-02: La carga lee la columna Habilitado
+
+**Contexto:** Reemplaza en parte a 2026-11-02 "El autor termina los catálogos del integrante 2 y
+Jorge toma HU-004": el código de HU-038 deja de ser de 6 caracteres exactos. El autor preguntó qué
+historias ganaban de verdad con el Excel, y exportó de SISPRO las tablas CodigoEAPByNit,
+Municipio, Departamento, PSRGPERTENETNICA y CoberturaPlanBeneficios. Escribió, textual:
+
+- "vale, seamos realistas, que HU se veneficiarian realmente del excel ahora mismo"
+- "EAPByNit es terriblemente grande, si quieres te lo paso, pero tienes que tener mucho cuidado de
+  saber si es o no es, por que es muy posible que no sea lo que buscamos o no tenga sentido, y
+  explote el contexto, el resto si te los puedo pasar, y espero que no necesiten tantas
+  correciones, pero el de cobertura creo que no esta bien definido..."
+- "el 12 realmente tiene dos, nombre der municipio y codigo del municipio, quizas nos estamos
+  confundiendo en algo? quizas en el catalogo de etnimas realmente no existe dicho documento
+  extenso, y solo hay que definirlo tal cual aparecen?"
+
+CodigoEAPByNit trae 1.717 entidades, 316 con `NO` en `Habilitado`, y códigos de 4 a 6
+caracteres: 05001, EPS037, 13-5. La regla `[A-Z0-9]{6}` de HU-038 rechazaba 1.218 de las 1.401
+habilitadas, y la carga, que ignoraba `Habilitado`, habría dejado activas las 316.
+
+**Decisión:** el autor eligió, entre tres opciones, corregir HU-038 y leer `Habilitado` en la base
+común. Si el archivo trae esa columna, una fila con `NO` entra inactiva, con un cambio "Retirado
+por la fuente oficial"; en una versión nueva, inactiva el valor activo y no reactiva el inactivo.
+El código de HU-038 es de 4 a 6 mayúsculas, dígitos o guiones, y el archivo de la base trae la
+tabla CodigoEAPByNit. Municipio y Departamento quedan en `data/catalogos/`, sin cargar, porque la
+carga de HU-026 pide el nombre del departamento en el mismo archivo, y eso lo decide Jorge.
+
+Lo que decidió el modelo:
+
+- El 6 del numeral 15 es el largo máximo, y el mínimo, 4, el más corto de la tabla.
+- `Habilitado` es una columna opcional de la base común y no de HU-038: Municipio y Departamento
+  también traen filas con `NO`.
+- El motivo es el que ya existe, "Retirado por la fuente oficial", y no uno nuevo.
+- La fecha de publicación es el 2026-01-30, la de actualización de las 1.717 filas.
+- Las 2 filas con guion bajo, `UT001_` y `UT004_`, deshabilitadas, se rechazan.
+- PSRGPERTENETNICA y CoberturaPlanBeneficios no entran: la primera no es la hoja 15, y la segunda
+  trae tipos de cobertura, no entidades.
+
+**Alternativas:**
+
+- Cargar solo las 1.401 habilitadas, filtrando el archivo. Deja de ser el archivo tal como se
+  descargó, y el hueco de `Habilitado` sigue abierto.
+- Cambiar también la carga de HU-026 en este PR. Es la historia de Jorge, que está en HU-004.
+- Un motivo nuevo para la fila deshabilitada. RC-10 ya tiene "Retirado por la fuente oficial".
+
+**Estado:** `vigente`
 
 ## 2026-11-02: HU-004 guarda los códigos y junta todos los errores
 
