@@ -2693,6 +2693,82 @@ que faltaban" y "El CSV sigue al lado del Excel" de `docs/DECISIONS.md`:
 
 **Estado:** `vigente`
 
+## 2026-11-14: Las fases del MVP, con las preguntas guardadas
+
+El autor escribió el 2026-11-05, textual:
+
+- "vale, creo que con lo que tenemos actualmente entiedo que podemos dividir con fases en el
+  roadmap ahora si un minimo viable, donde en alguna de las fases podamos incluzo comezar a mover
+  la terminal a vistas html reales... Contextualiza el proyecto MIDI, verifica las ramas, la logica
+  interna del proyecto, el uso adecuado de la documentacion y sus archivos de codigo; una vez
+  tengas una idea, procede a hacerme preguntas si tienes dudas, por que seguramente haya detalles
+  contradictorios aun por aclarar, o se hayan introducido sin querer.... como el repo no tiene todo
+  el contexto y tampoco espero que tenga todos los archivos, supongo que almenos, podria darte
+  archivos en la estructura de mis archivos si los pides. obviamente hay archivos vijeos de
+  contexto ya desfasados, como los promts que seguramente ya no tenga cavida aqui...."
+
+El modelo contestó ese día con lo que encontró y ocho preguntas, que quedaron solo en el chat. El
+2026-11-14 el autor escribió, textual:
+
+- "Confirmame que el contenedor no se haya reiniciado y para evitar que nuevamente luego del
+  tiempo, se haya perdido el contexto, analiza las ultimas entradas y la memoria contextual, o el
+  archivo que tengas pendiente interno de memoria. y hazme nuevamente el push de las preguntas
+  necesarias"
+
+La máquina del contenedor sí arrancó de nuevo, el 2026-11-14 a las 23:20 UTC (`uptime -s`), pero el
+disco se conservó: el repo seguía limpio en la rama del autor e igual a `origin`. `main` no cambió
+desde el PR #46 del 2026-11-03. Por eso las preguntas quedan aquí, y se vuelven a hacer.
+
+Lo que encontró el modelo el 2026-11-05, revisado el 2026-11-14:
+
+- Ramas: además de `main` y de la rama del autor, el fork tiene 11 ramas viejas, y ninguna tiene
+  un commit fuera de `main` (`git rev-list --count origin/main..<rama>` da 0 en las 11).
+- Las 12 historias del plan B están en `main`. La última corrida de los tests, el 2026-11-03 con la
+  v0.40, dio 484 tests y 0 fallas; el 2026-11-14 no se volvieron a correr.
+- El `pom.xml` ya trae Spring MVC, Thymeleaf y Spring Security, y
+  `spring.main.web-application-type=none` apaga la web. Los servicios no leen del teclado ni
+  imprimen, así que una pantalla HTML puede llamar los mismos contratos que la terminal.
+
+Las contradicciones:
+
+1. La guía [2.5] pide "mínimo 4 Historias de Usuario para cada Sprint" por integrante, en sprints
+   de tres semanas. La entrada 2026-10-22 "Se desarrollan las 12 historias del plan B" de
+   `docs/DECISIONS.md` dice 3 por integrante y 12 en el semestre.
+2. Esa entrada cita `docs/context/plan-desarrollo-12-historias.md`, que no está en el repo. Está en
+   la carpeta `POST/trello/` del autor.
+3. La guía pide una aplicación web. La terminal se aceptó para "el primer sprint" (entrada
+   2026-10-24 "El primer sprint arranca en terminal"), y nada dice cuándo se pasa a la web. La
+   memoria de Jorge tiene pendiente preguntar al profesor si acepta que el programa siga en
+   terminal.
+4. La fase 0 de `docs/ROADMAP.md` sigue `en curso`, y su criterio ya se cumple. HU-037 sigue sin
+   datos, y eso no está en el criterio.
+5. El reparto del ROADMAP quedó viejo: HU-006 figura del integrante 3 y la hizo Jorge; HU-034,
+   HU-018 y HU-038 figuran del integrante 2 y las hizo el autor.
+6. La guía [3.6] pide el diagrama E-R dentro del repo. El de `docs/context/modelo-datos/` es el
+   borrador del 2026-10-20, anterior a la base real.
+7. `docs/TEMPORARY-CONTEXT.md` tiene 10 anotaciones. Al menos dos ya se resolvieron: el PR de
+   prueba de Jorge y "HU-004 bloquea a todos".
+8. La CIUO-88 A.C.: el profesor dijo en clase que le bastaban los niveles de 2 y 3 dígitos, la guía
+   pide las ocupaciones de 4, y Jorge cargó los cuatro niveles.
+
+Las preguntas al autor:
+
+1. ¿En qué sprint van y cuántos quedan? Las fechas del próximo Sprint Review y de la entrega final.
+2. ¿Qué vale hoy, las 12 historias en el semestre o las 4 por integrante por sprint? Si hay más
+   sprints, ¿las historias salen de las 18 del Backlog, como HU-007 o HU-010?
+3. ¿Qué es el mínimo viable? Propuesta del modelo: MVP 1, lo que ya está más HU-037 con datos y la
+   fase 0 cerrada; MVP 2, las 12 historias en HTML; después, las historias nuevas, ya en web.
+4. Para la web: ¿el inicio de sesión pasa a un formulario de Spring Security? ¿La terminal convive
+   con la web, o se retira cuando cada pantalla tenga su versión HTML?
+5. ¿El integrante 2 sigue en el grupo?
+6. ¿Se actualiza el diagrama E-R para que coincida con la base real, o la entrega usa otro?
+7. ¿Se borran las 11 ramas viejas?
+8. Si los tiene a mano: `POST/trello/plan-desarrollo-12-historias.md`,
+   `POST/trello/respuestas-al-docente.md`, `POST/preguntas-docente.md` y
+   `PRE/comentarios-profesor-por-HU.md`. Los prompts y las tandas viejas no hacen falta.
+
+**Estado:** `pendiente`, hasta que el autor conteste.
+
 ## 10. Correcciones registradas
 
 - **Del modelo a sí mismo:** entró a la primera fila del bloque D sin mostrar antes el mapa de 49 a
@@ -2842,7 +2918,13 @@ externos sin HU: comunidades étnicas, entidades del plan de beneficios y enferm
 
 ## 12. Pendientes y próximo paso
 
-0000000000000000000000000000000000000000000. **Próximo (2026-11-03, las 26 llaves):** que el autor
+00000000000000000000000000000000000000000000. **Próximo (2026-11-14, fases del MVP):** que el autor
+   conteste las ocho preguntas de la entrada 2026-11-14 "Las fases del MVP, con las preguntas
+   guardadas". Con sus respuestas: las fases en `docs/ROADMAP.md` con su decisión, el reparto al
+   día, `docs/TEMPORARY-CONTEXT.md` limpio y el diagrama E-R. Siguen de la lista: HU-037 con
+   LCEResguardos, escribir con tildes y `.\mvnw.cmd test` en Windows, los espacios entre
+   pantallas, MariaDB en la VM, la CIUO-88 A.C. y la CUOC, y D-19.
+0000000000000000000000000000000000000000000. **Anterior (2026-11-03, las 26 llaves):** que el autor
    fusione el PR de las llaves que faltaban y del CSV. De la lista quedan: HU-037 con
    LCEResguardos, escribir con tildes y `.\mvnw.cmd test` en Windows, los espacios entre
    pantallas, MariaDB en la VM, la CIUO-88 A.C. y la CUOC, y D-19. El Excel por catálogo quedó

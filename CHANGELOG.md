@@ -5,6 +5,18 @@
 > vX.Y — AAAA-MM-DD`. **Origen:** plantilla 1.2, sembrada el 2026-10-22 (`docs/DECISIONS.md`,
 > 2026-10-22 "Se adopta la plantilla 1.2").
 
+## v0.41 — 2026-11-14
+
+Solo documentación. Las preguntas para armar las fases del MVP quedan en la memoria del autor, y
+no solo en el chat.
+
+### Added
+- La memoria del autor, entrada 2026-11-14 "Las fases del MVP, con las preguntas guardadas": lo
+  que encontró el modelo, ocho contradicciones y ocho preguntas.
+
+### Changed
+- La memoria del autor, sección 12: el próximo paso es que el autor conteste esas preguntas.
+
 ## v0.40 — 2026-11-03
 
 La base tiene las 26 llaves foráneas del modelo E-R, y el CSV sigue al lado del Excel. El programa
